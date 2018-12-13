@@ -1,0 +1,131 @@
+﻿***[Shell]*** Done:
+-------------------------	
+		* 	BUG:		computing build ID
+		* 	OPT:ieLog:	uses std::FILE* instead of std::ofstream
+		*	OPT:		добавить файл с ID билда
+		*	OPT:		PCH
+		*	OPT:		избавиться от singleton ( 1 Jun 2018: где он не нужен )
+		* 	BUG:		фиксить загрузку\выгрузку файлов в CFileSystem
+		* 	NEW:		класс core с аргументами командной строки
+		*	NEW:		организация решение (проекты, директории)?	
+		*	CP: 		убрать вин32 типы
+		*	OPT:		COMPLETE solution review
+		*	CP:			new cross-platform approach
+		* 	NEW:		port to x64... ( not a single error! i think they're hiding >:P )
+		*	NEW			вынести базовые хидеры в папку с движком ( из коре )
+		*	NEW:		PIMPL
+		*  	OPT:		перейьти на новый стиль кода...
+		*	BUG:		multiple inheritance и CP API и память ( r_open, r_close )
+		*	BUG:		разыменование mdbg.eng( ) при деаллоке, хотя там нужен был P
+		*	OPT:		один проект на флешке: 2 платформы и 2 иде!		
+		* 	NEW:		собрался на линукс!
+
+***[Shell]*** In progress:
+-------------------------
+		1.		convincing myself to install linux as main os
+		2. 		shared_ptr...
+		3.		inex::filesystem.......
+		4.		_cpuid - features and cores
+		5.		корректно пересесть на pure gnuc, ( чекать версию, а не PURE_GNUC! )
+		6.		отформатировать кроссплатформ код, пока нагло стоят заглушки
+		
+		------------- не нравится и вааще впадло ---------------------
+		---P	переписать fs
+		--------------------------------------------------------------
+		
+		bugs/features:
+		*	BUG: использовать биты char [] в get_cpu_fts()
+		*   BUG: проверять, существует ли gamedata ( в велосипедной FS )
+		*	BUG: убрать '*' из полного путя вин, катить когда нужно
+
+		to think:
+		*	use pointer to null-terminated string instead of std::string
+
+***[Shell]*** TODO:
+---------------------------
+		new:
+		* профайлер и поисковик утечек:
+			valgrind valgrind.org,
+			perf eax.me,
+			heaptrack eax.me,
+			memorysanitizer http://clang.llvm.org/docs/MemorySanitizer.html
+			http://clang.llvm.org/diagnostics.html
+			data race Helgrind
+			strace ltrace
+			flamegraph eax
+		* file_pa
+		* OBJ file loader ( Python script to export custom JSON files from Blender. C++ JSON )
+		* skeletal animation
+		* сделать классы для лога\рендердевайса, а вдруг их понадобится два
+		* использовать полный список namespaces, inex::core::log, а не просто лог
+		* сделать Msg ( и lowercase ) глобальным для inex namespace
+		* вынести все инлайны в *_inline.h файлы
+		* платформозависимый fsystem?
+		* stack dump
+		* debug memory manager
+		* copy-on-write/shared str
+		* захерачить стек вызовов ??
+		* PDB
+		* platform-specific IWindow (see docs about PSC (platform-specific code))
+		* attach opengl
+		* leak detector or something
+		live:2c92e80bf2975880
+		bugs/features:
+		* фиксить cpuid для g++
+
+		to think:
+		
+		* 	выпилить из таргетов исходы другиъ платформ
+		*	непрерывная интеграция ( Jenkins )
+			
+		* 	метод с наследованием от платформозависимого интерфейса вааще
+			платформозависимый костыльныя. хотя, мой код такой же. апдейтну потом...
+		*	consider some ways of how to store platform-specific code?? ( pimpl, inheritance, or just conditional compilation )
+		*	https://gitlab.com/gitlab-org repository
+		*	get rid of all the inline assembly? (intrinsics  rules?)
+		*	типы сообщений лога? warning, error, etc.
+		*   использовать типа ie_memcpy or ie_memset и там чекать type_traits в дебаге. typeid ???
+		*	encrypting / decrypting data
+		*	serialization
+		*	reflection data
+		*	pool alloc, doug lea alloc, region-based memory, jemalloc, ptmalloc-implementation
+		*	garbage collector
+		*	store binaries in one folder
+		* 	почитать про как дампить программу
+		* 	структуры данных: unrolled linked list, R-tree, Quadtree,Red-black tree
+		*	алгоритмы: дихотомия
+		*	циклический избыточный код (CRC)
+		*	тут о том, что GC не нужен, а нужен shared_ptr
+			https://www.gamedev.net/forums/topic/631744-garbage-collector/
+		*	о сети
+			https://gafferongames.com/post/udp_vs_tcp/
+			и в книгах (Programming Abstractions in C++ or Stephen Rod)
+		* 	gamedev blog
+			https://preshing.com
+		* 	Sanjay Madhav - Game Programming Algorithms and Techniques
+			to read before Boreskov?
+		* 	прочитать про fold
+
+		очень большой кусок:
+		*	поменять стиль код на более человечный
+			Edited 14.05.18: ровняюсь на стиль xray2 from now on
+		*	собраться на линукс. 
+		
+***[ Shell ]*** Notes:
+		* 	ЛИБЫ в командной строке должны идти до сорцев и объектов!
+
+		* 	кроссплатформ штуки:
+			1. если имплементация немного отличается, а интерфейс одинаков
+				юзай разные файлы имплементации
+			2.	выноси независимые штуки в отдельный файл
+			3. 	не называй типы с префиксом платфорым
+		
+посмотреть seinfeld
+Thank_You_for_Smoking
+Infinity
+look around you
+посмотреть сериал https://watcheng.com/en/show/lip-service/season-1/episode-1/
+
+
+
+
