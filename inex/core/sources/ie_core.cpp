@@ -33,16 +33,16 @@ s32	IE_CCALL	_stricmp ( pcstr lhs, pcstr rhs )
 	pstr str			= memory::ie_allocate< char >( std::strlen( lhs ) + 1 );
 	pstr str2			= memory::ie_allocate< char >( std::strlen( rhs ) + 1 );
 	pstr c				= str;
+
 	std::strcpy			( str, lhs );
 	std::strcpy			( str2, rhs );
-
     while ( *c && isalpha( *c ) )
     {
         *c              = tolower( *c );
         ++              c;
     }
 
-	c					=	str2;
+	c					= str2;
     while ( *c && isalpha( *c ) )
     {
         *c              = tolower( *c );
@@ -70,6 +70,7 @@ void	compute_build_id ( )
         31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
     };
 
+	// if date is Feb 29, use 28 or you'll kill the algorithm
     u16 start_day			= 7;	// 7
     u16 start_month	    	= 9;	// September
     u16 start_year	    	= 2017;	// 2017
@@ -97,9 +98,9 @@ void	compute_build_id ( )
     u8 leap_years           = 0;
     u16 count_current_year  = ( months > 0 ) ? years + 1 : years;
 
-	for ( u32 i             = start_month > 2 ? start_year + 1 : start_year;
-            i               < count_current_year;
-            ++              i  )
+	for ( u32 i             =	start_month > 2 ? start_year + 1 : start_year;
+            i               <	count_current_year;
+            ++					i  )
 	{
         if ( ( i % 4  == 0 && i % 100 != 0 ) || i % 400 == 0 )
         {
@@ -143,18 +144,23 @@ void	initialize ( s32 command_line_argument_count, pstr* command_line_values )
         fsmgr::initialize	( temp );
     }
 	else
-	{
+	{   
+#if IE_PLATFORM_WINDOWS
+		fsmgr::initialize	( "gamedata/" );
+#elif IE_PLATFORM_LINUX // #if IE_PLATFORM_WINDOWS
 		fsmgr::initialize	( "./gamedata/" );
+#endif // #if IE_PLATFORM_WINDOWS
 	}
 }
 
 void	finalize ( )
 {
     log::Msg ( "*** Destroying core ***" );
-    fsmgr::finalize			( );
+    fsmgr::finalize				( );
     memory::finalize       		( );
     log::finalize       		( );
 
 }
+
 } // names core
 } // namespace inex
