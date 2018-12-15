@@ -15,19 +15,18 @@
 		*	NEW:		PIMPL
 		*  	OPT:		перейьти на новый стиль кода...
 		*	BUG:		multiple inheritance и CP API и память ( r_open, r_close )
-		*	BUG:		разыменование mdbg.eng( ) при деаллоке, хотя там нужен был P
-		*	OPT:		один проект на флешке: 2 платформы и 2 иде!		
+		*	BUG:		разыменование mdbg.eng( ) при деаллоке, хотя там нужен был P	
 		* 	NEW:		собрался на линукс!
 
 ***[Shell]*** In progress:
 -------------------------
-		1.		convincing myself to install linux as main os
-		2. 		shared_ptr...
-		3.		inex::filesystem.......
-		4.		_cpuid - features and cores
-		5.		корректно пересесть на pure gnuc, ( чекать версию, а не PURE_GNUC! )
-		6.		отформатировать кроссплатформ код, пока нагло стоят заглушки
-		
+		1. 		shared_ptr...
+		2.		inex::filesystem.......
+		3.		_cpuid - features and cores
+		4.		корректно пересесть на pure gnuc, ( чекать версию, а не PURE_GNUC! )
+		5.		отформатировать кроссплатформ код, пока нагло стоят заглушки
+		6.		стек дамп.. пока только линукс
+		7.		гитхаб
 		------------- не нравится и вааще впадло ---------------------
 		---P	переписать fs
 		--------------------------------------------------------------
@@ -39,6 +38,7 @@
 
 		to think:
 		*	use pointer to null-terminated string instead of std::string
+		*	в инициализации фс, под линуксом можно юзать оба варианта: "gamedata/", "./gamedata/"
 
 ***[Shell]*** TODO:
 ---------------------------
@@ -56,13 +56,10 @@
 			flamegraph eax
 		* file_pa
 		* OBJ file loader ( Python script to export custom JSON files from Blender. C++ JSON )
-		* skeletal animation
 		* сделать классы для лога\рендердевайса, а вдруг их понадобится два
 		* использовать полный список namespaces, inex::core::log, а не просто лог
 		* сделать Msg ( и lowercase ) глобальным для inex namespace
 		* вынести все инлайны в *_inline.h файлы
-		* платформозависимый fsystem?
-		* stack dump
 		* debug memory manager
 		* copy-on-write/shared str
 		* захерачить стек вызовов ??
@@ -70,9 +67,8 @@
 		* platform-specific IWindow (see docs about PSC (platform-specific code))
 		* attach opengl
 		* leak detector or something
-		live:2c92e80bf2975880
+
 		bugs/features:
-		* фиксить cpuid для g++
 
 		to think:
 		
@@ -90,7 +86,6 @@
 		*	serialization
 		*	reflection data
 		*	pool alloc, doug lea alloc, region-based memory, jemalloc, ptmalloc-implementation
-		*	garbage collector
 		*	store binaries in one folder
 		* 	почитать про как дампить программу
 		* 	структуры данных: unrolled linked list, R-tree, Quadtree,Red-black tree
@@ -103,8 +98,6 @@
 			и в книгах (Programming Abstractions in C++ or Stephen Rod)
 		* 	gamedev blog
 			https://preshing.com
-		* 	Sanjay Madhav - Game Programming Algorithms and Techniques
-			to read before Boreskov?
 		* 	прочитать про fold
 
 		очень большой кусок:
@@ -127,6 +120,4 @@ Infinity
 look around you
 посмотреть сериал https://watcheng.com/en/show/lip-service/season-1/episode-1/
 
-
-
-
+my skype ( i think ): live:2c92e80bf2975880
