@@ -158,8 +158,3 @@ void	finalize ( )
 }
 } // names core
 } // namespace inex
-
-
-
-
-
