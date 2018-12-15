@@ -129,7 +129,7 @@ void	initialize	( pcstr dir )
 #   ifdef __GNUC__
         pstr n			= 	util( dir );
         ASSERT_D( std_fs::exists( std_fs::path{ n } ), "Data directory '%s' isn't found", n );
-        memory::ie_delete		( n );
+        memory::ie_delete		( n ); // never called...
 #   else // #ifdef __GNUC__
         ASSERT_D( std_fs::exists( std_fs::path{ dir } ), "Data directory %s isn't found", dir );
 #   endif // #ifdef __GNUC__

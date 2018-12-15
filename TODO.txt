@@ -1,8 +1,7 @@
 ﻿***[Shell]*** Done:
 -------------------------	
-		* 	BUG:		computing build ID
-		* 	OPT:ieLog:	uses std::FILE* instead of std::ofstream
-		*	OPT:		добавить файл с ID билда
+		* 	BUG:		корректный подсчет номера билда
+		* 	OPT:ieLog:	std::FILE* > std::ofstream
 		*	OPT:		PCH
 		*	OPT:		избавиться от singleton ( 1 Jun 2018: где он не нужен )
 		* 	BUG:		фиксить загрузку\выгрузку файлов в CFileSystem
@@ -43,6 +42,8 @@
 
 ***[Shell]*** TODO:
 ---------------------------
+		bugs:
+		* сливать лог, когда происходит сегфолт
 		new:
 		* профайлер и поисковик утечек:
 			valgrind valgrind.org,

@@ -11,8 +11,6 @@
 #include "processor_info.h"
 #include "ie_trims.h"
 #include "ie_memory.h"
-//#include "application.h"
-//#include "detail_test.h"
 
 namespace inex {
 namespace core {
@@ -30,40 +28,30 @@ pstr   IECORE_API  get_params ( )
 //#endif //#ifndef USE_SINGLETON
 
 #ifdef __GNUC__
-int	IE_CCALL	_stricmp ( pcstr lhs, pcstr rhs )
+s32	IE_CCALL	_stricmp ( pcstr lhs, pcstr rhs )
 {
-	pstr str			= new char[ std::strlen( lhs ) + 1 ];
-	pstr str2			= new char[ std::strlen( rhs ) + 1 ];
+	pstr str			= memory::ie_allocate< char >( std::strlen( lhs ) + 1 );
+	pstr str2			= memory::ie_allocate< char >( std::strlen( rhs ) + 1 );
 	pstr c				= str;
-
 	std::strcpy			( str, lhs );
 	std::strcpy			( str2, rhs );
 
-	while ( *c )
-	{
-		if ( isalpha( *c ) )
-		{
-			*c			= tolower( *c );
-		}
-
-		++c;
-	}
+    while ( *c && isalpha( *c ) )
+    {
+        *c              = tolower( *c );
+        ++              c;
+    }
 
 	c					=	str2;
+    while ( *c && isalpha( *c ) )
+    {
+        *c              = tolower( *c );
+        ++              c;
+    }
 
-	while ( *c )
-	{
-		if ( isalpha( *c ) )
-		{
-			*c			=	tolower( *c );
-		}
-
-		++c;
-	}
-
-	int result			= std::strcmp( str, str2 );
-	delete [ ] 			str;
-	delete [ ] 			str2;
+	s32 result          = { std::strcmp( str, str2 ) };
+	memory::ie_delete	( str );
+	memory::ie_delete	( str2 );
 
 	return 				result;
 }
@@ -106,7 +94,20 @@ void	compute_build_id ( )
 		break;
 	}
 
-	build_id				= ( years - start_year ) * 365 + days - start_day;
+    u8 leap_years           = 0;
+    u16 count_current_year  = ( months > 0 ) ? years + 1 : years;
+
+	for ( u32 i             = start_month > 2 ? start_year + 1 : start_year;
+            i               < count_current_year;
+            ++              i  )
+	{
+        if ( ( i % 4  == 0 && i % 100 != 0 ) || i % 400 == 0 )
+        {
+            ++leap_years;
+        }
+	}
+
+	build_id				= ( years - start_year ) * 365 + days - start_day + leap_years;
 
 	for ( u16 i = 0; i < months; ++i )
 	{
