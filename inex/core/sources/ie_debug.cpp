@@ -2,11 +2,65 @@
 
 #include "ie_debug.h"
 
+#include <cxxabi.h>
+#include <signal.h>
+#include <execinfo.h>
+
 namespace inex {
 namespace core {
 namespace debug {
 
 using inex::core::log::Msg;
+
+void 	dump_call_stack_trace ( )
+{
+#if IE_PLATFORM_LINUX
+	pvoid trace				[ 16 ];
+	pstr* messages 			= nullptr;
+	s32 i, trace_size 		= 0;
+	trace_size 				= backtrace( trace, 16 );
+	messages 				= backtrace_symbols( trace, trace_size );
+
+	// i = 2 cuz message[ 1 ] is the debug::fatal( .. )
+    for ( s32 i = 2; i < trace_size && messages != nullptr; ++i )
+    {
+        pstr mangled_name 	= nullptr,
+		offset_begin 		= nullptr,
+		offset_end 			= nullptr;
+
+        for ( pstr p = messages[ i ]; *p; ++p )
+        {
+			switch ( *p )
+			{
+				case '(': 	mangled_name 	= p; break;
+				case '+': 	offset_begin 	= p; break;
+				case ')':	offset_end		= p; goto dump;
+			}
+        }
+
+dump						:
+        if ( mangled_name && offset_begin && offset_end &&
+            mangled_name < offset_begin )
+        {
+            *mangled_name++ = 0;
+            *offset_begin++ = 0;
+            *offset_end++ 	= 0;
+
+            s32 status;
+           	pstr demangled_string = abi::__cxa_demangle( mangled_name, 0, 0, &status );
+			/*
+			* I don't want to output external calls
+			* If needed, output messages[ i ] after each for-iteration
+			*/
+			if ( status == 0 )
+			{
+				Msg				( "%s", demangled_string );
+				free			( demangled_string );
+			}
+		}
+	}
+#endif // #if IE_PLATFORM_LINUX
+}
 
 void	aquire_macros ( pcstr 	file,
 						u32 	line,
@@ -72,16 +126,19 @@ void	fatal ( pcstr 	file,
         ( buf, sizeof( buf ) - 1,format, mark ); buf[ sizeof( buf ) - 1] = 0;
         //strcat			( buf,"\n" );
         va_end				( mark );
-        if(sz)
+        if( sz )
 		{
-			Msg ( "Description:\t%s", buf );
+			Msg 			( "Description:\t%s", buf );
 		}
     }
 	else
 	{
-        log::put_string("Description:\t<no description>\n");
+        log::put_string		( "Description:\t<no description>\n" );
     }
+	// destroy stuff before ?
 
+	log::put_string			( "***\nStack Dump:\n***\n" );
+	dump_call_stack_trace	( );
 	exit            		( 1 );
 }
 
