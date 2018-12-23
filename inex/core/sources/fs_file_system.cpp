@@ -84,23 +84,22 @@ pstr	util ( pcstr file_path )
 void	initialize	( pcstr dir )
 {
 // when testing our fs-wheel
-
+#undef IE_FILESYSTEM_SUPPORTED
+    
 #ifndef IE_FILESYSTEM_SUPPORTED
     Msg( "Initializing Custom File System..." );
 
-    char data_directoty	[ IE_MAX_PATH ] { 0 };
 
-    strcpy              ( data_directoty, dir );
+	ASSERT_D( !fsmgr::detail::exists( dir ), "Directory '%s' was not found. Check if it exists.", dir );
 //#if IE_PLATFORM_WINDOWS
 //    strcpy              ( data_directoty + strlen( data_directoty ) , "\\*" );
 //#else // #if IE_PLATFORM_WINDOWS
 //    strcpy              ( data_directoty + strlen( data_directoty ) , "/" );
 //#endif // #if IE_PLATFORM_WINDOWS
 
-//  Msg                 ( "Dir is: %s", data_directoty );
-//	recursive_directory_iterator rdi( data_directoty );
+	clock_t start_initializing			=			clock( );
 
-    for ( recursive_directory_iterator  it			( data_directoty ),
+    for ( recursive_directory_iterator  it			( dir ),
 										end_it	= 	recursive_directory_iterator( ); // don't do just E( )...
 										it 		!= 	end_it;
 										++it )
@@ -114,8 +113,7 @@ void	initialize	( pcstr dir )
         files.insert    ( memory_mapped_file( ( * it ).path( ).c_str( ) ) );
     }
 
-
-    Msg( "FS: %d files cached", files.size( ) );
+	clock_t end_initializing			=	clock( ) - start_initializing ;
 #else   // #ifdef IE_FILESYSTEM_SUPPORTED
     // dir was once gamedata/, but if this slash doesn't matter
     // i just leave it at that
@@ -136,6 +134,7 @@ void	initialize	( pcstr dir )
 #else // #ifdef FS_WHEEL
     ASSERT_D( std_fs::exists( std_fs::path{ dir } ), "Data directory '%s' isn't found", dir );
 #endif // #ifdef FS_WHEEL
+	clock_t start_initializing			=			clock( );
 	for ( auto const& it : std_fs::recursive_directory_iterator( dir ) )
 	{
 		if ( std_fs::is_regular_file( it ) )
@@ -178,9 +177,10 @@ void	initialize	( pcstr dir )
 #endif // #ifdef IE_PLATFORM_WINDOWS
 		}
 	}
-
-	Msg( "FS: %d files cached", files.size( ) );
+	clock_t end_initializing			=	clock( ) - start_initializing ;
 #endif  // #ifdef IE_FILESYSTEM_SUPPORTED
+
+    Msg( "FS: %d files cached\nInit FileSystem %f sec\n", files.size( ), ( double )end_initializing / CLOCKS_PER_SEC );
     /*here're two ways of how to read memory_mapped_file
 	 load memory_mapped_file into the virtual memory and then read
 	 line-by-line*/
