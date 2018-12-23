@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "RpcExStackTraceEngine.h"
 
-#if IE_PLATFORM_WINDOWS
+#if ( IE_PLATFORM_WINDOWS_32 ) ^ ( IE_PLATFORM_WINDOWS_64 )
 
 #include <strsafe.h>
 class CRpcExCritSecLock
@@ -392,4 +392,4 @@ HRESULT RpcExStackTraceEngine::WalkStack(
     return S_OK;
 }
 
-#endif // #if IE_PLATFORM_WINDOWS
+#endif // #if ( IE_PLATFORM_WINDOWS_32 ) ^ ( IE_PLATFORM_WINDOWS_64 )
