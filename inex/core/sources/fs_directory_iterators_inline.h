@@ -33,19 +33,30 @@ directory_iterator::directory_iterator ( directory_iterator const& rhs ) :
             ); */
 
     m_entry.append  ( rhs.m_entry.path( ).c_str( ) );
+#if IE_PLATFORM_WINDOWS
+	m_entry.append	( "*" );
+#endif // IE_PLATFORM_WINDOWS
     detail::open_directory( m_impl.get( ), rhs.m_entry.path( ).c_str( ) );
+#if IE_PLATFORM_WINDOWS
+	m_entry.path( ).disappend_star( );
+#endif // IE_PLATFORM_WINDOWS
     operator ++     ( );
 }
 
 inline
 directory_iterator::directory_iterator ( const char* const file_path_raw ) :
     m_entry     ( file_path_raw ),
-    m_impl      ( new detail::directory_iterator_impl ( ) ),
+    m_impl      ( memory::ie_new< detail::directory_iterator_impl > ( ) ),
     m_end       ( 0 )
 {
 
-    detail::open_directory( m_impl.get( ), file_path_raw );
-
+#if IE_PLATFORM_WINDOWS
+	m_entry.path( ) /	( "*" );
+#endif // IE_PLATFORM_WINDOWS
+    detail::open_directory( m_impl.get( ), m_entry.path( ).c_str( ) );
+#if IE_PLATFORM_WINDOWS
+	m_entry.path( ).disappend_star( );
+#endif // IE_PLATFORM_WINDOWS
 /*     printf (    "directory_iterator CHAR* called\nstr:\t%s\nto:\t%p\n",
             file_path_raw,
             this

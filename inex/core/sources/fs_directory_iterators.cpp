@@ -43,10 +43,26 @@ recursive_directory_iterator::recursive_directory_iterator ( const char* const f
         return          ;
     }
 
-    m_impl.reset        ( new detail::directory_iterator_impl );
+
+	//log::Msg( "dirs:\n" );
+	//while ( !m_directories.is_empty( ) )
+	//{
+	//	log::Msg( "%s\n", m_directories.back( ).m_p );
+	//	m_directories.pop( );
+	//}
+
+	
+    m_impl.reset        ( memory::ie_new< detail::directory_iterator_impl >( ) );
     m_end               = 0;
     m_entry.append      ( m_directories.back( ).m_p );
-    detail::open_directory  ( m_impl.get( ), m_directories.back( ).m_p );
+#if IE_PLATFORM_WINDOWS
+	m_entry.path( ) /	( "*" );
+	//LOGGER( "%s", m_entry.path( ).c_str( ) );
+#endif // IE_PLATFORM_WINDOWS
+    detail::open_directory  ( m_impl.get( ), m_entry.path( ).c_str( ) );
+#if IE_PLATFORM_WINDOWS
+	m_entry.path( ).disappend_star( );
+#endif // IE_PLATFORM_WINDOWS
     operator            ++ ( );
 }
 
@@ -70,8 +86,14 @@ recursive_directory_iterator&   recursive_directory_iterator::operator ++ ( )
         {
             detail::close_directory     ( m_impl.get( ) );
             m_entry.append              ( m_directories.back( ).m_p );
+#if IE_PLATFORM_WINDOWS
+			m_entry.path( ) /	( "*" );
+#endif // IE_PLATFORM_WINDOWS
             detail::open_directory      ( m_impl.get( ), m_entry.path( ).c_str( ) );
-            operator ++                 ( );
+ #if IE_PLATFORM_WINDOWS
+			m_entry.path( ).disappend_star( );
+#endif // IE_PLATFORM_WINDOWS
+			operator ++                 ( );
         }
     }
     else if ( m_entry.path( ).is_system_catalog( ) )
@@ -86,7 +108,7 @@ void    recursive_directory_iterator::read_subdirectories ( const char* const fi
 {
     directory_iterator  current             ( file_path_raw );
     file_info           file_path_to_stack  ;
-    char                next_subdirectory   [ PATH_MAX ] { 0 };
+    char                next_subdirectory   [ IE_MAX_PATH ] { 0 };
 
     strcpy              ( next_subdirectory, file_path_raw );
     strcpy              ( file_path_to_stack.m_p, file_path_raw );
@@ -104,12 +126,12 @@ void    recursive_directory_iterator::read_subdirectories ( const char* const fi
         }
 
         strcpy                  ( next_subdirectory, ( *current ).path( ).c_str( ) );
-        if ( ( *current ).path( ).is_directory( ) )
+	
+		if ( ( *current ).path( ).is_directory( ) )
         {
             strcat              ( next_subdirectory, "/" );
             strcpy              (   file_path_to_stack.m_p,
-                                    next_subdirectory );
-
+                                    strcat( next_subdirectory, "*" ) );
             m_directories.push  ( file_path_to_stack );
             read_subdirectories ( next_subdirectory );
         }

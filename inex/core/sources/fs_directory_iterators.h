@@ -2,7 +2,7 @@
 #   define FS_DIRECTORY_ITERATORS_H_INCLUDED
 
 #if ( IE_PLATFORM_WINDOWS )
-#	include	"fs_manager_impl_win.h"
+#	include	"fs_catalog_operations_win_impl.h"
 #elif ( IE_PLATFORM_LINUX ) // #if ( IE_PLATFORM_WINDOWS )
 #	include	"fs_catalog_operations_linux_impl.h"
 #else // #if ( IE_PLATFORM_WINDOWS )
@@ -10,7 +10,7 @@
 #endif // #if ( IE_PLATFORM_WINDOWS )
 
 #   include "utils.h"
-#   include "shared_object.h"
+#   include "memory_shared_object.h"
 #   include "fs_path_string.h"
 #   include "fs_directory_entry.h"
 
@@ -36,7 +36,7 @@ public:
                         directory_iterator& operator =  ( directory_iterator const& )  =   delete;
                 // can be default, too
                         directory_iterator	            ( directory_iterator const& iter );
-                        directory_iterator	            ( directory_iterator& iter );
+                        //directory_iterator	            ( directory_iterator& iter );
                         //directory_iterator	            ( directory_iterator&& rvalue) = default;
                         ~directory_iterator	            ( ) = default;
 
@@ -55,9 +55,9 @@ public:
 
 private:
     /* no need impl, could just call detail::function in function */
-    shared_object< detail::directory_iterator_impl >    m_impl;
-    directory_entry                                     m_entry;
-    bool                                                m_end;
+    memory::shared_object< detail::directory_iterator_impl > m_impl;
+    directory_entry											m_entry;
+    bool													m_end;
 }; // class directory_iterator
 
 
@@ -106,14 +106,14 @@ private:
 private:
     struct file_info
     {
-        char                                        m_p         [ PATH_MAX ];
+        char                                        m_p         [ IE_MAX_PATH ];
     }; // struct file_info
 
 
-    directory_entry                                 m_entry;
-	utils::stack< file_info >                        m_directories;
-    shared_object< detail::directory_iterator_impl > m_impl;
-    bool                                            m_end;
+    directory_entry											m_entry;
+	utils::stack< file_info >								m_directories;
+    memory::shared_object< detail::directory_iterator_impl > m_impl;
+    bool													m_end;
 }; // class recursive_directory_iterator
 
 } // namespace fsmgr
