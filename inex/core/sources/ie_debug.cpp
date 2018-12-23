@@ -1,10 +1,19 @@
 #include "stdafx.h"
 
 #include "ie_debug.h"
+#include "ie_memory.h"
+
+#if IE_PLATFORM_LINUX 
 
 #include <cxxabi.h>
 #include <signal.h>
 #include <execinfo.h>
+
+#elif ( IE_PLATFORM_WINDOWS_32 ) ^ ( IE_PLATFORM_WINDOWS_64 )
+
+#include "RpcExStackTraceEngine.h"
+
+#endif // #if IE_PLATFORM_LINUX
 
 namespace inex {
 namespace core {
@@ -59,6 +68,16 @@ dump						:
 			}
 		}
 	}
+#elif ( IE_PLATFORM_WINDOWS_32 ) ^ ( IE_PLATFORM_WINDOWS_64 )
+		RpcExStackTraceEngine	call_stack;
+		call_stack.Initialize	( );
+		if ( RpcExStackTraceEngine::InitializationState::IS_Done == call_stack.GetInitializationState( ) )
+			;//inex::core::log::Msg ( "Call Stack Engine Initialized..." );
+		string2048				buf;
+		if ( S_OK == call_stack.WalkStack ( buf, sizeof( buf ), 8u ) )
+			inex::core::log::Msg( "%s", buf );
+		else
+			inex::core::log::Msg( "!Unable to get current call stack trace." );
 #endif // #if IE_PLATFORM_LINUX
 }
 
@@ -136,9 +155,10 @@ void	fatal ( pcstr 	file,
         log::put_string		( "Description:\t<no description>\n" );
     }
 	// destroy stuff before ?
-
 	log::put_string			( "***\nStack Dump:\n***\n" );
 	dump_call_stack_trace	( );
+	memory::dump_memory_contents( );
+	#pragma todo ( "should memory release all its contents or just leave it to os?")
 	exit            		( 1 );
 }
 
