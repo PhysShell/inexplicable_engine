@@ -1,6 +1,8 @@
 #ifndef FS_CATALOG_OPERATIONS_LINUX_IMPL_H_INCLUDED
 #   define FS_CATALOG_OPERATIONS_LINUX_IMPL_H_INCLUDED
 
+#   if IE_PLATFORM_LINUX
+
 #   include <dirent.h>
 
 #   include <sys/types.h>
@@ -16,7 +18,7 @@ namespace detail {
     struct directory_iterator_impl;
 } // namespace detail
 
-#   if IE_PLATFORM_LINUX
+
 
 namespace detail {
 
