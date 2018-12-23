@@ -31,11 +31,11 @@
 #		error do not define IE_PLATFORM_WINDOWS macro
 #	endif // #ifdef IE_PLATFORM_WINDOWS
 
-#	if IE_PLATFORM_WINDOWS_32 | IE_PLATFORM_WINDOWS_64
+#	if defined ( IE_PLATFORM_WINDOWS_32 ) || defined ( IE_PLATFORM_WINDOWS_64 )
 #		define IE_PLATFORM_WINDOWS	1
-#	else // #if IE_PLATFORM_WINDOWS_32 | IE_PLATFORM_WINDOWS_64
+#	else // #if defined ( IE_PLATFORM_WINDOWS_32 ) && !defined ( IE_PLATFORM_WINDOWS_64 )
 #		define IE_PLATFORM_WINDOWS	0
-#	endif // #if IE_PLATFORM_WINDOWS_32 | IE_PLATFORM_WINDOWS_64
+#	endif // #if defined ( IE_PLATFORM_WINDOWS_32 ) && !defined ( IE_PLATFORM_WINDOWS_64 )
 
 ////////////////////////////////////////////////////////////////////////////
 // IE_PLATFORM_LINUX
