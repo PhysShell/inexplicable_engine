@@ -54,7 +54,7 @@ public:
 }; // class  reader
 
 class virtual_file_reader :
-	virtual public reader
+	 public reader
 {
 private:
 #if IE_PLATFORM_WINDOWS
@@ -101,7 +101,7 @@ public:
 }; // class writer
 
 class file_writer :
-	public virtual writer
+	public writer
 {
 private:
 	FILE*		m_file;
