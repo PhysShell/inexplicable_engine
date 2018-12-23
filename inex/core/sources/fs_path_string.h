@@ -19,6 +19,18 @@ public:
                 void                operator /      ( const char* const file_path_raw );
 
 				const char* const	c_str           ( )  const;
+
+				#if IE_PLATFORM_WINDOWS
+				void				disappend_star	( )
+									{
+										u32 string_length		= strlen ( m_string_value );
+										//inex::core::log::Msg( "path before:\t%s\n", m_string_value );
+										ASSERT_S( * ( m_string_value + string_length ) != '*'  );
+										* ( m_string_value + string_length - 1  )	= 0;
+										//inex::core::log::Msg( "path after:\t%s\n", m_string_value );
+									}
+				#endif // #if IE_PLATFORM_WINDOWS
+
                 const char* const   file_name       ( ) const
                 {
                     const char* substring;

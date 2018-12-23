@@ -38,8 +38,9 @@ const char* const path_string::c_str ( ) const
 inline
 void    path_string::operator / ( const char* const file_path_raw )
 {
-    // assert strrchr is zero
-    strcpy              ( strrchr( m_string_value, '/' ) + 1, file_path_raw );
+	pstr p				= strrchr( m_string_value, '/' );
+	ASSERT_D( p, "Couldn't find enclosing '/'. Check '%s'.", m_string_value );
+    strcpy              ( p + 1, file_path_raw );
 }
 
 
