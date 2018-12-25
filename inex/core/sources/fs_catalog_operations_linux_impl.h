@@ -30,14 +30,21 @@ struct directory_iterator_impl
     size_t  m_value_returned;
 }; // struct directory_iterator_impl
 
+typedef struct stat      file_status;
+
 inline
 bool    is_system_directory ( const char* const file_path_raw )
 {
     return              * ( file_path_raw + strlen( file_path_raw ) - 1 ) == '.';
 }
 
+inline
+bool	exists ( pcstr const file_path_raw )
+{
+    file_status         temp;
+	return              stat( file_path_raw, &temp ) == -1;
+}
 
-typedef struct stat      file_status;
 inline
 file_status     read_file_attributes ( const char* const file_path )
 {
