@@ -85,11 +85,9 @@ void	initialize	( pcstr dir )
 {
 // when testing our fs-wheel
 #undef IE_FILESYSTEM_SUPPORTED
-    
+
 #ifndef IE_FILESYSTEM_SUPPORTED
     Msg( "Initializing Custom File System..." );
-
-
 	ASSERT_D( !fsmgr::detail::exists( dir ), "Directory '%s' was not found. Check if it exists.", dir );
 //#if IE_PLATFORM_WINDOWS
 //    strcpy              ( data_directoty + strlen( data_directoty ) , "\\*" );
@@ -218,9 +216,6 @@ void	initialize	( pcstr dir )
 //    }
 
 }
-
-#pragma todo( "i really should change reader to virtual reader since it creates only those" )
-
 fs::reader*		r_open ( pcstr path )
 {
 	//reader *r	=nullptr;
@@ -230,8 +225,6 @@ fs::reader*		r_open ( pcstr path )
 
 void	r_close	( fs::reader*& rdr )
 {
-
-	//ASSERT_S( dynamic_cast< fs::virtual_file_reader* >( rdr ) );
 	memory::ie_delete( rdr );
 }
 
