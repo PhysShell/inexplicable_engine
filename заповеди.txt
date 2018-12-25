@@ -6,7 +6,7 @@ SergeyN19
 Просто жизнь из крутого занятия превратилась в фигню для неудачников.
 																	gamedev.ru ( 2018 )
 
-how to output text:
+how to output text: 
 1. measure the text with XTextWidth()
 2. use XCreateWindow to create a window or subwindow with padding for 
 around the text.
