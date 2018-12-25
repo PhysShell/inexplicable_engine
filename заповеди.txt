@@ -6,6 +6,19 @@ SergeyN19
 Просто жизнь из крутого занятия превратилась в фигню для неудачников.
 																	gamedev.ru ( 2018 )
 
+how to output text:
+1. measure the text with XTextWidth()
+2. use XCreateWindow to create a window or subwindow with padding for 
+around the text.
+3. create a Pixmap with XCreatePixmap() that is the size of the window.
+4. use XFillRectangle to draw a background for the Pixmap.
+5. XDrawText(), or XDrawString, or XDrawImageString on the Pixmap.
+6. Use XCopyArea to copy the Pixmap to the Window.
+7. call XMapWindow
+8. call XFlush
+9. save the Pixmap and copy the Pixmap to the Window whenever you 
+receive an Expose event.
+
 https://docs.microsoft.com/en-us/windows/desktop/Dlls/using-run-time-dynamic-linking
 http://www.firststeps.ru/mfc/winapi/r.php?41
 http://rus-linux.net/MyLDP/BOOKS/Linux-tools/GUI_01.html
