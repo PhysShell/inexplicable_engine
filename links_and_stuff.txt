@@ -1,0 +1,28 @@
+
+
+
+output filename: ../binaries/$(TARGET_NAME)/libcore_mgw.so
+import lib: ../binaries/libraries/$(TARGET_NAME)/$(TARGET_OUTPUT_BASENAME)
+definition        ../binaries/libraries/$(TARGET_NAME)/$(TARGET_OUTPUT_BASENAME)
+
+exec work dir: .
+objects output dir: ../binaries/intermediates/$(TARGET_NAME)/
+
+defs:
+IECORE_EXPORTS // no
+IE_PURE_GNUC // no
+
+includes:
+include
+../../../../engine
+
+link libs:
+user32
+
+other compiler options
+-g
+-std=c++14
+-Winvalid-pch
+
+engine: link lib lcore
+search directories ../../../../engine

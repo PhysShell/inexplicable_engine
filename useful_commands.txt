@@ -1,0 +1,145 @@
+
+
+
+
+
+
+
+
+
+
+
+asm
+https://ru.wikibooks.org/wiki/Ассемблер_в_Linux_для_программистов_C
+https://eax.me/linux-assembler/
+https://eax.me/assembler-basics/
+http://www.ibiblio.org/gferg/ldp/GCC-Inline-Assembly-HOWTO.html
+https://www.nasm.us/doc/nasmdoc2.html#section-2.2
+book programming from the ground
+UNIX ( NaSM ) programming russian author
+
+other
+https://blog.kowalczyk.info/article/j/guide-to-predefined-macros-in-c-compilers-gcc-clang-msvc-etc..html
+
+C
+learnc.info - cOOl
+
+C++
+https://msdn.microsoft.com/ru-ru/library/5814770t.aspx
+https://techbase.kde.org/Policies/Binary_Compatibility_Issues_With_C%2B%2B
+http://gamasutra.com/view/news/169296/Indepth_Functional_programming_in_C.php
+
+lowlevel
+http://neerc.ifmo.ru/wiki/index.php?title=%D0%9F%D1%80%D0%B5%D0%B4%D1%81%D1%82%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5_%D0%B2%D0%B5%D1%89%D0%B5%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D1%8B%D1%85_%D1%87%D0%B8%D1%81%D0%B5%D0%BB
+http://neerc.ifmo.ru/wiki/index.php?title=%D0%9F%D1%80%D0%B5%D0%B4%D1%81%D1%82%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5_%D1%86%D0%B5%D0%BB%D1%8B%D1%85_%D1%87%D0%B8%D1%81%D0%B5%D0%BB:_%D0%BF%D1%80%D1%8F%D0%BC%D0%BE%D0%B9_%D0%BA%D0%BE%D0%B4,_%D0%BA%D0%BE%D0%B4_%D1%81%D0%BE_%D1%81%D0%B4%D0%B2%D0%B8%D0%B3%D0%BE%D0%BC,_%D0%B4%D0%BE%D0%BF%D0%BE%D0%BB%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9_%D0%BA%D0%BE%D0%B4
+https://habr.com/post/142486/
+https://habr.com/post/331814/
+
+oop C
+https://stackoverflow.com/questions/17621544/dynamic-method-dispatching-in-c/17622474#17622474
+https://stackoverflow.com/questions/17052443/c-function-inside-struct
+
+inverse square root
+http://www.gamedev.ru/code/forum/?id=19596
+http://ru.math.wikia.com/wiki/%D0%91%D1%8B%D1%81%D1%82%D1%80%D1%8B%D0%B9_%D0%B8%D0%BD%D0%B2%D0%B5%D1%80%D1%81%D0%BD%D1%8B%D0%B9_%D0%BA%D0%B2%D0%B0%D0%B4%D1%80%D0%B0%D1%82%D0%BD%D1%8B%D0%B9_%D0%BA%D0%BE%D1%80%D0%B5%D0%BD%D1%8C
+https://ru.wikipedia.org/wiki/%D0%91%D1%8B%D1%81%D1%82%D1%80%D1%8B%D0%B9_%D0%BE%D0%B1%D1%80%D0%B0%D1%82%D0%BD%D1%8B%D0%B9_%D0%BA%D0%B2%D0%B0%D0%B4%D1%80%D0%B0%D1%82%D0%BD%D1%8B%D0%B9_%D0%BA%D0%BE%D1%80%D0%B5%D0%BD%D1%8C
+quake
+https://habr.com/post/170139/
+
+
+unix
+https://linux.die.net/man/3/pthread_mutex_init
+https://habr.com/post/122108/
+https://learnc.info/c/pthreads_mutex_introduction.html
+https://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html
+https://www.ibm.com/developerworks/ru/library/au-unix-readdir/
+https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html
+
+math
+https://habr.com/post/247635/
+
+
+https://eax.me/simple-interpreter/
+
+gdb
+http://www.opennet.ru/soft/gdb/gdb_18.html emacs
+http://tedlab.mit.edu/~dr/gdbintro.html
+
+opt
+https://eax.me/gcc-optimization/
+
+nasm
+https://it-giki.com/post/240.html
+
+$ nasm -g -f elf -o dcod.o -l dcod.list dcod.asm
+$ ld -m elf_i386 -o dcod dcod.o
+
+GAS
+$ as -g -o hw.o  hw.asm
+$ ld -o hw hw.o
+
+dpkg -r --force-depends foo
+dpkg -s apache-perl: gets the information on the package ( installed or not and such )
+sudo apt-get install build-essential: gets compilers and stuff needed for compiling and stuff
+sudo apt-get purge --auto-remove packagename: removes package and its dependencies
+sudo apt-get install glew-utils: its not header files
+sudo apt-get install libglew-dev: headers of GLEW
+compiling glew:
+g++ main.cpp -o oglApp -lGLEW -lglut -lGL -lGLU -lglfw( 3 ) FOR GLFW
+opening: ./oglApp
+sudo apt-get build-dep glfw
+sudo nano /etc/apt/sources.list: editing read-only file
+sudo apt-get install libglfw3-dev libglfw3
+touch /path/to/file - creates empty file
+cat > file_name
+
+создаем объектный файл
+clang++-4.0 -c -Wall -fPIC sharedlib_class.cpp
+
+создаем дллку
+clang++-4.0 -shared -fPIC -o libcore.so sharedlib_class.cpp
+
+../../../../binaries/clang_linux/libcore_clang_linux.so
+
+подцепляем длл для рантайма и инклюдим ее
+-L указывает где серчить библы,
+-Wl,-rpath=... говорит слинкуй-ка мне в исполняемый файл эту библу, милок. и все круто
+Я НДАДЕЮСЬ
+clang++-4.0 -L/home/shell/Documents/inex_engine/projects/engine/inex/engine/sources -Wl,-rpath=/home/shell/Documents/inex_engine/projects/engine/inex/engine/sources -Wall  main.cpp  -o main -I ../../core/sources/ -lcore
+
+mkdir src -- creates dir
+$ mv main.rs src/main.rs - moves to dir
+$ rm main -- removes from dir
+cp -r source destination -- copies dir ( -[r]ecursively )
+rm -rf source -- removes recursively non-empty dir
+ 
+console cmds:
+Ctrl+W и Ctrl+U - удаление одного слова и целой строки, соответственно.
+Ctrl+D - выход из сессии (аналогично команде exit)
+Ctrl+L - очистка экрана (clear)
+Ctrl+R - поиск в истории команд
+В терминале во время выполнения программы нажмите Ctrl-S. Это приостанавливает вывод программы.
+Ctrl-Q — возобновить вывод программы
+Ctrl+A - переместить каретку в начало команды
+Ctrl-E - opposite of above
+Ctrl+U - erases current command to the left
+Ctrl+K - same as above but to the right
+Ctrl+Y - pastes back what's been erased
+Shift-PGuP and Shift+PGdown - look at commandline
+Ctrl+P pastes previously typed command
+CTRL+N shows next typed command
+tab - автодополнение, еще раз таб - вывод доступных вариантов
+fc-list (:lang=ru( en ) ) - show available fonts
+
+I blame C++, because it hid the fact that the class object is always the first parameter in a member function, but it is hidden. So it looks like it is not passing the object into the function, even though it is.
+
+Client.addClient(Client& c); // addClient first parameter is actually 
+                             // "this", a pointer to the Client object.
+C is flexible and can take passing things by reference.
+
+A C function often returns only a status byte or int and that is often ignored. In your case a proper form might be
+
+ err = addClient( container_t  cnt, client_t c);
+ if ( err != 0 )
+   { fprintf(stderr, "could not add client (%d) \n", err ); 
+addClient would be in Client.h or Client.c
