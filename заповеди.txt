@@ -27,6 +27,9 @@ http://doc.pavlabor.net/gazette.linux.ru.net/lg78/articles/rus-tougher.html
 
 g++ -masm=intel превосходно генерит асм под ключём -S, именно интел, но асмовые вставки лучше делать на ат энд т шном асме
 
+/usr/local/bin/gcc46 -O2 -march=i686 -S -c bswap.c
+Необходимо указать тип процессора, потому что в i386 команды bswap не было. По умолчанию GCC ничего и никак не оптимизирует, потому флаг оптимизации также необходим.
+
 The POSIX equivalents are dlopen and dlsym. I know Linux has them, and I would be surprised if OS X does not.
 
 для андроид нужен андроид студио,а для цпп интелс++ и надо эти две вещи както совместить
