@@ -13,51 +13,24 @@ namespace fsmgr {
 
 memory_mapped_file::memory_mapped_file ( pcstr rhs )
 {
-    int fd          = open( rhs, O_RDONLY, 0 );
-    if ( fd < 0 )
-    {
-        std::cerr   << "fileMappingCreate - open failed, fname =  "
-                    << rhs
-                    << ", "
-                    << strerror( errno )
-                    << std::endl;
+    int descriptor              = open( rhs, O_RDONLY, 0 );
+    ASSERT_S                    ( descriptor > 0 );
+    struct stat                 file_status;
+    ASSERT_S                    ( fstat( descriptor, &file_status ) >= 0 );
 
-        exit        ( 1 );
-    }
-
-    struct stat st;
-    if ( fstat( fd, &st ) < 0 )
-    {
-        std::cerr   << "fileMappingCreate - fstat failed, fname = "
-                    << rhs
-                    << ", "
-                    << strerror( errno )
-                    << std::endl;
-
-        ::close       ( fd );
-        exit        ( 1 );
-    }
-
-    size_t fsize        = ( size_t )st.st_size;
-    char* data         =
-        ( char* )mmap(
+    size_t file_size            = ( size_t )file_status.st_size;
+    pstr data                   = ( pstr )mmap(
             nullptr,
-            fsize,
+            file_size,
             PROT_READ,
             MAP_PRIVATE,
-            fd,
+            descriptor,
             0
         );
+    ASSERT_S                    ( data != MAP_FAILED );
 
-    if ( data == MAP_FAILED )
-    {
-        std::cerr << "fileMappingCreate - mmap failed, fname = " << rhs << ", " << strerror(errno) << std::endl;
-        ::close                   ( fd );
-        exit        ( 1 );
-    }
-
-    m_file_descriptor           = fd;
-    m_size                      = fsize;
+    m_file_descriptor           = descriptor;
+    m_size                      = file_size;
     m_data                      = data;
 }
 

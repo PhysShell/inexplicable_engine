@@ -52,21 +52,10 @@ void reader::r_string ( pstr dest, size_t tgt_size )
 	pstr    src			= 	static_cast< pstr >( m_data + m_pos );
 	u32		sz			= 	advance_term_string( );
 
-	if ( !( sz < ( tgt_size - 1 ) ) )
-	{
-		std::cout 		<< "Dest string's less than needed\n";
-		exit			( 666 );
-	}
-
-    //std::cout
-    //char ch; std::cin >> ch;
-
-	//ASSERT_D( sz < ( tgt_size - 1 ), "Dest string's less than needed." );
+	ASSERT_D( sz < ( tgt_size - 1 ), "Dest string's less than needed." );
 
 	strncpy				( dest, src, sz );
 	dest    [ sz ]		= 0;
-
-    //std:: cout          << dest << "\n";
 }
 
 void reader::r_stringZ ( pstr dest, size_t tgt_size )
@@ -77,36 +66,13 @@ void reader::r_stringZ ( pstr dest, size_t tgt_size )
 
 virtual_file_reader::virtual_file_reader ( pcstr rhs )
 {
-
     m_file_descriptor           = open( rhs, O_RDONLY, 0 );
-    if ( m_file_descriptor < 0 )
-    {
-        std::cerr   << "fileMappingCreate - open failed, fname =  "
-                    << rhs
-                    << ", "
-                    << strerror( errno )
-                    << std::endl;
-
-        return;
-    }
-
+    ASSERT_D( m_file_descriptor, "Couldn't open file '%s'. %s.", rhs, strerror( errno ) );
     struct stat st;
-    if ( fstat( m_file_descriptor, &st ) < 0 )
-    {
-        std::cerr   << "fileMappingCreate - fstat failed, fname = "
-                    << rhs
-                    << ", "
-                    << strerror( errno )
-                    << std::endl;
-
-        ::close       ( m_file_descriptor );
-        return;
-    }
+    ASSERT_D( fstat( m_file_descriptor, &st ) > 0, "Couldn't read attributes of '%s'. %s", rhs, strerror( errno ) );
 
     m_size          = st.st_size;
-
-    m_data         =
-        ( pstr )mmap(
+    m_data          = ( pstr )mmap(
             nullptr,
             m_size,
             PROT_READ,
@@ -115,25 +81,7 @@ virtual_file_reader::virtual_file_reader ( pcstr rhs )
             0
         );
 
-
-    if ( m_data == MAP_FAILED )
-    {
-        std::cerr << "fileMappingCreate - mmap failed, fname = " << rhs << ", " << strerror( errno ) << std::endl;
-        ::close                   ( m_file_descriptor );
-        return;
-    }
-
-    ::close               ( m_file_descriptor );
-
-    // std::cout                   << length( );
-
-    // for ( pstr p = ( pstr )pointer( ); *p; ++p )
-    // {
-    //     std::cout               << *p;
-    // }
-
-    // std::cout                   << '\n';
-
+    ASSERT_D( m_data != MAP_FAILED, "Couldn't map '%s'. %s.", rhs, strerror( errno ) );
 }
 
 virtual_file_reader::~virtual_file_reader ( )
@@ -169,16 +117,13 @@ void file_writer::close	( )
 file_writer::file_writer( pcstr file_name ) :
     m_file	( fopen( file_name, "w" ) )
 {
-	if ( 0 == m_file )
-	{
-		printf("error %s (opening file %s)\n",
+    ASSERT_D( 0 != m_file, "Couldn't open '%s'. %s.", file_name,
 #ifdef __GNUC__
 			strerror( errno )
 #else // #ifdef __GNUC__
 			_sys_errlist[ errno ]
 #endif // #ifdef __GNUC__
-	, file_name );
-	}
+    );
 }
 
 
