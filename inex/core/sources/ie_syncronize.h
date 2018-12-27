@@ -1,19 +1,21 @@
-#ifndef IESYNCRONIZE_H_DEFINED
-#define IESYNCRONIZE_H_DEFINED
+#ifndef IE_SYNCRONIZE_H_INCLUDED
+#	define IE_SYNCRONIZE_H_INCLUDED
 
-#if IE_PLATFORM_WINDOWS
-#	define CS_INIT( x ) 	InitializeCriticalSection   ( x )
-#	define CS_DEL( x )	    DeleteCriticalSection       ( x )
-#	define CS_ENTER( x )	EnterCriticalSection        ( x )
-#	define CS_LEAVE( x )	LeaveCriticalSection        ( x )
-#	define CS_OBJ	        CRITICAL_SECTION
-#elif IE_PLATFORM_LINUX
-#	define CS_INIT( x ) 	pthread_mutex_init          ( x, nullptr )
-#	define CS_DEL( x )	    pthread_mutex_destroy       ( x )
-#	define CS_ENTER( x )	pthread_mutex_lock          ( x )
-#	define CS_LEAVE( x )	pthread_mutex_unlock        ( x )
-#	define CS_OBJ	        pthread_mutex_t
-#endif // #if IE_PLATFORM_WINDOWS
+#	include <inex/os_include.h>
+
+#	if IE_PLATFORM_WINDOWS
+#		define CS_INIT( x ) 	InitializeCriticalSection   ( x )
+#		define CS_DEL( x )	    DeleteCriticalSection       ( x )
+#		define CS_ENTER( x )	EnterCriticalSection        ( x )
+#		define CS_LEAVE( x )	LeaveCriticalSection        ( x )
+#		define CS_OBJ	        CRITICAL_SECTION
+#	elif IE_PLATFORM_LINUX
+#		define CS_INIT( x ) 	pthread_mutex_init          ( x, nullptr )
+#		define CS_DEL( x )	    pthread_mutex_destroy       ( x )
+#		define CS_ENTER( x )	pthread_mutex_lock          ( x )
+#		define CS_LEAVE( x )	pthread_mutex_unlock        ( x )
+#		define CS_OBJ	        pthread_mutex_t
+#	endif // #if IE_PLATFORM_WINDOWS
 
 //#ifdef DEBUG
 //#   define PROFILE_CRITICAL_SECTIONS
@@ -60,4 +62,4 @@ private:
 
 typedef scoped_lock< critical_section > scope_locker;
 
-#endif // IESYNCRONIZE_H_DEFINED
+#endif // IE_SYNCRONIZE_H_INCLUDED
