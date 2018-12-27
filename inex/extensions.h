@@ -22,12 +22,13 @@
 
 #   include <inex/macro_extensions.h>
 #   include <inex/types.h>
+#   include <inex/core/sources/ie_debug.h>
+#   include <inex/core/sources/logger.h>
 #   include <inex/os_extensions.h>
 //#include _stl_extensions_vector.h
 #   include <inex/core/sources/ie_syncronize.h>
 //#include ie_memory.h
-#   include <inex/core/sources/ie_debug.h>
-#   include <inex/core/sources/logger.h>
+
 #   include <inex/core/sources/fs_file_system.h>
 //#   include <inex/core/sources/fs_manager.h>
 #endif // #ifdef EXTENSIONS_H_INCLUDED

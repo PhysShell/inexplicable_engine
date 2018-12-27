@@ -9,9 +9,4 @@
 #   	error include your os_PLATFORMNAME.h here
 #   endif // #if IE_PLATFORM_WINDOWS
 
-#   pragma message( "Here are all platform-independent stuff here" )
-// thus, the file below contains cross-platform API
-// ( the non-portable code and data are in corresponding files )
-#   include <inex/core/sources/fs_read_write.h>
-
 #endif // #ifdef OS_INCLUDE_H_INCLUDED
