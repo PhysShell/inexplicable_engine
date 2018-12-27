@@ -15,7 +15,7 @@
 #	define IC                  inline
 #	define	ie_pure_interface	__interface
 
-#	define IE_DECLARE_PURE_VIRTUAL_DESTRUCTOR( name ) virtual ~name( ) { } = 0;
+#	define IE_DECLARE_PURE_VIRTUAL_DESTRUCTOR( name ) virtual ~name( ) =0 { } 
 
 // mark as deprecated providing specific warning
 #	define IE_DEPRECATED(msg)	[ [ deprecated( #msg ) ] ]
