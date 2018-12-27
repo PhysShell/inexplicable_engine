@@ -1,6 +1,7 @@
 #ifndef FS_FILE_SYSTEM_H_INCLUDED
 #	define FS_FILE_SYSTEM_H_INCLUDED
 
+#   include <inex/core/sources/fs_read_write.h>
 
 // to work with files, create find_file_it,
 // which finds the file iterator through the find
