@@ -1,7 +1,15 @@
 #include "stdafx.h"
-#include "RpcExStackTraceEngine.h"
 
-#if ( IE_PLATFORM_WINDOWS_32 ) ^ ( IE_PLATFORM_WINDOWS_64 )
+#if defined ( IE_PLATFORM_WINDOWS_32 ) && !defined ( IE_PLATFORM_WINDOWS_64 )
+
+// to suppress warnings in winapi-specific files
+#pragma warning( push )
+#pragma warning( disable: 4365 ) // signed/unsigned mismatch
+#pragma warning( disable: 4668 ) // undefined macro replaced with 0
+#pragma warning( disable: 4820 ) // padding added
+#pragma warning( disable: 4710 ) // function not inlined
+#include "RpcExStackTraceEngine.h"
+#pragma warning( pop )
 
 #include <strsafe.h>
 class CRpcExCritSecLock
@@ -392,4 +400,4 @@ HRESULT RpcExStackTraceEngine::WalkStack(
     return S_OK;
 }
 
-#endif // #if ( IE_PLATFORM_WINDOWS_32 ) ^ ( IE_PLATFORM_WINDOWS_64 )
+#endif // #if defined ( IE_PLATFORM_WINDOWS_32 ) && !defined ( IE_PLATFORM_WINDOWS_64 )
