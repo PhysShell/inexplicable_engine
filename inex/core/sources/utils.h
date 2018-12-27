@@ -1,11 +1,22 @@
 #ifndef UTILS_H_INCLUDED
 #	define UTILS_H_INCLUDED
 
-//#include <inex/types.h>
-
 namespace inex {
 namespace core {
 namespace utils {
+
+struct noncopyable
+{
+			noncopyable	( ) = default;
+private:
+			noncopyable	( noncopyable const& ) = delete;
+}; // struct noncopyable
+
+struct nonassignable
+{
+private:
+	void	operator =	( nonassignable const& ) = delete;
+}; // struct nonassignable
 
 template < typename data_type >
 struct stack
