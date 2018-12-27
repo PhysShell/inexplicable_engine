@@ -1,26 +1,15 @@
 #ifndef FS_READ_WRITE_H_INCLUDED
 #	define FS_READ_WRITE_H_INCLUDED
 
-// another way might be to include debug_*platform*.h in os_include
-#include <inex/core/sources/ie_debug.h>
-#include <inex/core/sources/logger.h>
 namespace inex {
 namespace core {
 namespace fs {
 
-//template <typename implementation_type>
 class reader_base
 {
-	/*
-	#ifdef TESTING_reader
-	: public readerTestPolicy // inheriting
-	#endif //TESTING_reader
-*/
 
-public:
-	inline			reader_base	( ) 	{ }
-	virtual			~reader_base( )		{ }
-	virtual void	close			( )		{ }
+protected:
+	IE_DECLARE_PURE_VIRTUAL_DESTRUCTOR( reader_base )
 }; // class reader_base
 
 class reader :
@@ -33,8 +22,8 @@ protected:
 public:
 							reader		        ( );
 							reader		        ( pvoid _data, size_t );
-			reader&     operator=				( reader const& )  =   delete;
-							reader				( reader const& )  =   delete;
+			reader&			operator=			( reader const& ) = delete;
+							reader				( reader const& ) = delete;
 	virtual					~reader				( )
 							{
 								//log::Msg( "*! reader destructor called, addr: %p, sz: %d", this, sizeof( *this ) );
@@ -65,20 +54,19 @@ private:
 #endif // #if IE_PLATFORM_WINDOWS
 
 public:
-    explicit							virtual_file_reader		( pcstr  cFileName );
+    explicit							virtual_file_reader		( pcstr );
 	virtual								~virtual_file_reader	( );
 
-			virtual_file_reader&	operator=					( virtual_file_reader const& )  =   delete;
+			virtual_file_reader&		operator=				( virtual_file_reader const& )  =   delete;
 										virtual_file_reader     ( virtual_file_reader const& )  =   delete;
-
 }; // class virtual_file_reader
 
 class writer_base
 {
 public:
-                    writer_base	( )	{ }
 	virtual void	close			( )	= 0;
-	virtual			~writer_base( )	{ }
+protected:
+	IE_DECLARE_PURE_VIRTUAL_DESTRUCTOR( writer_base )
 }; // class writer_base
 
 class writer :
@@ -86,8 +74,8 @@ class writer :
 {
 //protected:
 public:
-					writer	( )	{ }
-	virtual			~writer	( )
+					writer		( )	{ }
+	virtual			~writer		( )
 					{
 						//log::Msg( "!*	Freeing writer allocated in %p and of size: %d", this, sizeof( writer ) );
 					}
@@ -114,8 +102,8 @@ public:
 									}
 				file_writer							( file_writer const& )  =   delete;
 				file_writer&    operator=			( file_writer const& )  =   delete;
-		virtual	void				w					( pcstr src ) override;
-		virtual	void				close				( ) override;
+		virtual	void				w				( pcstr src ) override;
+		virtual	void				close			( ) override;
 
 
 //	IC  int			seek		() override { fseek() }
