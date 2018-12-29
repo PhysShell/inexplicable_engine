@@ -1,8 +1,6 @@
 #ifndef FS_CATALOG_OPERATIONS_LINUX_IMPL_H_INCLUDED
 #   define FS_CATALOG_OPERATIONS_LINUX_IMPL_H_INCLUDED
 
-#   if IE_PLATFORM_LINUX
-
 #   include <dirent.h>
 
 #   include <sys/types.h>
@@ -17,7 +15,6 @@ namespace fsmgr {
 namespace detail {
     struct directory_iterator_impl;
 } // namespace detail
-
 
 
 namespace detail {
@@ -130,7 +127,5 @@ bool    read_next_entry ( directory_iterator_impl* impl_representation )
 } // namespace fsmgr
 } // namespace core
 } // namespace inex
-
-#   endif // if IE_PLATFORM_LINUX
 
 #endif // #ifndef FS_CATALOG_OPERATIONS_LINUX_IMPL_H_INCLUDED

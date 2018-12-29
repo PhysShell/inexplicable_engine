@@ -1,9 +1,6 @@
 #if !defined(__RPC_EX_STACK_TRACE_ENGINE_INCLUDED__)
 #	define __RPC_EX_STACK_TRACE_ENGINE_INCLUDED__
 
-// cuz there's inline asm which was thrown away in win64
-#	if ( IE_PLATFORM_WINDOWS_32 ) ^ ( IE_PLATFORM_WINDOWS_64 )
-
 #	include <atlcore.h>
 #	include <DbgHelp.h>
 
@@ -154,7 +151,5 @@ public:
         DWORD StackTraceSize, /*in characters*/
         DWORD MaxStackTraceDepth);
 };
-
-#endif // #if ( IE_PLATFORM_WINDOWS_32 ) ^ ( IE_PLATFORM_WINDOWS_64 )
 
 #endif // __RPC_EX_STACK_TRACE_ENGINE_INCLUDED__

@@ -1,7 +1,5 @@
 #include "stdafx.h"
 
-#if defined ( IE_PLATFORM_WINDOWS_32 ) && !defined ( IE_PLATFORM_WINDOWS_64 )
-
 // to suppress warnings in winapi-specific files
 #pragma warning( push )
 #pragma warning( disable: 4365 ) // signed/unsigned mismatch
@@ -399,5 +397,3 @@ HRESULT RpcExStackTraceEngine::WalkStack(
 
     return S_OK;
 }
-
-#endif // #if defined ( IE_PLATFORM_WINDOWS_32 ) && !defined ( IE_PLATFORM_WINDOWS_64 )

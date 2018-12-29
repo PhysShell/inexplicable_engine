@@ -1,13 +1,11 @@
 #include "stdafx.h"
 
-#if IE_PLATFORM_LINUX
-#	include "processor_info.h"
+#include "processor_info.h"
 
 namespace inex {
 namespace core {
 namespace CPU {
-// We need to use GCC when it's not WINDOWS
-// and VC++ if it is.
+
 void	print_cpu_info ( )
 {
 //	FILE* hand;
@@ -49,12 +47,10 @@ void	print_cpu_info ( )
 //   fclose(hand);
 //   return -2;}
  //  fclose           	( hand );
-   log::Msg( "* Detected CPU: %s", "" );
-   log::Msg( "* CPU Features: read in procinfo" );
+   //log::Msg( "* Detected CPU: %s", "" );
+   //log::Msg( "* CPU Features: read in procinfo" );
   // Msg("* CPU cores: \n");
 }
 } // namespace CPU
 } // namespace core
 } // namespace inex
-
-#endif // #if IE_PLATFORM_LINUX

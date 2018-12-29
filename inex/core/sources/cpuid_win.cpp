@@ -1,10 +1,8 @@
 #include "stdafx.h"
 
-#if IE_PLATFORM_WINDOWS
-
 #include "processor_info.h"
 //#	include "_cpuid_internal.h"
-#ifndef IE_PURE_GNUC
+#ifndef __GNUC__
 #   include <intrin.h>
 #endif // #ifdef IE_PURE_GNUC
 
@@ -67,6 +65,5 @@ void	print_cpu_info ( )
 } // namespace CPU
 } // namespace core
 } // namespace inex
-#endif //#if IE_PLATFORM_WINDOWS
 
 

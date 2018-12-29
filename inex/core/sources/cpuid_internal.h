@@ -2,7 +2,7 @@
 #	define CPUID_INTERNAL_H_INCLUDED
 
 #   if IE_PLATFORM_WINDOWS
-#       ifndef IE_PURE_GNUC
+#       ifndef __GNUC__
 #           include <intrin.h>
 #           define cpuid( info, x )    __cpuidex( info, x, 0 )
 #       endif // #ifdef IE_PURE_GNUC

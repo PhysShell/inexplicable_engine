@@ -1,6 +1,5 @@
 #include "stdafx.h"
 
-#if IE_PLATFORM_LINUX
 #	include "fs_read_write.h"
 
 #   include <sys/mman.h>
@@ -117,17 +116,10 @@ void file_writer::close	( )
 file_writer::file_writer( pcstr file_name ) :
     m_file	( fopen( file_name, "w" ) )
 {
-    ASSERT_D( 0 != m_file, "Couldn't open '%s'. %s.", file_name,
-#ifdef __GNUC__
-			strerror( errno )
-#else // #ifdef __GNUC__
-			_sys_errlist[ errno ]
-#endif // #ifdef __GNUC__
-    );
+    ASSERT_D( 0 != m_file, "Couldn't open '%s'. %s.", file_name, strerror( errno ) );
 }
 
 
 } // namespace fs
 } // names core
 } // namespace inex
-#endif // #if IE_PLATFORM_LINUX
