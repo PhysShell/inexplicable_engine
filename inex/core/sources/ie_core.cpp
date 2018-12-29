@@ -8,6 +8,7 @@
 #include "stdafx.h"
 
 #include <inex/core/ie_core.h>
+#include <inex/command_line.h>
 #include "processor_info.h"
 #include "ie_trims.h"
 #include "ie_memory.h"
@@ -139,7 +140,7 @@ void	initialize ( s32 command_line_argument_count, pstr* command_line_values )
     CPU::get_cpu_feats		( );
 
     string32        temp	{ };
-    if ( str::get_command_line_argument( "-data", temp ) )
+    if ( command_line::get_value_by_key( "-data", temp ) )
 	{
         fsmgr::initialize	( temp );
     }
@@ -151,6 +152,7 @@ void	initialize ( s32 command_line_argument_count, pstr* command_line_values )
 		fsmgr::initialize	( "./gamedata/" );
 #endif // #if IE_PLATFORM_WINDOWS
 	}
+	
 }
 
 void	finalize ( )

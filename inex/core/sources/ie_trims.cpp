@@ -5,47 +5,6 @@
 
 namespace inex {
 namespace core {
-namespace str {
-
-void	copy_command_line_argunement ( pcstr src, pstr dst, u8 separator )
-{
-    pcstr p			=	strchr( src, '=' );
-    ASSERT_D( p, "error while parsing cmd-argument %s", src );
-
-    size_t n		=	{ };
-	// p points to '=' currently so skip it
-    ++p; 
-    while ( *p && *p != separator )
-	{
-		dst[ n++ ] 	= 	*p++;
-	}
-
-    dst[ n ]  		=	0;
-}
-
-pstr	get_command_line_argument ( pcstr k, pstr v )
-{
-    pcstr p;
-    if ( !( p = strstr( get_params( ), k ) ) )
-    {
-		return			nullptr;
-	}
-
-    size_t n			= { };
-    p   				= strchr( p,'=' );
-    // maybe check if the '=' relates exactly to the key we need?
-    ASSERT_D( p, "Couldn't read value of the cmd-line argument '%s'. Did you forget '='?", k );
-
-    // p points to '=' currently
-    ++p;
-    while ( *p && *p != '-' )
-	{
-		 v[ n++ ]		= *p++;
-	}
-	
-    v[ n ]  			= 0;
-    return  			v;
-}
 
 inline
 pstr	find_trim_character ( pstr src )
@@ -152,6 +111,5 @@ void	handle_comments ( pstr tgt )
 	}
 }
 
-} // namespace str
 } // namespace core
 } // namespace inex
