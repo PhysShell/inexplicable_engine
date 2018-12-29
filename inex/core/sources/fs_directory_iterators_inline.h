@@ -1,6 +1,8 @@
 #ifndef FS_DIRECTORY_ITERATORS_INLINE_H_INCLUDED
 #   define FS_DIRECTORY_ITERATORS_INLINE_H_INCLUDED
 
+#	include <inex/core/sources/ie_memory.h>
+
 namespace inex {
 namespace core {
 namespace fsmgr {

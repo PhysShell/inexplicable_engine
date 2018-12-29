@@ -9,7 +9,7 @@
 #	error please define your platform here
 #endif // #if ( IE_PLATFORM_WINDOWS )
 
-#   include "utils.h"
+#   include <inex/utils.h>
 #   include "memory_shared_object.h"
 #   include "fs_path_string.h"
 #   include "fs_directory_entry.h"
