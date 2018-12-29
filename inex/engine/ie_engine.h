@@ -6,7 +6,7 @@
 #ifndef IE_ENGINE_H_INCLUDED
 #	define IE_ENGINE_H_INCLUDED
 
-#	include <inex/core/sources/utils.h>
+#	include <inex/utils.h>
 
 namespace inex {
 namespace engine  {

@@ -1,0 +1,11 @@
+////////////////////////////////////////////////////////////////////////////
+//	Created 	: 27.12.2018
+//	Author		: Feudor Shelipov
+////////////////////////////////////////////////////////////////////////////
+
+#ifndef LIBRARY_DEPENDENCIES_H_INCLUDED
+#	define LIBRARY_DEPENDENCIES_H_INCLUDED
+
+//#	include <inex/ui/library_linkage.h>
+
+#endif // #ifndef LIBRARY_DEPENDENCIES_H_INCLUDED
