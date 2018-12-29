@@ -6,6 +6,7 @@ namespace inex {
 namespace core{
 namespace debug {
 
+IECORE_API
 void IE_CCALL	fatal					( 	pcstr 	file,
 											u32 	line,
 											pcstr 	func,
