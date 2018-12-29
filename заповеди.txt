@@ -18,6 +18,112 @@ around the text.
 8. call XFlush
 9. save the Pixmap and copy the Pixmap to the Window whenever you 
 receive an Expose event.
+Юникод определяет для каждого символа кодовую точку.
+Например, кириллической букве "A" соответствует кодовая точка U+0410.
+А вот то, как она будет представлена на уровне байтов, зависит уже от
+конкретной кодировки, самые популярные - UTF-8 и UTF-16 (причем
+бывает еще Big Endian / Little Endian и Byte Order Mark (BOM)).
+UTF-8 - это тоже Юникод, но в нем символ может занимать от одного
+до шести байтов. В Windows в качестве "родной" кодировки
+используется UTF-16 LE.
+
+HANDLE objects [2] = 
+{ 
+  timer_handle, 
+  mouse_event 
+}; 
+// Запуск таймера 
+LARGE_INTEGER due; 
+SetWaitableTimer (......); 
+// Основной цикл 
+while (true) 
+{ 
+        DWORD result; 
+        MSG msg; 
+        // Обработаем имеющиеся сообщения 
+  while (::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) 
+  { 
+    if (msg.message == WM_QUIT) 
+      return; 
+    ::DispatchMessage(&msg); 
+  } 
+  result = MsgWaitForMultipleObjects (......); 
+  if (result == WAIT_OBJECT_0) 
+  { 
+                  // Сработал таймер. Рендерим картинку, возможны другие действия. 
+        } 
+          else 
+        { 
+                  // Обработаем мышь (DirectInput) 
+        } 
+}
+
+
+BOOL bEnd = FALSE; 
+  DWORD M = 0; 
+  UpdateFrame = TRUE; 
+  while(!bEnd) 
+    { 
+      M = MsgWaitForMultipleObjects(2,DIevents,FALSE,0, QS_ALLINPUT); 
+    switch (M) 
+    { 
+    case WAIT_OBJECT_0: 
+        event1(); 
+      break; 
+    case WAIT_OBJECT_0+1: 
+        event2(); 
+      break; 
+    case WAIT_OBJECT_0+2: 
+    while (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE)) 
+      { 
+      if (msg.message == WM_QUIT) bEnd = TRUE; 
+      else 
+      {TranslateMessage(&msg); 
+      DispatchMessage(&msg);} 
+      } 
+    break; 
+    default: 
+    if (Active && UpdateFrame) DX_timer_do(); 
+  } 
+  }
+DIevents - массив из указателей на события DirectInput.
+
+
+А за словом ANSI скрывается разнообразие однобайтовых кодировок
+типа Windows-1251, ISO-8859-5 и т.д.
+
+Кстати, можно даже не модифицируя код. 
+Способом уже так давно не пользуются что возможно молодое поколение программистов и не подозревает о его существовании. 
+Я и сам забыл честно говоря. 
+Просто скормить линкеру .DEF файл. 
+Раньше только так и делали. И никаких __declspec(export) не было и в помине.
+P.S.
+
+И .DEF должен работать даже если нет кода статической либы.
+
+#include <fcntl.h>
+#include #include <io.h>
+if (AllocConsole()) 
+{ 
+int hCrt = _open_osfhandle((long)GetStdHandle(STD_OUTPUT_HANDLE), 4); 
+*stdout = *(::_fdopen(hCrt, "w")); 
+::setvbuf(stdout, NULL, _IONBF, 0); 
+*stderr = *(::_fdopen(hCrt, "w")); 
+::setvbuf(stderr, NULL, _IONBF, 0);
+std::ios::sync_with_stdio();
+}
+Для удобства советую обернуть его в функцию. Например:
+void CreateConsole()
+{
+if (AllocConsole()) 
+{ 
+int hCrt = _open_osfhandle((long)GetStdHandle(STD_OUTPUT_HANDLE), 4); 
+*stdout = *(::_fdopen(hCrt, "w")); 
+::setvbuf(stdout, NULL, _IONBF, 0); 
+*stderr = *(::_fdopen(hCrt, "w")); 
+::setvbuf(stderr, NULL, _IONBF, 0);
+std::ios::sync_with_stdio();
+}
 
 https://docs.microsoft.com/en-us/windows/desktop/Dlls/using-run-time-dynamic-linking
 http://www.firststeps.ru/mfc/winapi/r.php?41
