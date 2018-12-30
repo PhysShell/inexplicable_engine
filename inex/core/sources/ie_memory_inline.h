@@ -1,5 +1,5 @@
-#ifndef IE_MEMORY_INLINE_H_INCLUDED
-#	define IE_MEMORY_INLINE_H_INCLUDED
+#ifndef INEX_MEMORY_INLINE_H_INCLUDED
+#	define INEX_MEMORY_INLINE_H_INCLUDED
 
 #include <typeinfo>
 
@@ -10,7 +10,7 @@ template < typename type_allocated >
 inline
 type_allocated*	ie_allocate ( size_t count, pcvoid )
 {
-    //return  IE_SCAST( type_allocated*, memory_allocate(count*sizeof(type_allocated), typeid(type_allocated).name()) );
+    //return  INEX_SCAST( type_allocated*, memory_allocate(count*sizeof(type_allocated), typeid(type_allocated).name()) );
 
     return			static_cast< type_allocated* >( memory_allocate(count * sizeof( type_allocated ), typeid( type_allocated ).name( ) ) );
 //	return          (type_allocated*)memory_allocate(count*sizeof(type_allocated), typeid(type_allocated).name());
@@ -77,4 +77,4 @@ void ie_delete ( type_allocated* const& obj )
 
 } // namespace memory
 } // namespace inex
-#endif //#ifndef IE_MEMORY_INLINE_H_INCLUDED
+#endif //#ifndef INEX_MEMORY_INLINE_H_INCLUDED

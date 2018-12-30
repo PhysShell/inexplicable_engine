@@ -19,7 +19,7 @@ public:
 
 				pcstr const	c_str           ( )  const;
 
-				#if IE_PLATFORM_WINDOWS
+				#if INEX_PLATFORM_WINDOWS
 				void				disappend_star	( )
 									{
 										u32 string_length		= strlen ( m_string_value );
@@ -28,7 +28,7 @@ public:
 										* ( m_string_value + string_length - 1  )	= 0;
 										//inex::core::logging::Msg( "path after:\t%s\n", m_string_value );
 									}
-				#endif // #if IE_PLATFORM_WINDOWS
+				#endif // #if INEX_PLATFORM_WINDOWS
 
                 pcstr const   file_name       ( ) const
                 {
@@ -70,7 +70,7 @@ private:
                                     }
 private:
     friend class recursive_directory_iterator;
-	char	m_string_value          [ IE_MAX_PATH + 1 ];
+	char	m_string_value          [ INEX_MAX_PATH + 1 ];
 }; // class path_string
 
 } // namespace fs

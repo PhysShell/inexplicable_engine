@@ -1,11 +1,11 @@
-#ifndef IE_DEBUG_H_INCLUDED
-#	define IE_DEBUG_H_INCLUDED
+#ifndef INEX_DEBUG_H_INCLUDED
+#	define INEX_DEBUG_H_INCLUDED
 
 namespace inex {
 namespace debug {
 
-IECORE_API
-void IE_CCALL	fatal					( 	pcstr 	file,
+INEX_CORE_API
+void INEX_CCALL	fatal					( 	pcstr 	file,
 											u32 	line,
 											pcstr 	func,
 											pcstr 	expr,
@@ -23,4 +23,4 @@ void 			dump_call_stack_trace 	( );
 } // namespace debug
 } // namespace inex
 
-#endif // #ifndef IE_DEBUG_H_INCLUDED
+#endif // #ifndef INEX_DEBUG_H_INCLUDED

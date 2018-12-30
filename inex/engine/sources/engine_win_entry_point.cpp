@@ -31,7 +31,7 @@ s32 WINAPI	wmain (	HINSTANCE	hInst,
 {
 	inex::platform::engine_entry_point	( hInst, hPreInst, lpCmdLine, nCmdShow );
 
-	IE_DEBUG_WAIT;
+	INEX_DEBUG_WAIT;
 	return					0;
 }
 

@@ -3,8 +3,8 @@
 //	Author		: Feudor Shelipov
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef IE_ENGINE_H_INCLUDED
-#	define IE_ENGINE_H_INCLUDED
+#ifndef INEX_ENGINE_H_INCLUDED
+#	define INEX_ENGINE_H_INCLUDED
 
 #	include <inex/utils.h>
 
@@ -17,12 +17,12 @@ struct /*_declspec(novtable)*/  engine_base
 	virtual void 	set_exit_code			( s32 exit_code ) = 0;
 	virtual int		get_exit_code			( ) const = 0;
 protected:
-	IE_DECLARE_PURE_VIRTUAL_DESTRUCTOR( engine_base )
+	INEX_DECLARE_PURE_VIRTUAL_DESTRUCTOR( engine_base )
 }; // struct engine_base
 
 class engine : 
-			inex::nonassignable, 
-			inex::noncopyable, 
+			detail::nonassignable, 
+			detail::noncopyable, 
 			public engine_base
 {
 public:
@@ -40,4 +40,4 @@ private:
 
 } //namespace inex
 } //namespace engine
-#endif // #ifndef IE_ENGINE_H_INCLUDED
+#endif // #ifndef INEX_ENGINE_H_INCLUDED

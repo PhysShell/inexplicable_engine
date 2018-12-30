@@ -1,24 +1,15 @@
 #ifndef EXTENSIONS_H_INCLUDED
 #	define EXTENSIONS_H_INCLUDED
 
-
-// this only defined in windows
-#   ifdef IECORE_EXPORTS
-#       define IECORE_API __declspec(dllexport)
-#   else // #ifdef IECORE_EXPORTS
-#       ifdef _WIN32
-#           define IECORE_API __declspec(dllimport)
-#       else
-#           define IECORE_API
-#       endif // #ifdef _WIN32
-#   endif // #ifdef IECORE_EXPORTS
-
 #   include <stdarg.h>
 #   include <cstring>
 #   include <iostream>
 #   include <cstdint>
 
 // os_extensions
+
+// 
+#	include <inex/core/api.h>
 
 #   include <inex/macro_extensions.h>
 #   include <inex/types.h>

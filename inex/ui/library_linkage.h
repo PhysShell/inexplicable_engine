@@ -3,10 +3,10 @@
 //	Author		: Feudor Shelipov
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef IE_UI_LIBRARY_LINKAGE_H_INCLUDED
-#	define IE_UI_LIBRARY_LINKAGE_H_INCLUDED
+#ifndef INEX_UI_LIBRARY_LINKAGE_H_INCLUDED
+#	define INEX_UI_LIBRARY_LINKAGE_H_INCLUDED
 
 // todo: make up lib for depending on configuration and target
 #	pragma comment(lib, "ui.lib" )
 
-#endif // #ifndef IE_UI_LIBRARY_LINKAGE_H_INCLUDED
+#endif // #ifndef INEX_UI_LIBRARY_LINKAGE_H_INCLUDED

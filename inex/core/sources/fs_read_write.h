@@ -8,7 +8,7 @@ class reader_base
 {
 
 protected:
-	IE_DECLARE_PURE_VIRTUAL_DESTRUCTOR( reader_base )
+	INEX_DECLARE_PURE_VIRTUAL_DESTRUCTOR( reader_base )
 }; // class reader_base
 
 class reader :
@@ -45,12 +45,12 @@ class virtual_file_reader :
 	 public reader
 {
 private:
-#if IE_PLATFORM_WINDOWS
+#if INEX_PLATFORM_WINDOWS
 	pvoid m_file_raw_pointer;
 	pvoid m_mapped_file;
-#elif IE_PLATFORM_LINUX // #if IE_PLATFORM_WINDOWS
+#elif INEX_PLATFORM_LINUX // #if INEX_PLATFORM_WINDOWS
 	int m_file_descriptor;
-#endif // #if IE_PLATFORM_WINDOWS
+#endif // #if INEX_PLATFORM_WINDOWS
 
 public:
     explicit							virtual_file_reader		( pcstr );
@@ -65,7 +65,7 @@ class writer_base
 public:
 	virtual void	close			( )	= 0;
 protected:
-	IE_DECLARE_PURE_VIRTUAL_DESTRUCTOR( writer_base )
+	INEX_DECLARE_PURE_VIRTUAL_DESTRUCTOR( writer_base )
 }; // class writer_base
 
 class writer :

@@ -49,7 +49,7 @@ typedef	    char				string512	[ 512 ];
 typedef	    char				string1024	[ 1024 ];
 typedef	    char		    	string2048	[ 2048 ];
 typedef	    char				string4096	[ 4096 ];
-typedef	    char				string_path	[ IE_MAX_PATH ];
+typedef	    char				string_path	[ INEX_MAX_PATH ];
 
 
 #endif // #ifndef TYPES_H_INCLUDED

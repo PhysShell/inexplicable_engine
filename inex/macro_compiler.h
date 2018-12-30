@@ -8,9 +8,9 @@
 #	endif // #ifdef _MSC_VER
 
 #	ifdef _MSC_VER
-#		define IE_PUSH_WARNINGS( )		__pragma ( warning ( push ) )
-#		define IE_DISABLE_WARNING( x )	__pragma ( warning ( disable : x ) )
-#		define IE_POP_WARNINGS( )		__pragma ( warning ( pop ) )
+#		define INEX_PUSH_WARNINGS( )		__pragma ( warning ( push ) )
+#		define INEX_DISABLE_WARNING( x )	__pragma ( warning ( disable : x ) )
+#		define INEX_POP_WARNINGS( )		__pragma ( warning ( pop ) )
 /** Check if there's such a thing in GCC/CLang
  * #pragma clang diagnostic push
  * #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
@@ -26,7 +26,7 @@
 
 #	if defined ( _MSC_VER ) && ( _MSC_VER >= 1900 ) \
 			|| ( defined ( __GNUC__ ) && ( __GNUC__ >= 7 ) )
-#	   define  IE_FILESYSTEM_SUPPORTED
+#	   define  INEX_FILESYSTEM_SUPPORTED
 #	else // #if defined ( _MSC_VER ) || ( __GNUC__ >= 7 )
 #	   pragma  message( "Use custom filesystem..." )
 #	endif  // #if defined ( _MSC_VER ) || ( __GNUC__ >= 7 )

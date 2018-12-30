@@ -4,7 +4,7 @@
 //#	include "_cpuid_internal.h"
 #ifndef __GNUC__
 #   include <intrin.h>
-#endif // #ifdef IE_PURE_GNUC
+#endif // #ifdef INEX_PURE_GNUC
 
 namespace inex {
 namespace threading {
@@ -13,7 +13,7 @@ namespace threading {
 // and VC++ if it is.
 void	print_cpu_info ( )
 {
-#ifndef IE_PURE_GNUC
+#ifndef INEX_PURE_GNUC
    // Get extended ids.
    s32 proc_info[ 4 ]	=	{ };
    __cpuid          	( 	proc_info,
@@ -42,9 +42,9 @@ void	print_cpu_info ( )
 
     vendor[ 12 ]	=	0;
     logging::Msg( "* Detected CPU: %s [%s]", brand, vendor );
-#else // #ifndef IE_PURE_GNUC
+#else // #ifndef INEX_PURE_GNUC
     logging::Msg( "* Detected CPU: Unknown Processor" );
-#endif // #ifndef IE_PURE_GNUC
+#endif // #ifndef INEX_PURE_GNUC
 }
 
 } // namespace threading

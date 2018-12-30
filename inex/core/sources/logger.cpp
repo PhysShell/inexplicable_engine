@@ -9,6 +9,7 @@ static string_path					log_file_name	= "engine.log";
 static fs::writer*         			fwriter      	= nullptr;
 static threading::critical_section	log_section		;
 
+
 void 	Msg ( pcstr format, ... )
 {
     threading::scope_locker crit_sect( log_section );
@@ -21,11 +22,11 @@ void 	Msg ( pcstr format, ... )
 	string2048 buf;
 	va_start			( mark, format );
 	s32 sz			=
-#if IE_PLATFORM_WINDOWS
+#if INEX_PLATFORM_WINDOWS
         _vsnprintf
 #else
         vsnprintf
-#endif // #if IE_PLATFORM_WINDOWS
+#endif // #if INEX_PLATFORM_WINDOWS
 	( buf,sizeof( buf ) - 1, format, mark );
 	buf[ sizeof( buf ) - 1 ] = 0;
 	va_end				( mark );

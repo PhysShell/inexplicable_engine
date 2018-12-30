@@ -1,19 +1,22 @@
 #ifndef MACRO_LOG_H_INCLUDED
 #	define MACRO_LOG_H_INCLUDED
 
-#define IE_LOG_F(file, ...)				inex::core::ieLog{file}(__VA_ARGS__);
-// into engine.log
-#define IE_LOG( ... )					inex::core::ieLog{ "engine.log" }( __VA_ARGS__ );
-#define LOGGER( ... )						inex::core::logging::Msg( __VA_ARGS__ );
+//#	define	log_silent							( 1u << 0U )
+//#	define	log_info							( 1u << 1U )
+//#	define	log_warning							( 1u << 2U )
+//#	define	log_error							( 1u << 3U )
+//#	define	log_debug							( 1u << 4U )
+//#	define	log_trace							( 1u << 5U )
+//
+//
+//#	ifdef LOGGING_SENSITIVITY
+//#		error please do not define LOGGING_SENSITIVITY
+//#	endif 
+//
+//#	define LOGGING_SENSITIVITY					log_trace;
+#	define LOGGER( ... )						inex::core::logging::Msg( __VA_ARGS__ )
 
 
-#ifdef DEBUG
-#	define IE_DEBUG_LOG_F( file, ... )	inex::core::ieLog{ file }( __VA_ARGS__ );
-#	define IE_DEBUG_LOG( ... )			inex::core::ieLog{ "engine.log" }( __VA_ARGS__ );
-#else // #ifdef DEBUG
-#	define IE_DEBUG_LOG_F( file, ... )	{ }
-#	define IE_DEBUG_LOG( ... )			{ }
-#endif // #ifdef DEBUG
 
 #endif // #ifndef MACRO_LOG_H_INCLUDED
 

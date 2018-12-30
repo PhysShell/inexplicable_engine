@@ -1,21 +1,21 @@
-#ifndef IE_SYNCRONIZE_H_INCLUDED
-#	define IE_SYNCRONIZE_H_INCLUDED
+#ifndef INEX_SYNCRONIZE_H_INCLUDED
+#	define INEX_SYNCRONIZE_H_INCLUDED
 
 #	include <inex/os_include.h>
 
-#	if IE_PLATFORM_WINDOWS
+#	if INEX_PLATFORM_WINDOWS
 #		define CS_INIT( x ) 	InitializeCriticalSection   ( x )
 #		define CS_DEL( x )	    DeleteCriticalSection       ( x )
 #		define CS_ENTER( x )	EnterCriticalSection        ( x )
 #		define CS_LEAVE( x )	LeaveCriticalSection        ( x )
 #		define CS_OBJ	        CRITICAL_SECTION
-#	elif IE_PLATFORM_LINUX		// #if IE_PLATFORM_WINDOWS 
+#	elif INEX_PLATFORM_LINUX		// #if INEX_PLATFORM_WINDOWS 
 #		define CS_INIT( x ) 	pthread_mutex_init          ( x, nullptr )
 #		define CS_DEL( x )	    pthread_mutex_destroy       ( x )
 #		define CS_ENTER( x )	pthread_mutex_lock          ( x )
 #		define CS_LEAVE( x )	pthread_mutex_unlock        ( x )
 #		define CS_OBJ	        pthread_mutex_t
-#	endif // #if IE_PLATFORM_WINDOWS
+#	endif // #if INEX_PLATFORM_WINDOWS
 
 //#ifdef DEBUG
 //#   define PROFILE_CRITICAL_SECTIONS
@@ -67,4 +67,4 @@ typedef scoped_lock< critical_section > scope_locker;
 } // namespace threading
 } // namespace inex
 
-#endif // IE_SYNCRONIZE_H_INCLUDED
+#endif // INEX_SYNCRONIZE_H_INCLUDED

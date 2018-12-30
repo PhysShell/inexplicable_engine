@@ -6,7 +6,7 @@
 namespace inex {
 namespace fs {
 
-# if IE_PLATFORM_LINUX
+# if INEX_PLATFORM_LINUX
 
 
 
@@ -52,9 +52,9 @@ void    memory_mapped_file::close (  )
     //mapping             = nullptr;
 }
 
-# endif // #if IE_PLATFORM_LINUX
+# endif // #if INEX_PLATFORM_LINUX
 
-# if IE_PLATFORM_WINDOWS
+# if INEX_PLATFORM_WINDOWS
 
 
 memory_mapped_file::memory_mapped_file ( pcstr name ) :
@@ -94,7 +94,7 @@ void	memory_mapped_file::close ( )
 	//Msg("Deleting (close()) address: %p", this);
 }
 
-#endif // #if IE_PLATFORM_WINDOWS
+#endif // #if INEX_PLATFORM_WINDOWS
 
 } // namespace fs
 } // namespace inex

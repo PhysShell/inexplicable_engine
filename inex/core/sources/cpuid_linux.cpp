@@ -8,10 +8,10 @@ namespace threading {
 void	print_cpu_info ( )
 {
 //	FILE* hand;
-//    char outstr     [ IE_MAX_PATH ];
+//    char outstr     [ INEX_MAX_PATH ];
 //	pstmp tmp;
 //
-//    outstr[ IE_MAX_PATH - 1] =0;
+//    outstr[ INEX_MAX_PATH - 1] =0;
 //    hand			= 	popen( "cat /proc/cpuinfo | grep name", "r" );
 //
 //    if ( 0 == hand )

@@ -7,27 +7,27 @@ namespace fs {
 struct memory_mapped_file
 {
 public:
-# if IE_PLATFORM_WINDOWS
+# if INEX_PLATFORM_WINDOWS
     pvoid   m_file_raw_pointer;
 	pvoid   m_mapped_file;
     size_t  m_size;
-#elif IE_PLATFORM_LINUX
+#elif INEX_PLATFORM_LINUX
     int             m_file_descriptor;
     size_t          m_size;
     char*           m_data;
-#endif // # if IE_PLATFORM_WINDOWS
+#endif // # if INEX_PLATFORM_WINDOWS
 
 public:
 					memory_mapped_file	( ) :
-					#if IE_PLATFORM_WINDOWS
+					#if INEX_PLATFORM_WINDOWS
 						m_file_raw_pointer	{ },
 						m_mapped_file		{ },
 						m_size				{ }
-                    #elif IE_PLATFORM_LINUX
+                    #elif INEX_PLATFORM_LINUX
                         m_file_descriptor   ( ),
                         m_size              ( ),
                         m_data              ( )
-                    #endif // # if IE_PLATFORM_WINDOWS
+                    #endif // # if INEX_PLATFORM_WINDOWS
 					{
 					}
 

@@ -5,9 +5,9 @@
 #include "fs_ini_file.h"
 //#include <inex/macro_compiler.h>
 
-#ifdef IE_FILESYSTEM_SUPPORTED
+#ifdef INEX_FILESYSTEM_SUPPORTED
 #   include <experimental/filesystem>
-#endif  // #ifdef IE_FILESYSTEM_SUPPORTED
+#endif  // #ifdef INEX_FILESYSTEM_SUPPORTED
 
 #include <set>
 #include "ie_memory.h"
@@ -55,7 +55,7 @@ void    wchar_to_char ( pstr dest, wchar_t const* src, size_t sz )
 
 	dest[ sz ]			= 0;
 
-    //IE_DEBUG_WAIT;
+    //INEX_DEBUG_WAIT;
 
 }
 
@@ -81,9 +81,9 @@ pstr	util ( pcstr file_path )
 void	initialize	( pcstr dir )
 {
 // when testing our fs-wheel
-#undef IE_FILESYSTEM_SUPPORTED
+#undef INEX_FILESYSTEM_SUPPORTED
 
-#ifndef IE_FILESYSTEM_SUPPORTED
+#ifndef INEX_FILESYSTEM_SUPPORTED
     Msg( "Initializing Custom File System..." );
 	ASSERT_D( !fs::exists( dir ), "Directory '%s' was not found. Check if it exists.", dir );
 
@@ -104,7 +104,7 @@ void	initialize	( pcstr dir )
     }
 
 	clock_t end_initializing			=	clock( ) - start_initializing ;
-#else   // #ifdef IE_FILESYSTEM_SUPPORTED
+#else   // #ifdef INEX_FILESYSTEM_SUPPORTED
     namespace   std_fs				        = 	std::experimental::filesystem;
 	typedef     std_fs::path::value_type    	path_type;
 
@@ -130,23 +130,23 @@ void	initialize	( pcstr dir )
 			std_fs::path file_path 					= 	{ it };
 			const path_type* platform_type_file_path= 	file_path.c_str( );
 
-#ifdef IE_PLATFORM_WINDOWS
+#ifdef INEX_PLATFORM_WINDOWS
 			size_t file_path_length					= 	wcslen( platform_type_file_path );
 			pstr file_path_string					= 	memory::ie_allocate< char >( file_path_length + 1 );
 
 			wchar_to_char			( file_path_string, platform_type_file_path, file_path_length );
 #   define platform_type_file_path file_path_string
-#endif // #ifdef IE_PLATFORM_WINDOWS
+#endif // #ifdef INEX_PLATFORM_WINDOWS
 			files.insert			( memory_mapped_file{ platform_type_file_path } );
 			Msg( "Loading file: %s", platform_type_file_path );
 			memory::ie_delete  		( platform_type_file_path );
-#ifdef IE_PLATFORM_WINDOWS
+#ifdef INEX_PLATFORM_WINDOWS
 #   undef platform_type_file_path
-#endif // #ifdef IE_PLATFORM_WINDOWS
+#endif // #ifdef INEX_PLATFORM_WINDOWS
 		}
 	}
 	clock_t end_initializing			=	clock( ) - start_initializing ;
-#endif  // #ifdef IE_FILESYSTEM_SUPPORTED
+#endif  // #ifdef INEX_FILESYSTEM_SUPPORTED
 
     Msg( "FS: %d files cached\nInit FileSystem %f sec\n", files.size( ), ( double )end_initializing / CLOCKS_PER_SEC );
 }

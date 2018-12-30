@@ -29,6 +29,6 @@ int main( int argc, pstr* argv )
 		inex::platform::engine_entry_point( 0 );
 	}
 
-	IE_DEBUG_WAIT;
+	INEX_DEBUG_WAIT;
    	return 0;
 }

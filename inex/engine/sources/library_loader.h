@@ -3,16 +3,17 @@
 //	Author		: Feudor Shelipov
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef INEX_ENGINE_API_H_INCLUDED
-#	define INEX_ENGINE_API_H_INCLUDED
+#ifndef LIBRARY_LOADER_H_INCLUDED
+#	define LIBRARY_LOADER_H_INCLUDED
+
+#	include <inex/extensions.h>
 
 namespace inex {
 namespace engine {
 
-	void	create_world	( );
-	void	destroy_world	( );
 
-} // namespace engine
-} // namespace inex
 
-#endif // #ifndef INEX_ENGINE_API_H_INCLUDED
+} // namespace engine 
+} // namespace inex 
+
+#endif // #ifndef LIBRARY_LOADER_H_INCLUDED

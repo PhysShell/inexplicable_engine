@@ -1,5 +1,5 @@
-#ifndef IE_MEMORY_H_INCLUDED
-#	define IE_MEMORY_H_INCLUDED
+#ifndef INEX_MEMORY_H_INCLUDED
+#	define INEX_MEMORY_H_INCLUDED
 
 namespace inex {
 namespace memory {
@@ -52,4 +52,4 @@ void	ie_delete ( type_allocated* const& obj );
 //    using core::memory::ie_new;
 //    using core::memory::ie_delete;
 //}
-#endif //#ifndef IE_MEMORY_H_INCLUDED
+#endif //#ifndef INEX_MEMORY_H_INCLUDED

@@ -3,17 +3,17 @@
 #include "ie_debug.h"
 #include "ie_memory.h"
 
-#if IE_PLATFORM_LINUX 
+#if INEX_PLATFORM_LINUX 
 
 #include <cxxabi.h>
 #include <signal.h>
 #include <execinfo.h>
 
-#elif ( IE_PLATFORM_WINDOWS_32 ) ^ ( IE_PLATFORM_WINDOWS_64 )
+#elif ( INEX_PLATFORM_WINDOWS_32 ) ^ ( INEX_PLATFORM_WINDOWS_64 )
 
 #include "RpcExStackTraceEngine.h"
 
-#endif // #if IE_PLATFORM_LINUX
+#endif // #if INEX_PLATFORM_LINUX
 
 namespace inex {
 namespace debug {
@@ -22,7 +22,7 @@ using inex::logging::Msg;
 
 void 	dump_call_stack_trace ( )
 {
-#if IE_PLATFORM_LINUX
+#if INEX_PLATFORM_LINUX
 	pvoid trace				[ 16 ];
 	pstr* messages 			= nullptr;
 	s32 i, trace_size 		= 0;
@@ -67,7 +67,7 @@ dump						:
 			}
 		}
 	}
-#elif ( IE_PLATFORM_WINDOWS_32 ) ^ ( IE_PLATFORM_WINDOWS_64 )
+#elif ( INEX_PLATFORM_WINDOWS_32 ) ^ ( INEX_PLATFORM_WINDOWS_64 )
 		RpcExStackTraceEngine	call_stack;
 		call_stack.Initialize	( );
 		if ( RpcExStackTraceEngine::InitializationState::IS_Done == call_stack.GetInitializationState( ) )
@@ -77,7 +77,7 @@ dump						:
 			logging::Msg( "%s", buf );
 		else
 			logging::Msg( "!Unable to get current call stack trace." );
-#endif // #if IE_PLATFORM_LINUX
+#endif // #if INEX_PLATFORM_LINUX
 }
 
 void	aquire_macros ( pcstr 	file,
@@ -97,7 +97,7 @@ pcstr	error2string ( u32 code )
 
 	//if(0==result)
 	//{
-#if IE_PLATFORM_WINDOWS
+#if INEX_PLATFORM_WINDOWS
 		FormatMessage( 	FORMAT_MESSAGE_FROM_SYSTEM,
 						0,
 						code,
@@ -108,7 +108,7 @@ pcstr	error2string ( u32 code )
 					);
 		result						=	desc_storage;
 	//}
-#endif // #if IE_PLATFORM_WINDOWS
+#endif // #if INEX_PLATFORM_WINDOWS
 	return				 				result;
 
 }
@@ -136,11 +136,11 @@ void	fatal ( pcstr 	file,
         string2048 buf;
         va_start			( mark, format );
         int sz			=
-#if IE_PLATFORM_WINDOWS
+#if INEX_PLATFORM_WINDOWS
         _vsnprintf
 #else
         vsnprintf
-#endif // #if IE_PLATFORM_WINDOWS
+#endif // #if INEX_PLATFORM_WINDOWS
         ( buf, sizeof( buf ) - 1,format, mark ); buf[ sizeof( buf ) - 1] = 0;
         //strcat			( buf,"\n" );
         va_end				( mark );

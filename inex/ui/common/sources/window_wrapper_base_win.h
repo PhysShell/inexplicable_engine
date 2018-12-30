@@ -3,8 +3,8 @@
 //	Author		: Feudor Shelipov
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef IE_UI_WINDOW_WRAPPER_BASE_H_INCLUDED
-#	define IE_UI_WINDOW_WRAPPER_BASE_H_INCLUDED
+#ifndef INEX_UI_WINDOW_WRAPPER_BASE_H_INCLUDED
+#	define INEX_UI_WINDOW_WRAPPER_BASE_H_INCLUDED
 
 #	include <inex/os_extensions.h>
 #	include <inex/os_include.h>
@@ -19,7 +19,7 @@ namespace ui {
  * And make stack of events which WndProc will process.
 **/
 
-class window_wrapper_base : inex::core::utils::noncopyable, inex::core::utils::nonassignable
+class window_wrapper_base : detail::noncopyable, detail::nonassignable
 {
 public:
 					window_wrapper_base	(	pcstr		window_title, 
@@ -65,4 +65,4 @@ private:
 } // namespace ui
 } // namespace inex
 
-#endif // #ifndef IE_UI_WINDOW_WRAPPER_BASE_H_INCLUDED
+#endif // #ifndef INEX_UI_WINDOW_WRAPPER_BASE_H_INCLUDED

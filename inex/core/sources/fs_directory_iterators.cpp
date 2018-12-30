@@ -54,14 +54,14 @@ recursive_directory_iterator::recursive_directory_iterator ( const char* const f
     m_impl.reset        ( memory::ie_new< detail::directory_iterator_impl >( ) );
     m_end               = 0;
     m_entry.append      ( m_directories.back( ).m_p );
-#if IE_PLATFORM_WINDOWS
+#if INEX_PLATFORM_WINDOWS
 	m_entry.path( ) /	( "*" );
 	//LOGGER( "%s", m_entry.path( ).c_str( ) );
-#endif // IE_PLATFORM_WINDOWS
+#endif // INEX_PLATFORM_WINDOWS
     detail::open_directory  ( m_impl.get( ), m_entry.path( ).c_str( ) );
-#if IE_PLATFORM_WINDOWS
+#if INEX_PLATFORM_WINDOWS
 	m_entry.path( ).disappend_star( );
-#endif // IE_PLATFORM_WINDOWS
+#endif // INEX_PLATFORM_WINDOWS
     operator            ++ ( );
 }
 
@@ -85,13 +85,13 @@ recursive_directory_iterator&   recursive_directory_iterator::operator ++ ( )
         {
             detail::close_directory     ( m_impl.get( ) );
             m_entry.append              ( m_directories.back( ).m_p );
-#if IE_PLATFORM_WINDOWS
+#if INEX_PLATFORM_WINDOWS
 			m_entry.path( ) /	( "*" );
-#endif // IE_PLATFORM_WINDOWS
+#endif // INEX_PLATFORM_WINDOWS
             detail::open_directory      ( m_impl.get( ), m_entry.path( ).c_str( ) );
- #if IE_PLATFORM_WINDOWS
+ #if INEX_PLATFORM_WINDOWS
 			m_entry.path( ).disappend_star( );
-#endif // IE_PLATFORM_WINDOWS
+#endif // INEX_PLATFORM_WINDOWS
 			operator ++                 ( );
         }
     }
@@ -107,7 +107,7 @@ void    recursive_directory_iterator::read_subdirectories ( const char* const fi
 {
     directory_iterator  current             ( file_path_raw );
     file_info           file_path_to_stack  ;
-    char                next_subdirectory   [ IE_MAX_PATH ] { 0 };
+    char                next_subdirectory   [ INEX_MAX_PATH ] { 0 };
 
     strcpy              ( next_subdirectory, file_path_raw );
     strcpy              ( file_path_to_stack.m_p, file_path_raw );

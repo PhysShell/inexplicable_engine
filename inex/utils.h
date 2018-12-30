@@ -2,8 +2,9 @@
 #	define UTILS_H_INCLUDED
 
 namespace inex {
+namespace detail {
 
-struct noncopyable
+struct INEX_CORE_API noncopyable
 {
 			noncopyable	( ) = default;
 private:
@@ -15,6 +16,7 @@ struct nonassignable
 private:
 	void	operator =	( nonassignable const& ) = delete;
 }; // struct nonassignable
+} // namespace detail 
 
 template < typename data_type >
 struct stack

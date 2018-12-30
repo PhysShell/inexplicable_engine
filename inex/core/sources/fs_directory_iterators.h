@@ -1,13 +1,13 @@
 #ifndef FS_DIRECTORY_ITERATORS_H_INCLUDED
 #   define FS_DIRECTORY_ITERATORS_H_INCLUDED
 
-#	if ( IE_PLATFORM_WINDOWS )
+#	if ( INEX_PLATFORM_WINDOWS )
 #		include	"fs_catalog_operations_win_impl.h"
-#	elif ( IE_PLATFORM_LINUX ) // #if ( IE_PLATFORM_WINDOWS )
+#	elif ( INEX_PLATFORM_LINUX ) // #if ( INEX_PLATFORM_WINDOWS )
 #		include	"fs_catalog_operations_linux_impl.h"
-#	else // #if ( IE_PLATFORM_WINDOWS )
+#	else // #if ( INEX_PLATFORM_WINDOWS )
 #		error please define your platform here
-#	endif // #if ( IE_PLATFORM_WINDOWS )
+#	endif // #if ( INEX_PLATFORM_WINDOWS )
 
 #   include <inex/utils.h>
 //#	include <inex/fs_utils.h>
@@ -107,7 +107,7 @@ private:
 private:
     struct file_info
     {
-        char                                        m_p         [ IE_MAX_PATH ];
+        char                                        m_p         [ INEX_MAX_PATH ];
     }; // struct file_info
 
 

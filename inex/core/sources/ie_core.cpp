@@ -16,20 +16,20 @@
 namespace inex {
 namespace core {
 
-/*IECORE_API*/  static pcstr	build_date;
-/*IECORE_API*/  static int	    build_id;
+/*INEX_CORE_API*/  static pcstr	build_date;
+/*INEX_CORE_API*/  static int	    build_id;
                 string128       command_line_parameters		{ };
 
 // or should I use global var?
 //#ifndef USE_SINGLETON
-pstr   IECORE_API  get_params ( )
+pstr   INEX_CORE_API  get_params ( )
 {
     return 			command_line_parameters;
 }
 //#endif //#ifndef USE_SINGLETON
 
 #ifdef __GNUC__
-s32	IE_CCALL	_stricmp ( pcstr lhs, pcstr rhs )
+s32	INEX_CCALL	_stricmp ( pcstr lhs, pcstr rhs )
 {
 	pstr str			= memory::ie_allocate< char >( std::strlen( lhs ) + 1 );
 	pstr str2			= memory::ie_allocate< char >( std::strlen( rhs ) + 1 );
@@ -146,11 +146,11 @@ void	initialize ( s32 command_line_argument_count, pstr* command_line_values )
     }
 	else
 	{   
-#if IE_PLATFORM_WINDOWS
+#if INEX_PLATFORM_WINDOWS
 		fs::initialize	( "gamedata/" );
-#elif IE_PLATFORM_LINUX // #if IE_PLATFORM_WINDOWS
+#elif INEX_PLATFORM_LINUX // #if INEX_PLATFORM_WINDOWS
 		fs::initialize	( "./gamedata/" );
-#endif // #if IE_PLATFORM_WINDOWS
+#endif // #if INEX_PLATFORM_WINDOWS
 	}
 	
 }
