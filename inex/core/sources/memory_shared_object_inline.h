@@ -2,7 +2,6 @@
 #	define  MEMORY_SHARED_OBJECT_INLINE_H_INCLUDED
 
 namespace inex {
-namespace core {
 namespace memory {
 
 #	define	TEMPLATE_SPECIALIZATION	template < typename T >
@@ -169,7 +168,6 @@ const T* const  SHARED_OBJECT_TEMPLATE::get ( ) const
 #undef	SHARED_OBJECT_TEMPLATE
 
 } // namespace memory
-} // namespace core
 } // namespace inex
 
 #endif // #ifndef MEMORY_SHARED_OBJECT_INLINE_H_INCLUDED

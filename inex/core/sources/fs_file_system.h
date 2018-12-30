@@ -8,8 +8,7 @@
 // and checks if it's end()
 
 namespace inex {
-namespace core {
-namespace fsmgr {
+namespace fs {
 		/*
 		struct	file_pred: public 	std::binary_function<file&, file&, bool>
 		{
@@ -26,7 +25,6 @@ namespace fsmgr {
     void		initialize	( pcstr dir );
     void		finalize		( );
 
-} // namespace fsmgr
-} // names core
+} // namespace fs
 } // namespace inex
 #endif // #ifndef FS_FILE_SYSTEM_H_INCLUDED

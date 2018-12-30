@@ -1,14 +1,13 @@
 #include "stdafx.h"
 
-#	include "fs_read_write.h"
+#include "fs_read_write.h"
 
-#   include <sys/mman.h>
-#   include <fcntl.h>
-#   include <sys/stat.h>
-#   include <unistd.h>
+#include <sys/mman.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 namespace inex {
-namespace core {
 namespace fs {
 
 reader::reader ( ) :
@@ -95,7 +94,7 @@ virtual_file_reader::~virtual_file_reader ( )
     //mapping             = nullptr;
 
 
-	//log::Msg( "*! virtual_file_reader destructor called, addr: %p, sz: %d", this, sizeof( *this ) );
+	//logging::Msg( "*! virtual_file_reader destructor called, addr: %p, sz: %d", this, sizeof( *this ) );
 
 }
 
@@ -119,7 +118,5 @@ file_writer::file_writer( pcstr file_name ) :
     ASSERT_D( 0 != m_file, "Couldn't open '%s'. %s.", file_name, strerror( errno ) );
 }
 
-
 } // namespace fs
-} // names core
 } // namespace inex

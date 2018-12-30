@@ -11,7 +11,7 @@ s32		engine_entry_point (	pstr		command_line_string		);
 s32		engine_entry_point ( pstr command_line_string )
 {
 	core::initialize	( 0, 0 );
-	core::log::Msg		( "Initializing Engine...\n" );
+	logging::Msg		( "Initializing Engine...\n" );
 	engine::engine		en;
 	core::finalize		( );
 	return				en.get_exit_code( );

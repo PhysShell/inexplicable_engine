@@ -15,7 +15,7 @@ s32		engine_entry_point (	HINSTANCE	hInst,
 s32		engine_entry_point ( HINSTANCE inst, HINSTANCE pinst, pstr cmdln, s32 cmdshow )
 {
 	core::initialize	( 0, 0 );
-	core::log::Msg		( "Initializing Engine...\n" );
+	logging::Msg		( "Initializing Engine...\n" );
 	engine::engine		en;
 	core::finalize		( );
 	return				en.get_exit_code( );

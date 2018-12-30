@@ -9,7 +9,7 @@
 #		define CS_ENTER( x )	EnterCriticalSection        ( x )
 #		define CS_LEAVE( x )	LeaveCriticalSection        ( x )
 #		define CS_OBJ	        CRITICAL_SECTION
-#	elif IE_PLATFORM_LINUX
+#	elif IE_PLATFORM_LINUX		// #if IE_PLATFORM_WINDOWS 
 #		define CS_INIT( x ) 	pthread_mutex_init          ( x, nullptr )
 #		define CS_DEL( x )	    pthread_mutex_destroy       ( x )
 #		define CS_ENTER( x )	pthread_mutex_lock          ( x )
@@ -26,6 +26,9 @@
 // also, we need macro strings!
 
 // Desc: Simple wrapper for critical section
+namespace inex {
+namespace threading {
+
 class critical_section
 {
 public:
@@ -39,10 +42,9 @@ private:
 
 template <
     class locker,
-    void ( locker::*en )( )	= &locker::enter,
-    void ( locker::*le )( ) 	= &locker::leave
+    void ( locker::*en )( )		= &locker::enter,
+    void ( locker::*le )( )		= &locker::leave
 >
-
 class scoped_lock
 {
 public:
@@ -61,5 +63,8 @@ private:
 }; // class scoped_lock
 
 typedef scoped_lock< critical_section > scope_locker;
+
+} // namespace threading
+} // namespace inex
 
 #endif // IE_SYNCRONIZE_H_INCLUDED

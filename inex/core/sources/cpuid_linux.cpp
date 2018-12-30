@@ -3,8 +3,7 @@
 #include "processor_info.h"
 
 namespace inex {
-namespace core {
-namespace CPU {
+namespace threading {
 
 void	print_cpu_info ( )
 {
@@ -47,10 +46,9 @@ void	print_cpu_info ( )
 //   fclose(hand);
 //   return -2;}
  //  fclose           	( hand );
-   //log::Msg( "* Detected CPU: %s", "" );
-   //log::Msg( "* CPU Features: read in procinfo" );
-  // Msg("* CPU cores: \n");
+   //logging::Msg( "* Detected threading: %s", "" );
+   //logging::Msg( "* threading Features: read in procinfo" );
+  // Msg("* threading cores: \n");
 }
-} // namespace CPU
-} // namespace core
+} // namespace threading
 } // namespace inex

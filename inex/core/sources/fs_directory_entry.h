@@ -2,8 +2,7 @@
 #   define FS_DIRECTORY_ENTRY_H_INCLUDED
 
 namespace inex {
-namespace core {
-namespace fsmgr {
+namespace fs {
 
 class directory_entry
 {
@@ -26,8 +25,7 @@ private:
     ***/
 }; // class directory_entry
 
-} // namespace fsmgr
-} // namespace core
+} // namespace fs
 } // namespace inex
 
 #   include "fs_directory_entry_inline.h"

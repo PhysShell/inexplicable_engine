@@ -3,16 +3,15 @@
 #include <inex/core/sources/ie_memory.h>
 
 namespace inex {
-namespace core {
-namespace log {
+namespace logging {
 
-static string_path          log_file_name	= "engine.log";
-static fs::writer*         	fwriter      	= nullptr;
-static critical_section		log_section;
+static string_path					log_file_name	= "engine.log";
+static fs::writer*         			fwriter      	= nullptr;
+static threading::critical_section	log_section		;
 
 void 	Msg ( pcstr format, ... )
 {
-    scope_locker crit_sect( log_section );
+    threading::scope_locker crit_sect( log_section );
     if ( !fwriter )
 	{
 		return;
@@ -33,16 +32,13 @@ void 	Msg ( pcstr format, ... )
 	strcat				( buf, "\n" );
 	if ( sz )
 	{
-		if ( !put_string( buf ) )
-		{
-			printf( "Error occured while formating Msg (fwriter==0)\n" );
-		}
+		ASSERT_D( put_string( buf ), "Error occured while formating Msg (fwriter==0)\n" );
 	}
 }
 
 bool	put_string ( pcstr msg )
 {
-    scope_locker crit_sect	( log_section );
+    threading::scope_locker crit_sect	( log_section );
     if ( fwriter )
 	{
         fwriter->w( msg );
@@ -76,6 +72,5 @@ void 	finalize ( )
 	}
 }
 
-}// namespace log
-}// namespace core
+}// namespace logging
 }// namespace inex

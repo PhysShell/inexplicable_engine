@@ -12,16 +12,13 @@
 #include <set>
 #include "ie_memory.h"
 #include "fs_directory_iterators.h"
+#include <inex/fs_utils.h>
 //#include "fs_manager.h"
 
-
-//#include "_utils.h"
-
 namespace inex {
-namespace core {
-namespace fsmgr {
+namespace fs {
 
-using inex::core::log::Msg;
+using inex::logging::Msg;
 
 namespace {
  DEFINE_SET_PRED	( 	memory_mapped_file,
@@ -88,12 +85,7 @@ void	initialize	( pcstr dir )
 
 #ifndef IE_FILESYSTEM_SUPPORTED
     Msg( "Initializing Custom File System..." );
-	ASSERT_D( !fsmgr::detail::exists( dir ), "Directory '%s' was not found. Check if it exists.", dir );
-//#if IE_PLATFORM_WINDOWS
-//    strcpy              ( data_directoty + strlen( data_directoty ) , "\\*" );
-//#else // #if IE_PLATFORM_WINDOWS
-//    strcpy              ( data_directoty + strlen( data_directoty ) , "/" );
-//#endif // #if IE_PLATFORM_WINDOWS
+	ASSERT_D( !fs::exists( dir ), "Directory '%s' was not found. Check if it exists.", dir );
 
 	clock_t start_initializing			=			clock( );
 
@@ -113,8 +105,6 @@ void	initialize	( pcstr dir )
 
 	clock_t end_initializing			=	clock( ) - start_initializing ;
 #else   // #ifdef IE_FILESYSTEM_SUPPORTED
-    // dir was once gamedata/, but if this slash doesn't matter
-    // i just leave it at that
     namespace   std_fs				        = 	std::experimental::filesystem;
 	typedef     std_fs::path::value_type    	path_type;
 
@@ -144,31 +134,11 @@ void	initialize	( pcstr dir )
 			size_t file_path_length					= 	wcslen( platform_type_file_path );
 			pstr file_path_string					= 	memory::ie_allocate< char >( file_path_length + 1 );
 
-			// If I have to delete my wheel in the future...
-			//wcstombs(file_path_string,platform_type_file_path,file_path_length);
-			//file_path_string[file_path_length-1]=0;
-									// there were IE_MAX_PATH
 			wchar_to_char			( file_path_string, platform_type_file_path, file_path_length );
 #   define platform_type_file_path file_path_string
 #endif // #ifdef IE_PLATFORM_WINDOWS
-
-			//memory_mapped_file* f			=create_file(platform_type_file_path);
 			files.insert			( memory_mapped_file{ platform_type_file_path } );
-
-
-// 1.create temp memory_mapped_file in constructor
-// 2.use move semantics to initialize new 'memory_mapped_file' object in fileset
-// 3.call destructor of temp memory_mapped_file, which has nothing to delete (all pointers are 0)
-			/*
-			MAYBE, WE CAN JUST USE ERASE() TO DELETE ELEMS INSTEAD OF CALLING FILE::CLOSE()???
-				test it
-			memory_mapped_file f;
-			files.insert(f);
-			memory_mapped_file_iterator I=files.cbegin();
-			Msg	("F address: %file_path, f in files: %file_path", &f, &(*I));
-			*/
 			Msg( "Loading file: %s", platform_type_file_path );
-
 			memory::ie_delete  		( platform_type_file_path );
 #ifdef IE_PLATFORM_WINDOWS
 #   undef platform_type_file_path
@@ -179,42 +149,6 @@ void	initialize	( pcstr dir )
 #endif  // #ifdef IE_FILESYSTEM_SUPPORTED
 
     Msg( "FS: %d files cached\nInit FileSystem %f sec\n", files.size( ), ( double )end_initializing / CLOCKS_PER_SEC );
-    /*here're two ways of how to read memory_mapped_file
-	 load memory_mapped_file into the virtual memory and then read
-	 line-by-line*/
-
-
-
-	 //ini_file   ifile	{    };
-	 //ifile.load			( "System.ltx" );
-	 //std::cout << ifile.r_float( "m_smt", "flt" );
-
- //   string128 buf{};
-	//reader*rdr	= r_open("gamedata/engine.log");
-
-	//while(!rdr->eof()) {
-	//	rdr->r_string(buf,sizeof(buf));
- //       std::cout<<buf<<'\n';
-	//}
-
-	//r_close		( rdr );
-//
-//
-//
-//	r_close		(rdr);
- //   memory::dump_memory_contents();
-	//reader* rdr = r_open("gamedata/engine.log");
-	//rdr->r_stringZ(0,0);
-    //r_close(rdr);
-
-    //or read from memory_mapped_file already loaded into the memory
-//	memory_mapped_file_iterator I=files.begin();
-//	reader rdr	= {(char*)MapViewOfFile((*I).m_mapped_file, FILE_MAP_READ, 0,0,0), (*I).size};
-//    while(!rdr.eof()) {
-//        rdr.r_string(buf,sizeof(buf));
-//        std::cout<<buf<<'\n';
-//    }
-
 }
 fs::reader*		r_open ( pcstr path )
 {
@@ -228,6 +162,5 @@ void	r_close	( fs::reader*& rdr )
 	memory::ie_delete( rdr );
 }
 
-} // namespace fsmgr
-} // names core
+} // namespace fs
 } // namespace inex

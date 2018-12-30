@@ -2,16 +2,10 @@
 #	define IE_MEMORY_H_INCLUDED
 
 namespace inex {
-namespace core {
 namespace memory {
 
-//DEBUG_MEMORY_MANAGER
-//
-
-// name is for MEMDBG
 pvoid   memory_allocate				( size_t size, pcstr name = 0 );
 void    memory_free					( pvoid pointer );
-// call these in memory_allocate\dealloc etc
 void    memory_register_pointer		( pvoid pointer, pcstr type );
 void    memory_unregister_pointer	( pvoid pointer );
 void    memory_check_pointer		( );
@@ -50,7 +44,6 @@ inline
 void	ie_delete ( type_allocated* const& obj );
 
 } // namespace memory
-} // names core
 } // namespace inex
 
 #include "ie_memory_inline.h"

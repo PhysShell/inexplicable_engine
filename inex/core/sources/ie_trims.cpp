@@ -4,7 +4,6 @@
 #include <inex/core/ie_core.h>
 
 namespace inex {
-namespace core {
 
 inline
 pstr	find_trim_character ( pstr src )
@@ -111,5 +110,4 @@ void	handle_comments ( pstr tgt )
 	}
 }
 
-} // namespace core
 } // namespace inex

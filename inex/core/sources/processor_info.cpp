@@ -1,17 +1,12 @@
 #include "stdafx.h"
-// implementation is different and is in 'platform' folder
-// there're only functions with the same realization
 #include "processor_info.h"
 #include "cpuid_internal.h"
 
 namespace inex {
-namespace core {
-namespace CPU {
+namespace threading {
 
 u32 max_cpuid_level;
 char vendor[ 12 ]; // not ASCIIZ !
-
-
 u32 model, brand, feat0, feat1;
 
 void	cpuid1 ( )
@@ -62,8 +57,8 @@ void	cpuid1 ( )
 void	get_cpu_feats  ( )
 {
 #ifdef _MSC_VER
-    log::Msg( "* CPU Features: %s", "NO feature detection in MSVC" );
-    log::Msg( "* CPU Cores: %d\n", 0 );
+    logging::Msg( "* CPU Features: %s", "Unknown Processor" );
+    logging::Msg( "* CPU Cores: %d\n", 0 );
 #else // #ifdef _MSC_VER
     cpuid1( );
     string128 fts { 0 };
@@ -113,10 +108,9 @@ void	get_cpu_feats  ( )
 		strcat( fts, ", MMX" );
 	}
 
-    log::Msg( "* CPU Features: %s", fts );
-    log::Msg( "* CPU Cores: %d\n", ( brand >> 16 ) & 0xFF );
+    logging::Msg( "* threading Features: %s", fts );
+    logging::Msg( "* threading Cores: %d\n", ( brand >> 16 ) & 0xFF );
 #endif // #ifdef _MSC_VER
 }
-} // namespace CPU
-} // namespace core
+} // namespace threading
 } // namespace inex

@@ -4,7 +4,6 @@
 #include <typeinfo>
 
 namespace inex {
-namespace core {
 namespace memory {
 
 template < typename type_allocated >
@@ -53,7 +52,7 @@ template < typename type_allocated >
 inline
 void	ie_delete ( type_allocated*& pointer )
 {
-    //log::Log("type_allocated*&obj:   ");
+    //logging::Log("type_allocated*&obj:   ");
     if ( pointer )
 	{
         pointer->~type_allocated	( );
@@ -66,7 +65,7 @@ template < typename type_allocated >
 inline
 void ie_delete ( type_allocated* const& obj )
 {
-    //log::Log("type_allocated*const&obj:   ");
+    //logging::Log("type_allocated*const&obj:   ");
 
     if ( obj )
 	{
@@ -77,6 +76,5 @@ void ie_delete ( type_allocated* const& obj )
 }
 
 } // namespace memory
-} // names core
 } // namespace inex
 #endif //#ifndef IE_MEMORY_INLINE_H_INCLUDED

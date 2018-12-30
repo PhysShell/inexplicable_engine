@@ -4,8 +4,7 @@
 #	include <inex/core/sources/ie_memory.h>
 
 namespace inex {
-namespace core {
-namespace fsmgr {
+namespace fs {
 
 //-----------------------------------------------------------------------------------
 // class directory_iterator
@@ -157,8 +156,7 @@ recursive_directory_iterator const	end ( recursive_directory_iterator const& ) n
 	return			recursive_directory_iterator( );
 }
 
-} // namespace fsmgr
-} // namespace core
+} // namespace fs
 } // namespace inex
 
 #endif // #ifndef FS_DIRECTORY_ITERATORS_INLINE_H_INCLUDED

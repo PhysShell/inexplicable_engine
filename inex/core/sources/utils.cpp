@@ -2,11 +2,7 @@
 #include <inex/utils.h>
 
 namespace inex {
-namespace core {
-namespace utils {
 
-} // namespace utils
-} // namespace core
 } // namespace inex
 
 //template <typename T>

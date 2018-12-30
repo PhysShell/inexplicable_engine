@@ -1,22 +1,23 @@
 #ifndef FS_DIRECTORY_ITERATORS_H_INCLUDED
 #   define FS_DIRECTORY_ITERATORS_H_INCLUDED
 
-#if ( IE_PLATFORM_WINDOWS )
-#	include	"fs_catalog_operations_win_impl.h"
-#elif ( IE_PLATFORM_LINUX ) // #if ( IE_PLATFORM_WINDOWS )
-#	include	"fs_catalog_operations_linux_impl.h"
-#else // #if ( IE_PLATFORM_WINDOWS )
-#	error please define your platform here
-#endif // #if ( IE_PLATFORM_WINDOWS )
+#	if ( IE_PLATFORM_WINDOWS )
+#		include	"fs_catalog_operations_win_impl.h"
+#	elif ( IE_PLATFORM_LINUX ) // #if ( IE_PLATFORM_WINDOWS )
+#		include	"fs_catalog_operations_linux_impl.h"
+#	else // #if ( IE_PLATFORM_WINDOWS )
+#		error please define your platform here
+#	endif // #if ( IE_PLATFORM_WINDOWS )
 
 #   include <inex/utils.h>
+//#	include <inex/fs_utils.h>
+#	include "fs_path_string.h"
 #   include "memory_shared_object.h"
-#   include "fs_path_string.h"
 #   include "fs_directory_entry.h"
+#	include "fs_directory_iterators.h"
 
 namespace inex {
-namespace core {
-namespace fsmgr {
+namespace fs {
 
 class directory_iterator
 {
@@ -50,8 +51,8 @@ public:
 	//-----------------------------------------------------------------------------------
 	// accessors
 	//-----------------------------------------------------------------------------------
-	directory_entry const&  operator *	                    ( ) const;
-    directory_entry&        operator *	                    ( ) ;
+	directory_entry const&  operator *	                ( ) const;
+    directory_entry&        operator *					( ) ;
 
 private:
     /* no need impl, could just call detail::function in function */
@@ -111,13 +112,12 @@ private:
 
 
     directory_entry											m_entry;
-	utils::stack< file_info >								m_directories;
+	stack< file_info >										m_directories;
     memory::shared_object< detail::directory_iterator_impl > m_impl;
     bool													m_end;
 }; // class recursive_directory_iterator
 
-} // namespace fsmgr
-} // namespace core
+} // namespace fs
 } // namespace inex
 
 #   include "fs_directory_iterators_inline.h"

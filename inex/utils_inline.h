@@ -6,8 +6,6 @@
 #define stack_specialized               stack< data_type >
 
 namespace inex {
-namespace core {
-namespace utils {
 
 TEMPLATE_SPECIALIZATION
 inline
@@ -85,11 +83,8 @@ data_type&	stack_specialized::back ( )
     return				m_last->value;
 }
 
-} // namespace utils
-} // namespace core
 } // namespace inex
 
 #undef              TEMPLATE_SPECIALIZATION
 #undef              stack_specialized
-
 #endif // #ifndef UTILS_INLINE_H_INCLUDED

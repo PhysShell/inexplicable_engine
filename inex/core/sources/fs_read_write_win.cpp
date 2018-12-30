@@ -4,7 +4,6 @@
 #include <errno.h>
 
 namespace inex {
-namespace core {
 namespace fs {
 
 reader::reader ( ) :
@@ -99,7 +98,7 @@ virtual_file_reader::~virtual_file_reader ( )
 
 
 
-	//log::Msg( "*! virtual_file_reader destructor called, addr: %p, sz: %d", this, sizeof( *this ) );
+	//logging::Msg( "*! virtual_file_reader destructor called, addr: %p, sz: %d", this, sizeof( *this ) );
 
 }
 
@@ -132,5 +131,4 @@ file_writer::file_writer( pcstr file_name ) :
 }
 
 } // namespace fs
-} // names core
 } // namespace inex

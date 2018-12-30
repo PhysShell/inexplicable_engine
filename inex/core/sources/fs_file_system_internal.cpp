@@ -4,8 +4,7 @@
 #include "fs_file_system_internal.h"
 
 namespace inex {
-namespace core {
-namespace fsmgr {
+namespace fs {
 
 # if IE_PLATFORM_LINUX
 
@@ -97,6 +96,5 @@ void	memory_mapped_file::close ( )
 
 #endif // #if IE_PLATFORM_WINDOWS
 
-} // namespace fsmgr
-} // names core
+} // namespace fs
 } // namespace inex

@@ -4,7 +4,6 @@
 #   define IE_USE_CRITICAL_SECTIONS_IN_SHARED_OBJECT
 
 namespace inex {
-namespace core {
 namespace memory {
 
 template < typename T >
@@ -64,7 +63,6 @@ template < typename T >
 bool	operator == ( shared_object< T > const& lhs,	shared_object< T > const& rhs );
 
 } // namespace memory
-} // namespace core
 } // namespace inex
 
 #	include "memory_shared_object_inline.h"

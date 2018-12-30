@@ -2,8 +2,6 @@
 #	define UTILS_H_INCLUDED
 
 namespace inex {
-namespace core {
-namespace utils {
 
 struct noncopyable
 {
@@ -44,8 +42,6 @@ private:
     Node*       m_last;
 }; // struct stack
 
-} // namespace utils
-} // namespace core
 } // namespace inex
 
 #include "utils_inline.h"

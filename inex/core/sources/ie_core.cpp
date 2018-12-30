@@ -131,25 +131,25 @@ void	initialize ( s32 command_line_argument_count, pstr* command_line_values )
         strcat			( command_line_parameters, command_line_values[ i ] );
     }
 
-    log::initialize		( 0 != strstr( command_line_parameters, "-nolog" ) );
+    logging::initialize		( 0 != strstr( command_line_parameters, "-nolog" ) );
     compute_build_id	( );
-    log::Msg( "\"Inexplicable Engine\" demo build %d", build_id );
-    log::Msg( "Engine compilation date : %s\n", __DATE__ );
+    logging::Msg( "\"Inexplicable Engine\" demo build %d", build_id );
+    logging::Msg( "Engine compilation date : %s\n", __DATE__ );
 
-    CPU::print_cpu_info		( );
-    CPU::get_cpu_feats		( );
+    threading::print_cpu_info		( );
+    threading::get_cpu_feats		( );
 
     string32        temp	{ };
     if ( command_line::get_value_by_key( "-data", temp ) )
 	{
-        fsmgr::initialize	( temp );
+        fs::initialize	( temp );
     }
 	else
 	{   
 #if IE_PLATFORM_WINDOWS
-		fsmgr::initialize	( "gamedata/" );
+		fs::initialize	( "gamedata/" );
 #elif IE_PLATFORM_LINUX // #if IE_PLATFORM_WINDOWS
-		fsmgr::initialize	( "./gamedata/" );
+		fs::initialize	( "./gamedata/" );
 #endif // #if IE_PLATFORM_WINDOWS
 	}
 	
@@ -157,11 +157,10 @@ void	initialize ( s32 command_line_argument_count, pstr* command_line_values )
 
 void	finalize ( )
 {
-    log::Msg ( "*** Destroying core ***" );
-    fsmgr::finalize				( );
-    memory::finalize       		( );
-    log::finalize       		( );
-
+    logging::Msg		( "*** Destroying core ***" );
+    fs::finalize		( );
+    memory::finalize    ( );
+    logging::finalize   ( );
 }
 
 } // names core

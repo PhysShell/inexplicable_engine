@@ -2,8 +2,7 @@
 #   define FS_DIRECTORY_ENTRY_INLINE_H_INCLUDED
 
 namespace inex {
-namespace core {
-namespace fsmgr {
+namespace fs {
 
 inline
 path_string&    directory_entry::path ( )
@@ -47,7 +46,6 @@ directory_entry::directory_entry ( const char* const file_path_raw ) :
 {
 }
 
-} // namespace fsmgr
-} // namespace core
+} // namespace fs
 } // namespace inex
 #endif // #ifndef FS_DIRECTORY_ENTRY_INLINE_H_INCLUDED

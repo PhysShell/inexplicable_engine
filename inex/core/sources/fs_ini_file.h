@@ -4,7 +4,7 @@
 #include <vector>
 // I should be using shared memory, buf for now, I don't
 namespace inex {
-namespace core { 
+namespace ini { 
 
 class ini_file
 {
@@ -40,7 +40,7 @@ public:
 				~ini_file	( );
 }; // class ini_file
 
-} // names core
+} // names ini
 } // namespace inex
 #endif //#ifndef FS_INI_FILE_H_INCLUDED
 

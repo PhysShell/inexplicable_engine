@@ -2,8 +2,7 @@
 #   define FS_PATH_STRING_H_INCLUDED
 
 namespace inex {
-namespace core {
-namespace fsmgr {
+namespace fs {
 
 class path_string
 {
@@ -12,26 +11,26 @@ public:
 //	static const s8	separator		=				FS_SEPARATOR;
 public:
 									path_string		( );
-    explicit    					path_string		( const char* const file_path_raw );
+    explicit    					path_string		( pcstr const file_path_raw );
 									path_string		( path_string const& rhs );
 									~path_string	( ) =   default;
 
-                void                operator /      ( const char* const file_path_raw );
+                void                operator /      ( pcstr const file_path_raw );
 
-				const char* const	c_str           ( )  const;
+				pcstr const	c_str           ( )  const;
 
 				#if IE_PLATFORM_WINDOWS
 				void				disappend_star	( )
 									{
 										u32 string_length		= strlen ( m_string_value );
-										//inex::core::log::Msg( "path before:\t%s\n", m_string_value );
+										//inex::core::logging::Msg( "path before:\t%s\n", m_string_value );
 										ASSERT_S( * ( m_string_value + string_length ) != '*'  );
 										* ( m_string_value + string_length - 1  )	= 0;
-										//inex::core::log::Msg( "path after:\t%s\n", m_string_value );
+										//inex::core::logging::Msg( "path after:\t%s\n", m_string_value );
 									}
 				#endif // #if IE_PLATFORM_WINDOWS
 
-                const char* const   file_name       ( ) const
+                pcstr const   file_name       ( ) const
                 {
                     const char* substring;
                     if ( !( substring = strrchr( m_string_value, '/') ) )
@@ -53,7 +52,7 @@ public:
                 }
 
 				pcstr 				absolute        ( )  const;
-                void                append          ( const char* const file_path_raw );
+                void                append          ( pcstr const file_path_raw );
 
                 bool                is_directory    ( ) const
                                     {
@@ -74,8 +73,7 @@ private:
 	char	m_string_value          [ IE_MAX_PATH + 1 ];
 }; // class path_string
 
-} // namespace fsmgr
-} // namespace core
+} // namespace fs
 } // namespace inex
 
 #   include "fs_path_string_inline.h"

@@ -2,8 +2,7 @@
 #include "fs_directory_iterators.h"
 
 namespace inex {
-namespace core {
-namespace fsmgr {
+namespace fs {
 
 //-----------------------------------------------------------------------------------
 // class directory_iterator
@@ -44,10 +43,10 @@ recursive_directory_iterator::recursive_directory_iterator ( const char* const f
     }
 
 
-	//log::Msg( "dirs:\n" );
+	//logging::Msg( "dirs:\n" );
 	//while ( !m_directories.is_empty( ) )
 	//{
-	//	log::Msg( "%s\n", m_directories.back( ).m_p );
+	//	logging::Msg( "%s\n", m_directories.back( ).m_p );
 	//	m_directories.pop( );
 	//}
 
@@ -138,6 +137,5 @@ void    recursive_directory_iterator::read_subdirectories ( const char* const fi
     }
 }
 
-} // namespace fsmgr
-} // namespace core
+} // namespace fs
 } // namespace inex

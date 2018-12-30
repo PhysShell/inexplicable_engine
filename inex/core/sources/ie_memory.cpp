@@ -6,15 +6,13 @@
 #include <memory>
 ////#include "logger.h"
 namespace inex {
-namespace core {
 namespace memory {
-
-using inex::core::log::Msg;
 
 //#define DEBUG_MEMORY_MANAGER
 
 // GCC's typeid string needs to be demangled first
 // to get readable string
+	using logging::Msg;
 #ifdef __GNUG__
 #   include <cxxabi.h>
 #   include <stdlib.h>
@@ -165,5 +163,4 @@ void	dump_memory_contents ( )
     Msg( "----memory END-------" );
 }
 } // namespace memory
-} // names core
 } // namespace inex

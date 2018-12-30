@@ -9,14 +9,7 @@
 
 
 namespace inex {
-namespace core {
-namespace fsmgr {
-
-namespace detail {
-    struct directory_iterator_impl;
-} // namespace detail
-
-
+namespace fs {
 namespace detail {
 
 struct directory_iterator_impl
@@ -124,8 +117,7 @@ bool    read_next_entry ( directory_iterator_impl* impl_representation )
 }
 
 } // namsepace detail
-} // namespace fsmgr
-} // namespace core
+} // namespace fs
 } // namespace inex
 
 #endif // #ifndef FS_CATALOG_OPERATIONS_LINUX_IMPL_H_INCLUDED

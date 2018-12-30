@@ -16,10 +16,9 @@
 #endif // #if IE_PLATFORM_LINUX
 
 namespace inex {
-namespace core {
 namespace debug {
 
-using inex::core::log::Msg;
+using inex::logging::Msg;
 
 void 	dump_call_stack_trace ( )
 {
@@ -72,12 +71,12 @@ dump						:
 		RpcExStackTraceEngine	call_stack;
 		call_stack.Initialize	( );
 		if ( RpcExStackTraceEngine::InitializationState::IS_Done == call_stack.GetInitializationState( ) )
-			;//inex::core::log::Msg ( "Call Stack Engine Initialized..." );
+			;//inex::core::logging::Msg ( "Call Stack Engine Initialized..." );
 		string2048				buf;
 		if ( S_OK == call_stack.WalkStack ( buf, sizeof( buf ), 8u ) )
-			inex::core::log::Msg( "%s", buf );
+			logging::Msg( "%s", buf );
 		else
-			inex::core::log::Msg( "!Unable to get current call stack trace." );
+			logging::Msg( "!Unable to get current call stack trace." );
 #endif // #if IE_PLATFORM_LINUX
 }
 
@@ -122,8 +121,8 @@ void	fatal ( pcstr 	file,
 				...
 			)
 {
-    static	critical_section	crit_section	;
-			scope_locker		lock			{ crit_section };
+    static	threading::critical_section	crit_section	;
+			threading::scope_locker		lock			{ crit_section };
 
     Msg( "\nAssertion failed!\n"
 		"File:\t\t\t%s", file );
@@ -152,10 +151,10 @@ void	fatal ( pcstr 	file,
     }
 	else
 	{
-        log::put_string		( "Description:\t<no description>\n" );
+        logging::put_string		( "Description:\t<no description>\n" );
     }
 	// destroy stuff before ?
-	log::put_string			( "***\nStack Dump:\n***\n" );
+	logging::put_string			( "***\nStack Dump:\n***\n" );
 	dump_call_stack_trace	( );
 	memory::dump_memory_contents( );
 	#pragma todo ( "should memory release all its contents or just leave it to os?")
@@ -163,5 +162,4 @@ void	fatal ( pcstr 	file,
 }
 
 } // namespace debug
-} // names core
 } // namespace inex

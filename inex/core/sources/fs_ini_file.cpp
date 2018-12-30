@@ -8,7 +8,7 @@
 #include "ie_memory.h"
   
 namespace inex {
-namespace core {
+namespace ini {
 
 ini_file::~ini_file ( )
 {
@@ -31,7 +31,7 @@ ini_file::~ini_file ( )
 
 void	ini_file::load ( pcstr fname )
 {
-	fs::reader *r			= { fsmgr::r_open( fname ) };
+	fs::reader *r			= { fs::r_open( fname ) };
 	ASSERT_D( r, "Reader was set to 0!" );
 	section* current			= nullptr;
 
@@ -101,7 +101,7 @@ void	ini_file::load ( pcstr fname )
     }
 
 	m_contents.insert( m_contents.end( ), current );
-	fsmgr::r_close( r );
+	fs::r_close( r );
 
 	for ( root_const_iterator	it	=	m_contents.begin( );
 								it	!=	m_contents.end( );
@@ -157,5 +157,5 @@ float	ini_file::r_float ( pcstr sect,pcstr key ) const
 	return				static_cast< float >( std::atof( r_string( sect, key ) ) );
 }
 
-} // names core
+} // namespace ini
 } // namespace inex

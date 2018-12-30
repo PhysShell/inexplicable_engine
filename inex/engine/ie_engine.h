@@ -21,8 +21,8 @@ protected:
 }; // struct engine_base
 
 class engine : 
-			core::utils::nonassignable, 
-			core::utils::noncopyable, 
+			inex::nonassignable, 
+			inex::noncopyable, 
 			public engine_base
 {
 public:

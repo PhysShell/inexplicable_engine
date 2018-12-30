@@ -2,8 +2,7 @@
 #	define FS_FILE_SYSTEM_INTERNAL_H_INCLUDED
 
 namespace inex {
-namespace core {
-namespace fsmgr {
+namespace fs {
 
 struct memory_mapped_file
 {
@@ -55,8 +54,7 @@ struct memory_mapped_file_predicate
 //	return f1.size<f2.size?1:0;
 //}
 
-} // namespace fsmgr
-} // names core
+} // namespace fs
 } // namespace inex
 
 #endif // #ifndef FS_FILE_SYSTEM_INTERNAL_H_INCLUDED

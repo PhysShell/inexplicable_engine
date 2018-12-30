@@ -2,7 +2,6 @@
 #	define FS_READ_WRITE_H_INCLUDED
 
 namespace inex {
-namespace core {
 namespace fs {
 
 class reader_base
@@ -26,7 +25,7 @@ public:
 							reader				( reader const& ) = delete;
 	virtual					~reader				( )
 							{
-								//log::Msg( "*! reader destructor called, addr: %p, sz: %d", this, sizeof( *this ) );
+								//logging::Msg( "*! reader destructor called, addr: %p, sz: %d", this, sizeof( *this ) );
 							}
 
 
@@ -77,7 +76,7 @@ public:
 					writer		( )	{ }
 	virtual			~writer		( )
 					{
-						//log::Msg( "!*	Freeing writer allocated in %p and of size: %d", this, sizeof( writer ) );
+						//logging::Msg( "!*	Freeing writer allocated in %p and of size: %d", this, sizeof( writer ) );
 					}
 	virtual void	w			( pcstr src ) = 0;
 
@@ -98,7 +97,7 @@ public:
 		inline						~file_writer	( ) override
 									{
 									/*close( );*/
-										//log::Msg( "!*	Freeing file_writer allocated in %p and of size: %d", this, sizeof( file_writer ) );
+										//logging::Msg( "!*	Freeing file_writer allocated in %p and of size: %d", this, sizeof( file_writer ) );
 									}
 				file_writer							( file_writer const& )  =   delete;
 				file_writer&    operator=			( file_writer const& )  =   delete;
@@ -110,7 +109,6 @@ public:
 }; // class file_writer
 
 } // namespace fs
-} // namespace core
 } // namespace inex
 
 
