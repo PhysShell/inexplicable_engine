@@ -11,6 +11,8 @@ protected:
 	INEX_DECLARE_PURE_VIRTUAL_DESTRUCTOR( reader_base )
 }; // class reader_base
 
+
+
 class reader :
 	public reader_base
 {

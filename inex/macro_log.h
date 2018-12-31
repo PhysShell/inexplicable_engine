@@ -14,7 +14,7 @@
 //#	endif 
 //
 //#	define LOGGING_SENSITIVITY					log_trace;
-#	define LOGGER( ... )						inex::core::logging::Msg( __VA_ARGS__ )
+#	define LOGGER( ... )						inex::logging::Msg( __VA_ARGS__ )
 
 
 

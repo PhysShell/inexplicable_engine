@@ -8,14 +8,18 @@
 #	endif // #ifdef _MSC_VER
 
 #	ifdef _MSC_VER
-#		define INEX_PUSH_WARNINGS( )		__pragma ( warning ( push ) )
-#		define INEX_DISABLE_WARNING( x )	__pragma ( warning ( disable : x ) )
-#		define INEX_POP_WARNINGS( )		__pragma ( warning ( pop ) )
 /** Check if there's such a thing in GCC/CLang
  * #pragma clang diagnostic push
  * #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
  * #pragma clang diagnostic pop
- */
+**/
+#		define INEX_PUSH_WARNINGS( )		        __pragma ( warning ( push ) )
+#		define INEX_DISABLE_WARNING( x )	        __pragma ( warning ( disable : x ) )
+#		define INEX_POP_WARNINGS( )		            __pragma ( warning ( pop ) )
+#       define COMPILER_PURE_VIRTUAL_DESTRUCTOR( x ) virtual ~x( ) = 0 { }
+#   else // #ifdef _MSC_VER
+#       define COMPILER_PURE_VIRTUAL_DESTRUCTOR( x ) virtual ~x( ) { }
+
 #	endif //#ifdef _MSC_VER
 
 // don't forget that conventions were removed from msvc64 ( or not only )

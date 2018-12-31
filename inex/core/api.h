@@ -6,7 +6,7 @@
 #ifndef INEX_CORE_API_H_INCLUDED
 #	define INEX_CORE_API_H_INCLUDED
 
-#	pragma TODO( "handle static library core" )
+#	pragma message( "handle static library core" )
 
 // this only defined in windows
 #   ifdef IECORE_EXPORTS
