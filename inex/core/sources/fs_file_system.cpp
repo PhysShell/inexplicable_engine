@@ -10,6 +10,7 @@
 #endif  // #ifdef INEX_FILESYSTEM_SUPPORTED
 
 #include <set>
+#include <ctime>
 #include "ie_memory.h"
 #include "fs_directory_iterators.h"
 #include <inex/fs_utils.h>

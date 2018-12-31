@@ -2,7 +2,7 @@
 #	define __RPC_EX_STACK_TRACE_ENGINE_INCLUDED__
 
 #	include <atlcore.h>
-#	include <DbgHelp.h>
+#	include <um/DbgHelp.h>
 
 // This call stack class is taken from rsdn.ru
 /**
@@ -30,7 +30,7 @@ public:
 private:
     /**
      * HMODULE of the "dbghelp.dll"
-     * We're loading "dbghelp.dll" dynamically to avoid 
+     * We're loading "dbghelp.dll" dynamically to avoid
      * dependency from "dbghelp.dll" because if dependency
      * is present loading RpcExFramework library will fail
      * if "dbghelp.dll" is absent.
@@ -50,7 +50,7 @@ private:
      *   We must do some work in the WalkStack implementation
      *   only if initialization success.
      *   We must not do some work in the Initialize only
-     *   if Initialize has not been called before. 
+     *   if Initialize has not been called before.
      */
     InitializationState m_InitializationState;
 
@@ -63,7 +63,7 @@ private:
     //
     // Pointers to the "dbghelp.dll" functions.
     //
-    
+
     // SymGetLineFromAddr64()
     typedef BOOL (__stdcall *tfnSymGetLineFromAddr64)(
         HANDLE hProcess,
@@ -97,11 +97,11 @@ private:
     tfnSymGetOptions pfnSymGetOptions;
 
     // StackWalk64()
-    typedef BOOL (__stdcall *tfnStackWalk64)( 
-        DWORD MachineType, 
+    typedef BOOL (__stdcall *tfnStackWalk64)(
+        DWORD MachineType,
         HANDLE hProcess,
-        HANDLE hThread, 
-        LPSTACKFRAME64 StackFrame, 
+        HANDLE hThread,
+        LPSTACKFRAME64 StackFrame,
         PVOID ContextRecord,
         PREAD_PROCESS_MEMORY_ROUTINE64 ReadMemoryRoutine,
         PFUNCTION_TABLE_ACCESS_ROUTINE64 FunctionTableAccessRoutine,
@@ -116,7 +116,7 @@ private:
         DWORD UndecoratedLength,
         DWORD Flags);
     tfnUnDecorateSymbolName pfnUnDecorateSymbolName;
-    
+
     // SymFunctionTableAccess64()
     typedef PVOID (__stdcall *tfnSymFunctionTableAccess64)(
         HANDLE hProcess,

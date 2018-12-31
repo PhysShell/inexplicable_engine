@@ -152,7 +152,7 @@ void	finalize ( )
 
 void	dump_memory_contents ( )
 {
-    Msg( "----memory contents----" );
+    Msg( "---------------global memory stats---------------" );
     for ( memory_debug_iterator it	= memory_contents.begin( );
 								it	!= memory_contents.end( );
 								++it )
@@ -160,7 +160,7 @@ void	dump_memory_contents ( )
         Msg( "Type: %s, addr: %p", ( * it).type_name, ( * it).address );
     }
 
-    Msg( "----memory END-------" );
+    Msg( "---------------global memory stats---------------" );
 }
 } // namespace memory
 } // namespace inex

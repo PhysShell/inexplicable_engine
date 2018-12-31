@@ -1,9 +1,11 @@
 #ifndef UTILS_INLINE_H_INCLUDED
 #	define UTILS_INLINE_H_INCLUDED
 
-#include "utils.h"
-#define TEMPLATE_SPECIALIZATION         template < typename data_type >
-#define stack_specialized               stack< data_type >
+#   include "utils.h"
+#   include <inex/core/sources/ie_memory.h>
+
+#   define TEMPLATE_SPECIALIZATION         template < typename data_type >
+#   define stack_specialized               stack< data_type >
 
 namespace inex {
 

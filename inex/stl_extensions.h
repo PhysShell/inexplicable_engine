@@ -4,7 +4,7 @@
 #include <vector>
 #include <inex/core/sources/ie_memory.h>
 template <typename T>
-class ie_vector : 
+class ie_vector :
 	public std::vector< T, std::allocator< T > >
 {
 public:
@@ -83,7 +83,7 @@ public:
 	 pointer			address				( reference x ) const 				{ return &x; 				}
 	 const_pointer		address				( const_reference x ) const			{ return &x; 				};
 											// for some reason, nullptr doesn't fit here, so use an ought
-	 pointer			allocate			( size_type n, const_pointer = 0 )	{ return inex::core::memory::ie_allocate< value_type >( n ); }
+	 pointer			allocate			( size_type n, const_pointer = 0 )	{ return inex::memory::ie_allocate< value_type >( n ); }
 	 void				deallocate			( pointer p, size_type = 0 ) 		{ std::free( p ); 			}
 	 void				construct			( pointer p, value_type const& x )	{ new ( p ) value_type( x );}
 	 void				finalize				( pointer p )						{ p->~value_type( ); 		}
@@ -120,8 +120,8 @@ template < class T1, class T2 >
 inline
 bool	operator == ( 	ie_allocator< T1 > const&,
 						ie_allocator< T2 > const& ) noexcept
-{ 
-	return 1; 
+{
+	return 1;
 }
 
 

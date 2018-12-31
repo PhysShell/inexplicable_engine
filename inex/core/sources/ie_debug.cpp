@@ -3,16 +3,14 @@
 #include "ie_debug.h"
 #include "ie_memory.h"
 
-#if INEX_PLATFORM_LINUX 
+#if INEX_PLATFORM_LINUX
 
-#include <cxxabi.h>
-#include <signal.h>
-#include <execinfo.h>
+#   include <cxxabi.h>
+#   include <signal.h>
+#   include <execinfo.h>
 
-#elif ( INEX_PLATFORM_WINDOWS_32 ) ^ ( INEX_PLATFORM_WINDOWS_64 )
-
-#include "RpcExStackTraceEngine.h"
-
+#elif  !defined (__MINGW32_VERSION ) && ( INEX_PLATFORM_WINDOWS_32 ) ^ ( INEX_PLATFORM_WINDOWS_64 )
+#   include "RpcExStackTraceEngine.h"
 #endif // #if INEX_PLATFORM_LINUX
 
 namespace inex {
@@ -67,7 +65,7 @@ dump						:
 			}
 		}
 	}
-#elif ( INEX_PLATFORM_WINDOWS_32 ) ^ ( INEX_PLATFORM_WINDOWS_64 )
+#elif !defined (__MINGW32_VERSION ) && ( INEX_PLATFORM_WINDOWS_32 ) ^ ( INEX_PLATFORM_WINDOWS_64 ) // #if INEX_PLATFORM_LINUX
 		RpcExStackTraceEngine	call_stack;
 		call_stack.Initialize	( );
 		if ( RpcExStackTraceEngine::InitializationState::IS_Done == call_stack.GetInitializationState( ) )
@@ -77,6 +75,8 @@ dump						:
 			logging::Msg( "%s", buf );
 		else
 			logging::Msg( "!Unable to get current call stack trace." );
+#else // #if INEX_PLATFORM_LINUX
+        logging::Msg( "[Error]: callstack-aquiring mechanism not supported." );
 #endif // #if INEX_PLATFORM_LINUX
 }
 
