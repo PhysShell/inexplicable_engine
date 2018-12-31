@@ -5,112 +5,82 @@
 namespace inex {
 namespace threading {
 
-u32 max_cpuid_level;
-char vendor[ 12 ]; // not ASCIIZ !
-u32 model, brand, feat0, feat1;
-
-void	cpuid1 ( )
+void	aquire_processor_information ( )
 {
-#ifdef _MSC_VER
-#	pragma message ( "NO CPUID for MSVC" )
-#else // #ifdef _MSC_VER
-    u32 eax, ebx, ecx, edx;
+	s32 registers_information[ 4 ]	= { };
+	// read vendor string
+	detail::cpuid_fill( registers_information, static_cast< s32 >( 0x80000000 ) );
 
-    asm volatile
-    (
-        "movl $0, %%eax\n\t"
-        "cpuid\n\t"
-        : "=a"( eax ),"=b"( ebx ),"=c"( ecx ),"=d"( edx )
-    );
+	s8 vendor[ 13 ]					= { 0 };
+    *( reinterpret_cast< s32* >( vendor ) )		= registers_information[ 1 ]; // EBX
+    *( reinterpret_cast< s32* >( vendor ) + 1 ) = registers_information[ 3 ]; // EDX
+    *( reinterpret_cast< s32* >( vendor ) + 2 ) = registers_information[ 2 ]; // ECX
+    * ( vendor + 12 )				= 0;
 
-    max_cpuid_level = eax;
-
-    for ( int i = 0; i < 4; ++i)
+	s8 brand[ 0x40 ];
+	u32 extended_information			=  static_cast< u32 >( registers_information[ 0 ] );
+	for ( u32 i = 0x80000000; i <= extended_information; ++i )
 	{
-		vendor[ 0 + i ] = char( ( ebx >> ( 8 * i ) ) & 0xFF );
+		detail::cpuid_fill     		( registers_information, static_cast< s32 >( i ) );
+		switch ( i )
+		{
+			case 0x80000002: memcpy ( brand,		registers_information, sizeof( registers_information ) ); break;
+			case 0x80000003: memcpy ( brand + 16,	registers_information, sizeof( registers_information ) ); break;
+			case 0x80000004: memcpy ( brand + 32,	registers_information, sizeof( registers_information ) ); break;
+		}
 	}
 
-    for ( int i = 0; i < 4; ++i)
+	detail::cpuid_fill( registers_information, 1 ); // read cpu features
+    string128 features_available { 0 };
+    if ( registers_information[ 2 ] & ( 1 << 0 ) )
 	{
-		vendor[ 4 + i ]	= char( ( edx >> ( 8 * i ) ) & 0xFF );
+		strcat( features_available, "SSE3" );
 	}
 
-    for ( int i = 0; i < 4; ++i)
+    if ( registers_information[ 2 ] & ( 1 << 9 ) )
 	{
-        vendor[ 8 + i ] = char( ( ecx >> ( 8 * i ) ) & 0xFF );
+		strcat( features_available,", SSSE3" );
 	}
 
-    asm volatile
-    (
-        "movl $1,%%eax\n\t"
-        "cpuid\n\t"
-        :"=a"( eax ),"=b"( ebx ),"=c"( ecx ),"=d"( edx )
-    );
+    if ( registers_information[ 2 ] & ( 1 << 19 ) )
+	{
+		strcat( features_available,", SSE4.1" );
+	}
 
-    model			= eax;
-    brand			= ebx;
-    feat0			= ecx;
-    feat1			= edx;
-#endif // #ifdef _MSC_VER
+    if ( registers_information[ 2 ] & ( 1 << 20 ) )
+	{
+		strcat( features_available, ", SSE4.2" );
+	}
+
+    if ( registers_information[ 3 ] & ( 1 << 0 ) )
+	{
+		strcat( features_available,", FPU" );
+	}
+
+    if ( registers_information[ 3 ] & ( 1 << 25 ) )
+	{
+		strcat( features_available,", SSE" );
+	}
+
+    if ( registers_information[ 3 ] & ( 1 << 26 ) )
+	{
+		strcat( features_available,", SSE2" );
+	}
+
+    if ( registers_information[ 3 ] & ( 1 << 28 ) )
+	{
+		strcat( features_available,", HTT" );
+	}
+
+    if ( registers_information[ 3 ] & ( 1 << 23 ) )
+	{
+		strcat( features_available, ", MMX" );
+	}
+
+    logging::Msg( "* Detected CPU: %s [%s]", brand, vendor );
+    logging::Msg( "* CPU Features: %s", features_available );
+    logging::Msg( "* CPU Cores: %d\n", ( registers_information[ 1 ] >> 16 ) & 0xFF );
 }
 
-void	get_cpu_feats  ( )
-{
-#ifdef _MSC_VER
-    logging::Msg( "* CPU Features: %s", "Unknown Processor" );
-    logging::Msg( "* CPU Cores: %d\n", 0 );
-#else // #ifdef _MSC_VER
-    cpuid1( );
-    string128 fts { 0 };
-
-    if ( feat0 & ( 1 << 0 ) )
-	{
-		strcat( fts, "SSE3" );
-	}
-
-    if ( feat0 & ( 1 << 9 ) )
-	{
-		strcat( fts,", SSSE3" );
-	}
-
-    if ( feat0 & ( 1 << 19 ) )
-	{
-		strcat( fts,", SSE4.1" );
-	}
-
-    if ( feat0 & ( 1 << 20 ) )
-	{
-		strcat( fts, ", SSE4.2" );
-	}
-
-    if ( feat1 & ( 1 << 0 ) )
-	{
-		strcat( fts,", FPU" );
-	}
-
-    if ( feat1 & ( 1 << 25 ) )
-	{
-		strcat( fts,", SSE" );
-	}
-
-    if ( feat1 & ( 1 << 26 ) )
-	{
-		strcat( fts,", SSE2" );
-	}
-
-    if ( feat1 & ( 1 << 28 ) )
-	{
-		strcat( fts,", HTT" );
-	}
-
-    if ( feat1 & ( 1 << 23 ) )
-	{
-		strcat( fts, ", MMX" );
-	}
-
-    logging::Msg( "* threading Features: %s", fts );
-    logging::Msg( "* threading Cores: %d\n", ( brand >> 16 ) & 0xFF );
-#endif // #ifdef _MSC_VER
-}
 } // namespace threading
 } // namespace inex

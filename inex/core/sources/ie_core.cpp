@@ -136,8 +136,8 @@ void	initialize ( s32 command_line_argument_count, pstr* command_line_values )
     logging::Msg( "\"Inexplicable Engine\" demo build %d", build_id );
     logging::Msg( "Engine compilation date : %s\n", __DATE__ );
 
-    threading::print_cpu_info		( );
-    threading::get_cpu_feats		( );
+    threading::aquire_processor_information		( );
+    //threading::get_cpu_feats		( );
 
     string32        temp	{ };
     if ( command_line::get_value_by_key( "-data", temp ) )
@@ -145,14 +145,14 @@ void	initialize ( s32 command_line_argument_count, pstr* command_line_values )
         fs::initialize	( temp );
     }
 	else
-	{   
+	{
 #if INEX_PLATFORM_WINDOWS
 		fs::initialize	( "gamedata/" );
 #elif INEX_PLATFORM_LINUX // #if INEX_PLATFORM_WINDOWS
 		fs::initialize	( "./gamedata/" );
 #endif // #if INEX_PLATFORM_WINDOWS
 	}
-	
+
 }
 
 void	finalize ( )
