@@ -7,6 +7,15 @@
 #		endif // #if !defined(_MT)
 #	endif // #ifdef _MSC_VER
 
+
+#	ifdef _WIN32
+#		define INEX_DLL_IMPORT	__declspec ( dllimport )
+#		define INEX_DLL_EXPORT	__declspec ( dllexport )
+#	else // #ifdef _WIN32
+#		define INEX_DLL_IMPORT	__attribute__ ( ( dllimport ) )
+#		define INEX_DLL_EXPORT	__attribute__ ( ( dllexport ) )
+#	endif // #ifdef _WIN32
+
 #	ifdef _MSC_VER
 /** Check if there's such a thing in GCC/CLang
  * #pragma clang diagnostic push

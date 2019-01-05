@@ -9,9 +9,11 @@
 // os_extensions
 
 // 
-#	include <inex/core/api.h>
 
 #   include <inex/macro_extensions.h>
+
+#	include <inex/core/api.h>
+
 #   include <inex/types.h>
 #   include <inex/core/sources/ie_debug.h>
 #   include <inex/core/sources/logger.h>

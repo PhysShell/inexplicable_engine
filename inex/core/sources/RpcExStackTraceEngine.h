@@ -2,7 +2,7 @@
 #	define __RPC_EX_STACK_TRACE_ENGINE_INCLUDED__
 
 #	include <atlcore.h>
-#	include <um/DbgHelp.h>
+#	include <DbgHelp.h>
 
 // This call stack class is taken from rsdn.ru
 /**

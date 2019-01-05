@@ -46,6 +46,35 @@ private:
 
 } // namespace inex
 
+template < typename Type, int max_count >
+class fixed_array
+{
+public:
+					fixed_array		( )
+					{
+					}
+
+	Type&			operator [ ]( int i )
+					{
+						return	m_data[ i ];
+					}
+	// why don't use Type const& operator [ ] ( int i ) const?
+	Type const&		elem		( int i ) const
+					{
+						return	m_data[ i ];
+					}
+
+	void			set_elem	( int i, Type const& other )
+                    {
+                        m_data[ i ]         = other;
+                    }
+
+	explicit    	operator int*( ) { return &m_data[ 0 ]; }
+
+private:
+	Type	m_data	[ max_count ];
+}; // class fixed_array
+
 #include "utils_inline.h"
 
 #endif // #ifndef UTILS_H_INCLUDED
