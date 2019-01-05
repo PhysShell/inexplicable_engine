@@ -6,11 +6,38 @@ SergeyN19
 Просто жизнь из крутого занятия превратилась в фигню для неудачников.
 																	gamedev.ru ( 2018 )
 
+
+																	одночлены это где нету +\-, иначе это многочлен
+																
+это про квадраты из отрицательных чисел и представление про целых дробными: В поле целых чисел рациональных чисел не существует, поэтому так делать нельзя.
+и в общем случае x^1/3 != scube( x )
+операция возведения в степень не коммутативна. То есть:
+(a^n)^k не равно (a^k)^n для любого a, k, n. Поэтому, продемонстрированный вами приём, последовательного возведения в четную степень и извлечение четного корня того же порядка - не корректен. Легко показать, что он сводится к нахождению модуля (по определению). Но, если модуль определен для любого действительного числа, то квадратный корень, - только для неотрицательных действительных чисел.																	
+																	
+																	
+																	
+																
+Type .\vcpkg install glew:x64-windows-static This tells the packager to build a static
+library of the project for x64 machine. Repeat for freeglut. Your static libraries are
+ready for manual linking. Under the vcpkg\ installed\x64-windows-static\ , you can
+find subdirectories viz lib ( your lib are here), and include directory contains your
+glew include files.
+glew32_static.lib;glfw3_static.lib;freeglut.lib;
+
+ there are only three portable uses for volatile. I'll summarize them here:
+
+
+marking a local variable in the scope of a setjmp so that the variable does not rollback after a longjmp.
+memory that is modified by an external agent or appears to be because of a screwy memory mapping
+signal handler mischief
+
+																
 Сразу посоветую задуматься о выноске окна на отдельный поток.														
 												Надо инпут записывать в треде окна, а потом обрабатывать в треде логики. 
 Если так не делать, то есть вероятность пропустить быстрое нажатие клавиши между двумя кадрами (при низком FPS), а с двумя потоками ни одно нажатие не пройдет мимо.
 												
-																	
+	http://www.wtfpl.net/ WTFPL лучшая лицензия. GPL это если заюзал, то обязан открыть свой когда
+		LGPL это только открыть код библиотек, котораые юзаешь, е сли их изменил
 how to output text: 
 1. measure the text with XTextWidth()
 2. use XCreateWindow to create a window or subwindow with padding for 

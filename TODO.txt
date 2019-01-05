@@ -22,7 +22,8 @@
 		*	OPT:		_cpuid - features and cores
 		*	OPT:		корректно пересесть на pure gnuc, ( чекать версию, а не PURE_GNUC! )
 		*	NEW:		сделал окно для сатисфакции, без мэин цикла его вставлять в архитектуру движка рановато
-
+		* 	NEW:		opengl: freeglut, glew, glfw
+		
 ***[Shell]*** In progress:
 -------------------------
 		1. 		shared_ptr...
@@ -30,15 +31,16 @@
 		5.		отформатировать кроссплатформ код, пока нагло стоят заглушки
 		6.		стек дамп.. пока только линукс и вин32 ( msvc only )
 		7.		гитхаб
+		8.		static linkage of GL's, msvcx64 only now
 		------------- не нравится и вааще впадло ---------------------
-		---P	переписать fs
+		---P	
 		--------------------------------------------------------------
 		
 		bugs/features:
 		*	BUG: использовать биты char [] в get_cpu_fts()
 
 		to think:
-		*	use pointer to null-terminated string instead of std::string
+		* 	threading: atomic isn't always int. but can use static_asserts to determine if it is or dunno
 		*	в инициализации фс, под линуксом можно юзать оба варианта: "gamedata/", "./gamedata/"
 
 ***[Shell]*** TODO:
@@ -57,13 +59,10 @@
 		* сделать классы для лога\рендердевайса, а вдруг их понадобится два
 		* использовать полный список namespaces, inex::core::log, а не просто лог
 		* сделать Msg ( и lowercase ) глобальным для inex namespace
-		* вынести все инлайны в *_inline.h файлы
+		* вынести все инлайны в *_inline.h файлы	-> не всегда это лучший кейс
 		* debug memory manager
 		* copy-on-write/shared str
-		* захерачить стек вызовов ??
 		* PDB
-		* platform-specific IWindow (see docs about PSC (platform-specific code))
-		* attach opengl
 		* leak detector or something
 
 		bugs/features:
@@ -99,6 +98,8 @@
 			https://preshing.com
 		* 	прочитать про fold
 
+		https://nazva.net/; http://www.braingames.ru; https://leetcode.com/; https://www.careercup.com/
+		
 		очень большой кусок:
 			window, engine api...
 		
