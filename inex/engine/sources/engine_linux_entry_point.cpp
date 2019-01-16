@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include <inex/engine/ie_engine.h>
 #include <inex/core/ie_core.h>
+#include <inex/render/core/sources/render_include.h>
 
 namespace inex {
 namespace platform {
