@@ -12,6 +12,7 @@ static threading::critical_section	log_section		;
 
 void 	Msg ( pcstr format, ... )
 {
+
     threading::scope_locker crit_sect( log_section );
     if ( !fwriter )
 	{
@@ -39,7 +40,7 @@ void 	Msg ( pcstr format, ... )
 
 bool	put_string ( pcstr msg )
 {
-    threading::scope_locker crit_sect	( log_section );
+    //threading::scope_locker crit_sect	( log_section );
     if ( fwriter )
 	{
         fwriter->w( msg );
