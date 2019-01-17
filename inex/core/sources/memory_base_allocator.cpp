@@ -12,7 +12,5 @@ base_allocator::base_allocator ( ) :
 {
 }
 
-void	base_allocator::initialize (  )
-
 } // namespace ui
 } // namespace memory

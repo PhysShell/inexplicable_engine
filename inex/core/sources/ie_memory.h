@@ -4,14 +4,20 @@
 namespace inex {
 namespace memory {
 
+void 	preinitialize				( );
+void 	initialize					( );
+void    finalize        			( );
+
+inline
+pvoid 	require_arena_from_os		( size_t const size );
+
 pvoid   memory_allocate				( size_t size, pcstr name = 0 );
 void    memory_free					( pvoid pointer );
 void    memory_register_pointer		( pvoid pointer, pcstr type );
 void    memory_unregister_pointer	( pvoid pointer );
 void    memory_check_pointer		( );
-
-void    finalize        			( );
 void    dump_memory_contents      	( );
+
 
 template < typename type_allocated >
 inline

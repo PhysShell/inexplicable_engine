@@ -1,10 +1,19 @@
 #ifndef INEX_MEMORY_INLINE_H_INCLUDED
 #	define INEX_MEMORY_INLINE_H_INCLUDED
 
-#include <typeinfo>
+#	include <typeinfo>
+#	include "memory_platform.h"
 
 namespace inex {
 namespace memory {
+
+inline
+pvoid 	require_arena_from_os		( size_t const size )
+{
+	pvoid raw_arena					= platform::allocate_raw_arena ( size );
+	ASSERT_D( raw_arena, "Out of memory. Memory request: %d K", size );
+	return 							raw_arena;
+}
 
 template < typename type_allocated >
 inline
