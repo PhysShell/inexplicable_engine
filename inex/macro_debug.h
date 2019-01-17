@@ -19,6 +19,8 @@
 #define ASSERT_D( a, ... ) 	if ( !( a ) )do { FATAL( #a, __VA_ARGS__ ); } while ( 0 )
 #define ASSERT_S( a )		if ( !( a ) )do { FATAL( #a, nullptr ); } while ( 0 )
 
+#define STATIC_ASSERT( x, y )	typedef char sassert[ !( x ) ? 0 : -1 ]
+
 // use it when 'x' is just a single value
 #define VERIFY(x)       	ASSERT_S( x )
 
