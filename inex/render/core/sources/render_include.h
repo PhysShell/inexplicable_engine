@@ -15,7 +15,7 @@
 #	include <inex/3rd_patry/include/GLFW/glfw3.h>
 #	include <inex/3rd_patry/include/GL/freeglut.h>
 
-#   if IE_PLATFORM_WINDOWS
+#   if _WIN32
 #	    pragma comment( lib, "freeglut.lib" )
 #	    pragma comment( lib, "glew32_static.lib" )
 #	    pragma comment( lib, "glfw3_static.lib" )
