@@ -1,13 +1,6 @@
 #include "stdafx.h"
 #include <inex/engine/ie_engine.h>
-#include <inex/os_include.h>
 #include <inex/core/ie_core.h>
-
-#define GLEW_STATIC
-#define GLEW_STATIC
-#define FREEGLUT_STATIC
-
-#include <inex/render/core/sources/render_include.h>
 
 namespace inex {
 namespace platform {

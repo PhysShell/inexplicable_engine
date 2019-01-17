@@ -24,14 +24,180 @@ find subdirectories viz lib ( your lib are here), and include directory contains
 glew include files.
 glew32_static.lib;glfw3_static.lib;freeglut.lib;
 
+
  there are only three portable uses for volatile. I'll summarize them here:
 
 
 marking a local variable in the scope of a setjmp so that the variable does not rollback after a longjmp.
 memory that is modified by an external agent or appears to be because of a screwy memory mapping
 signal handler mischief
+Volatile is absolutely necessary in any situation where a compiler could make wrong assumptions about a variable keeping its value constant just because a function does not change it itself.
 
-																
+ I've always approached volatile in terms of making sure that a 32 bit value that is being shared across threads (and thusly across CPUs) does not get cached on one CPU and then modified while it is being read on another CPU. For example: let's take this variable declaration:
+
+__declspec(align(32)) unsigned int unIndex = 0;
+
+On some threads, I want to increment the value by one, so I use:
+
+InterlockedIncrement((long volatile *) &unIndex);
+
+But on some other threads, I want to just 'read' the value. Well, there is no inherent 'interlocked read' expression. I've seen people do:
+
+unsigned int unCurrentValue = (unsigned int) InterlockedCompareExchange((long volatile *) &unIndex, (long) unIndex, (long) unIndex)
+
+but I think that is just silly. One should just be able to do:
+
+unsigned int unCurrentIndex = unIndex;
+
+Unfortunately, if unIndex is NOT declared as volatile, there is a real risk that making changes to this value within one thread running on one CPU will not be properly reflected within another thread reading the value on another CPU. By declaring:
+
+__declspec(align(32)) volatile unsigned int unIndex = 0;
+
+As such, unIndex would be thread safe as long as we use InterlockedIncrement() (or other interlocked semantic to modify the value) and then reads are just a straight up assignment (i.e. unsigned int unCurrentIndex = unIndex). I've implemented an IPC mechanism using memory mappings and utilizing these semantics (as opposed to mutexes) to drive a rotating linked list type of mechanism and the speed gain was in the 5000x range (as opposed to using mutexes).
+
+In that regard, I believe that volatile can provide some considerable performance enhancement when it comes to reading and writing to boundary aligned variables that are 32 bits or less on 32 bit systems, and 64 bits or less on 64 bit systems. Correct me if I am wrong.
+volatile is needed in g++ generated code. I've seen non-volatile member variables not changing values when accessed from another thread and volatile fixed the problem IMMEDIATELY.
+My summary would be: using volatile on built-in types is useless and dangerous, but using it on objects (and making use of C++ type checking) is very useful.
+
+
+
+
+
+
+SSE инструкции хорошо работают с выровненными по 16-байтовой границе.
+__declspec(align(#)) в описании класса приведёт к тому, что объекты будут выровнены на стэке. Например - локальные переменные внутри функции. Если же передавать в функцию параметр по значению (не по ссылке) - данные выровнены не будут и программа может вылететь, поэтому всегда нужно передавать по ссылке. Также если создаётся массив из экземпляров такого класса, то если первый элемент массива выровнен по границе в # байт, то все последующие элементы массива тоже будут выровнены по этой границе. А вот чтобы правильно разместить в памяти первый элемент такого массива, нужен аллокатор с выравниванием - _aligned_malloc/_aligned_free или свой, поэтому если использовать стандартный malloc или new, которые не выравнивают автоматически на нужные # байт (например, 16 в случае с SIMD), программа может вылететь. Для std::vector() тут уже было сказано что нужно сделать.
+
+Также любые объекты, содержащие в себе экземпляр класса с выравниванием, наследуют от него это выравнивание, поэтому в массивах они тоже будут выровнены.
+
+И вдогонку - __declspec(align(#)) можно использовать для выравнивания на стэке массивов из POD-типов, например
+
+__declspec(align(16)) float MyArray[MAX_SIZE];
+
+__m128i requires 16-byte alignment, which vector doesn't guarantee to
+provide (well, it should do, but __m128i has especially strict alignment
+requirements - ones that aren't met by malloc). One way of working
+around this would be to specify a special vector allocator which did
+align the memory correctly. e.g. (VC2005 specific due to __alignof())
+
+#include <vector>
+#include <memory>
+#include <malloc.h>
+#include <emmintrin.h>
+
+template <class T>
+class aligned_allocator: public std::allocator<T>
+{
+public:
+template <class U>
+struct rebind
+{
+typedef aligned_allocator<Uother;
+};
+
+aligned_allocator(){}
+
+template <class U>
+aligned_allocator(aligned_allocator<Uconst& other){}
+
+template <class U>
+aligned_allocator& operator=(aligned_allocator<Uconst& other){
+return *this;
+}
+
+T* allocate(std::size_t N, const void* hint)
+{
+return allocate(N);
+}
+
+T* allocate(size_type N)
+{
+return static_cast<T*>(_aligned_malloc(N * sizeof(T), __alignof(T)));
+}
+
+void deallocate(T* p, std::size_t N)
+{
+_aligned_free(p);
+}
+};
+
+Then:
+std::vector<__m128i, aligned_allocator<__m128i list;
+The __declspec(align(#)) only affects the alignment of the structure and the sizeof(), NOT each of the members in it. If you want each property to be aligned, you need to specify the alignment at member level.
+Memory itself has no arithmetic capabilities. When incrementing a variable, the processor:
+
+Reads that variable in a register
+Increments the value in the register
+Writes the result back to memory
+This three-step operation is called RMW (Read-Modify-Write). During the Modify part of an RMW operation, most processors free the memory bus in order to give other processors access to the memory.
+volatile equals free multithreaded code and no critical section; non-volatile equals single-threaded scenario or inside a critical section.
+We can define two functions for class: volatile-multithreaded-slow, and non-volatile-single-threaded-fast	
+void Widget::Operation() volatile
+{
+    LockingPtr<Widget> lpThis(*this, mtx_);
+    lpThis->Operation(); // invokes the non-volatile function
+}
+Define all shared objects as volatile.
+Don't use volatile directly with primitive types.
+When defining shared classes, use volatile member functions to express thread safety.
+Unaligned writes might be atomic, it depends on the caching system in use. If the memory lies within a single L1 cache line then it is atomic, otherwise it's not. The width of the bus between the CPU and RAM can affect the atomic nature: a correctly aligned 16bit write on an 8086 was atomic whereas the same write on an 8088 wasn't because the 8088 only had an 8 bit bus whereas the 8086 had a 16 bit bus.
+
+
+direct relationship between encapsulation (how much code might be broken if something changes) and practical flexibility (the likelihood that we'll make a particular change).
+We've now seen that a reasonable way to gauge the amount of encapsulation in a class is to count the number of functions that might be broken if the class's implementation changes. That being the case, it becomes clear that a class with n member functions is more encapsulated than a class with n+1 member functions
+Rather than putting all Wombat-related functions into a single header file, a preferable design would be to partition the Wombat interface across four separate headers, one for core Wombat functionality (primarily the class definition), and one each for convenience functions related to eating, sleeping, and breeding. Clients then include only the headers they need
+
+Operations That Should Be Members
+We asked: Which operations need access to internal data we would otherwise have to grant via friendship? Clearly these have a reason to be members, and normally ought to be. This list includes the following, some of which provide indirect access to (e.g., begin()) or change (e.g., reserve()) the internal state of the string:
+
+begin (2)
+
+end (2)
+
+rbegin (2)
+
+rend (2)
+
+size
+
+max_size
+
+capacity
+
+reserve
+
+swap
+
+c_str
+
+data
+
+get_allocator
+
+
+
+Nonmember ( they can access member functions )
+at, clear, empty, length
+
+Всё это происходит потому, что в С++14 гарантии для операторов и их операндов отличаются в зависимости от того, чем являются операнды. Согласно стандарту, для интегральных типов все гарантии операторов работают так, как они описаны для них в стандарте, а вот для переопределённых операторов уже работают правила которые управляют вызовом функций. Т.е. для переопределённых операторов выражение «переписывается» компилятором на цепочку вызова функций, и уже после этого применяются правила из стандарта, которые определены для такой цепочки. Никакие гарантии операторов из стандарта на переопределённые операторы не действуют.
+Первым изменением, принесенным C++17, является упорядочивание выполнения постфиксных операторов, операторов присвоения, а также операторов побитового сдвига. Теперь все постфиксные операторы, а также операторы побитового сдвига, выполняется слева направо, в то время как операторы присвоения — наоборот, справа налево. Под «выполнением», в данном контексте, я имею в виду то, что выражение является вычисленным (т.е. его результат возвращён), и все ассоциированные с ним побочные эффекты зафиксированы (committed).
+Для пояснения того, как же теперь упорядочены выражения, возьмём пример из предложения (в примере ниже сначала выполняется выражение a, затем b):
+
+a.b
+a->b
+a->*b
+a(b1, b2, b3)
+b @= a
+a[b]
+a << b
+a >> b
+А вот эти примеры так и остаются UB в новом стандарте:
+i = i++ + i++
+i = ++i * i++
+Потому что никаких правил, регулирующих порядок выполнения подвыражений арифметических операторов, не добавили. 
+порядок исполнения выстраивается до переписывания! Т.е. согласно новым правилам, перегруженные операторы подчиняются правилам исполнения для встроенных операторов, по крайней мере в части порядка вычисления подвыражений
+Интересно заметить, что это нововведение породило разницу между явным и неявным вызовом перегруженного оператора: явный выдает уб, если меняется переменная больше одного раза в одной точке следования.
+
+	
 Сразу посоветую задуматься о выноске окна на отдельный поток.														
 												Надо инпут записывать в треде окна, а потом обрабатывать в треде логики. 
 Если так не делать, то есть вероятность пропустить быстрое нажатие клавиши между двумя кадрами (при низком FPS), а с двумя потоками ни одно нажатие не пройдет мимо.

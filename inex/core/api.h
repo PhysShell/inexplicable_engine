@@ -6,18 +6,17 @@
 #ifndef INEX_CORE_API_H_INCLUDED
 #	define INEX_CORE_API_H_INCLUDED
 
-#	pragma message( "handle static library core" )
-
-// this only defined in windows
-#   ifdef IECORE_EXPORTS
-#       define INEX_CORE_API __declspec(dllexport)
-#   else // #ifdef IECORE_EXPORTS
-#       ifdef _WIN32
-#           define INEX_CORE_API __declspec(dllimport)
-#       else
-#           define INEX_CORE_API
-#       endif // #ifdef _WIN32
-#   endif // #ifdef IECORE_EXPORTS
+#	ifndef INEX_CORE_API
+//#		ifdef INEX_STATIC_LIBRARIES
+//#			define INEX_CORE_API
+//#		else
+#			ifdef IECORE_EXPORTS
+#				define INEX_CORE_API	INEX_DLL_EXPORT
+#			else // #ifdef IECORE_EXPORTS
+#				define INEX_CORE_API	INEX_DLL_IMPORT
+#			endif // #ifdef IECORE_EXPORTS
+//#		endif // #ifndef INEX_STATIC_LIBRARIES
+#	endif // #ifdef INEX_CORE_API
 
 namespace inex {
 namespace core {
