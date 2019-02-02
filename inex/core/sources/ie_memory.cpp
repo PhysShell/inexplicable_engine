@@ -4,11 +4,16 @@
 #include <iostream>
 #include <vector>
 #include <memory>
-////#include "logger.h"
+
 namespace inex {
 namespace memory {
 
 //#define DEBUG_MEMORY_MANAGER
+
+void    initialize ( )
+{
+    STATIC_ASSERT ( INEX_ALIGNOF( long double ) != 8, "WTF" );
+}
 
 // GCC's typeid string needs to be demangled first
 // to get readable string

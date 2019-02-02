@@ -5,6 +5,13 @@
 namespace inex {
 namespace memory {
 
+void    general_allocator::initialize ( pvoid arena, size_t const size, pcstr id )
+{
+    m_arena                 = arena;
+    m_arena_end             = ( u8 * ) arena + size;
+    m_arena_id              = id;
+    // now i need linked list.......
+}
 /*
 memory::general_allocator	g_allocator;
 memory::platform::region	region;

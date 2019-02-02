@@ -131,6 +131,7 @@ void	initialize ( s32 command_line_argument_count, pstr* command_line_values )
         strcat			( command_line_parameters, command_line_values[ i ] );
     }
 
+	memory::initialize		( );
     logging::initialize		( 0 != strstr( command_line_parameters, "-nolog" ) );
     compute_build_id	( );
     logging::Msg( "\"Inexplicable Engine\" demo build %d", build_id );

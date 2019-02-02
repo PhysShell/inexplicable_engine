@@ -12,5 +12,9 @@ base_allocator::base_allocator ( ) :
 {
 }
 
+void    base_allocator::initialize ( pvoid arena, size_t const size, pcstr id )
+{
+}
+
 } // namespace ui
 } // namespace memory

@@ -15,15 +15,13 @@ class base_allocator : 	private detail::nonassignable,
 						private detail::noncopyable 
 {
 public:
-    
-public:
                     base_allocator  ( );
     virtual         ~base_allocator ( )         {                       }
-            void    initialize      ( pvoid arena, size_t const size, pcstr id );
-            void    finalize        ( );
+    virtual void    initialize      ( pvoid arena, size_t const size, pcstr id );
+    virtual void    finalize        ( );
 
-            pvoid   malloc_impl     ( size_t const size /* add declaration for debug */ ); 
-            void    free_impl       ( pvoid pointer );
+    virtual pvoid   malloc_impl     ( size_t const size /* add declaration for debug */ ); 
+    virtual void    free_impl       ( pvoid pointer );
     
     inline  bool    initialized     ( ) const   {   return m_arena;     }
     inline	pcstr	arena_id		( ) const   {   return m_arena_id;  }
@@ -33,8 +31,9 @@ public:
 
 protected:
     inline  size_t  needed_size     ( size_t const size ) const   {   return size; /* + caption */  }
+    inline  pvoid   ensure_alignment( );
 
-private:
+protected:
     pvoid   m_arena;
     pvoid   m_arena_end;
     pcstr	m_arena_id;
