@@ -89,6 +89,7 @@
 		* 	структуры данных: unrolled linked list, R-tree, Quadtree,Red-black tree
 		*	алгоритмы: дихотомия
 		*	циклический избыточный код (CRC)
+		*	global illumination
 		*	тут о том, что GC не нужен, а нужен shared_ptr
 			https://www.gamedev.net/forums/topic/631744-garbage-collector/
 		*	о сети
