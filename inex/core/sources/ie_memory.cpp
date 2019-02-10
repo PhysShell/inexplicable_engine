@@ -12,7 +12,8 @@ namespace memory {
 
 void    initialize ( )
 {
-    STATIC_ASSERT ( INEX_ALIGNOF( long double ) != 8, "WTF" );
+    // it's 16 in linux
+    //STATIC_ASSERT ( INEX_ALIGNOF( long double ) != 8, "WTF" );
 }
 
 // GCC's typeid string needs to be demangled first

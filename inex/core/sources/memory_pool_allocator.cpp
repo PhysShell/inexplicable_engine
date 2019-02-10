@@ -6,7 +6,7 @@ namespace memory {
 
 void	f ( )
 {
-	std::max_align_t d;
+	//std::max_align_t d;
 }
 
 } // namespace ui

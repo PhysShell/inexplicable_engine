@@ -2,6 +2,12 @@
 #include <inex/engine/ie_engine.h>
 #include <inex/core/ie_core.h>
 
+#define GLEW_STATIC
+#define GLEW_STATIC
+#define FREEGLUT_STATIC
+
+#include <inex/render/core/sources/render_include.h>
+
 namespace inex {
 namespace platform {
 
@@ -10,14 +16,15 @@ s32		engine_entry_point (	pstr		command_line_string		);
 
 s32		engine_entry_point ( pstr command_line_string )
 {
+ //   int i               = 0;
 	core::initialize	( 0, 0 );
 	logging::Msg		( "Initializing Engine...\n" );
 	engine::engine		en;
-	//glutInit( ( int * )0, nullptr );
-	//glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);
-	//glutInitWindowSize(400, 1400);
-	//glutInitWindowPosition(100, 200);
-	//glutCreateWindow("Lesson 01");
+//	glutInit( &i,  nullptr );
+//	glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);
+//	glutInitWindowSize(400, 1400);
+//	glutInitWindowPosition(100, 200);
+//	glutCreateWindow("Lesson 01");
 
 	GLFWwindow* window;
 	VERIFY( glfwInit( ) );

@@ -16,5 +16,17 @@ void    base_allocator::initialize ( pvoid arena, size_t const size, pcstr id )
 {
 }
 
-} // namespace ui
+void    base_allocator::finalize (  )
+{
+}
+
+pvoid    base_allocator::malloc_impl ( size_t const size )
+{
+}
+
+void    base_allocator::free_impl ( pvoid )
+{
+}
+
 } // namespace memory
+} // namespace inex
