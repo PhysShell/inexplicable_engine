@@ -92,6 +92,8 @@ sudo nano /etc/apt/sources.list: editing read-only file
 sudo apt-get install libglfw3-dev libglfw3
 touch /path/to/file - creates empty file
 cat > file_name
+clang++-7 cpp.cpp -pthread -ldl -o rust_cpp -L. -lrust_cpp
+
 
 создаем объектный файл
 clang++-4.0 -c -Wall -fPIC sharedlib_class.cpp

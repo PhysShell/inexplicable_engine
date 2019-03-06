@@ -12,6 +12,7 @@
 #include "processor_info.h"
 #include "ie_trims.h"
 #include "ie_memory.h"
+#include "memory_general_allocator.h"
 
 namespace inex {
 namespace core {
@@ -154,6 +155,20 @@ void	initialize ( s32 command_line_argument_count, pstr* command_line_values )
 #endif // #if INEX_PLATFORM_WINDOWS
 	}
 
+/* 	memory::platform::region	r;
+	r.size						= 128;
+	r.address					= memory::require_arena_from_os( r.size ); */
+	memory::general_allocator 	g;
+	g.initialize				( 0, 0, "test allocator" );
+	pstr ptr 					= ( pstr )g.malloc_impl( 1 );
+	// LOGGER( "* actually allocated!" );
+	constexpr pcstr string 		= "'alloc test'";
+	size_t len 					= std::strlen( string );
+	strcpy 						( ptr, string );
+	LOGGER( ptr ? ptr : "00000" );
+
+	LOGGER( "string lies at:\t'%p'\n", ptr );
+	g.free_impl					( ptr );
 }
 
 void	finalize ( )

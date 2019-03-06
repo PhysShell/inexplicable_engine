@@ -23,21 +23,22 @@ public:
     virtual pvoid   malloc_impl     ( size_t const size /* add declaration for debug */ );
     virtual void    free_impl       ( pvoid pointer );
 
-    inline  bool    initialized     ( ) const   {   return m_arena;     }
-    inline	pcstr	arena_id		( ) const   {   return m_arena_id;  }
+    // inline  bool    initialized     ( ) const   {   return m_arena;     }
+    // inline	pcstr	arena_id		( ) const   {   return m_arena_id;  }
     virtual size_t  fragmented_size ( ) const = 0;
     virtual size_t  total_size      ( ) const = 0;
     virtual size_t  allocated_size  ( ) const = 0;
 
 protected:
-    inline  size_t  needed_size     ( size_t const size ) const   {   return size; /* + caption */  }
-    inline  pvoid   ensure_alignment( );
+    // inline  size_t  needed_size     ( size_t const size ) const   {   return size; /* + caption */  }
+    // inline  pvoid   ensure_alignment( );
 
 protected:
-    pvoid   m_arena;
-    pvoid   m_arena_end;
+    // pvoid   m_arena;
+    // pvoid   m_arena_end;
     pcstr	m_arena_id;
 
+    static constexpr size_t const alignment_value                   = sizeof ( long double );
 }; // class base_allocator
 
 } // namespace memory

@@ -12,6 +12,7 @@ pvoid 	require_arena_from_os		( size_t const size )
 {
 	pvoid raw_arena					= platform::allocate_raw_arena ( size );
 	ASSERT_D( raw_arena, "Out of memory. Memory request: %d K", size );
+	LOGGER( "* Required '%d' bytes from OS. At:\t'%p'.", size, raw_arena );
 	return 							raw_arena;
 }
 

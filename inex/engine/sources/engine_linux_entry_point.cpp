@@ -26,38 +26,38 @@ s32		engine_entry_point ( pstr command_line_string )
 //	glutInitWindowPosition(100, 200);
 //	glutCreateWindow("Lesson 01");
 
-	GLFWwindow* window;
-	VERIFY( glfwInit( ) );
+	// GLFWwindow* window;
+	// VERIFY( glfwInit( ) );
 
-	window				= glfwCreateWindow( 640, 480, "Inex", nullptr, nullptr );
-    ASSERT_D( window, "Couldn't create window and its OpenGL context." );
+	// window				= glfwCreateWindow( 640, 480, "Inex", nullptr, nullptr );
+    // ASSERT_D( window, "Couldn't create window and its OpenGL context." );
 
-    /* Make the window's context current */
-    glfwMakeContextCurrent( window );
+    // /* Make the window's context current */
+    // glfwMakeContextCurrent( window );
 
-    glewExperimental	= 1;
-    GLenum err			= glewInit( );
-	ASSERT_D( err == GLEW_OK, "Glew Inititialization failed, something is seriously wrong." );
+    // glewExperimental	= 1;
+    // GLenum err			= glewInit( );
+	// ASSERT_D( err == GLEW_OK, "Glew Inititialization failed, something is seriously wrong." );
 
-    while ( !glfwWindowShouldClose( window ) )
-    {
-        glClear			( GL_COLOR_BUFFER_BIT );
+//     while ( !glfwWindowShouldClose( window ) )
+//     {
+//         glClear			( GL_COLOR_BUFFER_BIT );
 
-        glBegin			( GL_TRIANGLES );
-        glColor3f		( 0.1, 0.2, 0.3 );
-        glVertex3f		( 0, 0, 0 );
-        glVertex3f		( -1, 0, 0 );
-        glVertex3f		( 0, -1, 0 );
-        glEnd			( );
+//         glBegin			( GL_TRIANGLES );
+//         glColor3f		( 0.1, 0.2, 0.3 );
+//         glVertex3f		( 0, 0, 0 );
+//         glVertex3f		( -1, 0, 0 );
+//         glVertex3f		( 0, -1, 0 );
+//         glEnd			( );
 
-        /* Swap front and back buffers */
-        glfwSwapBuffers	( window );
+//         /* Swap front and back buffers */
+//         glfwSwapBuffers	( window );
 
-        /* Poll for and process events */
-        glfwPollEvents	( );
-    }
+//         /* Poll for and process events */
+//         glfwPollEvents	( );
+//     }
 
-    glfwTerminate		( );
+//     glfwTerminate		( );
 
 	return				en.get_exit_code( );
 }

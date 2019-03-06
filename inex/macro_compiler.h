@@ -14,11 +14,16 @@
 #endif // #ifdef __linux__
 
 #	ifdef _WIN32
-#		define INEX_DLL_IMPORT	__declspec ( dllimport )
-#		define INEX_DLL_EXPORT	__declspec ( dllexport )
-#	else // #ifdef _WIN32
-#		define INEX_DLL_IMPORT	__attribute__ ( ( dllimport ) )
-#		define INEX_DLL_EXPORT	__attribute__ ( ( dllexport ) )
+#       ifdef _MSC_VER
+# 		    define INEX_DLL_IMPORT	__declspec ( dllimport )
+#		    define INEX_DLL_EXPORT	__declspec ( dllexport )
+#	    elif defined ( _MSC_VER ) // #ifdef _MSC_VER
+#		    define INEX_DLL_IMPORT	__attribute__ ( ( dllimport ) )
+#		    define INEX_DLL_EXPORT	__attribute__ ( ( dllexport ) )
+#       endif // #ifdef _MSC_VER
+#   else // #ifdef _WIN32
+#		define INEX_DLL_IMPORT
+#		define INEX_DLL_EXPORT
 #	endif // #ifdef _WIN32
 
 #	ifdef _MSC_VER
@@ -31,8 +36,13 @@
 #		define INEX_DISABLE_WARNING( x )	        __pragma ( warning ( disable : x ) )
 #		define INEX_POP_WARNINGS( )		            __pragma ( warning ( pop ) )
 #       define COMPILER_PURE_VIRTUAL_DESTRUCTOR( x ) virtual ~x( ) = 0 { }
+
+#       define INEX_FORCE_ALIGNMENT( x )            _declspec ( align( x ) )
+
 #   else // #ifdef _MSC_VER
 #       define COMPILER_PURE_VIRTUAL_DESTRUCTOR( x ) virtual ~x( ) { }
+
+#       define INEX_FORCE_ALIGNMENT( x )            __attribute__ ( ( __aligned__ ( ( x ) ) ) )
 
 #	endif //#ifdef _MSC_VER
 

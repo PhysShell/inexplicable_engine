@@ -87,6 +87,7 @@
 		*	encrypting / decrypting data
 		*	serialization
 		*	reflection data
+		*	tagged pointers
 		*	pool alloc, doug lea alloc, region-based memory, jemalloc, ptmalloc-implementation
 		*	store binaries in one folder
 		* 	почитать про как дампить программу
