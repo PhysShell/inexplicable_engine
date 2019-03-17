@@ -7,7 +7,20 @@ namespace memory {
 
 //general_allocator::general_allocator ( ) :
 
+inline
+s64  pointer_difference ( pvoid begin, pvoid end )
+{
+    return  s64
+                (
+                    reinterpret_cast< pstr > ( end )
+                    - reinterpret_cast< pstr > ( begin )
+                );
+}
+
 static general_allocator::header base;
+static size_t                    end;
+pvoid                           end_p;
+
 
 void    general_allocator::initialize ( pvoid arena, size_t const size, pcstr id )
 {
@@ -34,38 +47,34 @@ void    general_allocator::initialize ( pvoid arena, size_t const size, pcstr id
     sizeof ( &base ); sizeof ( header );
 }
 
+inline
+u64     bits_to_bytes ( u64 value )
+{
+    return              value / __CHAR_BIT__;
+}
+
 pvoid    general_allocator::malloc_impl ( size_t const size )
 {
-    LOGGER          ( "*****\tMALLOC IMPL\t******" );
     header          * p, *previous;
     // size in bytes. + 1 byte for housekeeper
     size_t          units =
     { ( size + sizeof ( header ) + 1 ) / sizeof ( header ) + 1 };
-    LOGGER( "* Computed:\t%d bytes to be allocated from '%d' bits.", units, size );
+    LOGGER( "\n* Computed:\t%d bytes to be allocated from '%d' bits.", units, size );
 
-    //LOGGER( "previous:\t'%p'", previous );
-
-    // m_last_allocated should point to last allocated
-    // and previous->next should point to what?
-    // new header, cuz it implies that if 'for'
-    // 
     if ( ( previous = m_last_allocated ) == nullptr )
     {
-        LOGGER( "PREVIOUS is 0000" );
         base.next   = m_last_allocated = previous = &base;
         base.size   = 0ul;
     }
 
-    //LOGGER( "m_last_allocated:\t'%p'", m_last_allocated->next );
-    // not moving pointer up the stack!!!!
-
-    // need to get previous->next to point to m_last_allocated...
-
-
     for ( p = previous->next; ; previous = p, p = p->next )
     {
         ASSERT_D( m_last_allocated == previous,
-                "* Last allocated:\t%p, prev:\t%p", m_last_allocated, previous );
+                "* Last allocated:\t%p, next:\t%p", m_last_allocated, previous );
+
+        LOGGER( 
+                "* Last allocated:\t%p, next:\t%p", m_last_allocated, previous );
+
 
         LOGGER( "*\n Size of block:\t%d.", p->size, units );
         LOGGER( "* Last allocated:\t%p", previous );
@@ -81,51 +90,43 @@ pvoid    general_allocator::malloc_impl ( size_t const size )
             {
                 LOGGER( "* chunk not match but appropriate" );
                 p->size         -=  units;
+                LOGGER( "need to slide by %d bytes\n", p->size );
+                // LOGGER( "p = %p", p );
 
-                p               +=  units; // make it point to beginning of new chunk
+                LOGGER( "* BYTES p->size:\t%d, Needed p->size:\t%d", p->size, p->size / 2 );
+
+                //p->size                     = bits_to_bytes( p->size );
+                p                           += ( p->size / 2 );
+
+                s64   local_difference       = pointer_difference( end_p, p );
+                //LOGGER( "ptrdiff should be negative: %d", local_difference );
+
+                ASSERT_D( local_difference <= 0, "Out of bones %d bytes. Exceeded value: %d", end,
+                        local_difference );
+
                 LOGGER( "* New housekeeper is at: '%p'",  ( header* ) ( p ) );
-                // LOGGER( "* chunk starts at: '%p'",  ( header* ) ( p + 1 ) );
-                // LOGGER( "*\tends at:\t'%p'", ( header* ) p + units );
-                p->size         =   units;
+                LOGGER( "* chunk starts at: '%p'",  ( header* ) ( p + 1 ) );
+                LOGGER( "*\tends at:\t'%p'", ( header* ) p + units );
 
-                //previous->next      = p;
-                //LOGGER( "\nprevious->next:\t'%p'", previous->next );
-            }
-
-            //p->next             = &base;
-
-            // previous            = p;
-            //previous            = p;
-
-            // 111previous            = m_last_allocated;
-
-            // p->next             = &base;
-            // p->next->size             = 100;
-
-            //previous->size              = units;
-            // previous->next              = &base;
-
-            for ( header* ptr = &base; ; )
-            {
-                LOGGER( "Ptr:\t'%p' ( next: '%p' ). Sz:\t'%d'", ptr, ptr->next, ptr->size );
-                if ( ( ptr = ptr->next ) == &base )             break;
+                ( *p ).size         =    units;
+                LOGGER( "* BYTES p->size:\t%d, BITS p->size:\t%d", p->size, p->size * 8 );
+                LOGGER( "Units %d bytes", p->size );
                 INEX_DEBUG_WAIT;
             }
 
+            for ( header* ptr = m_last_allocated; ; )
+            {
+                LOGGER( "Ptr:\t'%p' ( next: '%p' ). Sz:\t'%d'", ptr, ptr->next, ptr->size );
+                if ( ( ptr = ptr->next ) == m_last_allocated )             break;
+                INEX_DEBUG_WAIT;
+            }
 
-
-            // LOGGER( "***prev->size:\t'%d', prev->next->size:\t'%d'", previous->size,
-            //                                                         previous->next->size );
-
-
-            // LOGGER( "*\prev:\t'%p'\n*\tprev->nex:\t'%p'", previous, previous->next );
-
-            // LOGGER( "***prev->size:\t'%d', prev->next->size:\t'%d'", previous->size,
-            //                                                         previous->next->size );
-            //m_last_allocated    = p;
-           // previous
-            
-            //LOGGER( )
+            ASSERT_D            (   ( u64 ) ( p + 1 ) % alignment_value == 0,
+                                    "%p reaminder !=0 %d",
+                                    p + 1, ( u64 ) ( p + 1 ) % alignment_value );
+                                
+            m_last_allocated    = previous;
+            //m_last_allocated    ->next  = p;
             return              ( pvoid ) ( p + 1 );
         }
 
@@ -136,7 +137,9 @@ pvoid    general_allocator::malloc_impl ( size_t const size )
             if ( base.size == 0 )
             {
                 base.size           = p->size;
-                p->next       = &base;
+                p->next             = &base;
+                m_last_allocated    = p;
+                m_last_allocated    ->next              = p;
                 //base.next           = p->next;
 
                 // LOGGER( "base next:\t'%p'", base.next );
@@ -157,7 +160,10 @@ general_allocator::header*   general_allocator::on_malloc ( size_t const size )
         LOGGER( ( u64 )raw_region % alignment_value ? "!\tNot aligned by %d bytes."
                 : "*\tAligned by %d bytes.", alignment_value );
         header* blocks_allocated = ( header* )raw_region;
-        blocks_allocated->size  = new_size;
+        blocks_allocated->size  = bits_to_bytes( new_size );
+        end                     =  pointer_difference( raw_region, ( pvoid ) ( (  ptrdiff_t ) raw_region + new_size ) );
+        end_p                   = ( pstr )raw_region + new_size;
+        LOGGER( "* contains :\t%d bytes. ends at:\t%p", end, end_p );
         //blocks_allocated->next  = nullptr;
         //free                    ( ( pvoid ) ( blocks_allocated + 1 ) );
         //sizeof ( header );

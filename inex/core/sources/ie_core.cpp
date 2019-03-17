@@ -164,14 +164,28 @@ void	initialize ( s32 command_line_argument_count, pstr* command_line_values )
 	, ptr2 					= ( pstr )g.malloc_impl( 25 )
 ;
 	LOGGER( "* actually allocated!" );
-	constexpr pcstr string 		= "'alloc test'11111111";
+	constexpr pcstr string 		= "1";
 	size_t len 					= std::strlen( string );
 	strcpy 						( ptr, string );
+	strcpy 						( ptr2, "2" );
 	LOGGER( ptr ? ptr : "00000" );
+	LOGGER( ptr2 ? ptr2 : "00000" );
 
-	LOGGER( "string lies at:\t'%p'\n", ptr );
+	LOGGER( "string1 lies at:\t'%p'\n", ptr );
+	LOGGER( "string2 lies at:\t'%p'\n", ptr2 );
 	g.free_impl					( ptr );
+	g.free_impl					( ptr2 );
 
+	// ptr 					= ( pstr )g.malloc_impl( 1 );
+	// ptr2 					= ( pstr )g.malloc_impl( 25 );
+
+	// strcpy 						( ptr, string );
+	// strcpy 						( ptr2, "2" );
+	// LOGGER( ptr ? ptr : "00000" );
+	// LOGGER( ptr2 ? ptr2 : "00000" );
+
+	// LOGGER( "string1 lies at:\t'%p'\n", ptr );
+	// LOGGER( "string2 lies at:\t'%p'\n", ptr2 );
 
 }
 
