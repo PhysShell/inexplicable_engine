@@ -160,15 +160,19 @@ void	initialize ( s32 command_line_argument_count, pstr* command_line_values )
 	r.address					= memory::require_arena_from_os( r.size ); */
 	memory::general_allocator 	g;
 	g.initialize				( 0, 0, "test allocator" );
-	pstr ptr 					= ( pstr )g.malloc_impl( 1 );
-	// LOGGER( "* actually allocated!" );
-	constexpr pcstr string 		= "'alloc test'";
+	pstr ptr 					= ( pstr )g.malloc_impl( 1 )
+	, ptr2 					= ( pstr )g.malloc_impl( 25 )
+;
+	LOGGER( "* actually allocated!" );
+	constexpr pcstr string 		= "'alloc test'11111111";
 	size_t len 					= std::strlen( string );
 	strcpy 						( ptr, string );
 	LOGGER( ptr ? ptr : "00000" );
 
 	LOGGER( "string lies at:\t'%p'\n", ptr );
 	g.free_impl					( ptr );
+
+
 }
 
 void	finalize ( )

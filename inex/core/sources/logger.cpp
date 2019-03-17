@@ -5,7 +5,7 @@
 namespace inex {
 namespace logging {
 
-static string_path					log_file_name	= "engine.log";
+static string_path					log_file_name	= "engine.cpp";
 static fs::writer*         			fwriter      	= nullptr;
 static threading::critical_section	log_section		;
 

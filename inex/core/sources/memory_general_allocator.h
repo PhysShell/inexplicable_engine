@@ -27,7 +27,7 @@ public:
     struct  INEX_FORCE_ALIGNMENT( alignment_value )  header
     {   
         header*         next;
-        size_t          size;   
+        size_t          size; 
     }; // struct header
     
 private:
