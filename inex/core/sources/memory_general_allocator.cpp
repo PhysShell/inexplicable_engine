@@ -21,7 +21,6 @@ static general_allocator::header base;
 static size_t                    end;
 pvoid                           end_p;
 
-
 void    general_allocator::initialize ( pvoid arena, size_t const size, pcstr id )
 {
     if( !( 16 == 16UL ) )
@@ -55,6 +54,7 @@ u64     bits_to_bytes ( u64 value )
 
 pvoid    general_allocator::malloc_impl ( size_t const size )
 {
+    ASSERT_D( 0, "Malloc implementation is not yet working correctly" );
     header          * p, *previous;
     // size in bytes. + 1 byte for housekeeper
     size_t          units =
@@ -113,6 +113,9 @@ pvoid    general_allocator::malloc_impl ( size_t const size )
                 LOGGER( "Units %d bytes", p->size );
                 INEX_DEBUG_WAIT;
             }
+
+            // correct iteration might not be possible,
+            // should maybe use p->next = base to make point to beginning
 
             for ( header* ptr = m_last_allocated; ; )
             {

@@ -157,7 +157,7 @@ void	initialize ( s32 command_line_argument_count, pstr* command_line_values )
 
 /* 	memory::platform::region	r;
 	r.size						= 128;
-	r.address					= memory::require_arena_from_os( r.size ); */
+	r.address					= memory::require_arena_from_os( r.size );
 	memory::general_allocator 	g;
 	g.initialize				( 0, 0, "test allocator" );
 	pstr ptr 					= ( pstr )g.malloc_impl( 1 )
@@ -176,17 +176,17 @@ void	initialize ( s32 command_line_argument_count, pstr* command_line_values )
 	g.free_impl					( ptr );
 	g.free_impl					( ptr2 );
 
-	// ptr 					= ( pstr )g.malloc_impl( 1 );
-	// ptr2 					= ( pstr )g.malloc_impl( 25 );
+	ptr 					= ( pstr )g.malloc_impl( 1 );
+	ptr2 					= ( pstr )g.malloc_impl( 25 );
 
-	// strcpy 						( ptr, string );
-	// strcpy 						( ptr2, "2" );
-	// LOGGER( ptr ? ptr : "00000" );
-	// LOGGER( ptr2 ? ptr2 : "00000" );
+	strcpy 						( ptr, string );
+	strcpy 						( ptr2, "2" );
+	LOGGER( ptr ? ptr : "00000" );
+	LOGGER( ptr2 ? ptr2 : "00000" );
 
-	// LOGGER( "string1 lies at:\t'%p'\n", ptr );
-	// LOGGER( "string2 lies at:\t'%p'\n", ptr2 );
-
+	LOGGER( "string1 lies at:\t'%p'\n", ptr );
+	LOGGER( "string2 lies at:\t'%p'\n", ptr2 );
+*/
 }
 
 void	finalize ( )
