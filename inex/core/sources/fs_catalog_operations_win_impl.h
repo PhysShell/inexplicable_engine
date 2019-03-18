@@ -55,7 +55,7 @@ pcstr    file_path_raw_c_str ( directory_iterator_impl* impl_representation )
 }
 
 inline
-bool    open_directory ( directory_iterator_impl* impl_representation, const char* const file_path_raw )
+void    open_directory ( directory_iterator_impl* impl_representation, const char* const file_path_raw )
 {
 	ASSERT_D( ( strchr( file_path_raw, '*' ) ), "Append '*' to '%s' before opening", file_path_raw );
 
@@ -68,8 +68,6 @@ bool    open_directory ( directory_iterator_impl* impl_representation, const cha
 	ASSERT_D			(	impl_representation->m_entry_pointer,
 							"Error opening ( open_directory proc ) %s: %s",
 							file_path_raw, strerror( errno ) );
-
-    return              1;
 }
 
 inline

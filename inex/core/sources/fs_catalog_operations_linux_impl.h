@@ -23,7 +23,7 @@ struct directory_iterator_impl
 typedef struct stat      file_status;
 
 inline
-bool    is_system_directory ( const char* const file_path_raw )
+bool    is_system_directory ( pcstr const file_path_raw )
 {
     return              * ( file_path_raw + strlen( file_path_raw ) - 1 ) == '.';
 }
@@ -36,19 +36,15 @@ bool	exists ( pcstr const file_path_raw )
 }
 
 inline
-file_status     read_file_attributes ( const char* const file_path )
+file_status     read_file_attributes ( pcstr const file_path )
 {
     file_status file_attributes;
-    if ( stat ( file_path, &file_attributes ) )
-    {
-        printf          ( "Error statting %s: %s\n", file_path, strerror( errno ) );
-    }
-
+    ASSERT_D( stat ( file_path, &file_attributes ) == 0, "Error statting %s: %s\n", file_path, strerror( errno ) );
     return              file_attributes;
 }
 
 inline
-bool    is_directory_by_path ( const char* const file_path )
+bool    is_directory_by_path ( pcstr const file_path )
 {
     return              S_ISDIR( read_file_attributes( file_path ).st_mode );
 }
@@ -61,33 +57,25 @@ bool    is_directory ( const directory_iterator_impl* impl_representation )
 }
 
 inline
-const char*     entry_name ( const directory_iterator_impl* impl_representation )
+pstr    entry_name ( const directory_iterator_impl* impl_representation )
 {
-    // std::cout           << "Entry name:\t" << impl_representation->m_directory_entry.d_name << '\n';
+        return              impl_representation->m_entry_pointer->d_name;
+}
+
+inline
+pstr    file_path_raw_c_str ( directory_iterator_impl* impl_representation )
+{
     return              impl_representation->m_entry_pointer->d_name;
 }
 
 inline
-const char* const    file_path_raw_c_str ( directory_iterator_impl* impl_representation )
-{
-    return              impl_representation->m_entry_pointer->d_name;
-}
-
-inline
-bool    open_directory ( directory_iterator_impl* impl_representation, const char* const file_path_raw )
+void    open_directory ( directory_iterator_impl* impl_representation, pcstr const file_path_raw )
 {
     impl_representation->m_directory               = opendir( file_path_raw );
-    if ( impl_representation->m_directory == nullptr )
-    {
-        printf              ( "Error opening ( open_directory proc ) %s: %s\n", file_path_raw, strerror( errno ) );
-        exit                ( EXIT_FAILURE );
-        return              0;
-    }
-
-
-    //printf                  ( "Directory ( %p ) '%s' opened\n", impl_representation, file_path_raw );
-    return                  1;
-}
+    ASSERT_D(   impl_representation->m_directory != nullptr,
+                "Error opening ( open_directory proc ) %s: %s\n", 
+                file_path_raw, 
+                strerror( errno ) );}
 
 inline
 void    close_directory ( directory_iterator_impl* impl_representation )
@@ -110,9 +98,6 @@ bool    read_next_entry ( directory_iterator_impl* impl_representation )
 
     impl_representation->m_entry_pointer    =
         ( impl_representation->m_entry_pointer = readdir( impl_representation->m_directory) );
-
-    // printf              ( "New entry found '%p' \"%s\"\n", impl_representation, impl_representation->m_directory_entry.d_name );
-
     return              impl_representation->m_entry_pointer;
 }
 
