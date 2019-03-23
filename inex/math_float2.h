@@ -28,18 +28,34 @@ public:
 	//-----------------------------------------------------------------------------------
 	// accessors
 	//-----------------------------------------------------------------------------------
-    type const&     operator [ ]    ( size_t index ) const  {   return *( & x + index );    }
-    type&           operator [ ]    ( size_t index )        {   return *( & x + index );    }
+    type const&     operator [ ]    ( u8 index ) const;
+    type&           operator [ ]    ( u8 index );
 
     //-----------------------------------------------------------------------------------
 	// operations
 	//-----------------------------------------------------------------------------------
-    float2          operator -      ( )                     {   x =   -x; y =   -y; return  *this; }
+    float2          operator -      ( );
+
+    float2          operator +=     ( float2 const& other );
+    float2          operator +=     ( type const value );
+
+    float2          operator -=     ( float2 const& other );
+    float2          operator -=     ( type const value );  
+
+    // cross product
+    float2          operator ^=     ( float2 const& other );
+    float2          operator *=     ( type const value );
+    float2          operator /=     ( type const value );
+
+    float2          set             ( type const x_value, type const y_value );
+
+    type            dot_product     ( float2 const& other ) const;
+
 }; // class float2
-
-
 
 } // namespace math
 } // namespace inex
+
+#   include <inex/math_float2_inline.h>
 
 #endif // #ifndef MATH_FLOAT2_H_INCLUDED
