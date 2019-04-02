@@ -8,6 +8,7 @@
 
 
 
+proxychains4 youtube-dl  -it --yes-playlist --extract-audio https://www.youtube.com/channel/UCsbde9_opVt25BuvODq8c8w/videos
 
 asm
 https://ru.wikibooks.org/wiki/Ассемблер_в_Linux_для_программистов_C
