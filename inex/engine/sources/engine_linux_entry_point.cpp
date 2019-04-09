@@ -2,11 +2,21 @@
 #include <inex/engine/ie_engine.h>
 #include <inex/core/ie_core.h>
 
+#include <type_traits>
+
+#include <inex/math_float2.h>
+#include <inex/math_matrix2.h>
+
 #define GLEW_STATIC
 #define GLEW_STATIC
 #define FREEGLUT_STATIC
 
 #include <inex/render/core/sources/render_include.h>
+
+extern "C"
+{
+    void    hello_world_in_rust ( );
+}
 
 namespace inex {
 namespace platform {
@@ -16,7 +26,11 @@ s32		engine_entry_point (	pstr		command_line_string		);
 
 s32		engine_entry_point ( pstr command_line_string )
 {
+
+    //static_assert( std::is_signed< size_t >( ), "adada" );
+
  //   int i               = 0;
+    hello_world_in_rust ( );
 	core::initialize	( 0, 0 );
 	logging::Msg		( "Initializing Engine...\n" );
 	engine::engine		en;

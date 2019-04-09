@@ -34,13 +34,17 @@ public:
     //-----------------------------------------------------------------------------------
 	// operations
 	//-----------------------------------------------------------------------------------
+    // todo: return a reference
     float2          operator -      ( );
+
+    float2&         operator =      ( float2 const& other )         {   x = other.x; y = other.y; return * this;    }
+    float2&         operator +      ( );
 
     float2          operator +=     ( float2 const& other );
     float2          operator +=     ( type const value );
 
     float2          operator -=     ( float2 const& other );
-    float2          operator -=     ( type const value );  
+    float2          operator -=     ( type  const value );  
 
     // cross product
     float2          operator ^=     ( float2 const& other );
@@ -50,8 +54,16 @@ public:
     float2          set             ( type const x_value, type const y_value );
 
     type            dot_product     ( float2 const& other ) const;
+    type            square_magnitude( ) const;
+    type            magnitude       ( ) const;
+    float2          normalize       ( ); // todo :: *_safe
+    float2          orthogonal      ( ) const;
+    type            distance_to_sqr ( float2 const& other ) const;
+    type            distance_to     ( float2 const& other ) const;
 
 }; // class float2
+
+
 
 } // namespace math
 } // namespace inex

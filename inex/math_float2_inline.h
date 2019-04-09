@@ -17,9 +17,7 @@ namespace math {
 // initializations
 //-----------------------------------------------------------------------------------
 inline
-float2::float2 ( ) :
-    x           ( ),
-    y           ( )
+float2::float2 ( )
 {
 }
 
@@ -109,6 +107,14 @@ float2          float2::operator *= ( float2::type const value )
 }
 
 inline
+float2          float2::operator *= ( float2 const& other )
+{
+    x                   *= other.x;
+    y                   *= other.y;
+    return              * this;
+}
+
+inline
 float2          float2::operator /= ( float2::type const value )
 {
     x                   /= value;
@@ -135,6 +141,42 @@ inline
 float2::type    float2::dot_product ( float2 const& other ) const
 {
     return              ( x * other.x ) + ( y * other.y );
+}
+
+inline
+float2::type    float2::square_magintude ( ) const
+{
+    return              ( sqr( x ) + sqr( y ) );
+}
+
+inline
+float2::type    float2::magintude ( ) const
+{
+    return              sqrtf( square_magnitude( ) );
+}
+
+inline
+float2                  float2::normalize ( )
+{
+    return              * this  /= magnitude ( );
+}
+
+inline
+float2                  float2::orthogonal ( ) const
+{
+    return              float2( -y, x );
+}
+
+inline
+float2::type            float2::distance_to_sqr (float2 const& other ) const
+{
+    return              ( sqr( x - other.x ) + sqr( y - other.y ) );
+}
+
+inline
+float2::type            float2::distance_to (float2 const& other ) const
+{
+    return              sqrtf( distance_to_sqr( other ) );
 }
 
 //-----------------------------------------------------------------------------------
