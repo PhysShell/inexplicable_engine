@@ -1,23 +1,17 @@
 #ifndef FS_DIRECTORY_ITERATORS_H_INCLUDED
 #   define FS_DIRECTORY_ITERATORS_H_INCLUDED
 
-#	if ( INEX_PLATFORM_WINDOWS )
-#		include	"fs_catalog_operations_win_impl.h"
-#	elif ( INEX_PLATFORM_LINUX ) // #if ( INEX_PLATFORM_WINDOWS )
-#		include	"fs_catalog_operations_linux_impl.h"
-#	else // #if ( INEX_PLATFORM_WINDOWS )
-#		error please define your platform here
-#	endif // #if ( INEX_PLATFORM_WINDOWS )
-
 #   include <inex/utils.h>
-//#	include <inex/fs_utils.h>
 #	include "fs_path_string.h"
 #   include "memory_shared_object.h"
 #   include "fs_directory_entry.h"
-#	include "fs_directory_iterators.h"
 
 namespace inex {
 namespace fs {
+
+namespace detail {
+	struct directory_iterator_impl;
+} // namespace detail
 
 class directory_iterator
 {

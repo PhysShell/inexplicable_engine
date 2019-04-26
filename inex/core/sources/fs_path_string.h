@@ -54,20 +54,20 @@ public:
 				pcstr 				absolute        ( )  const;
                 void                append          ( pcstr const file_path_raw );
 
-                bool                is_directory    ( ) const
-                                    {
-                                        return      detail::is_directory_by_path( m_string_value );
-                                    }
+                //bool                is_directory    ( ) const
+                //                    {
+                //                        return      detail::is_directory_by_path( m_string_value );
+                //                    }
 private:
 	//-----------------------------------------------------------------------------------
 	// private
 	//-----------------------------------------------------------------------------------
 				path_string&		operator =      ( path_string const& rhs )  =   delete;
 
-                bool                is_system_catalog ( ) const
-                                    {
-                                        return          detail::is_system_directory( m_string_value );
-                                    }
+                //bool                is_system_catalog ( ) const
+                //                    {
+                //                        return          detail::is_system_directory( m_string_value );
+                //                    }
 private:
     friend class recursive_directory_iterator;
 	char	m_string_value          [ INEX_MAX_PATH + 1 ];

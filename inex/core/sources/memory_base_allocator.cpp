@@ -20,6 +20,7 @@ void    base_allocator::finalize (  )
 
 pvoid    base_allocator::malloc_impl ( size_t const size )
 {
+	return				0;
 }
 
 void    base_allocator::free_impl ( pvoid )

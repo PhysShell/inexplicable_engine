@@ -32,6 +32,7 @@
  * #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
  * #pragma clang diagnostic pop
 **/
+#		define __CHAR_BIT__							CHAR_BIT
 #		define INEX_PUSH_WARNINGS( )		        __pragma ( warning ( push ) )
 #		define INEX_DISABLE_WARNING( x )	        __pragma ( warning ( disable : x ) )
 #		define INEX_POP_WARNINGS( )		            __pragma ( warning ( pop ) )

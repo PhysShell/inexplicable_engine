@@ -1,7 +1,13 @@
 #ifndef FS_DIRECTORY_ITERATORS_INLINE_H_INCLUDED
 #   define FS_DIRECTORY_ITERATORS_INLINE_H_INCLUDED
 
-#	include <inex/core/sources/ie_memory.h>
+#	if ( INEX_PLATFORM_WINDOWS )
+#		include	"fs_catalog_operations_win_impl.h"
+#	elif ( INEX_PLATFORM_LINUX ) // #if ( INEX_PLATFORM_WINDOWS )
+#		include	"fs_catalog_operations_linux_impl.h"
+#	else // #if ( INEX_PLATFORM_WINDOWS )
+#		error please define your platform here
+#	endif // #if ( INEX_PLATFORM_WINDOWS )
 
 namespace inex {
 namespace fs {

@@ -3,7 +3,6 @@
 #include "fs_file_system_internal.h"
 #include <inex/stl_extensions.h>
 #include "fs_ini_file.h"
-//#include <inex/macro_compiler.h>
 
 #ifdef INEX_FILESYSTEM_SUPPORTED
 #   include <experimental/filesystem>
@@ -95,7 +94,7 @@ void	initialize	( pcstr dir )
 										it 		!= 	end_it;
 										++it )
     {
-        if ( ( * it ).path( ).is_directory( ) )
+        if ( is_directory( ( * it ).path( ).c_str( ) ) )
         {
             continue;
         }
