@@ -13,6 +13,9 @@ namespace inex {
 namespace threading {
 
 inline  u64 cache_line_size                     ( );
+inline  u64 processors_available                ( );
+inline  u64 clock_cycle_count                   ( );
+inline  u64 clock_cycle_per_second              ( );
 
 #   if INEX_PLATFORM_LINUX
         typedef s64                             atomic64_value_type;
