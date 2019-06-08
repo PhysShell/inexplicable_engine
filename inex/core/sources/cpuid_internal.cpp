@@ -32,20 +32,24 @@ void	cpuid_platform ( s32 registers[ 4 ], s32 eax_contents )
 
 void    cpuid_fill     ( s32 registers[ 4 ], s32 eax_contents )
 {
-    __cpuid_count( eax_contents, 0, registers[ 0 ], registers[ 1 ], registers[ 2 ], registers[ 3 ] );
+    //__cpuid_count( eax_contents, 0, registers[ 0 ], registers[ 1 ], registers[ 2 ], registers[ 3 ] );
 
-//    u32 eax, ebx, ecx, edx;
-//    asm volatile
-//    (
-//        "movl current_register, %%eax\n\t"
-//        "cpuid\n\t"
-//        : "=a"( eax ),"=b"( ebx ),"=c"( ecx ),"=d"( edx )
-//    );
-//
-//    * registers         = eax;
-//    * ( registers + 1 ) = ebx;
-//    * ( registers + 2 ) = ecx;
-//    * ( registers + 3 ) = edx;
+   u32 eax, ebx, ecx, edx;
+   asm volatile
+   (
+        "movl %[current_register], %%eax\n\t"
+        "cpuid\n\t"
+        : [ current_register ]  "+r" ( eax_contents ),
+                                "=a"( eax ),
+                                "=b"( ebx ),
+                                "=c"( ecx ),
+                                "=d"( edx )
+   );
+
+   * registers         = eax;
+   * ( registers + 1 ) = ebx;
+   * ( registers + 2 ) = ecx;
+   * ( registers + 3 ) = edx;
 }
 #else
 #	error please specify your compiler intrinsics

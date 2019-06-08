@@ -54,7 +54,7 @@
 #	endif // #if defined __GNUC__ && !defined ( __clang__ )
 
 #	if defined ( _MSC_VER ) && ( _MSC_VER >= 1900 ) \
-			|| ( defined ( __GNUC__ ) && ( __GNUC__ >= 7 ) )
+			|| ( defined ( __GNUC__ ) ) // && ( __GNUC__ >= 7 ) )
 #	   define  INEX_FILESYSTEM_SUPPORTED
 #	else // #if defined ( _MSC_VER ) || ( __GNUC__ >= 7 )
 #	   pragma  message( "Use custom filesystem..." )

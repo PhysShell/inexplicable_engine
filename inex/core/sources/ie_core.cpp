@@ -9,6 +9,7 @@
 
 #include <inex/core/ie_core.h>
 #include <inex/command_line.h>
+#include <inex/threading_functions.h>
 #include "processor_info.h"
 #include "ie_trims.h"
 #include "ie_memory.h"
@@ -155,6 +156,12 @@ void	initialize ( s32 command_line_argument_count, pstr* command_line_values )
 #endif // #if INEX_PLATFORM_WINDOWS
 	}
 
+    logging::Msg( "* %d Hz clock on your machine", threading::clock_cycle_per_second( ) );
+	logging::Msg( "* L1 Cache line size: %d bits\n", threading::cache_line_size( ) );
+
+    threading::atomic32_type   atm                     { };
+    logging::Msg( "%d", threading::interlocked_increment( &atm ) );
+    logging::Msg( "%d", atm );
 /* 	memory::platform::region	r;
 	r.size						= 128;
 	r.address					= memory::require_arena_from_os( r.size );

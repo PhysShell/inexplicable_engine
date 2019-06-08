@@ -52,6 +52,35 @@
 #   endif // #if defined ( __linux__ ) && !defined ( __ANDROID__ )
 
 ////////////////////////////////////////////////////////////////////////////
+// architecture macros
+////////////////////////////////////////////////////////////////////////////
+#	if defined                  ( __amd64__ )   \
+                    || defined  ( __amd64 )     \
+                    || defined  ( __x86_64__ )  \
+                    || defined  ( __x86_64 )    \
+                    || defined  ( _M_AMD64 )
+#       define ARCHITECTURE_STRING "x86_64"
+#       define INEX_ARCHITECTURE_X86_64 // #if defined ( __amd64__ )
+#   elif defined                ( i386 )        \
+                    || defined  ( __i386 )      \
+                    || defined  ( __i386__ )    \
+                    || defined  ( __IA32__ )    \
+                    || defined  ( _M_IX86 )
+#       define INEX_ARCHITECTURE_ITANIUM // #if defined ( __amd64__ )
+#       define ARCHITECTURE_STRING  "x86"
+#   elif defined                ( __ia64__ )    \
+                    || defined  ( _IA64 )       \
+                    || defined  ( __IA64__ )    \
+                    || defined  ( __ia64 )      \
+                    || defined  ( _M_IA64 )
+#       define INEX_ARCHITECTURE_ITANIUM
+#       define ARCHITECTURE_STRING  "Itanium"
+#   else
+#       error please specify your architecture macros
+#	endif // #if defined ( __amd64__ )
+
+
+////////////////////////////////////////////////////////////////////////////
 // check macros
 ////////////////////////////////////////////////////////////////////////////
 #	if INEX_PLATFORM_WINDOWS

@@ -80,6 +80,7 @@ void	aquire_processor_information ( )
     logging::Msg( "* Detected CPU: %s [%s]", brand, vendor );
     logging::Msg( "* CPU Features: %s", features_available );
     logging::Msg( "* CPU Cores: %d\n", ( registers_information[ 1 ] >> 16 ) & 0xFF );
+    logging::Msg( "* Architecture detected: %s\n", ARCHITECTURE_STRING );
 }
 
 } // namespace threading
