@@ -11,6 +11,21 @@ namespace math {
 
 #define PI              3.1415926535897932384626433832795f
 
+inline
+void    multiple_sse ( float * const left, float * const right )
+{
+    __asm__ volatile
+    (
+        "movups %[a], %%xmm0\n\t"
+        "movups %[b], %%xmm1\n\t"
+        "mulps %%xmm1, %%xmm0\n\t"
+        "movups %%xmm0, %[a]\n\t"
+        :
+        : [ a ] "m" ( * left ), [ b ] "m" ( * right )
+        : "%xmm0", "%xmm1"
+    );
+}
+
 template < typename T > constexpr inline
 T   abs_universal ( T value )
 {
@@ -30,8 +45,8 @@ template < typename T > constexpr inline
 T   sqr ( T const& value )   {   return ( value * value );  }
 
 template < typename T > constexpr inline
-T   max ( T const& left, T const& right )   
-{  
+T   max ( T const& left, T const& right )
+{
     return              left > right ? left : right;
 }
 
@@ -50,12 +65,14 @@ float   radians_to_degree ( float const value )
 constexpr inline
 float   sin ( float const angle )
 {
+#   define sinf( x )    ( float ) sin(  ( double ) x ) ;
     return              sinf( angle );
 }
 
 constexpr inline
 float   cos ( float const angle )
 {
+#   define cosf( x )    ( float ) sin(  ( double ) x ) ;
     return              cosf( angle );
 }
 

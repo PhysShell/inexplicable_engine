@@ -59,13 +59,28 @@ void	aquire_processor_information ( )
 
     if ( registers_information[ 3 ] & ( 1 << 25 ) )
 	{
-		strcat( features_available,", SSE" );
+        if ( registers_information[ 3 ] & ( 1 << 24 ) )
+        {
+            __try
+            {
+                // using SSE instruction
+                __asm__ ("xorps %xmm0, %xmm1");
+		        strcat( features_available,", SSE" );
+            }
+            __catch ( ... ) { }
+        }
 	}
 
     if ( registers_information[ 3 ] & ( 1 << 26 ) )
 	{
-		strcat( features_available,", SSE2" );
-	}
+        __try
+            {
+                // using SSE2 instruction
+                __asm__ ("xorps %xmm0, %xmm1");
+                strcat( features_available,", SSE2" );
+            }
+            __catch ( ... ) { }
+    }
 
     if ( registers_information[ 3 ] & ( 1 << 28 ) )
 	{
@@ -76,6 +91,33 @@ void	aquire_processor_information ( )
 	{
 		strcat( features_available, ", MMX" );
 	}
+
+    u32 is_amd  =   0,  edx_reg     = 0;
+    __asm (
+        "movl $0x80000000, %%eax\n\t"
+        "cpuid\n\t"
+        "cmp $0x80000000, %%eax\n\t"
+        "jc notamd\n\t"
+        //      or 8000000 ???
+        "movl  $0x80000001, %%eax\n\t"
+        "cpuid\n\t"
+        "movl %%edx, %[edx]\n\t"
+        "movl  $1, %[amd]\n\t"
+        "notamd:\n\t"
+        : [ edx ] "+m"( edx_reg ), [ amd ] "+m" ( is_amd )
+    );
+
+    // logging::Msg( "* AMD proc detected... %d %d", is_amd, edx_reg );
+
+    if ( 0 != is_amd )
+    {
+        logging::Msg( "* AMD proc detected..." );
+        if (    registers_information[ 3 ] & ( 1 << 23 ) &&
+                edx_reg & ( 1 << 31 ) )
+        {
+            logging::Msg( "\t* 3DNow!\n" );
+        }
+    }
 
     logging::Msg( "* Detected CPU: %s [%s]", brand, vendor );
     logging::Msg( "* CPU Features: %s", features_available );
