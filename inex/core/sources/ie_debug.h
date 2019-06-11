@@ -5,6 +5,9 @@ namespace inex {
 namespace debug {
 
 INEX_CORE_API
+float           benchmark               ( void ( *function_pointer )( ) );
+
+INEX_CORE_API
 void INEX_CCALL	fatal					( 	pcstr 	file,
 											u32 	line,
 											pcstr 	func,
