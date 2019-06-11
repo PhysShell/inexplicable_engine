@@ -11,20 +11,20 @@ namespace math {
 
 #define PI              3.1415926535897932384626433832795f
 
-inline
-void    multiple_sse ( float * const left, float * const right )
+typedef void ( INEX_CDECL_CONVENTION *multiple_sse_pointer ) ( float* const, float* const );
+
+
+void    multiple_pure ( float* const , float* const );
+void    multiple_sse ( float * const left, float * const right );
+
+
+// function returning float/double use fpu so might use declspec( naked )
+// which means no prolog and epilog generated
+
+typedef struct
 {
-    __asm__ volatile
-    (
-        "movups %[a], %%xmm0\n\t"
-        "movups %[b], %%xmm1\n\t"
-        "mulps %%xmm1, %%xmm0\n\t"
-        "movups %%xmm0, %[a]\n\t"
-        :
-        : [ a ] "m" ( * left ), [ b ] "m" ( * right )
-        : "%xmm0", "%xmm1"
-    );
-}
+    multiple_sse_pointer    matrix_multiple;
+} /*typedef struct*/ MATH, *PMATH;
 
 template < typename T > constexpr inline
 T   abs_universal ( T value )
