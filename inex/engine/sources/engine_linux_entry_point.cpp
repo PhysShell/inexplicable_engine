@@ -4,8 +4,11 @@
 
 #include <type_traits>
 
+#include <inex/math_functions.h>
 #include <inex/math_float2.h>
 #include <inex/math_matrix2.h>
+
+#include <atomic>
 
 #define GLEW_STATIC
 #define GLEW_STATIC
@@ -23,17 +26,62 @@ namespace platform {
 
 s32		engine_entry_point (	pstr		command_line_string		);
 
-
 s32		engine_entry_point ( pstr command_line_string )
 {
 
     //static_assert( std::is_signed< size_t >( ), "adada" );
 
  //   int i               = 0;
+
     hello_world_in_rust ( );
 	core::initialize	( 0, 0 );
 	logging::Msg		( "Initializing Engine...\n" );
+
+    math::MATH g_CM;
+    g_CM.matrix_multiple = math::multiple_pure;
+
+    // if ( command_line::( "-puremath", temp ) ) return;
+    // if ( !"-nosse" & SSE_available )
+    g_CM.matrix_multiple = math::multiple_sse;
+    // call it like g_CM.matrix_multiple( f1, f2 );
+
+    // for ( float const x : a ) printf ( "a='%d';\n", x );
+
+    // for ( float const x : b ) printf ( "b='%d';\n", x );
+    float a[ 4 ]        = { 1.f, 2.f, 3.f, 4.f };
+    float b[ 4 ]        = { 1.f, 2.f, 3.f, 4.f };
+    // a[ 0 ] = a[ 1 ] = a[ 2 ] = a[ 3 ]           = 1.5f;
+    for ( u8 i = 0; i < 1; ++ i )
+    {
+        printf ( "a='%f';\n", a[ i ] );
+        printf ( "b='%f';\n", b[ i ] );
+        printf ( "a='%f';\n", a[ 1 + i ] );
+        printf ( "b='%f';\n", b[ 1 + i ] );
+        printf ( "a='%f';\n", a[ 2 + i ] );
+        printf ( "b='%f';\n", b[ 2 + i ] );
+        printf ( "a='%f';\n", a[ 3 + i ] );
+        printf ( "b='%f';\n", b[ 3 + i ] );
+    }
+    math::multiple_sse  ( a, b );
+        printf ( "\nSSE\n" );
+    for ( u8 i = 0; i < 1; ++ i )
+    {
+        printf ( "a='%f';\n", a[ i ] );
+        printf ( "b='%f';\n", b[ i ] );
+        printf ( "a='%f';\n", a[ 1 + i ] );
+        printf ( "b='%f';\n", b[ 1 + i ] );
+        printf ( "a='%f';\n", a[ 2 + i ] );
+        printf ( "b='%f';\n", b[ 2 + i ] );
+        printf ( "a='%f';\n", a[ 3 + i ] );
+        printf ( "b='%f';\n", b[ 3 + i ] );
+    }
+	ASSERT_S            ( math::fdEPS != 0.f );
+	logging::Msg        ( "Epsilon is: '%0.*f'", 8, math::fdEPS );
 	engine::engine		en;
+
+	// std::atomic< long > la;
+	// printf				( "long is lockfree: %i", la.is_lock_free( ) );
+
 //	glutInit( &i,  nullptr );
 //	glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);
 //	glutInitWindowSize(400, 1400);

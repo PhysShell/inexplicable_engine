@@ -94,12 +94,12 @@ void	aquire_processor_information ( )
 
     u32 is_amd  =   0,  edx_reg     = 0;
     __asm (
-        "movl $0x80000000, %%eax\n\t"
+        "movl $0x80000000h, %%eax\n\t"
         "cpuid\n\t"
-        "cmp $0x80000000, %%eax\n\t"
+        "cmp $0x80000000h, %%eax\n\t"
         "jc notamd\n\t"
         //      or 8000000 ???
-        "movl  $0x80000001, %%eax\n\t"
+        "movl  $0x80000001h, %%eax\n\t"
         "cpuid\n\t"
         "movl %%edx, %[edx]\n\t"
         "movl  $1, %[amd]\n\t"
@@ -115,6 +115,7 @@ void	aquire_processor_information ( )
         if (    registers_information[ 3 ] & ( 1 << 23 ) &&
                 edx_reg & ( 1 << 31 ) )
         {
+            // seems like 3Dnow stopped existing in 2010+ amd procs
             logging::Msg( "\t* 3DNow!\n" );
         }
     }
