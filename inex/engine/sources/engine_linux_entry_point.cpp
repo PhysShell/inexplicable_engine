@@ -4,6 +4,7 @@
 #include <inex/engine/sources/engine_device.h>
 
 #include <type_traits>
+#include <inex/command_line.h>
 
 #include <inex/math_functions.h>
 #include <inex/math_float2.h>
@@ -26,14 +27,28 @@ extern "C"
 namespace inex {
 namespace platform {
 
-s32		engine_entry_point (	pstr		command_line_string		);
+s32		engine_entry_point (	pcstr		command_line_string		);
 
-s32		engine_entry_point ( pstr command_line_string )
+void    render_scene_callback ( )
+{
+    // clear framebuffer using color of glClearColor
+    glClear                 ( GL_COLOR_BUFFER_BIT );
+    // swap roles of of backbuffer and frontbuffer
+    glutSwapBuffers         ( );
+}
+
+s32		engine_entry_point ( pcstr command_line_string )
 {
     //static_assert( std::is_signed< size_t >( ), "adada" );
 
-    hello_world_in_rust ( );
-	core::initialize	( 0, 0 );
+    // invoking rust code
+    // hello_world_in_rust ( );
+
+    int i               ;
+    i                   = command_line::initialize( command_line_string );
+    printf              ( "detected %d args.\n", i );
+
+	core::initialize	( command_line_string );
 	logging::Msg		( "Initializing Engine...\n" );
 
     math::MATH g_CM;
@@ -44,42 +59,6 @@ s32		engine_entry_point ( pstr command_line_string )
     g_CM.matrix_multiple = math::multiple_sse;
     // call it like g_CM.matrix_multiple( f1, f2 );
 
-
-
-    engine::device  device;
-    device.run( );
-
-
-    // for ( float const x : a ) printf ( "a='%d';\n", x );
-
-    // for ( float const x : b ) printf ( "b='%d';\n", x );
-    // float a[ 4 ]        = { 1.f, 2.f, 3.f, 4.f };
-    // float b[ 4 ]        = { 1.f, 2.f, 3.f, 4.f };
-    // // a[ 0 ] = a[ 1 ] = a[ 2 ] = a[ 3 ]           = 1.5f;
-    // for ( u8 i = 0; i < 1; ++ i )
-    // {
-    //     printf ( "a='%f';\n", a[ i ] );
-    //     printf ( "b='%f';\n", b[ i ] );
-    //     printf ( "a='%f';\n", a[ 1 + i ] );
-    //     printf ( "b='%f';\n", b[ 1 + i ] );
-    //     printf ( "a='%f';\n", a[ 2 + i ] );
-    //     printf ( "b='%f';\n", b[ 2 + i ] );
-    //     printf ( "a='%f';\n", a[ 3 + i ] );
-    //     printf ( "b='%f';\n", b[ 3 + i ] );
-    // }
-    // math::multiple_sse  ( a, b );
-    //     printf ( "\nSSE\n" );
-    // for ( u8 i = 0; i < 1; ++ i )
-    // {
-    //     printf ( "a='%f';\n", a[ i ] );
-    //     printf ( "b='%f';\n", b[ i ] );
-    //     printf ( "a='%f';\n", a[ 1 + i ] );
-    //     printf ( "b='%f';\n", b[ 1 + i ] );
-    //     printf ( "a='%f';\n", a[ 2 + i ] );
-    //     printf ( "b='%f';\n", b[ 2 + i ] );
-    //     printf ( "a='%f';\n", a[ 3 + i ] );
-    //     printf ( "b='%f';\n", b[ 3 + i ] );
-    // }
 	ASSERT_S            ( math::fdEPS != 0.f );
 	logging::Msg        ( "Epsilon is: '%0.*f'", 8, math::fdEPS );
 	engine::engine		en;
@@ -88,62 +67,68 @@ s32		engine_entry_point ( pstr command_line_string )
 	// printf				( "long is lockfree: %i", la.is_lock_free( ) );
 
 
-    // int i               = 0;
-	// glutInit( &i,  nullptr );
-	// glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);
-	// glutInitWindowSize(400, 1400);
-	// glutInitWindowPosition(100, 200);
-	// glutCreateWindow("Lesson 01");
+    // printf( "%s\n", command_line_string );
 
-	GLFWwindow* window;
-	VERIFY( glfwInit( ) );
+    int wheel               = 0;
+	glutInit( &wheel,  nullptr );                       // used to pass params to gl
+	glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGBA ); // enable double buffering and color buffer
+	glutInitWindowSize( 400, 1400 );                // these 3 lines specify window params
+	glutInitWindowPosition( 100, 200 );
+	glutCreateWindow( "Lesson 01" );
+    glutDisplayFunc( render_scene_callback );       // use main callback to render of 1 frame
+    glClearColor( 1.f, 0.f, 1.f, 0.f );
+    glutMainLoop( );
+    // engine::device  device;
+    // device.run( );
 
-	window				= glfwCreateWindow( 640, 480, "Inex", nullptr, nullptr );
-    ASSERT_D( window, "Couldn't create window and its OpenGL context." );
+	// GLFWwindow* window;
+	// VERIFY( glfwInit( ) );
 
-    /* Make the window's context current */
-    glfwMakeContextCurrent( window );
+	// window				= glfwCreateWindow( 640, 480, "Inex", nullptr, nullptr );
+    // ASSERT_D( window, "Couldn't create window and its OpenGL context." );
 
-    glewExperimental	= 1;
-    GLenum err			= glewInit( );
-	ASSERT_D( err == GLEW_OK, "Glew Inititialization failed, something is seriously wrong." );
+    // /* Make the window's context current */
+    // glfwMakeContextCurrent( window );
 
-    while ( !glfwWindowShouldClose( window ) )
-    {
-        glClear			( GL_COLOR_BUFFER_BIT );
+    // glewExperimental	= 1;
+    // GLenum err			= glewInit( );
+	// ASSERT_D( err == GLEW_OK, "Glew Inititialization failed, something is seriously wrong." );
 
-        glBegin			( GL_TRIANGLES );
-        glColor3f		( 0.1, 0.2, 0.3 );
-        glVertex3f		( 0, 0, 0 );
-        glVertex3f		( -1, 0, 0 );
-        glVertex3f		( 0, -1, 0 );
-        glEnd			( );
+    // while ( !glfwWindowShouldClose( window ) )
+    // {
+    //     glClear			( GL_COLOR_BUFFER_BIT );
 
-        /* Swap front and back buffers */
-        glfwSwapBuffers	( window );
+    //     glBegin			( GL_TRIANGLES );
+    //     glColor3f		( 0.1, 0.2, 0.3 );
+    //     glVertex3f		( 0, 0, 0 );
+    //     glVertex3f		( -1, 0, 0 );
+    //     glVertex3f		( 0, -1, 0 );
+    //     glEnd			( );
 
-        /* Poll for and process events */
-        glfwPollEvents	( );
-    }
+    //     /* Swap front and back buffers */
+    //     glfwSwapBuffers	( window );
 
-    glfwTerminate		( );
+    //     /* Poll for and process events */
+    //     glfwPollEvents	( );
+    // }
 
+    // glfwTerminate		( );
 	return				en.get_exit_code( );
 }
-
 } // namespace platform
 } // namespace inex
-
 
 // there's some msvc bullshit which doesn't allow me to
 // use wmain as entry point for win x86, so use linux version here
 int main( int argc, pstr* argv )
 {
 	{
-
-		inex::platform::engine_entry_point( 0 );
+        // concat_command_line( argc, argv );
+        string512               cmd_line_combined { };
+        inex::command_line::concat_command_line( argc, argv, cmd_line_combined );
+        inex::platform::engine_entry_point( cmd_line_combined );
 	}
 
-	INEX_DEBUG_WAIT;
+	// INEX_DEBUG_WAIT;
    	return 0;
 }

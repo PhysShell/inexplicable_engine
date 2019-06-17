@@ -124,21 +124,21 @@ void	compute_build_id ( )
 	}
 }
 
-void	initialize ( s32 command_line_argument_count, pstr* command_line_values )
+void	initialize ( pcstr command_line_string )
 {
     // aV[0] is a path to application
     // and the cycle-var is s32 'cause it IS int main
-    for ( s32 i = { 1 }; i < command_line_argument_count; ++i )
-	{
-        strcat			( command_line_parameters, command_line_values[ i ] );
-    }
+    //for ( s32 i = { 1 }; i < command_line_argument_count; ++i )
+	//{
+        strcat			( command_line_parameters, command_line_string );
+    //}
 
 	memory::initialize		( );
     logging::initialize		( 0 != strstr( command_line_parameters, "-nolog" ) );
     compute_build_id	( );
     logging::Msg( "\"Inexplicable Engine\" demo build %d", build_id );
     logging::Msg( "Engine compilation date : %s\n", __DATE__ );
-
+    // logging::Msg( "\n... Command line initialized: '%s'", command_line_parameters );
     threading::aquire_processor_information		( );
     //threading::get_cpu_feats		( );
 
