@@ -17,7 +17,11 @@
 #define GLEW_STATIC
 #define FREEGLUT_STATIC
 
+
+
 #include <inex/render/ogl/render_include.h>
+
+#include <GL/glx.h>
 
 extern "C"
 {
@@ -31,6 +35,7 @@ s32		engine_entry_point (	pcstr		command_line_string		);
 
 void    render_scene_callback ( )
 {
+
     // clear framebuffer using color of glClearColor
     glClear                 ( GL_COLOR_BUFFER_BIT );
     // swap roles of of backbuffer and frontbuffer
@@ -62,22 +67,73 @@ s32		engine_entry_point ( pcstr command_line_string )
 	ASSERT_S            ( math::fdEPS != 0.f );
 	logging::Msg        ( "Epsilon is: '%0.*f'", 8, math::fdEPS );
 	engine::engine		en;
-
+    // glXDestroyContext( ( Display* ) ( int * )1, GLXContext ( ) );
 	// std::atomic< long > la;
 	// printf				( "long is lockfree: %i", la.is_lock_free( ) );
 
 
     // printf( "%s\n", command_line_string );
 
-    int wheel               = 0;
-	glutInit( &wheel,  nullptr );                       // used to pass params to gl
-	glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGBA ); // enable double buffering and color buffer
-	glutInitWindowSize( 400, 1400 );                // these 3 lines specify window params
-	glutInitWindowPosition( 100, 200 );
-	glutCreateWindow( "Lesson 01" );
-    glutDisplayFunc( render_scene_callback );       // use main callback to render of 1 frame
-    glClearColor( 1.f, 0.f, 1.f, 0.f );
-    glutMainLoop( );
+    // int wheel               = 0;
+	// glutInit( &wheel,  nullptr );                       // used to pass params to gl
+	// glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGBA ); // enable double buffering and color buffer
+	// glutInitWindowSize( 400, 1400 );                // these 3 lines specify window params
+	// glutInitWindowPosition( 100, 200 );
+	// glutCreateWindow( "Lesson 01" );
+    // glutDisplayFunc( render_scene_callback );       // use main callback to render of 1 frame
+    // glClearColor( 0.f, 0.f, 0.f, 0.f );
+    
+    // // glutMainLoop( );
+
+    // ASSERT_S        ( glfwInit( ) );
+    // glfwWindowHint  (GLFW_CONTEXT_VERSION_MAJOR, 3 );
+    // glfwWindowHint  (GLFW_CONTEXT_VERSION_MINOR, 0 );
+    // // access new features dropping the deprecated stuff
+    // glfwWindowHint  ( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
+    // // for MACOS glfwWindowHint  ( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE ); 
+
+    // GLFWwindow* window  = glfwCreateWindow( 800u, 600u, "title", NULL, NULL );
+    // if ( NULL == window )
+    // {
+    //     glfwTerminate   ( );
+    //     ASSERT_D        ( window, "Failed to create OpenGL window" );
+    // }
+
+    // glfwMakeContextCurrent  ( window );
+    // glViewport              ( 0, 0, 800, 600  );
+
+    // while ( !glfwWindowShouldClose( window ) )
+    // {
+    //     glfwSwapBuffers     ( window );
+    //     glfwPollEvents      ( );
+    // }
+
+    GLenum err = glewInit();
+glGetError();
+if (err != GLEW_OK){
+    exit( 1 );
+     }
+
+    int gl_major, gl_minor;
+    glGetIntegerv( GL_MAJOR_VERSION, &gl_major );
+    glGetIntegerv( GL_MINOR_VERSION, &gl_minor );
+    LOGGER( "*** OpenGL render context information ***\n"
+            "\t* Renderer       : %s\n"
+            "\t* Vendor         : %s\n"
+            "\t* Version        : %s\n"
+            "\t* GLSL version   : %s\n"
+            "\t* OpenGL version : %d.%d\n"
+            "* GLEW version : [%s]",
+            ( pcstr )glGetString( GL_RENDERER ),
+            ( pcstr )glGetString( GL_VENDOR ),
+            ( pcstr )glGetString( GL_VERSION ),
+            ( pcstr )glGetString( GL_SHADING_LANGUAGE_VERSION ),
+            gl_major,
+            gl_minor,
+           glewGetString( GLEW_VERSION )
+        );
+
+
     // engine::device  device;
     // device.run( );
 
