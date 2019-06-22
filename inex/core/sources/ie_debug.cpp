@@ -2,12 +2,14 @@
 
 #include "ie_debug.h"
 #include "ie_memory.h"
+#include <inex/threading_functions.h>
 
 #if INEX_PLATFORM_LINUX
 
 #   include <cxxabi.h>
 #   include <signal.h>
 #   include <execinfo.h>
+#   include <chrono>
 
 #elif  !defined (__MINGW32_VERSION ) && ( INEX_PLATFORM_WINDOWS_32 ) ^ ( INEX_PLATFORM_WINDOWS_64 )
 #   include "RpcExStackTraceEngine.h"
@@ -18,8 +20,25 @@ namespace debug {
 
 using inex::logging::Msg;
 
+#if INEX_PLATFORM_WINDOWS
+// it should use QueryPerformanceCounter
+#elif INEX_PLATFORM_LINUX  // #if INEX_PLATFORM_WINDOWS
+// it should use i don't know what
+#endif // #if INEX_PLATFORM_WINDOWS
+
+float   benchmark ( void ( *function_pointer )( ) )
+{
+    auto    start               = std::chrono::high_resolution_clock::now ( ),
+            end                 = std::chrono::high_resolution_clock::now ( );
+    ( *function_pointer )   ( );
+    return                      std::chrono::duration_cast< std::chrono::nanoseconds >
+                                    ( end - start ).count( );
+    // ( clock( ) - start ) / CLOCKS_PER_SEC;
+}
+
 void 	dump_call_stack_trace ( )
 {
+
 #if INEX_PLATFORM_LINUX
 	pvoid trace				[ 16 ];
 	pstr* messages 			= nullptr;

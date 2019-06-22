@@ -38,14 +38,14 @@
 #		define INEX_DISABLE_WARNING( x )	        __pragma ( warning ( disable : x ) )
 #		define INEX_POP_WARNINGS( )		            __pragma ( warning ( pop ) )
 #       define COMPILER_PURE_VIRTUAL_DESTRUCTOR( x ) virtual ~x( ) = 0 { }
-
+#       define INEX_CDECL_CONVENTION                __cdecl
 #       define INEX_FORCE_ALIGNMENT( x )            _declspec ( align( x ) )
 
 #   else // #ifdef _MSC_VER
 #       define COMPILER_PURE_VIRTUAL_DESTRUCTOR( x ) virtual ~x( ) { }
 
 #       define INEX_FORCE_ALIGNMENT( x )            __attribute__ ( ( __aligned__ ( ( x ) ) ) )
-
+#       define INEX_CDECL_CONVENTION                __attribute__ ( ( __cdecl__ ) )
 #	endif //#ifdef _MSC_VER
 
 // don't forget that conventions were removed from msvc64 ( or not only )
@@ -55,7 +55,7 @@
 #	endif // #if defined __GNUC__ && !defined ( __clang__ )
 
 #	if defined ( _MSC_VER ) && ( _MSC_VER >= 1900 ) \
-			|| ( defined ( __GNUC__ ) && ( __GNUC__ >= 7 ) )
+			|| ( defined ( __GNUC__ ) ) // && ( __GNUC__ >= 7 ) )
 #	   define  INEX_FILESYSTEM_SUPPORTED
 #	else // #if defined ( _MSC_VER ) || ( __GNUC__ >= 7 )
 #	   pragma  message( "Use custom filesystem..." )

@@ -131,7 +131,7 @@ void	initialize	( pcstr dir )
 			std_fs::path file_path 					= 	{ it };
 			const path_type* platform_type_file_path= 	file_path.c_str( );
 
-#ifdef INEX_PLATFORM_WINDOWS
+#if INEX_PLATFORM_WINDOWS
 			size_t file_path_length					= 	wcslen( platform_type_file_path );
 			pstr file_path_string					= 	memory::ie_allocate< char >( file_path_length + 1 );
 
@@ -140,8 +140,8 @@ void	initialize	( pcstr dir )
 #endif // #ifdef INEX_PLATFORM_WINDOWS
 			files.insert			( memory_mapped_file{ platform_type_file_path } );
 			Msg( "Loading file: %s", platform_type_file_path );
+#if INEX_PLATFORM_WINDOWS
 			memory::ie_delete  		( platform_type_file_path );
-#ifdef INEX_PLATFORM_WINDOWS
 #   undef platform_type_file_path
 #endif // #ifdef INEX_PLATFORM_WINDOWS
 		}

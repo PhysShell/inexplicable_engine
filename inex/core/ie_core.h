@@ -7,7 +7,7 @@
 namespace inex {
 namespace core {
 
-void    INEX_CORE_API	initialize	( s32, pstr* );
+void    INEX_CORE_API	initialize	( pcstr );
 void    INEX_CORE_API  finalize		( );
 //#ifdef USE_SINGLETON
 //#define get_params() Params

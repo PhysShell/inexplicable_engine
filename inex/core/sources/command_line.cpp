@@ -5,24 +5,42 @@
 namespace inex {
 namespace command_line {
 
-void	initialize ( )
+void    concat_command_line ( s32 argc, pstr* argv, pstr dest )
 {
-/*
+    string512 cmd_line              = { };
+    for (   s32 i                   = 1;
+            i                       < argc;
+            ++                      i)
+    {
+        strcat                      ( cmd_line, argv [ i ] );
+    }
+
+    strcpy ( dest, cmd_line );
+}
+
+u32 	initialize ( pcstr line )
+{
 	u32			console_parameters_count	= 0;
-	string512	console_parameters;
+    if          ( !strcmp( line, "" ) )   return console_parameters_count;
+	// string512	console_parameters;
 
-	strncpy		( console_parameters, GetCommandLineA( ), sizeof ( console_parameters ) );
-	pstr skip	= console_parameters + strlen( console_parameters ) - 1;
-	for ( ; ; )
+	// strncpy		( console_parameters, GetCommandLineA( ), sizeof ( console_parameters ) );
+    
+    pcstr       skip	                    = line; //+ strlen( line ) - 1;
+    // for ( ; ; )
+	// {
+	// 	if ( *--skip == '"' )				break;
+	// }
+    // printf ( "skip = %s, len %d\n", skip, strlen( line ) );
+	for ( ; *skip;  )
 	{
-		if ( *--skip == '"' )				break;
-	}
+        // printf ( "%c ", * skip );
 
-	for ( ; *skip ; )
-	{
-		if ( *++skip == '-' )				++console_parameters_count;
+		if ( *skip++ == '-' )				++console_parameters_count;
+        
 	}
-*/
+    printf ( "" );
+    return                                  console_parameters_count;
 }
 
 void	copy_argument ( pcstr src, pstr dst, u8 separator )
@@ -38,6 +56,8 @@ void	copy_argument ( pcstr src, pstr dst, u8 separator )
 
     dst[ n ]  		=	0;
 }
+
+
 
 pstr	get_value_by_key ( pcstr k, pstr v )
 {
@@ -56,7 +76,7 @@ pstr	get_value_by_key ( pcstr k, pstr v )
 	{
 		 v[ n++ ]		= *p++;
 	}
-	
+
     v[ n ]  			= 0;
     return  			v;
 }
