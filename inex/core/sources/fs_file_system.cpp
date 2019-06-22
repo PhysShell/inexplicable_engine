@@ -94,7 +94,8 @@ void	initialize	( pcstr dir )
 										it 		!= 	end_it;
 										++it )
     {
-        if ( is_directory( ( * it ).path( ).c_str( ) ) )
+        if ( is_directory( ( * it ).path( ).c_str( ) )
+			|| is_system_catalog( ( *it ).path( ).c_str( ) ))
         {
             continue;
         }

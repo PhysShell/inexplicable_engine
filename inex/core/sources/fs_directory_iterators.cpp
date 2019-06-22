@@ -96,12 +96,8 @@ recursive_directory_iterator&   recursive_directory_iterator::operator ++ ( )
 			operator ++                 ( );
         }
     }
-    else if ( is_system_catalog( m_entry.path( ).c_str( )) )
-    {
-        operator ++                     ( );
-    }
 
-    return                              *this;
+	return                              *this;
 }
 
 void    recursive_directory_iterator::read_subdirectories ( const char* const file_path_raw )
@@ -120,9 +116,9 @@ void    recursive_directory_iterator::read_subdirectories ( const char* const fi
 
     for ( ; current != end( current ); ++current )
     {
-        if ( is_system_catalog ( ( * current ).path( ).c_str( ) ) )
+		if ( is_system_catalog ( ( * current ).path( ).c_str( ) ) )
         {
-            continue;
+			continue;
         }
 
         strcpy                  ( next_subdirectory, ( *current ).path( ).c_str( ) );

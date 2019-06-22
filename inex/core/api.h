@@ -7,6 +7,8 @@
 #	define INEX_CORE_API_H_INCLUDED
 
 #	ifndef INEX_CORE_API
+#   include <inex/macro_compiler.h>
+
 //#		ifdef INEX_STATIC_LIBRARIES
 //#			define INEX_CORE_API
 //#		else

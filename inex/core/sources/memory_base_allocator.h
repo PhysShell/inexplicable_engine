@@ -38,7 +38,11 @@ protected:
     // pvoid   m_arena_end;
     pcstr	m_arena_id;
 
+#ifndef __MINGW32_VERSION
     static constexpr size_t const alignment_value                   = sizeof ( long double );
+#else // #ifndef __MINGW32_VERSION
+    static constexpr size_t const alignment_value                   = sizeof ( long long );
+#endif // #ifndef __MINGW32_VERSION
 }; // class base_allocator
 
 } // namespace memory
