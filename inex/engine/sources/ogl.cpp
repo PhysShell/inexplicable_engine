@@ -9,7 +9,7 @@ static input    g_input;
 
 bool    gl_window_initialize ( const glwindow * window )
 {
-
+	return				0;
 }
 
 } // namespace inex

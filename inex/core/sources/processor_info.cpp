@@ -61,26 +61,44 @@ void	aquire_processor_information ( )
 	{
         if ( registers_information[ 3 ] & ( 1 << 24 ) )
         {
+#if defined( _MSC_VER )
+// #	define __try try
+#	define __catch( x ) __except( x )
+#else
+#	define __catch( x ) __catch
+#endif // #if defined( _MSC_VER ) 
             __try
             {
                 // using SSE instruction
+				# if defined( __GNUC__ )
                 __asm__ ("xorps %xmm0, %xmm1");
+				# elif defined( _MSC_VER )  && !INEX_PLATFORM_WINDOWS_64 // #if defined( __GNUC__ )
+__asm {
+				xorps xmm1, xmm0
+}
+				# endif // #if defined( __GNUC__ )
 		        strcat( features_available,", SSE" );
             }
-            __catch ( ... ) { }
+            __catch ( EXCEPTION_EXECUTE_HANDLER ) { }
         }
 	}
 
     if ( registers_information[ 3 ] & ( 1 << 26 ) )
 	{
         __try
-            {
+        {
                 // using SSE2 instruction
-                __asm__ ("xorps %xmm0, %xmm1");
+				# if defined( __GNUC__ )
+                __asm__ ("xorpd %xmm0, %xmm1");
+				# elif defined( _MSC_VER )  && !INEX_PLATFORM_WINDOWS_64 // #if defined( __GNUC__ )
+__asm {
+				xorpd xmm1, xmm0
+}
+				# endif // #if defined( __GNUC__ )
                 strcat( features_available,", SSE2" );
-            }
-            __catch ( ... ) { }
-    }
+		}
+		__catch ( EXCEPTION_EXECUTE_HANDLER ) { }
+	}
 
     if ( registers_information[ 3 ] & ( 1 << 28 ) )
 	{
@@ -93,6 +111,7 @@ void	aquire_processor_information ( )
 	}
 
     u32 is_amd  =   0,  edx_reg     = 0;
+	# if defined ( __GNUC__ )
     __asm (
         "movl $0x80000000h, %%eax\n\t"
         "cpuid\n\t"
@@ -106,6 +125,21 @@ void	aquire_processor_information ( )
         "notamd:\n\t"
         : [ edx ] "+m"( edx_reg ), [ amd ] "+m" ( is_amd )
     );
+	# elif defined ( _MSC_VER ) && !_WIN64 // #if defined ( __GNUC__ )
+__asm {
+		xor			eax , eax
+		cpuid
+		cmp			eax , 0
+		jc			notamd
+		mov			eax , 1
+		cpuid
+		mov			edx_reg , edx
+		mov			is_amd , 1
+		notamd:
+}
+	# else // #if defined ( __GNUC__ )
+	if ( !strcmp( "AuthenticAMD", ( const char * )vendor ) )	is_amd		= 1;
+	# endif // #if defined ( __GNUC__ )
 
     // logging::Msg( "* AMD proc detected... %d %d", is_amd, edx_reg );
 

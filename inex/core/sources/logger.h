@@ -20,6 +20,7 @@ namespace detail {
 	void	finalize    ( );
 	INEX_CORE_API
 	void 	Msg         ( pcstr format, ... );
+	INEX_CORE_API
 	bool	put_string  ( pcstr msg );
 } // namespace logging
 } // namespace inex

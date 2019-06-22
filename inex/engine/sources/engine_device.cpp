@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include <inex/engine/sources/engine_device.h>
 
+#if INEX_PLATFORM_LINUX
 #include <sys/time.h>
 
 
@@ -61,3 +62,5 @@ void    device::run ( )
 
 } // namespace inex
 } // namespace engine
+
+#endif // #if INEX_PLATFORM_LINUX

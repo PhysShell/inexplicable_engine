@@ -12,7 +12,12 @@
 #   include <chrono>
 
 #elif  !defined (__MINGW32_VERSION ) && ( INEX_PLATFORM_WINDOWS_32 ) ^ ( INEX_PLATFORM_WINDOWS_64 )
+#	pragma warning( push )
+#	pragma warning( disable : 4820 )
+#	pragma warning( disable : 4365 )
+#	pragma warning( disable : 4191 )
 #   include "RpcExStackTraceEngine.h"
+#	pragma warning( pop )
 #endif // #if INEX_PLATFORM_LINUX
 
 namespace inex {
@@ -26,6 +31,8 @@ using inex::logging::Msg;
 // it should use i don't know what
 #endif // #if INEX_PLATFORM_WINDOWS
 
+
+#if INEX_PLATFORM_LINUX
 float   benchmark ( void ( *function_pointer )( ) )
 {
     auto    start               = std::chrono::high_resolution_clock::now ( ),
@@ -35,6 +42,32 @@ float   benchmark ( void ( *function_pointer )( ) )
                                     ( end - start ).count( );
     // ( clock( ) - start ) / CLOCKS_PER_SEC;
 }
+#elif INEX_PLATFORM_WINDOWS // #if INEX_PLATFORM_LINUX
+float	benchmark ( void ( *function_pointer ( ) ) )
+{
+	LARGE_INTEGER			frequency, start, stop;
+	s32						thread_priority;
+	QueryPerformanceCounter	( &frequency );
+	if ( 0 == frequency.QuadPart)
+	{
+		return				0.f;
+	}
+
+	thread_priority			= GetThreadPriority( GetCurrentThread( ) );
+	if ( THREAD_PRIORITY_ERROR_RETURN == thread_priority )
+	{
+		return				0.f;
+	}
+
+	SetThreadPriority		( GetCurrentThread( ), THREAD_PRIORITY_TIME_CRITICAL );
+	QueryPerformanceCounter	( &start );
+	( *function_pointer )	( );
+	QueryPerformanceCounter	( &stop );
+	SetThreadPriority		( GetCurrentThread( ), thread_priority );
+
+	return	( float )( stop.QuadPart - start.QuadPart ) / ( float )frequency.QuadPart;
+}
+#endif // #if INEX_PLATFORM_LINUX
 
 void 	dump_call_stack_trace ( )
 {
