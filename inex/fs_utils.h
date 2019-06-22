@@ -7,7 +7,7 @@
 #	define FS_UTILS_H_INCLUDED
 
 #	if ( INEX_PLATFORM_WINDOWS )
-#		include	"fs_catalog_operations_win_impl.h"
+#		include	<inex/core/sources/fs_catalog_operations_win_impl.h>
 #	elif ( INEX_PLATFORM_LINUX ) // #if ( INEX_PLATFORM_WINDOWS )
 #		include	"fs_catalog_operations_linux_impl.h"
 #	else // #if ( INEX_PLATFORM_WINDOWS )
@@ -24,11 +24,11 @@ namespace fs {
 	inline
 	bool	is_system_catalog ( pcstr const file_path )
 	{		 return         detail::is_system_directory( file_path );	}
-	
+
 	inline
 	bool	exists ( pcstr const file_path_raw )
 	{		return			detail::exists( file_path_raw );			}
-	//make it in 
+	//make it in
 	//bool	exists ( path_string const& file_path )	{	return	detail::exists( file_path.c_str( ) );	}
 } // namespace fs
 } // namespace inex

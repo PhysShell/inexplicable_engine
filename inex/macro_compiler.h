@@ -17,11 +17,12 @@
 #       ifdef _MSC_VER
 # 		    define INEX_DLL_IMPORT	__declspec ( dllimport )
 #		    define INEX_DLL_EXPORT	__declspec ( dllexport )
-#	    elif defined ( _MSC_VER ) // #ifdef _MSC_VER
+#	    elif defined ( __GNUC__ ) // #ifdef _MSC_VER
 #		    define INEX_DLL_IMPORT	__attribute__ ( ( dllimport ) )
 #		    define INEX_DLL_EXPORT	__attribute__ ( ( dllexport ) )
 #       endif // #ifdef _MSC_VER
 #   else // #ifdef _WIN32
+#       pragma error specify dll export/import attributes
 #		define INEX_DLL_IMPORT
 #		define INEX_DLL_EXPORT
 #	endif // #ifdef _WIN32
