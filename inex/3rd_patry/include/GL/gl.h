@@ -24,7 +24,7 @@
 
 
 /************************************************************************
- * 2002-Apr-22, José Fonseca:
+ * 2002-Apr-22, Josï¿½ Fonseca:
  *   Removed non Win32 system-specific stuff
  *
  * 2002-Apr-17, Marcus Geelnard:
@@ -1396,7 +1396,7 @@ GLAPI void APIENTRY glSeparableFilter2D( GLenum target, GLenum internalformat, G
 GLAPI void APIENTRY glGetSeparableFilter( GLenum target, GLenum format, GLenum type, GLvoid *row, GLvoid *column, GLvoid *span );
 
 /* 1.3 functions */
-GLAPI void APIENTRY glActiveTexture( GLenum texture );
+// GLAPI void APIENTRY glActiveTexture( GLenum texture );
 GLAPI void APIENTRY glClientActiveTexture( GLenum texture );
 GLAPI void APIENTRY glCompressedTexImage1D( GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imageSize, const GLvoid *data );
 GLAPI void APIENTRY glCompressedTexImage2D( GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const GLvoid *data );

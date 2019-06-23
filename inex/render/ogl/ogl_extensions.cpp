@@ -1,13 +1,25 @@
 #include "pch.h"
 #include "ogl_extensions.h"
+#include <stdio.h>
 
 namespace inex {
-namespace ogl { 
+namespace ogl {
+
 bool	init_extensions ( )
 {
 // Texture
-  OPENGL_GET_PROC(PFNGLACTIVETEXTUREPROC, glActiveTexture);
-  // VAO
+    //glActiveTexture = get_procedure_address<PFNGLACTIVETEXTUREARBPROC>( glActiveTexture, ( const GLubyte* )"glActiveTexturexARB" );
+//    VERIFY( glActiveTexture );
+    // glActiveTexture = ( PFNGLACTIVETEXTUREPROC )glXGetProcAddress( ( const GLubyte * )"glActiveTextureARB" );
+    // glGenVertexArrays = ( PFNGLGENVERTEXARRAYSPROC )glXGetProcAddress( ( const GLubyte * )"glGenVertexArray" );
+    //get_procedure_address< PFNGLGENVERTEXARRAYSPROC>( glGenVertexArrays, (const GLubyte*)"glGenVertexArrays" );
+
+
+    OPENGL_GET_PROC(PFNGLACTIVETEXTUREPROC, glActiveTexture);
+// VAO
+
+    OPENGL_GET_PROC( PFNGLGENVERTEXARRAYSPROC, glGenVertexArrays );
+
   OPENGL_GET_PROC(PFNGLGENVERTEXARRAYSPROC,    glGenVertexArrays);
   OPENGL_GET_PROC(PFNGLDELETEVERTEXARRAYSPROC, glDeleteVertexArrays);
   OPENGL_GET_PROC(PFNGLBINDVERTEXARRAYPROC,    glBindVertexArray);
@@ -51,52 +63,52 @@ bool	init_extensions ( )
 
   //OPENGL_CHECK_FOR_ERRORS();
 
-  return										1;	
+  return										1;
 }
 }// namespace ogl
 }// namespace inex
 
 /* Global extension */
 // Texture
-PFNGLACTIVETEXTUREPROC glActiveTexture = NULL;
+PFNGLACTIVETEXTUREPROC glActiveTexture  ;
 // VAO
-PFNGLGENVERTEXARRAYSPROC    glGenVertexArrays    = NULL;
-PFNGLDELETEVERTEXARRAYSPROC glDeleteVertexArrays = NULL;
-PFNGLBINDVERTEXARRAYPROC    glBindVertexArray    = NULL;
+PFNGLGENVERTEXARRAYSPROC    glGenVertexArrays    ;
+PFNGLDELETEVERTEXARRAYSPROC glDeleteVertexArrays ;
+PFNGLBINDVERTEXARRAYPROC    glBindVertexArray    ;
 // VBO
-PFNGLGENBUFFERSPROC    glGenBuffers    = NULL;
-PFNGLDELETEBUFFERSPROC glDeleteBuffers = NULL;
-PFNGLBINDBUFFERPROC    glBindBuffer    = NULL;
-PFNGLBUFFERDATAPROC    glBufferData    = NULL;
-PFNGLBUFFERSUBDATAPROC glBufferSubData = NULL;
-PFNGLMAPBUFFERPROC     glMapBuffer     = NULL;
-PFNGLUNMAPBUFFERPROC   glUnmapBuffer   = NULL;
+PFNGLGENBUFFERSPROC    glGenBuffers    ;
+PFNGLDELETEBUFFERSPROC glDeleteBuffers ;
+PFNGLBINDBUFFERPROC    glBindBuffer    ;
+PFNGLBUFFERDATAPROC    glBufferData    ;
+PFNGLBUFFERSUBDATAPROC glBufferSubData ;
+PFNGLMAPBUFFERPROC     glMapBuffer     ;
+PFNGLUNMAPBUFFERPROC   glUnmapBuffer   ;
 // Shaders
-PFNGLCREATEPROGRAMPROC     glCreateProgram     = NULL;
-PFNGLDELETEPROGRAMPROC     glDeleteProgram     = NULL;
-PFNGLLINKPROGRAMPROC       glLinkProgram       = NULL;
-PFNGLVALIDATEPROGRAMPROC   glValidateProgram   = NULL;
-PFNGLUSEPROGRAMPROC        glUseProgram        = NULL;
-PFNGLGETPROGRAMIVPROC      glGetProgramiv      = NULL;
-PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog = NULL;
-PFNGLCREATESHADERPROC      glCreateShader      = NULL;
-PFNGLDELETESHADERPROC      glDeleteShader      = NULL;
-PFNGLSHADERSOURCEPROC      glShaderSource      = NULL;
-PFNGLCOMPILESHADERPROC     glCompileShader     = NULL;
-PFNGLATTACHSHADERPROC      glAttachShader      = NULL;
-PFNGLDETACHSHADERPROC      glDetachShader      = NULL;
-PFNGLGETSHADERIVPROC       glGetShaderiv       = NULL;
-PFNGLGETSHADERINFOLOGPROC  glGetShaderInfoLog  = NULL;
+PFNGLCREATEPROGRAMPROC     glCreateProgram     ;
+PFNGLDELETEPROGRAMPROC     glDeleteProgram     ;
+PFNGLLINKPROGRAMPROC       glLinkProgram       ;
+PFNGLVALIDATEPROGRAMPROC   glValidateProgram   ;
+PFNGLUSEPROGRAMPROC        glUseProgram        ;
+PFNGLGETPROGRAMIVPROC      glGetProgramiv      ;
+PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog ;
+PFNGLCREATESHADERPROC      glCreateShader      ;
+PFNGLDELETESHADERPROC      glDeleteShader      ;
+PFNGLSHADERSOURCEPROC      glShaderSource      ;
+PFNGLCOMPILESHADERPROC     glCompileShader     ;
+PFNGLATTACHSHADERPROC      glAttachShader      ;
+PFNGLDETACHSHADERPROC      glDetachShader      ;
+PFNGLGETSHADERIVPROC       glGetShaderiv       ;
+PFNGLGETSHADERINFOLOGPROC  glGetShaderInfoLog  ;
 // Attributes
-PFNGLGETATTRIBLOCATIONPROC        glGetAttribLocation        = NULL;
-PFNGLVERTEXATTRIBPOINTERPROC      glVertexAttribPointer      = NULL;
-PFNGLENABLEVERTEXATTRIBARRAYPROC  glEnableVertexAttribArray  = NULL;
-PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray = NULL;
+PFNGLGETATTRIBLOCATIONPROC        glGetAttribLocation        ;
+PFNGLVERTEXATTRIBPOINTERPROC      glVertexAttribPointer      ;
+PFNGLENABLEVERTEXATTRIBARRAYPROC  glEnableVertexAttribArray  ;
+PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray ;
 // Uniforms
-PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation = NULL;
-PFNGLUNIFORMMATRIX3FVPROC   glUniformMatrix3fv   = NULL;
-PFNGLUNIFORMMATRIX4FVPROC   glUniformMatrix4fv   = NULL;
-PFNGLUNIFORM1IPROC          glUniform1i          = NULL;
-PFNGLUNIFORM1FVPROC         glUniform1fv         = NULL;
-PFNGLUNIFORM3FVPROC         glUniform3fv         = NULL;
-PFNGLUNIFORM4FVPROC         glUniform4fv         = NULL;
+PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation ;
+PFNGLUNIFORMMATRIX3FVPROC   glUniformMatrix3fv   ;
+PFNGLUNIFORMMATRIX4FVPROC   glUniformMatrix4fv   ;
+PFNGLUNIFORM1IPROC          glUniform1i          ;
+PFNGLUNIFORM1FVPROC         glUniform1fv         ;
+PFNGLUNIFORM3FVPROC         glUniform3fv         ;
+PFNGLUNIFORM4FVPROC         glUniform4fv         ;

@@ -65,8 +65,9 @@ void	aquire_processor_information ( )
 // #	define __try try
 #	define __catch( x ) __except( x )
 #else
-#	define __catch( x ) __catch
-#endif // #if defined( _MSC_VER ) 
+#   define EXCEPTION_EXECUTE_HANDLER ...
+// #	define __catch( x ) __catch
+#endif // #if defined( _MSC_VER )
             __try
             {
                 // using SSE instruction
