@@ -1,3 +1,3 @@
 # inexplicable_engine
-Hi. Don't know how you found this repository but I wish you all the best code in the world.
-An actual project is a custom engine which is being developed by me for fun and experience.
+Doing some utopian R&D as if I was back to the times of an early x-ray engine builds.
+Low level. Trying to get myself into ogl. Plan on implementing mp.
