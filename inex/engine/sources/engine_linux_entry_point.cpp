@@ -55,6 +55,7 @@ s32		engine_entry_point ( pcstr command_line_string )
 
 	core::initialize	( command_line_string );
 	logging::Msg		( "Initializing Engine...\n" );
+    hello_world_in_rust ( );
 
     math::MATH g_CM;
     g_CM.matrix_multiple = math::multiple_pure;
@@ -108,7 +109,6 @@ s32		engine_entry_point ( pcstr command_line_string )
     //     glfwPollEvents      ( );
     // }
 
-
 	ASSERT_D( ogl::init_extensions( ), "Failed to load OpenGL extensions\n") ;
 
 	GLFWwindow* window;
@@ -119,44 +119,46 @@ s32		engine_entry_point ( pcstr command_line_string )
 	window				= glfwCreateWindow( 640, 480, "Inex", nullptr, nullptr );
     ASSERT_D( window, "Couldn't create window and its OpenGL context." );
 
+
     /* Make the window's context current */
     glfwMakeContextCurrent( window );
-
+            GLenum err = glewInit();
+    glGetError( );
+    if ( err != GLEW_OK )
+    {
+        exit( 1 );
+    }
+    
+    s32 gl_major, gl_minor;
+    glGetIntegerv( GL_MAJOR_VERSION, &gl_major );
+    glGetIntegerv( GL_MINOR_VERSION, &gl_minor );
+    LOGGER( "*** OpenGL render context information ***\n"
+            "\t* Renderer       : %s\n"
+            "\t* Vendor         : %s\n"
+            "\t* Version        : %s\n"
+            "\t* GLSL version   : %s\n"
+            "\t* OpenGL version : %d.%d\n"
+            "* [GLEW] version : [%s]",
+            ( pcstr )glGetString( GL_RENDERER ),
+            ( pcstr )glGetString( GL_VENDOR ),
+            ( pcstr )glGetString( GL_VERSION ),
+            ( pcstr )glGetString( GL_SHADING_LANGUAGE_VERSION ),
+            gl_major,
+            gl_minor,
+           glewGetString( GLEW_VERSION )
+        );
 	glViewport			( 0, 0, 640, 480 );
+
     while ( !glfwWindowShouldClose( window ) )
     {
-
-
         glfwSwapBuffers	( window );
         glfwPollEvents	( );
     }
 
-    glfwTerminate		( );
-    inex::core
-//     GLenum err = glewInit();
-// glGetError();
-// if (err != GLEW_OK){
-//     exit( 1 );
-//      }
 
-    // int gl_major, gl_minor;
-    // glGetIntegerv( GL_MAJOR_VERSION, &gl_major );
-    // glGetIntegerv( GL_MINOR_VERSION, &gl_minor );
-    // LOGGER( "*** OpenGL render context information ***\n"
-    //         "\t* Renderer       : %s\n"
-    //         "\t* Vendor         : %s\n"
-    //         "\t* Version        : %s\n"
-    //         "\t* GLSL version   : %s\n"
-    //         "\t* OpenGL version : %d.%d\n"
-    //         "* GLEW version : [%s]",
-    //         ( pcstr )glGetString( GL_RENDERER ),
-    //         ( pcstr )glGetString( GL_VENDOR ),
-    //         ( pcstr )glGetString( GL_VERSION ),
-    //         ( pcstr )glGetString( GL_SHADING_LANGUAGE_VERSION ),
-    //         gl_major,
-    //         gl_minor,
-    //        glewGetString( GLEW_VERSION )
-    //     );
+    glfwTerminate		( );
+    core::finalize      ( );
+//    inex::core
 
 
     // engine::device  device;

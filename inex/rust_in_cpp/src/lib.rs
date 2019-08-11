@@ -6,7 +6,11 @@
 //     }
 // }
 
+// #[crate_type = "lib"]
+// #[no_std]
+// #[allow(ctypes)]
+
 #[no_mangle]
-pub unsafe extern "C" fn hello_world_in_rust() {
+pub extern "C" fn hello_world_in_rust() {
     println!("Hello World, Rust here!");
 }
