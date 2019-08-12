@@ -879,6 +879,14 @@ return temp
 Если в функцию необходимо передать большую структуру, это лучше сделать, передав птр, а не
 копию ее данных
 
+посмотреть seinfeld
+Thank_You_for_Smoking
+Infinity
+look around you
+посмотреть сериал https://watcheng.com/en/show/lip-service/season-1/episode-1/
+
+my skype ( i think ): live:2c92e80bf2975880
+
 Операции обращения к структурам (точка и - >) наряду с круглыми скобками для 
 вызовов функций и квадратными для индексов массивов находятся на самой вершине 
 иерархии приоритетов, а потому применяются к своим аргументам всегда в первую 
@@ -3633,6 +3641,8 @@ http://oldshatalov.ghost17.ru/ru/articles/math/foreword.html
 
 https://www.khanacademy.org/math/trigonometry/trigonometry-right-triangles/intro-to-the-trig-ratios/a/opposite-adjacent-hypotenuse
 
+
+interesting blog http://allenchou.net/author/cjcat2266/
 
 cli
 

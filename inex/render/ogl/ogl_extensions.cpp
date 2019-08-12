@@ -7,64 +7,84 @@ namespace ogl {
 
 bool	init_extensions ( )
 {
-// Texture
-    //glActiveTexture = get_procedure_address<PFNGLACTIVETEXTUREARBPROC>( glActiveTexture, ( const GLubyte* )"glActiveTexturexARB" );
-//    VERIFY( glActiveTexture );
+    // Texture
+    // glActiveTexture = get_procedure_address<PFNGLACTIVETEXTUREARBPROC>( glActiveTexture, ( const GLubyte* )"glActiveTexturexARB" );
+    // VERIFY( glActiveTexture );
     // glActiveTexture = ( PFNGLACTIVETEXTUREPROC )glXGetProcAddress( ( const GLubyte * )"glActiveTextureARB" );
     // glGenVertexArrays = ( PFNGLGENVERTEXARRAYSPROC )glXGetProcAddress( ( const GLubyte * )"glGenVertexArray" );
-    //get_procedure_address< PFNGLGENVERTEXARRAYSPROC>( glGenVertexArrays, (const GLubyte*)"glGenVertexArrays" );
+    // get_procedure_address< PFNGLGENVERTEXARRAYSPROC>( glGenVertexArrays, (const GLubyte*)"glGenVertexArrays" );
 
-
-    OPENGL_GET_PROC(PFNGLACTIVETEXTUREPROC, glActiveTexture);
-// VAO
-
-    OPENGL_GET_PROC( PFNGLGENVERTEXARRAYSPROC, glGenVertexArrays );
-
-  OPENGL_GET_PROC(PFNGLGENVERTEXARRAYSPROC,    glGenVertexArrays);
-  OPENGL_GET_PROC(PFNGLDELETEVERTEXARRAYSPROC, glDeleteVertexArrays);
-  OPENGL_GET_PROC(PFNGLBINDVERTEXARRAYPROC,    glBindVertexArray);
-  // VBO
-  OPENGL_GET_PROC(PFNGLGENBUFFERSPROC,    glGenBuffers);
-  OPENGL_GET_PROC(PFNGLDELETEBUFFERSPROC, glDeleteBuffers);
-  OPENGL_GET_PROC(PFNGLBINDBUFFERPROC,    glBindBuffer);
-  OPENGL_GET_PROC(PFNGLBUFFERDATAPROC,    glBufferData);
-  OPENGL_GET_PROC(PFNGLBUFFERSUBDATAPROC, glBufferSubData);
-  OPENGL_GET_PROC(PFNGLMAPBUFFERPROC,     glMapBuffer);
-  OPENGL_GET_PROC(PFNGLUNMAPBUFFERPROC,   glUnmapBuffer);
-  // Shaders
-  OPENGL_GET_PROC(PFNGLCREATEPROGRAMPROC,     glCreateProgram);
-  OPENGL_GET_PROC(PFNGLDELETEPROGRAMPROC,     glDeleteProgram);
-  OPENGL_GET_PROC(PFNGLLINKPROGRAMPROC,       glLinkProgram);
-  OPENGL_GET_PROC(PFNGLVALIDATEPROGRAMPROC,   glValidateProgram);
-  OPENGL_GET_PROC(PFNGLUSEPROGRAMPROC,        glUseProgram);
-  OPENGL_GET_PROC(PFNGLGETPROGRAMIVPROC,      glGetProgramiv);
-  OPENGL_GET_PROC(PFNGLGETPROGRAMINFOLOGPROC, glGetProgramInfoLog);
-  OPENGL_GET_PROC(PFNGLCREATESHADERPROC,      glCreateShader);
-  OPENGL_GET_PROC(PFNGLDELETESHADERPROC,      glDeleteShader);
-  OPENGL_GET_PROC(PFNGLSHADERSOURCEPROC,      glShaderSource);
-  OPENGL_GET_PROC(PFNGLCOMPILESHADERPROC,     glCompileShader);
-  OPENGL_GET_PROC(PFNGLATTACHSHADERPROC,      glAttachShader);
-  OPENGL_GET_PROC(PFNGLDETACHSHADERPROC,      glDetachShader);
-  OPENGL_GET_PROC(PFNGLGETSHADERIVPROC,       glGetShaderiv);
-  OPENGL_GET_PROC(PFNGLGETSHADERINFOLOGPROC,  glGetShaderInfoLog);
-  // Attributes
-  OPENGL_GET_PROC(PFNGLGETATTRIBLOCATIONPROC,        glGetAttribLocation);
-  OPENGL_GET_PROC(PFNGLVERTEXATTRIBPOINTERPROC,      glVertexAttribPointer);
-  OPENGL_GET_PROC(PFNGLENABLEVERTEXATTRIBARRAYPROC,  glEnableVertexAttribArray);
-  OPENGL_GET_PROC(PFNGLDISABLEVERTEXATTRIBARRAYPROC, glDisableVertexAttribArray);
-  // Uniforms
-  OPENGL_GET_PROC(PFNGLGETUNIFORMLOCATIONPROC, glGetUniformLocation);
-  OPENGL_GET_PROC(PFNGLUNIFORMMATRIX3FVPROC,   glUniformMatrix3fv);
-  OPENGL_GET_PROC(PFNGLUNIFORMMATRIX4FVPROC,   glUniformMatrix4fv);
-  OPENGL_GET_PROC(PFNGLUNIFORM1IPROC,          glUniform1i);
-  OPENGL_GET_PROC(PFNGLUNIFORM1FVPROC,         glUniform1fv);
-  OPENGL_GET_PROC(PFNGLUNIFORM3FVPROC,         glUniform3fv);
-  OPENGL_GET_PROC(PFNGLUNIFORM4FVPROC,         glUniform4fv);
+    // VAO
+    OPENGL_GET_PROC(PFNGLACTIVETEXTUREPROC,         glActiveTexture);
+    OPENGL_GET_PROC( PFNGLGENVERTEXARRAYSPROC,      glGenVertexArrays );
+    OPENGL_GET_PROC(PFNGLGENVERTEXARRAYSPROC,       glGenVertexArrays);
+    OPENGL_GET_PROC(PFNGLDELETEVERTEXARRAYSPROC,    glDeleteVertexArrays);
+    OPENGL_GET_PROC(PFNGLBINDVERTEXARRAYPROC,       glBindVertexArray);
+    // VBO
+    OPENGL_GET_PROC(PFNGLGENBUFFERSPROC,    glGenBuffers);
+    OPENGL_GET_PROC(PFNGLDELETEBUFFERSPROC, glDeleteBuffers);
+    OPENGL_GET_PROC(PFNGLBINDBUFFERPROC,    glBindBuffer);
+    OPENGL_GET_PROC(PFNGLBUFFERDATAPROC,    glBufferData);
+    OPENGL_GET_PROC(PFNGLBUFFERSUBDATAPROC, glBufferSubData);
+    OPENGL_GET_PROC(PFNGLMAPBUFFERPROC,     glMapBuffer);
+    OPENGL_GET_PROC(PFNGLUNMAPBUFFERPROC,   glUnmapBuffer);
+    // Shaders
+    OPENGL_GET_PROC(PFNGLCREATEPROGRAMPROC,     glCreateProgram);
+    OPENGL_GET_PROC(PFNGLDELETEPROGRAMPROC,     glDeleteProgram);
+    OPENGL_GET_PROC(PFNGLLINKPROGRAMPROC,       glLinkProgram);
+    OPENGL_GET_PROC(PFNGLVALIDATEPROGRAMPROC,   glValidateProgram);
+    OPENGL_GET_PROC(PFNGLUSEPROGRAMPROC,        glUseProgram);
+    OPENGL_GET_PROC(PFNGLGETPROGRAMIVPROC,      glGetProgramiv);
+    OPENGL_GET_PROC(PFNGLGETPROGRAMINFOLOGPROC, glGetProgramInfoLog);
+    OPENGL_GET_PROC(PFNGLCREATESHADERPROC,      glCreateShader);
+    OPENGL_GET_PROC(PFNGLDELETESHADERPROC,      glDeleteShader);
+    OPENGL_GET_PROC(PFNGLSHADERSOURCEPROC,      glShaderSource);
+    OPENGL_GET_PROC(PFNGLCOMPILESHADERPROC,     glCompileShader);
+    OPENGL_GET_PROC(PFNGLATTACHSHADERPROC,      glAttachShader);
+    OPENGL_GET_PROC(PFNGLDETACHSHADERPROC,      glDetachShader);
+    OPENGL_GET_PROC(PFNGLGETSHADERIVPROC,       glGetShaderiv);
+    OPENGL_GET_PROC(PFNGLGETSHADERINFOLOGPROC,  glGetShaderInfoLog);
+    // Attributes
+    OPENGL_GET_PROC(PFNGLGETATTRIBLOCATIONPROC,        glGetAttribLocation);
+    OPENGL_GET_PROC(PFNGLVERTEXATTRIBPOINTERPROC,      glVertexAttribPointer);
+    OPENGL_GET_PROC(PFNGLENABLEVERTEXATTRIBARRAYPROC,  glEnableVertexAttribArray);
+    OPENGL_GET_PROC(PFNGLDISABLEVERTEXATTRIBARRAYPROC, glDisableVertexAttribArray);
+    // Uniforms
+    OPENGL_GET_PROC(PFNGLGETUNIFORMLOCATIONPROC, glGetUniformLocation);
+    OPENGL_GET_PROC(PFNGLUNIFORMMATRIX3FVPROC,   glUniformMatrix3fv);
+    OPENGL_GET_PROC(PFNGLUNIFORMMATRIX4FVPROC,   glUniformMatrix4fv);
+    OPENGL_GET_PROC(PFNGLUNIFORM1IPROC,          glUniform1i);
+    OPENGL_GET_PROC(PFNGLUNIFORM1FVPROC,         glUniform1fv);
+    OPENGL_GET_PROC(PFNGLUNIFORM3FVPROC,         glUniform3fv);
+    OPENGL_GET_PROC(PFNGLUNIFORM4FVPROC,         glUniform4fv);
 
   //OPENGL_CHECK_FOR_ERRORS();
 
   return										1;
 }
+
+void    dump_user_specifications ( )
+{
+    s32 gl_major, gl_minor;
+    glGetIntegerv( GL_MAJOR_VERSION, &gl_major );
+    glGetIntegerv( GL_MINOR_VERSION, &gl_minor );
+    LOGGER( "*** OpenGL render context information ***\n"
+            "\t* Renderer       : %s\n"
+            "\t* Vendor         : %s\n"
+            "\t* Version        : %s\n"
+            "\t* GLSL version   : %s\n"
+            "\t* OpenGL version : %d.%d\n"
+            "* [GLEW] version : [%s]",
+            ( pcstr )glGetString( GL_RENDERER ),
+            ( pcstr )glGetString( GL_VENDOR ),
+            ( pcstr )glGetString( GL_VERSION ),
+            ( pcstr )glGetString( GL_SHADING_LANGUAGE_VERSION ),
+            gl_major,
+            gl_minor,
+           glewGetString( GLEW_VERSION )
+    );
+} 
+
 }// namespace ogl
 }// namespace inex
 

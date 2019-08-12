@@ -1,10 +1,72 @@
-#include "stdafx.h"
-#include <inex/engine/sources/engine_device.h>
+// #include "stdafx.h"
+#include <inex/render/core/device.h>
 
+#include <inex/3rd_patry/include/GLFW/glfw3.h>
 #include <time.h>
 
+static
+void    framebuffer_size_callback ( GLFWwindow* window, int width, int height )
+{
+    glViewport          ( 0, 0, width, height );
+}
+
 namespace inex {
-namespace engine {
+namespace ogl {
+
+void    device::create ( )
+{
+	VERIFY( glfwInit( ) );
+	glfwWindowHint		( GLFW_CONTEXT_VERSION_MAJOR, 3 );
+	glfwWindowHint		( GLFW_CONTEXT_VERSION_MINOR, 3 );
+	glfwWindowHint		( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
+	m_context		    = glfwCreateWindow( 640, 480, "Inex", nullptr, nullptr );
+    ASSERT_D            ( m_context, "Couldn't create window and its OpenGL context." );
+    glfwMakeContextCurrent( m_context );
+
+	ASSERT_D            ( ogl::init_extensions( ), "Failed to load OpenGL extensions\n") ;
+    GLenum err          = glewInit();
+    glGetError          ( );
+    ASSERT_S            ( err == GLEW_OK );
+    ogl::dump_user_specifications ( );
+
+    glfwSetFramebufferSizeCallback( m_context, framebuffer_size_callback );
+	glViewport			( 0, 0, 640, 480 );
+}
+
+void    device::destroy ( )
+{
+    glfwTerminate		( );
+}
+
+void    device::process_input ( )
+{
+    if ( glfwGetKey( m_context, GLFW_KEY_ESCAPE ) == GLFW_PRESS )
+    {
+        glfwSetWindowShouldClose( m_context, 1 );
+    }
+}
+
+void    device::loop ( )
+{
+    while ( !glfwWindowShouldClose( m_context ) )
+    {
+        process_input   ( );
+        render          ( );
+    }
+
+    destroy             ( );
+}
+
+void    device::render ( )
+{
+    // drawcalls
+    glClearColor    ( .2f, .3f, .3f, 1.0f );
+    glClear         ( GL_COLOR_BUFFER_BIT );
+
+    // call events and swap buffers
+    glfwPollEvents	( );
+    glfwSwapBuffers	( m_context );
+}
 
 void    update_world ( )
 {
@@ -47,7 +109,7 @@ void    device::run ( )
 {
     float last_frame_time               = get_time( );
     for ( ; ; )
-    {    
+    {
         float current                   = get_time( );
         float delta                     = current - last_frame_time;
         printf (    "last frame: %f; current: %f; delta: %f",
@@ -98,5 +160,5 @@ void    device::run ( )
     //}
 }
 
-} // namespace inex
+} // namespace ogl
 } // namespace engine

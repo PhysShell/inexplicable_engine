@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include <inex/engine/ie_engine.h>
 #include <inex/core/ie_core.h>
-#include <inex/engine/sources/engine_device.h>
+#include <inex/render/core/device.h>
 
 #include <type_traits>
 #include <inex/command_line.h>
@@ -44,20 +44,14 @@ s32		engine_entry_point (	pcstr		command_line_string		);
 
 s32		engine_entry_point ( pcstr command_line_string )
 {
-    //static_assert( std::is_signed< size_t >( ), "adada" );
-
-    // invoking rust code
-    // hello_world_in_rust ( );
-
     int i               ;
     i                   = command_line::initialize( command_line_string );
-    printf              ( "detected %d args.\n", i );
 
 	core::initialize	( command_line_string );
 	logging::Msg		( "Initializing Engine...\n" );
     hello_world_in_rust ( );
 
-    inex::engine::device d; d.run( );
+    // inex::engine::device d; d.run( );
 
     math::MATH g_CM;
     g_CM.matrix_multiple = math::multiple_pure;
@@ -69,7 +63,36 @@ s32		engine_entry_point ( pcstr command_line_string )
 
 	ASSERT_S            ( math::fdEPS != 0.f );
 	logging::Msg        ( "Epsilon is: '%0.*f'", 8, math::fdEPS );
-	engine::engine		en;
+
+    ogl::device         device;
+
+    device.create       ( );
+    device.loop         ( );
+
+    core::finalize      ( );
+
+	return				engine::engine{ }.get_exit_code( );
+}
+} // namespace platform
+} // namespace inex
+
+// there's some msvc bullshit which doesn't allow me to
+// use wmain as entry point for win x86, so use linux version here
+int main( int argc, pstr* argv )
+{
+	{
+        // concat_command_line( argc, argv );
+        string512               cmd_line_combined { };
+        inex::command_line::concat_command_line( argc, argv, cmd_line_combined );
+        inex::platform::engine_entry_point( cmd_line_combined );
+	}
+
+	// INEX_DEBUG_WAIT;
+   	return 0;
+}
+
+/*** Just a mess
+
     // glXDestroyContext( ( Display* ) ( int * )1, GLXContext ( ) );
 	// std::atomic< long > la;
 	// printf				( "long is lockfree: %i", la.is_lock_free( ) );
@@ -110,57 +133,7 @@ s32		engine_entry_point ( pcstr command_line_string )
     //     glfwSwapBuffers     ( window );
     //     glfwPollEvents      ( );
     // }
-
-	ASSERT_D( ogl::init_extensions( ), "Failed to load OpenGL extensions\n") ;
-
-	GLFWwindow* window;
-	VERIFY( glfwInit( ) );
-	glfwWindowHint		( GLFW_CONTEXT_VERSION_MAJOR, 3 );
-	glfwWindowHint		( GLFW_CONTEXT_VERSION_MINOR, 3 );
-	glfwWindowHint		( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
-	window				= glfwCreateWindow( 640, 480, "Inex", nullptr, nullptr );
-    ASSERT_D( window, "Couldn't create window and its OpenGL context." );
-
-
-    /* Make the window's context current */
-    glfwMakeContextCurrent( window );
-            GLenum err = glewInit();
-    glGetError( );
-    if ( err != GLEW_OK )
-    {
-        exit( 1 );
-    }
-    
-    s32 gl_major, gl_minor;
-    glGetIntegerv( GL_MAJOR_VERSION, &gl_major );
-    glGetIntegerv( GL_MINOR_VERSION, &gl_minor );
-    LOGGER( "*** OpenGL render context information ***\n"
-            "\t* Renderer       : %s\n"
-            "\t* Vendor         : %s\n"
-            "\t* Version        : %s\n"
-            "\t* GLSL version   : %s\n"
-            "\t* OpenGL version : %d.%d\n"
-            "* [GLEW] version : [%s]",
-            ( pcstr )glGetString( GL_RENDERER ),
-            ( pcstr )glGetString( GL_VENDOR ),
-            ( pcstr )glGetString( GL_VERSION ),
-            ( pcstr )glGetString( GL_SHADING_LANGUAGE_VERSION ),
-            gl_major,
-            gl_minor,
-           glewGetString( GLEW_VERSION )
-        );
-	glViewport			( 0, 0, 640, 480 );
-
-    while ( !glfwWindowShouldClose( window ) )
-    {
-        glfwSwapBuffers	( window );
-        glfwPollEvents	( );
-    }
-
-
-    glfwTerminate		( );
-    core::finalize      ( );
-//    inex::core
+    //    inex::core
 
 
     // engine::device  device;
@@ -172,7 +145,7 @@ s32		engine_entry_point ( pcstr command_line_string )
 	// window				= glfwCreateWindow( 640, 480, "Inex", nullptr, nullptr );
     // ASSERT_D( window, "Couldn't create window and its OpenGL context." );
 
-    // /* Make the window's context current */
+    // // Make the window's context current
     // glfwMakeContextCurrent( window );
 
     // glewExperimental	= 1;
@@ -190,30 +163,12 @@ s32		engine_entry_point ( pcstr command_line_string )
     //     glVertex3f		( 0, -1, 0 );
     //     glEnd			( );
 
-    //     /* Swap front and back buffers */
+    //     // Swap front and back buffers
     //     glfwSwapBuffers	( window );
 
-    //     /* Poll for and process events */
+    //     // Poll for and process events
     //     glfwPollEvents	( );
     // }
 
     // glfwTerminate		( );
-	return				en.get_exit_code( );
-}
-} // namespace platform
-} // namespace inex
-
-// there's some msvc bullshit which doesn't allow me to
-// use wmain as entry point for win x86, so use linux version here
-int main( int argc, pstr* argv )
-{
-	{
-        // concat_command_line( argc, argv );
-        string512               cmd_line_combined { };
-        inex::command_line::concat_command_line( argc, argv, cmd_line_combined );
-        inex::platform::engine_entry_point( cmd_line_combined );
-	}
-
-	// INEX_DEBUG_WAIT;
-   	return 0;
-}
+***/

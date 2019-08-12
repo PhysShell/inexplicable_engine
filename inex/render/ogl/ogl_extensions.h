@@ -6,6 +6,8 @@
 #   define OGL_EXTENSIONS_H_INCLUDED
 #include <inex/render/api.h>
 
+#	include <inex/3rd_patry/include/GL/glew.h>
+
 // #define GL_GLEXT_PROTOTYPES
 // #define GLX_GLXEXT_PROTOTYPES
 // for GLintptr
@@ -21,10 +23,11 @@
 #include <inex/extensions.h>
 #if INEX_PLATFORM_WINDOWS
 #	define GL_GET_PROCESS_ADDRESS	wglGetProcAddress
-#elif INEX_PLATFORM_LINUX
+#elif INEX_PLATFORM_LINUX // #if INEX_PLATFORM_WINDOWS
 // can this be replaced by #define GL_GLEXT_PROTOTYPES>]?
 #	define GL_GET_PROCESS_ADDRESS	glXGetProcAddress
-#endif
+// #elif define glfwGetProcAddress // #if INEX_PLATFORM_WINDOWS
+#endif // #if INEX_PLATFORM_WINDOWS
 
 #define OPENGL_GET_PROC( type , function ) function = ( type )GL_GET_PROCESS_ADDRESS((const GLubyte* ) #function ); \
 											if ( NULL == function )			return 0; \
@@ -54,6 +57,7 @@ INEX_RENDER_API Type   get_procedure_address ( Type & , const GLubyte * name )
 #endif
 }
 INEX_RENDER_API bool	init_extensions ( );
+INEX_RENDER_API void    dump_user_specifications ( );
 
 INEX_RENDER_API void    get_c ( );
 }// namespace ogl
