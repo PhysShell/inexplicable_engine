@@ -23,6 +23,8 @@ private:
 // or render here contains render agents????????
 }; // class device
 
+float    get_time ( );
+
 } // namespace engine 
 } // namespace inex 
 

@@ -57,6 +57,8 @@ s32		engine_entry_point ( pcstr command_line_string )
 	logging::Msg		( "Initializing Engine...\n" );
     hello_world_in_rust ( );
 
+    inex::engine::device d; d.run( );
+
     math::MATH g_CM;
     g_CM.matrix_multiple = math::multiple_pure;
 
