@@ -67,7 +67,7 @@ virtual_file_reader::virtual_file_reader ( pcstr rhs )
     m_file_descriptor           = open( rhs, O_RDONLY, 0 );
     ASSERT_D( m_file_descriptor, "Couldn't open file '%s'. %s.", rhs, strerror( errno ) );
     struct stat st;
-    ASSERT_D( fstat( m_file_descriptor, &st ) > 0, "Couldn't read attributes of '%s'. %s", rhs, strerror( errno ) );
+    ASSERT_D( !fstat( m_file_descriptor, &st ) > 0, "Couldn't read attributes of '%s'. %s", rhs, strerror( errno ) );
 
     m_size          = st.st_size;
     m_data          = ( pstr )mmap(

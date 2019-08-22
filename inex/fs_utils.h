@@ -9,7 +9,7 @@
 #	if ( INEX_PLATFORM_WINDOWS )
 #		include	<inex/core/sources/fs_catalog_operations_win_impl.h>
 #	elif ( INEX_PLATFORM_LINUX ) // #if ( INEX_PLATFORM_WINDOWS )
-#		include	"fs_catalog_operations_linux_impl.h"
+#		include	<inex/core/sources/fs_catalog_operations_linux_impl.h>
 #	else // #if ( INEX_PLATFORM_WINDOWS )
 #		error please define your platform here
 #	endif // #if ( INEX_PLATFORM_WINDOWS )

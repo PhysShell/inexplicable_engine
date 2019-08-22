@@ -48,7 +48,6 @@ s32		engine_entry_point ( pcstr command_line_string )
     i                   = command_line::initialize( command_line_string );
 
 	core::initialize	( command_line_string );
-	logging::Msg		( "Initializing Engine...\n" );
     hello_world_in_rust ( );
 
     // inex::engine::device d; d.run( );
@@ -63,12 +62,17 @@ s32		engine_entry_point ( pcstr command_line_string )
 
 	ASSERT_S            ( math::fdEPS != 0.f );
 	logging::Msg        ( "Epsilon is: '%0.*f'", 8, math::fdEPS );
-
+    
     ogl::device         device;
-
+// init proc
+    device.initialize   ( );
+// startup proc
     device.create       ( );
-    device.loop         ( );
 
+// main cycle
+    device.run          ( );
+// destroying
+    device.destroy      ( );
     core::finalize      ( );
 
 	return				engine::engine{ }.get_exit_code( );
