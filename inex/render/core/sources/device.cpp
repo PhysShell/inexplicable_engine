@@ -23,14 +23,14 @@ void    device::initialize ( )
     LOGGER( "Initializing Engine...");
     VERIFY( glfwInit( ) );
     m_render_device     = memory::ie_new< render::render_device >( );
-    glfwWindowHint		( GLFW_CONTEXT_VERSION_MAJOR, 3 ); 
-    glfwWindowHint		( GLFW_CONTEXT_VERSION_MINOR, 3 ); 
-    glfwWindowHint		( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE ); 
-    
+    glfwWindowHint		( GLFW_CONTEXT_VERSION_MAJOR, 3 );
+    glfwWindowHint		( GLFW_CONTEXT_VERSION_MINOR, 3 );
+    glfwWindowHint		( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
+
     m_width             = 480;
     m_height            = 640;
     m_render_device->   create_helper      ( m_context, m_width, m_height );
-    
+
     u32 vertex_array_object     ;
     glGenVertexArrays           ( 1, &vertex_array_object );
     glBindVertexArray(          vertex_array_object         );
@@ -46,7 +46,7 @@ void    device::initialize ( )
     u32 vertex_buffer_object;
     // store data in GPU memory
     glGenBuffers        ( 1, &vertex_buffer_object );
-    // set vertex_buffer_object to be modified any GL_ARRAY_BUFFER calls occur
+    // set vertex_buffer_object to be modified by any GL_ARRAY_BUFFER calls occur
     glBindBuffer        ( GL_ARRAY_BUFFER, vertex_buffer_object );
     // buffer the 'vertices' data into allocated buffer memory
     glBufferData        ( GL_ARRAY_BUFFER, sizeof ( vertices ), vertices, GL_STATIC_DRAW );
@@ -83,16 +83,10 @@ void    device::initialize ( )
     //     glGetShaderInfoLog  ( fragment_shader, sizeof ( buffer ), nullptr, buffer );
     //     LOGGER( "! Shader compilation error [fragment_shader]: %s", buffer );
     // }
-
-    using namespace inex::render_ogl;
-    shader v( enum_shader_type_vertex, "vertex_shader.glsl" ),
-    f( enum_shader_type_fragment, "fragment_shader" );
-    v.compile( );
-    f.compile( );
     // v.create    ( );
 
     // shader fragment_shader ( enum_shader_type_fragment, "fragment_shader" );
-    // fragment_shader.compile( );  
+    // fragment_shader.compile( );
 
     // // shader program
     // u32 shader_program  = glCreateProgram( );
@@ -113,7 +107,13 @@ void    device::initialize ( )
     // glDeleteShader      ( vertex_shader );
     // glDeleteShader      ( fragment_shader );
 
-    glVertexAttribPointer       
+    using namespace inex::render_ogl;
+    shader f( enum_shader_type_vertex, "vertex_shader.glsl" ),
+    v( enum_shader_type_fragment, "fragment_shader" );
+    v.compile( );
+    f.compile( );
+
+    glVertexAttribPointer
     (
                                 0, // layout (location  = 0 )
                                 3,
@@ -126,28 +126,36 @@ void    device::initialize ( )
 
     glfwSetFramebufferSizeCallback  ( m_context, framebuffer_size_callback );
     glViewport			( 0, 0, m_width, m_height );
-    // glUseProgram        ( shader_program );
-        s32 compiled;
-   // shader program
-    u32 m_shader_program  = glCreateProgram( );
-    glAttachShader      ( m_shader_program, v.m_object );
-    glAttachShader      ( m_shader_program, f.m_object );
-    glLinkProgram       ( m_shader_program );
-    glDeleteShader      ( v.m_object );
-    glDeleteShader      ( f.m_object );
+    
+    shader_program      program;
+    program.create      ( );
+    program.attach      ( v, f );
+    program.link        ( );
+    program.use         ( );
 
-    glGetShaderiv       ( m_shader_program, GL_LINK_STATUS, &compiled );
-    if ( !compiled )
-    {
-        string512 buffer    = { };
-        glGetShaderInfoLog  ( m_shader_program, sizeof ( buffer ), nullptr, buffer );
-        if ( *buffer != 0 ) 
-        {
-            LOGGER( "! Shader linking error: %s", buffer );
-        }
-    }
+//     s32 compiled;
+//     shader program
 
-    glUseProgram        ( m_shader_program );
+//     printf( "Code: %d %d\n", vs, fs  );
+//     u32 m_shader_program  = glCreateProgram( );
+//     glAttachShader      ( m_shader_program, vs );
+//     glAttachShader      ( m_shader_program, fs );
+//     glLinkProgram       ( m_shader_program );
+//     glDeleteShader      ( vs );
+//     glDeleteShader      ( fs );
+
+//     glGetShaderiv       ( m_shader_program, GL_LINK_STATUS, &compiled );
+//     if ( !compiled )
+//     {
+//         string512 buffer    = { };
+//         glGetShaderInfoLog  ( m_shader_program, sizeof ( buffer ), nullptr, buffer );
+//         if ( *buffer != 0 )
+//         {
+//             LOGGER( "! Shader linking error: %s", buffer );
+//         }
+//     }
+
+//     glUseProgram        ( m_shader_program );
 
 }
 

@@ -14,13 +14,16 @@ void    render_device::create_helper ( window_impl*&   window,
                                 u32     const&  width,
                                 u32     const&  height )
 {
+    constexpr pcstr window_title        = "Inex";
     LOGGER( "Initializing RENDER device..." );
     // window_impl* temp;
-    temp		        = glfwCreateWindow( width, height, "Inex", nullptr, nullptr );
+    temp		        = glfwCreateWindow( width, height, window_title, nullptr, nullptr );
+    LOGGER( "* '%s' window: initial config: [%d x %d]", window_title, width, height );
     ASSERT_D            ( temp, "Couldn't create window and its OpenGL context." );
     glfwMakeContextCurrent( temp );
     ogl::dump_user_specifications ( );
     ASSERT_D            ( ogl::init_extensions( ), "Failed to load OpenGL extensions\n") ;
+    #pragma todo( "PhysShell: is glew really neccessary?")
     GLenum err          = glewInit();
     glGetError          ( );
     ASSERT_S            ( err == GLEW_OK );

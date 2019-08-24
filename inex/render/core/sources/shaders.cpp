@@ -8,7 +8,7 @@
 namespace inex  {
 namespace render_ogl   {
 
-void    shader::compilev ( const GLchar* path )
+void    shader::compilev ( pcstr path )
 {
     // // vertex shader
     // m_vs                = glCreateShader( GL_VERTEX_SHADER );
@@ -61,14 +61,14 @@ void    shader::compilef ( const GLchar* path )
 
 }
 
-shader::shader ( enum_shader_type type, GLchar* const path ) :
+shader::shader ( enum_shader_type type, pcstr path ) :
     m_type      { type },
     // m_shader_program    { },
     m_source    { path }
 {
 }
 
-void    shader::load_vs_and_fs ( const GLchar* vsp, const GLchar* fsp )
+void    shader::load_vs_and_fs ( pcstr vsp, pcstr fsp )
 {
     // m_vs                  = glCreateShader( GL_VERTEX_SHADER );
     // m_v_source            = ( GLchar* )"#version 330 core\n"
@@ -136,31 +136,63 @@ void    shader::compile ( )
     logging::put_string ( "*\tCompiling shader [");
     logging::put_string ( m_source );
     logging::put_string ( "], ");
-
+    //------------------------------------------------
     fs::memory_mapped_file src( m_source );
     fs::reader timestamp ( src.m_data, strlen( src.m_data ) );
     string128 buffer    = { };
     timestamp.r_string  ( buffer, sizeof ( buffer ) );
     LOGGER( "%s ...", buffer + 3 );
-
+    //------------------------------------------------
     glShaderSource      ( m_object, 1, &src.m_data, nullptr );
     glCompileShader     ( m_object );
-
+    printf( "Shader %p\n", &m_object );
     check_errors        ( );
 
 }
 
 void    shader::check_errors ( )
 {
-    u32 m_object;
     s32 compiled_successfully   = 0;
     glGetShaderiv               ( m_object, GL_COMPILE_STATUS, &compiled_successfully );
-    if ( 0 != compiled_successfully )
+    if ( 0 == compiled_successfully )
     {
         string512 error_message = { };
         glGetShaderInfoLog      ( m_object, sizeof ( error_message ), NULL, error_message );
-        LOGGER( "!\tShader compilation error: %s", error_message );
+        ASSERT_D( 0, "Shader compilation failed: [%s]\nLog:\t\t\t%s", m_source, *error_message ? error_message : "no log aquired" );
     } else { LOGGER( "*\t... Compiled successfully!" ); }
+}
+
+//------------------------------------------------
+// void    shader_program::attach ( u32 count, shader* const& _shader, ... )
+// {
+//     // it differs on parameter seqence
+//     shader* implicit_parameter     = _shader;
+//     // ++;
+//     while ( count -- )
+//     {
+//         printf( "Attach %p\n", &implicit_parameter->m_object );
+//         glAttachShader          ( m_shader_program, implicit_parameter->m_object );
+//         --                      implicit_parameter;
+//     }
+// }
+
+void    shader_program::link ( )
+{
+    logging::put_string         ( "*\tLinking shaders ... " );
+    glLinkProgram               ( m_shader_program );
+    check_errors                ( );
+}
+
+void    shader_program::check_errors ( )
+{
+    s32 compiled        ;
+    glGetShaderiv       ( m_shader_program, GL_LINK_STATUS, &compiled );
+    if ( 0 == compiled )
+    {
+        string512 buffer    = { };
+        glGetShaderInfoLog  ( m_shader_program, sizeof ( buffer ), nullptr, buffer );
+        ASSERT_D( 0 == *buffer, "Shader linking failed: %s", buffer );
+    } else { LOGGER( " linked successfully." ); }
 }
 
 } // namespace render_ogl
