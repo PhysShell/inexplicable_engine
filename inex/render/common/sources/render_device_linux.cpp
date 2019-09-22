@@ -24,9 +24,9 @@ void    render_device::create_helper ( window_impl*&   window,
     ogl::dump_user_specifications ( );
     ASSERT_D            ( ogl::init_extensions( ), "Failed to load OpenGL extensions\n") ;
     #pragma todo( "PhysShell: is glew really neccessary?")
-    GLenum err          = glewInit();
-    glGetError          ( );
-    ASSERT_S            ( err == GLEW_OK );
+    // GLenum err          = glewInit();
+    // glGetError          ( );
+    // ASSERT_S            ( err == GLEW_OK );
     window              = temp;
 }
 
@@ -51,7 +51,7 @@ void    render_device::init_draw ( )
     // vertex shader
     // 4th attribute aPos.w is for perspective division 
     u32 vertex_shader   = glCreateShader( GL_VERTEX_SHADER );
-    GLchar* vertex_shader_source = ( GLchar* )"#version 330 core"
+    const GLchar*       vertex_shader_source = ( GLchar* )"#version 330 core"
     "layout (location=0) in vec3 aPos;"
     // we're setting position through gl_position var for next step
     "void main() {gl_Position         = vec4(aPos.x,aPos.y,aPos.z,1.0); }";
@@ -69,7 +69,7 @@ void    render_device::init_draw ( )
 
     // fragment shader
     u32 fragment_shader;
-    GLchar* fragment_shader_source = ( GLchar* )"./fragment_shader";
+    const GLchar*   fragment_shader_source = ( GLchar* )"./fragment_shader";
     fragment_shader     = glCreateShader( GL_FRAGMENT_SHADER );
     glShaderSource      ( fragment_shader, 1, &fragment_shader_source, NULL );
     glCompileShader     ( fragment_shader );

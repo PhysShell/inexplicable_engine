@@ -25,7 +25,13 @@ void fsf ( );
 class shader
 {
 public:
-                        shader          ( shader const& ) { LOGGER( "called" );}
+inline                  shader          ( shader const& right ) : 
+                        m_object        ( right.m_object ),
+                        m_source        ( right.m_source ),
+                        m_type          ( right.m_type )
+                        {
+                        }
+
                         shader          ( enum_shader_type type, pcstr path );
         void            create          ( ) ;
         void            destroy         ( ) ;
@@ -70,6 +76,7 @@ inline  void            attach          ( T t, Args ... args )
                         {
                             static_assert   ( helper< T >::value, "Incorrect arguments" );
                             glAttachShader  ( m_shader_program, t.self( ) );
+                            // t.destroy( ) ???
                             attach          ( args ... );
                         }
 

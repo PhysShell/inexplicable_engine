@@ -125,6 +125,11 @@ void    shader::create ( )
     ///glUseProgram        ( m_shader_program );
 }
 
+void    shader::destroy ( )
+{
+    glDeleteShader      ( m_object );
+}
+
 void    shader::compile ( )
 {
     ASSERT_D( !fs::exists( m_source ), "Shader '%s' not found", m_source );
@@ -143,9 +148,9 @@ void    shader::compile ( )
     timestamp.r_string  ( buffer, sizeof ( buffer ) );
     LOGGER( "%s ...", buffer + 3 );
     //------------------------------------------------
-    glShaderSource      ( m_object, 1, &src.m_data, nullptr );
+    glShaderSource      ( m_object, 1, ( const GLchar** )&src.m_data, nullptr );
     glCompileShader     ( m_object );
-    printf( "Shader %p\n", &m_object );
+
     check_errors        ( );
 
 }

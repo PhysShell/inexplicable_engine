@@ -18,6 +18,9 @@ void    framebuffer_size_callback ( GLFWwindow* window, int width, int height )
 namespace inex {
 namespace ogl {
 
+u32 vertex_array_object     ;
+
+render_ogl::shader_program      program;
 void    device::initialize ( )
 {
     LOGGER( "Initializing Engine...");
@@ -29,89 +32,48 @@ void    device::initialize ( )
 
     m_width             = 480;
     m_height            = 640;
-    m_render_device->   create_helper      ( m_context, m_width, m_height );
+    m_render_device->   create_helper       ( m_context, m_width, m_height );
+    glfwSetFramebufferSizeCallback          ( m_context, framebuffer_size_callback );
+    
+    using namespace inex::render_ogl;
+    shader f            ( enum_shader_type_vertex, "vertex_shader.glsl" ),
+    v                   ( enum_shader_type_fragment, "fragment_shader" );
+    v.compile           ( );
+    f.compile           ( );
+    program.create      ( );
+    program.attach      ( v, f );
+    program.link        ( );
+    v.destroy( ); f.destroy( );
+    // program.use         ( );
 
-    u32 vertex_array_object     ;
-    glGenVertexArrays           ( 1, &vertex_array_object );
-    glBindVertexArray(          vertex_array_object         );
-
-    float vertices[ ] =
+    float vertices[ ]   =
     {
     //    X      Y       Z
-        -.5f,   -.5f,   .0f,
+        .5f,    .5f,    .0f,
         .5f,    -.5f,   .0f,
-        .0f,    .5f,    .0f
+        -.5f,   -.5f,   .0f,
+        -.5f,   .5f,    .0f
     };
 
-    u32 vertex_buffer_object;
+    u32 indices[ ]      = { 0, 1, 3, /*<-orders->*/ 1, 2, 3 };
+
+    u32 element_buffer_object   ;
+    u32 vertex_buffer_object    ;
+
     // store data in GPU memory
-    glGenBuffers        ( 1, &vertex_buffer_object );
+    glGenVertexArrays           ( 1, &vertex_array_object );
+    glGenBuffers                ( 1, &vertex_buffer_object );
+    glGenBuffers                ( 1, &element_buffer_object );
+
     // set vertex_buffer_object to be modified by any GL_ARRAY_BUFFER calls occur
-    glBindBuffer        ( GL_ARRAY_BUFFER, vertex_buffer_object );
+    glBindVertexArray(          vertex_array_object         );
+    
     // buffer the 'vertices' data into allocated buffer memory
+    glBindBuffer        ( GL_ARRAY_BUFFER, vertex_buffer_object );
     glBufferData        ( GL_ARRAY_BUFFER, sizeof ( vertices ), vertices, GL_STATIC_DRAW );
-
-    // // vertex shader
-    // u32 vertex_shader   = glCreateShader( GL_VERTEX_SHADER );
-    // GLchar* vertex_shader_source = ( GLchar* )"#version 330 core\n"
-    // "layout (location=0) in vec3 aPos;"
-    // // we're setting position through gl_position var for next step
-    // "void main() {gl_Position         = vec4(aPos.x,aPos.y,aPos.z,1.0); }";
-    // glShaderSource      ( vertex_shader, 1, &vertex_shader_source, nullptr );
-    // glCompileShader     ( vertex_shader );
-
-    // s32 compiled        ;
-    // glGetShaderiv       ( vertex_shader, GL_COMPILE_STATUS, &compiled );
-    // if ( !compiled )
-    // {
-    //     string512 buffer;
-    //     glGetShaderInfoLog  ( vertex_shader, sizeof ( buffer ), nullptr, buffer );
-    //     LOGGER( "! Shader compilation error [vertex_shader.glsl]: %s", buffer );
-    // }
-
-    // // fragment shader
-    // u32 fragment_shader;
-    // GLchar* fragment_shader_source = ( GLchar* )"#version 330 core\nout vec4 Color;void main() {Color= vec4(1.0f,.5f,.9f,1.0f);}";
-    // fragment_shader     = glCreateShader( GL_FRAGMENT_SHADER );
-    // glShaderSource      ( fragment_shader, 1, &fragment_shader_source, NULL );
-    // glCompileShader     ( fragment_shader );
-
-    // glGetShaderiv       ( fragment_shader, GL_COMPILE_STATUS, &compiled );
-    // if ( !compiled )
-    // {
-    //     string512 buffer;
-    //     glGetShaderInfoLog  ( fragment_shader, sizeof ( buffer ), nullptr, buffer );
-    //     LOGGER( "! Shader compilation error [fragment_shader]: %s", buffer );
-    // }
-    // v.create    ( );
-
-    // shader fragment_shader ( enum_shader_type_fragment, "fragment_shader" );
-    // fragment_shader.compile( );
-
-    // // shader program
-    // u32 shader_program  = glCreateProgram( );
-    // glAttachShader      ( shader_program, vertex_shader.m_object );
-    // glAttachShader      ( shader_program, fragment_shader.m_object );
-    // glLinkProgram       ( shader_program );
-
-    // s32 compiled        ;
-    // glGetShaderiv       ( shader_program, GL_LINK_STATUS, &compiled );
-    // if ( !compiled )
-    // {
-    //     string512 buffer;
-    //     glGetShaderInfoLog  ( shader_program, sizeof ( buffer ), nullptr, buffer );
-    //     LOGGER( "! Shader linking error: %s", buffer );
-    // }
-
-
-    // glDeleteShader      ( vertex_shader );
-    // glDeleteShader      ( fragment_shader );
-
-    using namespace inex::render_ogl;
-    shader f( enum_shader_type_vertex, "vertex_shader.glsl" ),
-    v( enum_shader_type_fragment, "fragment_shader" );
-    v.compile( );
-    f.compile( );
+    
+    glBindBuffer        ( GL_ELEMENT_ARRAY_BUFFER, element_buffer_object );
+    glBufferData        ( GL_ELEMENT_ARRAY_BUFFER, sizeof ( indices ), indices, GL_STATIC_DRAW );
 
     glVertexAttribPointer
     (
@@ -122,41 +84,16 @@ void    device::initialize ( )
                                 3 * sizeof ( float ),
                                 ( pvoid ) 0
     );
+
     glEnableVertexAttribArray   ( 0 );
+    glBindBuffer        ( GL_ARRAY_BUFFER, 0u );
+    glBindVertexArray   ( 0u );
 
-    glfwSetFramebufferSizeCallback  ( m_context, framebuffer_size_callback );
     glViewport			( 0, 0, m_width, m_height );
-    
-    shader_program      program;
-    program.create      ( );
-    program.attach      ( v, f );
-    program.link        ( );
-    program.use         ( );
 
-//     s32 compiled;
-//     shader program
-
-//     printf( "Code: %d %d\n", vs, fs  );
-//     u32 m_shader_program  = glCreateProgram( );
-//     glAttachShader      ( m_shader_program, vs );
-//     glAttachShader      ( m_shader_program, fs );
-//     glLinkProgram       ( m_shader_program );
-//     glDeleteShader      ( vs );
-//     glDeleteShader      ( fs );
-
-//     glGetShaderiv       ( m_shader_program, GL_LINK_STATUS, &compiled );
-//     if ( !compiled )
-//     {
-//         string512 buffer    = { };
-//         glGetShaderInfoLog  ( m_shader_program, sizeof ( buffer ), nullptr, buffer );
-//         if ( *buffer != 0 )
-//         {
-//             LOGGER( "! Shader linking error: %s", buffer );
-//         }
-//     }
-
-//     glUseProgram        ( m_shader_program );
-
+    // glDeleteVertexArrays            ( 1, &vertex_array_object );
+    // glDeleteBuffers                 ( 1, &vertex_buffer_object );
+    // glDeleteBuffers                 ( 1, &element_buffer_object );
 }
 
 void    device::create ( )
@@ -166,6 +103,7 @@ void    device::create ( )
 void    device::destroy ( )
 {
     memory::ie_delete   ( m_render_device );
+    glBindVertexArray   ( 0u );
     glfwTerminate		( );
 }
 
@@ -183,7 +121,13 @@ void    device::render ( )
     glClearColor(               .2f, .3f, .3f, 1.0f     );
     glClear(                    GL_COLOR_BUFFER_BIT     );
 
-    glDrawArrays(               GL_TRIANGLES, 0, 3      );
+    program.use                 ( );
+    glBindVertexArray           ( vertex_array_object );
+    glEnableVertexAttribArray   ( 0 );
+    glDrawElements              ( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
+    // glBindVertexArray           ( 0 );
+    glDisableVertexAttribArray  ( 0 );
+    // glDrawArrays(               GL_TRIANGLES, 0, 3      );
 
     // call events and swap buffers
     glfwPollEvents	( );
@@ -290,3 +234,89 @@ void    device::run ( )
 
 } // namespace ogl
 } // namespace engine
+
+
+    // glBindBuffer        ( GL_ELEMENT_ARRAY_BUFFER, element_buffer_object );
+
+    // // vertex shader
+    // u32 vertex_shader   = glCreateShader( GL_VERTEX_SHADER );
+    // GLchar* vertex_shader_source = ( GLchar* )"#version 330 core\n"
+    // "layout (location=0) in vec3 aPos;"
+    // // we're setting position through gl_position var for next step
+    // "void main() {gl_Position         = vec4(aPos.x,aPos.y,aPos.z,1.0); }";
+    // glShaderSource      ( vertex_shader, 1, &vertex_shader_source, nullptr );
+    // glCompileShader     ( vertex_shader );
+
+    // s32 compiled        ;
+    // glGetShaderiv       ( vertex_shader, GL_COMPILE_STATUS, &compiled );
+    // if ( !compiled )
+    // {
+    //     string512 buffer;
+    //     glGetShaderInfoLog  ( vertex_shader, sizeof ( buffer ), nullptr, buffer );
+    //     LOGGER( "! Shader compilation error [vertex_shader.glsl]: %s", buffer );
+    // }
+
+    // // fragment shader
+    // u32 fragment_shader;
+    // GLchar* fragment_shader_source = ( GLchar* )"#version 330 core\nout vec4 Color;void main() {Color= vec4(1.0f,.5f,.9f,1.0f);}";
+    // fragment_shader     = glCreateShader( GL_FRAGMENT_SHADER );
+    // glShaderSource      ( fragment_shader, 1, &fragment_shader_source, NULL );
+    // glCompileShader     ( fragment_shader );
+
+    // glGetShaderiv       ( fragment_shader, GL_COMPILE_STATUS, &compiled );
+    // if ( !compiled )
+    // {
+    //     string512 buffer;
+    //     glGetShaderInfoLog  ( fragment_shader, sizeof ( buffer ), nullptr, buffer );
+    //     LOGGER( "! Shader compilation error [fragment_shader]: %s", buffer );
+    // }
+    // v.create    ( );
+
+    // shader fragment_shader ( enum_shader_type_fragment, "fragment_shader" );
+    // fragment_shader.compile( );
+
+    // // shader program
+    // u32 shader_program  = glCreateProgram( );
+    // glAttachShader      ( shader_program, vertex_shader.m_object );
+    // glAttachShader      ( shader_program, fragment_shader.m_object );
+    // glLinkProgram       ( shader_program );
+
+    // s32 compiled        ;
+    // glGetShaderiv       ( shader_program, GL_LINK_STATUS, &compiled );
+    // if ( !compiled )
+    // {
+    //     string512 buffer;
+    //     glGetShaderInfoLog  ( shader_program, sizeof ( buffer ), nullptr, buffer );
+    //     LOGGER( "! Shader linking error: %s", buffer );
+    // }
+
+
+    // glDeleteShader      ( vertex_shader );
+    // glDeleteShader      ( fragment_shader );
+
+
+    // glBindVertexArray   ( vertex_array_object );
+
+//     s32 compiled;
+//     shader program
+
+//     printf( "Code: %d %d\n", vs, fs  );
+//     u32 m_shader_program  = glCreateProgram( );
+//     glAttachShader      ( m_shader_program, vs );
+//     glAttachShader      ( m_shader_program, fs );
+//     glLinkProgram       ( m_shader_program );
+//     glDeleteShader      ( vs );
+//     glDeleteShader      ( fs );
+
+//     glGetShaderiv       ( m_shader_program, GL_LINK_STATUS, &compiled );
+//     if ( !compiled )
+//     {
+//         string512 buffer    = { };
+//         glGetShaderInfoLog  ( m_shader_program, sizeof ( buffer ), nullptr, buffer );
+//         if ( *buffer != 0 )
+//         {
+//             LOGGER( "! Shader linking error: %s", buffer );
+//         }
+//     }
+
+//     glUseProgram        ( m_shader_program );

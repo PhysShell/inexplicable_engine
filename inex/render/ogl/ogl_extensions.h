@@ -6,7 +6,7 @@
 #   define OGL_EXTENSIONS_H_INCLUDED
 #include <inex/render/api.h>
 
-#	include <inex/3rd_patry/include/GL/glew.h>
+// #	include <inex/3rd_patry/include/GL/glew.h>
 
 // #define GL_GLEXT_PROTOTYPES
 // #define GLX_GLXEXT_PROTOTYPES

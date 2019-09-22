@@ -73,15 +73,15 @@ void    dump_user_specifications ( )
             "\t* Vendor         : %s\n"
             "\t* Version        : %s\n"
             "\t* GLSL version   : %s\n"
-            "\t* OpenGL version : %d.%d\n"
-            "* [GLEW] version : [%s]",
+            "\t* OpenGL version : %d.%d\n",
+            // "* [GLEW] version : [%s]"
             ( pcstr )glGetString( GL_RENDERER ),
             ( pcstr )glGetString( GL_VENDOR ),
             ( pcstr )glGetString( GL_VERSION ),
             ( pcstr )glGetString( GL_SHADING_LANGUAGE_VERSION ),
             gl_major,
-            gl_minor,
-           glewGetString( GLEW_VERSION )
+            gl_minor
+            // , glewGetString( GLEW_VERSION )
     );
 } 
 
