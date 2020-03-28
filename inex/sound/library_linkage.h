@@ -1,0 +1,11 @@
+////////////////////////////////////////////////////////////////////////////
+//	Created 	: 16.10.2019
+//	Author		: Feudor Shelipov
+////////////////////////////////////////////////////////////////////////////
+
+#ifndef INEX_RENDER_LIBRARY_LINKAGE_H_INCLUDED
+#	define INEX_RENDER_LIBRARY_LINKAGE_H_INCLUDED
+
+#	pragma comment( lib, "render.lib" )
+
+#endif // #ifndef INEX_RENDER_LIBRARY_LINKAGE_H_INCLUDED
