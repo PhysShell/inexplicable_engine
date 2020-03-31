@@ -2,6 +2,7 @@
 #include <inex/sound/sound.h>
 #include <inex/fs_utils.h>
 #include <vector>
+#include <vorbis/codec.h>
 
 // #pragma comment(lib, "alut.lib")
 // #pragma comment(lib, "OpenAL32.lib")
@@ -22,18 +23,18 @@ namespace sound {
 
 void    sound_device::preinitialize ( )
 {
-    // float   listener_position   [ ]     = { 0.f, 0.f, 0.f },
-    //         listener_velocity   [ ]     = { 0.f, 0.f, 0.f },
-    //                                             // front            // above
-    //         listener_orientation [ ]    = { 0.f, 0.f, -1.f, 0.f, 1.f, 0.f };
-    device                              = alcOpenDevice ( nullptr );
-    ASSERT_D( device, "OpenAL: default sound device not present." );
-    context                             = alcCreateContext ( device, nullptr );
-    ASSERT_S( context );
-    alcMakeContextCurrent               ( context );
-    // alListenerfv                        ( AL_POSITION, listener_position );
-    // alListenerfv                        ( AL_VELOCITY, listener_velocity );
-    // alListenerfv                        ( AL_ORIENTATION, listener_orientation );
+    float   listener_position   [ ]         = { 0.f, 0.f, 0.f },
+            listener_velocity   [ ]         = { 0.f, 0.f, 0.f },
+                                                 // front            // above
+            listener_orientation [ ]        = { 0.f, 0.f, -1.f, 0.f, 1.f, 0.f };
+    m_device                                = alcOpenDevice ( nullptr );
+    ASSERT_D( m_device, "OpenAL: default sound device not present." );
+    m_context                               = alcCreateContext ( m_device, nullptr );
+    ASSERT_S( m_context );
+    alcMakeContextCurrent                   ( m_context );
+    alListenerfv                            ( AL_POSITION,      listener_position );
+    alListenerfv                            ( AL_VELOCITY,      listener_velocity );
+    alListenerfv                            ( AL_ORIENTATION,   listener_orientation );
 }
 
 void    sound_device::initialize ( )

@@ -184,7 +184,7 @@ bool    sound_object::open ( pcstr path, bool looped, bool streamed )
     }
     else if ( !(strcmp( extension, "ogg" ) ) )
     {
-        return          load_ogg( path );
+        return          load_ogg( path, streamed );
     }
 
     return              0;
@@ -196,7 +196,7 @@ bool sound_object::is_streamed( ) const
 
 }
 
-void    sound_object::load_wav ( pcstr path )
+bool    sound_object::load_wave ( pcstr path )
 {
     SndInfo		buffer;
 	ALenum		format;
@@ -238,13 +238,13 @@ void    sound_object::load_wav ( pcstr path )
 	else 
 		buffer = Buffers[BufID];
 
-	alSourcei ( m_sound_id, AL_BUFFER,	buffer.ID);
+	alSourcei ( m_source_id, AL_BUFFER,	buffer.ID);
 
 	// Place buffer to Buffers map
 	return; // remove
 }
 
-void    sound_object::load_ogg ( pcstr path, bool streamed )
+bool    sound_object::load_ogg ( pcstr path, bool streamed )
 {
 	int				i, DynBuffs = 1, BlockSize;
 	// OAL specific
@@ -289,7 +289,7 @@ void    sound_object::load_ogg ( pcstr path, bool streamed )
 	}
 	
 	// Return vorbis_comment and vorbis_info structures
-	m_comment		= ov_comment(m_, -1);
+	m_comment		= ov_comment( m_source, -1);
 	m_info			= ov_info(m_source, -1);
 
 	// Fill buffer infos
@@ -327,7 +327,7 @@ void    sound_object::load_ogg ( pcstr path, bool streamed )
 	return ; // remove
 }
 
-bool    sound_object::read_next_chunk （ u32 const id, u64 const size )
+bool    sound_object::read_next_chunk ( u32 const id, u64 const size )
 {
 	// vars
 	char		eof = 0;
@@ -335,13 +335,13 @@ bool    sound_object::read_next_chunk （ u32 const id, u64 const size )
 	long		TotalRet = 0, ret;
 	char		*PCM;
 
-	if (Size < 1) return false;
-	PCM = new char[Size];
+	if (size < 1) return false;
+	PCM = new char[size];
 
 	// Read loop
-	while (TotalRet < Size) 
+	while (TotalRet < size) 
 	{
-		ret = ov_read(mVF, PCM + TotalRet, Size - TotalRet, 0, 2, 1, &current_section);
+		ret = ov_read(m_source, PCM + TotalRet, size - TotalRet, 0, 2, 1, &current_section);
 
 		// if end of file or read limit exceeded
 		if (ret == 0) break;
@@ -356,8 +356,8 @@ bool    sound_object::read_next_chunk （ u32 const id, u64 const size )
 	}
 	if (TotalRet > 0)
 	{
-		alBufferData(BufID, Buffers[BufID].Format, (void *)PCM, 
-					 TotalRet, Buffers[BufID].Rate);
+		alBufferData(m_source_id, Buffers[m_source_id].Format, (void *)PCM, 
+					 TotalRet, Buffers[m_source_id].Rate);
 		CheckALError();
 	}
 	delete [] PCM;
@@ -367,75 +367,77 @@ bool    sound_object::read_next_chunk （ u32 const id, u64 const size )
 
 void sound_object::play()
 {
-	alSourcePlay(mSourceID);
+	alSourcePlay(m_source_id);
 }
 
 void sound_object::close()
 {
-	alSourceStop(mSourceID);
-	if (alIsSource(mSourceID)) alDeleteSources(1, &mSourceID);
-	if (!mVF)
+	alSourceStop(m_source_id);
+	if (alIsSource(m_source_id)) alDeleteSources(1, &m_source_id);
+	if (!m_source)
 	{	
-		ov_clear(mVF);
-		delete mVF;
+		ov_clear(m_source);
+		delete m_source;
 	}
 }
 
 void sound_object::update()
 {
-	if (!mStreamed) return;
+	if (!m_streamed) return;
 	
 	int				Processed = 0;
 	ALuint			BufID;
 
-	alGetSourcei(mSourceID, AL_BUFFERS_PROCESSED, &Processed);
+	alGetSourcei(m_source_id, AL_BUFFERS_PROCESSED, &Processed);
 
 	// We still have processed buffers
 	while (Processed--)
 	{
-		alSourceUnqueueBuffers(mSourceID, 1, &BufID);
+		alSourceUnqueueBuffers(m_source_id, 1, &BufID);
 		if (!CheckALError()) return;
-		if (ReadOggBlock(BufID, DYNBUF_SIZE) != 0)
+		if (read_next_chunk(BufID, DYNAMIC_BUFFER_SIZE) != 0)
 		{
-			alSourceQueueBuffers(mSourceID, 1, &BufID);
+			alSourceQueueBuffers(m_source_id, 1, &BufID);
 			if (!CheckALError()) return;
 		}
 		else
 		{
-			ov_pcm_seek(mVF, 0);
-			alSourceQueueBuffers(mSourceID, 1, &BufID);
+			ov_pcm_seek(m_source, 0);
+			alSourceQueueBuffers(m_source_id, 1, &BufID);
 			if (!CheckALError()) return;
 
-			if (!mLooped) Stop();
+			if (!m_looped) stop();
 		}
 	}
 }
 
 void sound_object::stop()
 {
-	alSourceStop(mSourceID);
+	alSourceStop(m_source_id);
 }
 
-void sound_object::move(float X, float Y, float Z)
+void sound_object::move(    float const&    x,
+                            float const&    y,
+                            float const&    z )   
 {
-	ALfloat Pos[3] = { X, Y, Z };
-	alSourcefv(mSourceID, AL_POSITION, Pos);
+	ALfloat Pos[3] = { x, y, z };
+	alSourcefv(m_source_id, AL_POSITION, Pos);
 }
 
-void    sound_object::preload_buffers ( s32 const buffer_id )
-{
-    std::vector< int > decompressed_buffer;
-    this->m_source->decompress_stream   ( decompressed_buffer, this->m_looped );
-    ASSERT_S( 0 != decompressed_buffer.size( ) );
-    alBufferData                        (
-        m_source_id, 
-        0, 
-        &decompressed_buffer[ 0 ], 
-        decompressed_buffer.size( ), 
-        m_info->freqency 
-    );
+// void    sound_object::preload_buffers ( s32 const buffer_id )
+// {
+//     std::vector< int > decompressed_buffer;
+//     this->m_source->decompress_stream   ( decompressed_buffer, this->m_looped );
+//     ASSERT_S( 0 != decompressed_buffer.size( ) );
+//     alBufferData                        (
+//         m_source_id, 
+//         0, 
+//         &decompressed_buffer[ 0 ], 
+//         decompressed_buffer.size( ), 
+//         m_info->freqency 
+//     );
 
-}
+// }
 
 } // namespace sound
 } // namespace inex

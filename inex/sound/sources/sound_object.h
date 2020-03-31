@@ -34,7 +34,13 @@ public:
     void            stop                ( )                                         ;
     void            close               ( )                                         ;
     void            update              ( )                                         ;
-    void            move                ( math::float3 const position )             ;
+    void            move                ( math::float3 const position )             ;     
+    void            move                (   float const&      x,
+                                            float const&    y,
+                                            float const&    z
+                                        )                                           ;
+
+
 
     bool            m_looped                                                        ;
     math::float3    m_velocity                                                      ;
