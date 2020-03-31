@@ -113,5 +113,6 @@ extern PFNGLUNIFORMMATRIX4FVPROC   glUniformMatrix4fv;
 extern PFNGLUNIFORM1IPROC          glUniform1i;
 extern PFNGLUNIFORM1FVPROC         glUniform1fv;
 extern PFNGLUNIFORM3FVPROC         glUniform3fv;
+extern PFNGLUNIFORM3FPROC          glUniform3f;
 extern PFNGLUNIFORM4FVPROC         glUniform4fv;
 #endif // #ifndef OGL_EXTENSIONS_H_INCLUDED

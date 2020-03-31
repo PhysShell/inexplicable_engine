@@ -56,8 +56,8 @@ bool	init_extensions ( )
     OPENGL_GET_PROC(PFNGLUNIFORM1IPROC,          glUniform1i);
     OPENGL_GET_PROC(PFNGLUNIFORM1FVPROC,         glUniform1fv);
     OPENGL_GET_PROC(PFNGLUNIFORM3FVPROC,         glUniform3fv);
+    OPENGL_GET_PROC(PFNGLUNIFORM3FPROC,          glUniform3f);
     OPENGL_GET_PROC(PFNGLUNIFORM4FVPROC,         glUniform4fv);
-
   //OPENGL_CHECK_FOR_ERRORS();
 
   return										1;
@@ -83,7 +83,7 @@ void    dump_user_specifications ( )
             gl_minor
             // , glewGetString( GLEW_VERSION )
     );
-} 
+}
 
 }// namespace ogl
 }// namespace inex
@@ -131,4 +131,5 @@ PFNGLUNIFORMMATRIX4FVPROC   glUniformMatrix4fv   ;
 PFNGLUNIFORM1IPROC          glUniform1i          ;
 PFNGLUNIFORM1FVPROC         glUniform1fv         ;
 PFNGLUNIFORM3FVPROC         glUniform3fv         ;
+PFNGLUNIFORM3FPROC          glUniform3f         ;
 PFNGLUNIFORM4FVPROC         glUniform4fv         ;
