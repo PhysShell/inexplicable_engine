@@ -1,7 +1,8 @@
 // PhysShell on 22.08.2019
 #version 330 core 
 
-layout (location=0) in vec3 aPos;
+layout (location=0) in vec3 bPos;
+layout (location=1) in vec3 aPos;
 
 void main()
 {

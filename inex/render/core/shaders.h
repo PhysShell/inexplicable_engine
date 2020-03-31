@@ -57,18 +57,24 @@ public:
 //                             glAttachShader( m_shader_program, t );
 //                         }
 
+        void            link            ( );
+        void            check_errors    ( );
 
 inline  void            create          ( )
                         {
                             m_shader_program    = glCreateProgram( );
                         }
-
-        void            check_errors    ( )                 ;
-        void            link            ( )                 ;
-
 inline  void            use             ( )
                         {
                             glUseProgram        ( m_shader_program );
+                        }
+inline  void            unbind          ( )
+                        {
+                            glUseProgram        ( 0u );
+                        }
+inline  s32             find_attribute  ( pcstr attribute )
+                        {
+                            return              glGetAttribLocation( m_shader_program, attribute );
                         }
 // To do: behave different when it's shader or u32 metaprogrammingly
         template < typename T, typename... Args >

@@ -42,6 +42,7 @@ void    device::initialize ( )
     f.compile           ( );
     program.create      ( );
     program.attach      ( v, f );
+    // glBindFragDataLocation(shaderProgram, 0, "outColor");
     program.link        ( );
     v.destroy( ); f.destroy( );
     // program.use         ( );
@@ -52,18 +53,19 @@ void    device::initialize ( )
         .5f,    .5f,    .0f,
         .5f,    -.5f,   .0f,
         -.5f,   -.5f,   .0f,
-        -.5f,   .5f,    .0f
+        -1.f,   .5f,    .0f,
+        -1.f,   -.5f,   .0f
     };
 
-    u32 indices[ ]      = { 0, 1, 3, /*<-orders->*/ 1, 2, 3 };
+    // u32 indices[ ]      = { 0, 1, 3, /*<-orders->*/ 1, 2, 3 };
 
-    u32 element_buffer_object   ;
+    // u32 element_buffer_object   ;
     u32 vertex_buffer_object    ;
 
     // store data in GPU memory
     glGenVertexArrays           ( 1, &vertex_array_object );
     glGenBuffers                ( 1, &vertex_buffer_object );
-    glGenBuffers                ( 1, &element_buffer_object );
+    // glGenBuffers                ( 1, &element_buffer_object );
 
     // set vertex_buffer_object to be modified by any GL_ARRAY_BUFFER calls occur
     glBindVertexArray(          vertex_array_object         );
@@ -72,12 +74,14 @@ void    device::initialize ( )
     glBindBuffer        ( GL_ARRAY_BUFFER, vertex_buffer_object );
     glBufferData        ( GL_ARRAY_BUFFER, sizeof ( vertices ), vertices, GL_STATIC_DRAW );
     
-    glBindBuffer        ( GL_ELEMENT_ARRAY_BUFFER, element_buffer_object );
-    glBufferData        ( GL_ELEMENT_ARRAY_BUFFER, sizeof ( indices ), indices, GL_STATIC_DRAW );
+    // glBindBuffer        ( GL_ELEMENT_ARRAY_BUFFER, element_buffer_object );
+    // glBufferData        ( GL_ELEMENT_ARRAY_BUFFER, sizeof ( indices ), indices, GL_STATIC_DRAW );
+
+    // glEnableVertexAttribArray   ( color_iniform );
 
     glVertexAttribPointer
     (
-                                0, // layout (location  = 0 )
+                                1, // layout (location  = 0 )
                                 3,
                                 GL_FLOAT,
                                 GL_FALSE,
@@ -85,7 +89,7 @@ void    device::initialize ( )
                                 ( pvoid ) 0
     );
 
-    glEnableVertexAttribArray   ( 0 );
+    // glEnableVertexAttribArray   ( 1 );
     glBindBuffer        ( GL_ARRAY_BUFFER, 0u );
     glBindVertexArray   ( 0u );
 
@@ -120,15 +124,18 @@ void    device::render ( )
     // drawcalls
     glClearColor(               .2f, .3f, .3f, 1.0f     );
     glClear(                    GL_COLOR_BUFFER_BIT     );
-
+    // glPolygonMode(              GL_FRONT_AND_BACK, GL_FILL );
     program.use                 ( );
     glBindVertexArray           ( vertex_array_object );
-    glEnableVertexAttribArray   ( 0 );
-    glDrawElements              ( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
-    // glBindVertexArray           ( 0 );
-    glDisableVertexAttribArray  ( 0 );
-    // glDrawArrays(               GL_TRIANGLES, 0, 3      );
+    // glBindBuffer                ( GL_ELEMENT_ARRAY_BUFFER, 0u );
 
+    glEnableVertexAttribArray   ( 1 );
+    // glDrawElements              ( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
+    // glBindVertexArray           ( 0 );
+
+    glDrawArrays(               GL_TRIANGLES, 0, 3      );
+    glDisableVertexAttribArray  ( 1 );
+    program.unbind              ( );
     // call events and swap buffers
     glfwPollEvents	( );
     glfwSwapBuffers	( m_context );
