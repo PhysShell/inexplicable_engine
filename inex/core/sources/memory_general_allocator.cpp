@@ -5,7 +5,20 @@
 namespace inex {
 namespace memory {
 
+#ifdef DEBUG_MEMORY_MANAGER
+#   ifdef LOGGER
+#       undef LOGGER
+#   endif // #ifdef LOGGER
+#   define LOGGER( ... )	inex::logging::Msg( __VA_ARGS__ ); printf( __VA_ARGS__ ); printf( "%s", "\n" );
+#endif // #ifdef DEBUG_MEMORY_MANAGER
+
 //general_allocator::general_allocator ( ) :
+
+inline
+u64     bits_to_bytes ( u64 value )
+{
+    return              value / __CHAR_BIT__;
+}
 
 inline
 s64  pointer_difference ( pvoid begin, pvoid end )
@@ -17,9 +30,11 @@ s64  pointer_difference ( pvoid begin, pvoid end )
                 );
 }
 
-static general_allocator::header base;
-static size_t                    end;
-pvoid                           end_p;
+general_allocator::general_allocator ( ) :
+    m_arena     ( ),
+    m_arena_end ( nullptr )
+{
+}
 
 void    general_allocator::initialize ( pvoid arena, size_t const size, pcstr id )
 {
@@ -31,205 +46,137 @@ void    general_allocator::initialize ( pvoid arena, size_t const size, pcstr id
                 alignment_value,
                 INEX_ALIGNOF( header ) );
 
-    m_arena_id               = id;
-    // m_arena->size            = size;
-    // m_arena                  = arena ? ( header* )arena : nullptr;
-    // m_last_allocated         = m_arena;
-    m_last_allocated            = nullptr;
+    m_arena_id				= id;
+    m_arena					=  memory::ie_new< header_type >( );
+    m_helper				= 0;
+    //m_arena->dummy			= 0;
+    if ( arena )
+    {
+        m_helper				= memory::ie_new< header_type >( );
+        size_t s				= (size+sizeof(header_type)-1)/sizeof(header_type) + 1;
+        m_helper->s.size		= s;
+        m_helper->s.ptr			= ( header_type * )arena;
+        LOGGER( "HELPER INFO %p, %d", m_helper->s.ptr, m_helper->s.size );
+    }
 
     logging::Msg(   "* General allocator of size:\t%d\n "
                     "with address:\t\t\t\t%p named '%s' created.",
                     0,
-                    &base,
+                    m_arena,
                     m_arena_id );
-
-    sizeof ( &base ); sizeof ( header );
 }
 
-inline
-u64     bits_to_bytes ( u64 value )
+pvoid	general_allocator::malloc_impl ( u32 size )
 {
-    return              value / __CHAR_BIT__;
-}
-
-pvoid    general_allocator::malloc_impl ( size_t const size )
-{
-    ASSERT_D( 0, "Malloc implementation is not yet working correctly" );
-    header          * p, *previous;
-    // size in bytes. + 1 byte for housekeeper
-    size_t          units =
-    { ( size + sizeof ( header ) + 1 ) / sizeof ( header ) + 1 };
-    LOGGER( "\n* Computed:\t%d bytes to be allocated from '%d' bits.", units, size );
-
-    if ( ( previous = m_last_allocated ) == nullptr )
+    LOGGER( "--------------------------------------------------" );
+    header_type *p, *prevp;
+    u32 nunits;
+    nunits = (size+sizeof(header_type)-1)/sizeof(header_type) + 1;
+    if ( ( prevp = m_arena_end ) == nullptr )
     {
-        base.next   = m_last_allocated = previous = &base;
-        base.size   = 0ul;
+        m_arena->s.ptr	= m_arena_end = prevp = m_arena;
     }
 
-    for ( p = previous->next; ; previous = p, p = p->next )
+    for (p = prevp->s.ptr; ; prevp = p, p = p->s.ptr)
     {
-        ASSERT_D( m_last_allocated == previous,
-                "* Last allocated:\t%p, next:\t%p", m_last_allocated, previous );
-
-        LOGGER( 
-                "* Last allocated:\t%p, next:\t%p", m_last_allocated, previous );
-
-
-        LOGGER( "*\n Size of block:\t%d.", p->size, units );
-        LOGGER( "* Last allocated:\t%p", previous );
-        LOGGER( "* previous->next:\t'%p'", p );
-        if ( p->size >= units )
+        if (p->s.size >= nunits)		/*   */
         {
-            if ( p->size == units  )
+            if (p->s.size == nunits)	/*   */
+                prevp->s.ptr = p->s.ptr;
+            else						/*  "" */
             {
-                ASSERT_S( 1 != 1 );
-                previous->next  = p->next;
-            }
-            else
-            {
-                LOGGER( "* chunk not match but appropriate" );
-                p->size         -=  units;
-                LOGGER( "need to slide by %d bytes\n", p->size );
-                // LOGGER( "p = %p", p );
-
-                LOGGER( "* BYTES p->size:\t%d, Needed p->size:\t%d", p->size, p->size / 2 );
-
-                //p->size                     = bits_to_bytes( p->size );
-                p                           += ( p->size / 2 );
-
-                s64   local_difference       = pointer_difference( end_p, p );
-                //LOGGER( "ptrdiff should be negative: %d", local_difference );
-
-                ASSERT_D( local_difference <= 0, "Out of bones %d bytes. Exceeded value: %d", end,
-                        local_difference );
-
-                LOGGER( "* New housekeeper is at: '%p'",  ( header* ) ( p ) );
-                LOGGER( "* chunk starts at: '%p'",  ( header* ) ( p + 1 ) );
-                LOGGER( "*\tends at:\t'%p'", ( header* ) p + units );
-
-                ( *p ).size         =    units;
-                LOGGER( "* BYTES p->size:\t%d, BITS p->size:\t%d", p->size, p->size * 8 );
-                LOGGER( "Units %d bytes", p->size );
-                INEX_DEBUG_WAIT;
+                p->s.size -= nunits;
+                p += p->s.size;
+                p->s.size = nunits;
             }
 
-            // correct iteration might not be possible,
-            // should maybe use p->next = base to make point to beginning
+        m_arena_end = prevp;
+        return ( pvoid )( p + 1 );
+    }
 
-            for ( header* ptr = m_last_allocated; ; )
-            {
-                LOGGER( "Ptr:\t'%p' ( next: '%p' ). Sz:\t'%d'", ptr, ptr->next, ptr->size );
-                if ( ( ptr = ptr->next ) == m_last_allocated )             break;
-                INEX_DEBUG_WAIT;
-            }
-
-            ASSERT_D            (   ( u64 ) ( p + 1 ) % alignment_value == 0,
-                                    "%p reaminder !=0 %d",
-                                    p + 1, ( u64 ) ( p + 1 ) % alignment_value );
-                                
-            m_last_allocated    = previous;
-            //m_last_allocated    ->next  = p;
-            return              ( pvoid ) ( p + 1 );
-        }
-
-        if ( p == m_last_allocated )
-        {
-            LOGGER( "* p == m_last_allocated happened" );
-            p                       = on_malloc( units );
-            if ( base.size == 0 )
-            {
-                base.size           = p->size;
-                p->next             = &base;
-                m_last_allocated    = p;
-                m_last_allocated    ->next              = p;
-                //base.next           = p->next;
-
-                // LOGGER( "base next:\t'%p'", base.next );
-            }
-            // here previous==previous->next==base!! so need to work it around above
-            //m_last_allocated            =   previous->next;
-        }
+    if ( p == m_arena_end ) /*     */
+        p = on_malloc( nunits );
     }
 }
 
-general_allocator::header*   general_allocator::on_malloc ( size_t const size )
+general_allocator::header_type* general_allocator::on_malloc ( unsigned nu )
 {
-        s32 constexpr new_size  = 512 * sizeof( header );
-        size_t units            = size;
-        if ( size < new_size )  units                   = new_size;
-        pvoid raw_region        = require_arena_from_os( units );
-        LOGGER( "*\tAllocating new chunk:\t%d bytes, at %p.", new_size, raw_region );
-        LOGGER( ( u64 )raw_region % alignment_value ? "!\tNot aligned by %d bytes."
-                : "*\tAligned by %d bytes.", alignment_value );
-        header* blocks_allocated = ( header* )raw_region;
-        blocks_allocated->size  = bits_to_bytes( new_size );
-        end                     =  pointer_difference( raw_region, ( pvoid ) ( (  ptrdiff_t ) raw_region + new_size ) );
-        end_p                   = ( pstr )raw_region + new_size;
-        LOGGER( "* contains :\t%d bytes. ends at:\t%p", end, end_p );
-        //blocks_allocated->next  = nullptr;
-        //free                    ( ( pvoid ) ( blocks_allocated + 1 ) );
-        //sizeof ( header );
-        //memset                  ( ( pvoid ) ( blocks_allocated + 1 ), 0, units - sizeof( header ) );
-        // LOGGER (    "* Zeroed '%d' bytes, staring form: '%p'.",
-        //             units - sizeof( header ),
-        //             blocks_allocated + 1 );
-
-        return                  blocks_allocated;
-}
-
-/**
- * It frees the end of the memory allocated, not start
-**/
-void    general_allocator::free_impl ( pvoid block )
-{
-    header   * bp, * p;
-    bp                      = ( header* ) block - 1;
-    // printf ( "pvoid:\t%p\nheader:\t%p\n", ( pvoid ) bp, ( header* ) block - 1 );
-    LOGGER( "* Freeing the chunk of:\t%d bytes, at %p.", bp->size, bp );
-    LOGGER( "* Actual pointer:\t at %p.", block );
-    size_t len              = strlen( ( pstr ) block );
-    if ( len > ( bp->size ) * __CHAR_BIT__  )
+    LOGGER( "ask for more memory" );
+    char *cp;
+    header_type *up;
+    if ( m_helper && nu < m_helper->s.size )
     {
-        LOGGER( "! Warning: '%p' overflowes its '%d' bytes: usage '%d' bits.",
-                block,
-                bp->size - 1,
-                len );
+        LOGGER( "needed %d, available %d", nu, m_helper->s.size);
 
-        if ( ( !bp->next ) == 1 ) { LOGGER( "NPTR" ); }
-    }
+        nu						= m_helper->s.size;
+        cp						= ( pstr )m_helper->s.ptr;
 
-    for (   p               = m_last_allocated;
-            !( bp > p && bp < p->next );
-            p               = p->next )
-    {
-        if ( p >= p->next && ( bp > p || bp < p->next ) )   break;
-    }
-
-    if ( bp + bp->size == p->next )
-    {
-        bp->size            +=  p->next->size;
-        bp->next            =   p->next->next;
+        LOGGER( "+++++++%p", m_helper->s.ptr );
+        memory::ie_delete		( m_helper );
+        goto allocation_finished_goto;
     }
     else
     {
-        bp->next            =   p->next;
+        LOGGER( "preallocated memory is useless" );
+        // preallocated memory is useless
+        if ( m_helper )
+        {
+            free					( m_helper->s.ptr );
+            memory::ie_delete		( m_helper );
+        }
+
     }
 
-    if ( p + p->size == bp )
-    {
-        p->size             +=  bp->size;
-        p->next             =   bp->next;
-    }
-    else
-    {
-        p->next             =   bp;
-    }
+    LOGGER( "***Allocating from OS!***" );
+    if ( nu < 1024 )
+        nu      = 1024;
+    cp          = ( pstr )memory::require_arena_from_os( nu * sizeof( header_type ) );
+    
+    /***********************/
+    allocation_finished_goto:
+    /***********************/
 
-    m_last_allocated        =   p;
+    // already checked in memory::require_arena_from_os
+    // if ( cp == 0 ) /*     */
+    // 	ASSERT_S( 0 );
 
-
+    up          = ( header_type * ) cp;
+    up->s.size  = nu;
+    free_impl   ( pvoid ( up + 1 ) );
+    return      m_arena_end;
 }
+
+void    general_allocator::free_impl ( pvoid ap )
+{
+    header_type         *bp, *p;
+    bp                  = ( header_type * ) ap - 1;
+    for ( p = m_arena_end; !( bp > p && bp < p->s.ptr ); p = p->s.ptr )
+    {
+        if ( p >= p->s.ptr && ( bp > p || bp < p->s.ptr ) )     break;
+    }
+
+    if ( bp + bp->s.size == p->s.ptr )
+    {
+        bp->s.size      += p->s.ptr->s.size;
+        bp->s.ptr       = p->s.ptr->s.ptr;
+    } else
+        bp->s.ptr       = p->s.ptr;
+    
+    if ( p + p->s.size == bp )
+    {
+        p->s.size       += bp->s.size;
+        p->s.ptr        = bp->s.ptr;
+    } else
+        p->s.ptr        = bp;
+
+    m_arena_end         = p;
+}
+
+void	general_allocator::finalize		( )
+{
+    memory::ie_delete	( m_arena );
+}
+
 /*
 memory::general_allocator	g_allocator;
 memory::platform::region	region;

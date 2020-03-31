@@ -124,6 +124,40 @@ void	compute_build_id ( )
 	}
 }
 
+//recursive: the tail->next points to the head
+
+
+void	test ( )
+{
+	memory::platform::region	r;
+	r.size						= 128;
+	r.address					= memory::require_arena_from_os( r.size );
+	memory::general_allocator 	g;
+	g.initialize				( r.address, r.size, "test allocator" );
+	pstr ptr 					= ( pstr )g.malloc_impl( 2 )
+	, ptr2 						= ( pstr )g.malloc_impl( 25 ),
+		ptr3					= ( pstr )g.malloc_impl( 21 ),
+		ptr4					= (pstr )g.malloc_impl( 3 );
+	LOGGER( "* actually allocated!" );
+	constexpr pcstr string 		= "1";
+	strcpy 						( ptr, string );
+	strcpy 						( ptr2, "2231" );
+	strcpy 						( ptr3, "342" );
+	LOGGER( "s1 %p",  ptr ); LOGGER( "s2 %p", ptr2 ); LOGGER( "s3 %p", ptr3 );
+
+
+	LOGGER( "string1 lies at:\t'%p'\n", ptr );
+	LOGGER( "string2 lies at:\t'%p'\n", ptr2 );
+    g.free_impl					( ptr );
+	g.free_impl					( ptr2 );
+    ptr                         = ( pstr )g.malloc_impl( 17 );
+    ptr2                        = ( pstr )g.malloc_impl( 3 );
+
+	strcpy 						( ptr, string );
+	strcpy 						( ptr2, "211111111111111111" );
+	LOGGER( "s1 %p",  ptr ); LOGGER( "s2 %p", ptr2 ); LOGGER( "s3 %p", ptr3 );
+}
+
 void	initialize ( pcstr command_line_string )
 {
     // aV[0] is a path to application
@@ -155,6 +189,8 @@ void	initialize ( pcstr command_line_string )
 		fs::initialize	( "./gamedata/" );
 #endif // #if INEX_PLATFORM_WINDOWS
 	}
+
+    // test		( );
 
     logging::Msg( "* %d Hz clock on your machine", threading::clock_cycle_per_second( ) );
 	logging::Msg( "* L1 Cache line size: %d bits\n", threading::cache_line_size( ) );

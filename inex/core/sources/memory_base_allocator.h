@@ -25,24 +25,26 @@ public:
 
     // inline  bool    initialized     ( ) const   {   return m_arena;     }
     // inline	pcstr	arena_id		( ) const   {   return m_arena_id;  }
-    virtual size_t  fragmented_size ( ) const = 0;
-    virtual size_t  total_size      ( ) const = 0;
-    virtual size_t  allocated_size  ( ) const = 0;
+    virtual size_t          fragmented_size ( ) const = 0;
+    virtual size_t          total_size      ( ) const = 0;
+    virtual size_t          allocated_size  ( ) const = 0;
 
 protected:
     // inline  size_t  needed_size     ( size_t const size ) const   {   return size; /* + caption */  }
     // inline  pvoid   ensure_alignment( );
 
 protected:
+
+    typedef ptrdiff_t       alignment_type;
+	static constexpr
+            size_t const    alignment_value = sizeof ( alignment_type );
     // pvoid   m_arena;
     // pvoid   m_arena_end;
     pcstr	m_arena_id;
 
-#ifndef __MINGW32_VERSION
-    static constexpr size_t const alignment_value                   = sizeof ( long double );
-#else // #ifndef __MINGW32_VERSION
-    static constexpr size_t const alignment_value                   = sizeof ( long long );
-#endif // #ifndef __MINGW32_VERSION
+private:
+
+
 }; // class base_allocator
 
 } // namespace memory

@@ -1,0 +1,104 @@
+Since most implementations are built by graphics card manufacturers. Whenever there is a bug
+in the implementation this is usually solved by updating your video card drivers; those drivers
+include the newest versions of OpenGL that your card supports. This is one of the reasons why
+it’s always advised to occasionally update your graphic drivers.
+
+fixed function pipeline, immediate mode - easy but hids lots of stuff;
+core-profile - explicit, modern, and shaders
+extension - if awailable, allows to use more efficient way of rendering
+context - state of ogl of how we render at a particular moment
+state-changing functions - change the context
+state-using - using context information
+object - collection of objects representing a subset of state
+workflow - get an object, make it refer to some context, change it, restore it
+glfw - pi abstraction that renders things; user input
+cmake - tool generating project form sources using predefined cmake scripts
+glad - retrieves location of os-specific ogl functionality
+glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE ) - we want core-profiling
+glViewport(0, 0, 800, 600) - how we want to display the data and coordinates with respect to the window
+    1 and 2 params - set the location of the lower left corner of the window
+Behind the scenes OpenGL uses the data specified via glViewport to transform the 2D
+coordinates it processed to coordinates on your screen. For example, a processed point of
+location (-0.5,0.5) would (as its final transformation) be mapped to (200,450) in screen
+coordinates. Note that processed coordinates in OpenGL are between -1 and 1 so we effectively
+map from the range (-1 to 1) to (0, 800) and (0, 600).
+render loop - !glfwWindowShouldClose
+glfwPollEvents function checks if any events are triggered, updates wnd state etc
+glfwSwapBuffers will swap the color buffer used for this iteration and ouput it
+glfwTerminate - clean up all resources and exit app
+
+Double buffer
+When an application draws in a single buffer the resulting image might display flickering issues.
+This is because the resulting output image is not drawn in an instant, but drawn pixel by pixel and
+usually from left to right and top to bottom. Because these images are not displayed at an instant
+to the user, but rather via a step by step generation the result may contain quite a few artifacts.
+To circumvent these issues, windowing applications apply a double buffer for rendering. The
+front buffer contains the final output image that is shown at the screen, while all the rendering
+commands draw to the back buffer. As soon as all the rendering commands are finished we
+swap the back buffer to the front buffer so the image is instantly displayed to the user, removing
+all the aforementioned artifacts.
+
+the glClearColor function is a state-setting
+function and glClear is a state-using function in that it uses the current state to retrieve the
+clearing color from.
+
+graphics pipeline - transforms 3d space coordinates into 2d array of pixels
+so it can be drawn on the screen
+#1 step: vertex shader that takes as input a single vertex
+    it transforms around 3D coordinates, and process some basic attributes
+#2 step: primitive assembly stage takes as input all the vertices and forms a shape
+#3 step: The geometry shader takes
+    as input a collection of vertices that form a primitive and has the ability to generate other
+    shapes by emitting new vertices to form new (or other) primitive(s)
+#4 step: rasterization stage where it maps the resulting
+    primitive(s) to the corresponding pixels on the final screen.
+    it outputs the fragment to be passed to fragment shader
+Intermediate stage: Clipping - discards all fragments that are outside your view, increasing performance
+#5 step: fragment shader is to calculate the final color of a pixel and this is usually the
+    stage where all the advanced OpenGL effects occur (shadow, lights, etc.)
+#6 step: alpha test and blending stage:
+    check if the resulting fragment is in front or behind other objects and should be discarded accordingly.
+    also checks for alpha values (opacity) and blends the objects accordingly
+
+// *****************
+All coordinates within
+this so called 'normalized device coordinates' (from -1.0f to 1.0f) range
+will end up visible on your screen (and all coordinates outside this region won’t).
+// *****************
+
+-1..1   -                       0 is top-left corner
+NDC     - [through glViewport] ->S-SC - then transformed to fragments as an input to fragment shader
+
+DrawCall process
+initialization phase: VAO thing
+#1. bind array object to corresponding vertex buffer object
+#2. copy array into buffer on gpu
+#3. set the vertex attributes pointers
+#4. use some shader program
+rendering loop phase: drawing code
+#5. UseProgram; BindVertexArray; DrawCall( );
+
+// *****************
+There is a difference between a 2D coordinate and a pixel. A 2D coordinate is a very precise
+representation of where a point is in 2D space, while a 2D pixel is an approximation of that point
+limited by the resolution of your screen/window.
+// *****************
+
+vertex is basically a collection of data per 3D coordinate
+
+A vertex array object stores the following:
+• Calls to glEnableVertexAttribArray or glDisableVertexAttribArray.
+• Vertex attribute configurations via glVertexAttribPointer.
+• Vertex buffer objects associated with vertex attributes by calls to glVertexAttribPointer.
+
+вбо хранит верктексы и атрибуты. вао хранит вбо. т.е. чтобы прорендерить
+другой вбо, нужно просто инициализировать их однажды и потом переключаться.
+
+ебо это как вбо, только с указанием последовательности вертексов,
+с помощью которых рисуется шейп (indexed drawing)
+
+
+
+
+rasterization phases:
+1. clip space transformation, 
