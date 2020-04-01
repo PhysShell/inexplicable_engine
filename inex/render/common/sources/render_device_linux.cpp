@@ -15,7 +15,7 @@ void    render_device::create_helper ( window_impl*&   window,
                                 u32     const&  height )
 {
     constexpr pcstr window_title        = "Inex";
-    LOGGER( "Initializing RENDER device..." );
+    LOGGER( "Starting RENDER device..." );
     // window_impl* temp;
     temp		        = glfwCreateWindow( width, height, window_title, nullptr, nullptr );
     LOGGER( "* '%s' window: initial config: [%d x %d]", window_title, width, height );

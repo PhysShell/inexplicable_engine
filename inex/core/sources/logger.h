@@ -12,7 +12,7 @@ namespace detail {
 		warning	=						( 1u << 2U ),
 		error	=						( 1u << 3U ),
 		debug	=						( 1u << 4U ),
-		trace	=						( 1u << 5U ),
+		trace	=						( 1u << 5U )
 	}; // enum class logging_mode_enum
 } // namespace detail
 
