@@ -6,13 +6,9 @@
 #ifndef INEX_SOUND_H_INCLUDED
 #	define INEX_SOUND_H_INCLUDED
 
-#   include <inex/macro_extensions.h>
-#   include <inex/types.h>
-#   include <inex/math_float3.h>
-#   include <AL/al.h>
-#   include <AL/alc.h>
-// #include <AL/alu.h>
-#   include <AL/alut.h>
+#include <AL/al.h>
+#include <AL/alc.h>
+#include <AL/alut.h>
 
 namespace inex {
 namespace sound {
@@ -22,6 +18,7 @@ enum
     sm_looped       = ( 1u << 0u )
 };
 
+// to make a manager abstract class
 class sound_device
 {
 public:
@@ -31,6 +28,7 @@ public:
 
     void        request_free_buffer ( );
 
+private:
     void        check_alc_errors    ( );
     void        check_al_errors     ( );
 

@@ -3,9 +3,9 @@
 //	Author		: Feudor Shelipov
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef INEX_RENDER_LIBRARY_LINKAGE_H_INCLUDED
-#	define INEX_RENDER_LIBRARY_LINKAGE_H_INCLUDED
+#ifndef INEX_SOUND_LIBRARY_LINKAGE_H_INCLUDED
+#	define INEX_SOUND_LIBRARY_LINKAGE_H_INCLUDED
 
-#	pragma comment( lib, "render.lib" )
+// #	pragma comment( lib, "sound.lib" )
 
-#endif // #ifndef INEX_RENDER_LIBRARY_LINKAGE_H_INCLUDED
+#endif // #ifndef INEX_SOUND_LIBRARY_LINKAGE_H_INCLUDED

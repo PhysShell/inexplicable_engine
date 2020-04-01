@@ -20,6 +20,8 @@
 
 
 #include <inex/render/ogl/render_include.h>
+#include <inex/sound/sound.h>
+#include <inex/sound/sources/sound_object.h>
 
 // #include <GL/glx.h>
 
@@ -62,16 +64,28 @@ s32		engine_entry_point ( pcstr command_line_string )
 
 	ASSERT_S            ( math::fdEPS != 0.f );
 	logging::Msg        ( "Epsilon is: '%0.*f'", 8, math::fdEPS );
-    
+
+	sound::sound_device sound;
+	sound.initialize    ( );
+	sound::sound_object snd;
+	snd.open            ( "gamedata/sound1.wav" );
+	sound::sound_object snd2;
+	snd2.open           ( "gamedata/motor_a8.wav", 1 );
+	snd2.play           ( );
+	snd.play            ( );
+
     ogl::device         device;
 // init proc
     device.initialize   ( );
 // startup proc
     device.create       ( );
 
+
 // main cycle
     device.run          ( );
+
 // destroying
+    sound.finalize      ( );
     device.destroy      ( );
     core::finalize      ( );
 

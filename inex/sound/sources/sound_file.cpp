@@ -1,5 +1,5 @@
-#include "stdafx.h"
-#include <inex/sound/sound_file.h>
+#include "pch.h"
+#include "sound_file.h"
 #include <inex/sound/sound.h>
 #include <inex/fs_utils.h>
 
@@ -10,17 +10,17 @@ namespace sound {
 
 void    ogg_file::initialize ( )
 {
-    for (u32 i = 0; i < PRELOAD_BUFFERS_COUNT; ++i )
-    {
-        sound_buffer * buf = g_sound_device->request_free_buffer( );
-        if ( ! buf )
-        {
-            LOGGER("Not enough free sound-buffers");
-            continue;
-        }
-        
-        this->m_buffers = buf;
-    }
+//    for (u32 i = 0; i < PRELOAD_BUFFERS_COUNT; ++i )
+//    {
+//        sound_buffer * buf = g_sound_device->request_free_buffer( );
+//        if ( ! buf )
+//        {
+//            LOGGER("Not enough free sound-buffers");
+//            continue;
+//        }
+//
+//        this->m_buffers = buf;
+//    }
 }
 
 } // namespace sound

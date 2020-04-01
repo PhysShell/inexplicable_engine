@@ -1,67 +1,84 @@
-#include "stdafx.h"
+#include "pch.h"
 #include <inex/sound/sound.h>
 #include <inex/fs_utils.h>
 #include <vector>
-#include <vorbis/codec.h>
+#include <inex/math_float3.h>
 
 // #pragma comment(lib, "alut.lib")
 // #pragma comment(lib, "OpenAL32.lib")
 
-#ifndef AL_CHECK
-#   ifdef _DEBUG
-#       define AL_CHECK( stmt ) do { \
-            stmt; \
-            check_al_errors( #stmt, __FILE__, __LINE__ ); \
-        } while ( 0 )
-#   else // #ifdef _DEBUG
-#       define AL_CHECK( stmt ) stmt
-#   endif // #ifdef _DEBUG
+#ifdef AL_CHECK
+#   error please do not define AL_CHECK
 #endif // #ifndef AL_CHECK
+
+#ifdef ALC_CHECK
+#   error please do not define ALC_CHECK
+#endif // #ifndef ALC_CHECK
+
+#ifdef _DEBUG
+#       define AL_CHECK( stmt )     do { stmt; check_al_errors(  ); } while ( 0 )
+#       define ALC_CHECK( stmt )    do { stmt; check_alc_errors( ); } while ( 0 )
+#   else // #ifdef _DEBUG
+#       define AL_CHECK( stmt )     stmt
+#       define ALC_CHECK( stmt )    stmt
+#endif // #ifdef _DEBUG
 
 namespace inex {
 namespace sound {
 
+void    sound_device::check_alc_errors ( )
+{
+    ALenum error_code;
+    ASSERT_D( ( error_code = alcGetError( m_device ) ) == ALC_NO_ERROR, ( pstr ) alcGetString( m_device, error_code ) );
+}
+
+void    sound_device::check_al_errors ( )
+{
+    ALenum error_code;
+    ASSERT_D( ( error_code = alGetError( ) ) == AL_NO_ERROR, ( pstr ) alGetString( error_code ) );
+}
+
 void    sound_device::preinitialize ( )
+{
+}
+
+void    sound_device::initialize ( )
 {
     float   listener_position   [ ]         = { 0.f, 0.f, 0.f },
             listener_velocity   [ ]         = { 0.f, 0.f, 0.f },
                                                  // front            // above
             listener_orientation [ ]        = { 0.f, 0.f, -1.f, 0.f, 1.f, 0.f };
-    m_device                                = alcOpenDevice ( nullptr );
-    ASSERT_D( m_device, "OpenAL: default sound device not present." );
-    m_context                               = alcCreateContext ( m_device, nullptr );
-    ASSERT_S( m_context );
-    alcMakeContextCurrent                   ( m_context );
+    LOGGER                                  ( "Starting SOUND device..." );
+
     alListenerfv                            ( AL_POSITION,      listener_position );
     alListenerfv                            ( AL_VELOCITY,      listener_velocity );
     alListenerfv                            ( AL_ORIENTATION,   listener_orientation );
-}
 
-void    sound_device::initialize ( )
-{
-    for (int i = 0; i < 512; i++)
-{
-	SoundBuffer buffer;
-	AL_CHECK( alGenBuffers((ALuint)1, &buffer.refID) );
-	this->buffers.push_back(buffer);
-}
+    m_device                                = alcOpenDevice ( 0 );
+    ASSERT_D( m_device, "OpenAL: default sound device not present." );
+    m_context                               = alcCreateContext ( m_device, nullptr );
+    alcMakeContextCurrent                   ( m_context );
+    ASSERT_D( m_device, "OpenAL: context not present." );
 
-for (int i = 0; i < 16; i++)
-{
-	SoundSource source;
-	AL_CHECK( alGenSources((ALuint)1, &source.refID)) ;
-	this->sources.push_back(source);
-}
+    LOGGER( "*** OpenAL context information ***\n"
+            "\t* Default device     : %s\n"
+            "\t* Device specifier   : %s\n",
+            //"\t* Extensions         : %s\n",
+            ( pcstr )alcGetString( m_device, ALC_DEFAULT_DEVICE_SPECIFIER ),
+            ( pcstr )alcGetString( m_device, ALC_DEVICE_SPECIFIER )
+            //( pcstr )alcGetString( m_device, ALC_EXTENSIONS )
+    );
 
-for (uint32 i = 0; i < this->buffers.size(); i++)
-{
-	this->freeBuffers.push_back(&this->buffers);
-}
-
-for (uint32 i = 0; i < this->sources.size(); i++)
-{
-	this->freeSources.push_back(&this->sources);
-}
+    LOGGER( "*** OpenAL render information ***\n"
+            "\t* Renderer           : %s\n"
+            "\t* Vendor             : %s\n"
+            "\t* Version            : %s\n",
+            //"\t* Extensions         : %s\n",
+            ( pcstr )alGetString(AL_RENDERER),
+            ( pcstr )alGetString(AL_VENDOR),
+            ( pcstr )alGetString(AL_VERSION)
+            //( pcstr )alGetString(AL_EXTENSIONS)
+    );
 }
 
 void    sound_device::finalize ( )
@@ -69,40 +86,11 @@ void    sound_device::finalize ( )
     // alDeleteSources(NUM_SOURCES, source);
     // alDeleteBuffers(NUM_BUFFERS, buffers);
     // alutExit                ( );
-    alcMakeContextCurrent   ( nullptr );
-    alcDestroyContext       ( m_context );
-    alcCloseDevice          ( m_device);
-}
-
-void    sound_device::check_alc_errors ( )
-{
-    ALenum error_code;
-    if ( ( error_code = alcGetError( m_device ) ) != ALC_NO_ERROR )
-    {
-        ASSERT_D( 0, ( pstr ) alcGetString( device, error_code ) );
-    }
-}
-
-void    sound_device::check_al_errors ( )
-{
-    ALenum error_code;
-    if ( ( error_code = alGetError( ) ) != AL_NO_ERROR )
-    {
-        ASSERT_D( 0, ( pstr ) alGetString( device, error_code ) );
-    }
-}
-
-bool    sound_object::open ( pcstr path, bool looped, bool streamed )
-{
-    ASSERT_D( fs::exists( path ), "File '%s' not found", path );
-    m_looped            = looped;
-    float a[ 3 ];
-    alGenSources        ( 1, &m_source_id );
-    check_al_errors     ( );
-    alSourcef           ( m_source_id, AL_PITCH, 1.f );
-    alSourcef           ( m_source_id, AL_GAIN, 1.f );
-    alSource3f          ( m_source_id, AL_POSITION, *a, *a, *a );
-    ;
+    m_context                   = alcGetCurrentContext( );
+    m_device                    = alcGetContextsDevice( m_context );
+    alcMakeContextCurrent       ( 0 );
+    alcDestroyContext           ( m_context );
+    alcCloseDevice              ( m_device );
 }
 
 } // namespace sound
