@@ -9,7 +9,7 @@
 namespace inex {
 namespace math {
 
-class float3
+class INEX_CORE_API float3
 {
 public:
     typedef float       type;
@@ -59,6 +59,7 @@ public:
     // cross product
     float3          operator ^=     ( float3 const& other );
     float3          operator *=     ( type const value );
+    float3          operator *=     ( float3 const& other );
     float3          operator /=     ( type const value );
 
     float3          set             ( type const x_value, type const y_value, type const z_value );

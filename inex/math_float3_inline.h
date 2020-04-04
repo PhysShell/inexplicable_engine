@@ -3,10 +3,12 @@
 //	Author		: Feudor Shelipov
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef MATH_FLOAT3_H_INCLUDED
-#   define MATH_FLOAT3_H_INCLUDED
+#ifndef MATH_FLOAT3_INLINE_H_INCLUDED
+#   define MATH_FLOAT3_INLINE_H_INCLUDED
 
 #   include <inex/macro_string.h>
+#   include <inex/math_functions.h>
+#   include <math.h>
 
 namespace inex {
 namespace math {
@@ -15,24 +17,31 @@ namespace math {
 // initializations
 //-----------------------------------------------------------------------------------
 inline
-float3::float3 ( )
+float3::float3 ( ) :
+    x           { .0f },
+    y           { .0f },
+    z           { .0f }
 {
+    LOG_FLOAT3( ( * this ) );
 }
 
-float3::float3 ( type const x_value, type const y_value, type const z_value )
+inline
+float3::float3 ( type const x_value, type const y_value, type const z_value ) :
     x           { x_value },
     y           { y_value },
     z           { z_value }
-{
+{    LOG_FLOAT3( ( * this ) );
 }
 
+inline
 float3::float3 ( float3 const& source ) :
     x           { source.x },
     y           { source.y },
     z           { source.z }
-{
+{    LOG_FLOAT3( ( * this ) );
 }
 
+inline
 float3::float3 ( float3 && borrowed )
 {
     ASSERT_S    ( 0 );
@@ -42,7 +51,7 @@ float3::float3 ( float3 && borrowed )
 // accessors
 //-----------------------------------------------------------------------------------
 inline
-type const&     float3::operator [ ] ( u8 index ) const
+float3::type const&     float3::operator [ ] ( u8 index ) const
 {
     // also handles signed (conversion form s to u)
     ASSERT_S            ( ( index < 3 ) );
@@ -50,7 +59,7 @@ type const&     float3::operator [ ] ( u8 index ) const
 }
 
 inline
-type&           float3::operator [ ] ( u8 index )
+float3::type&           float3::operator [ ] ( u8 index )
 {
     ASSERT_S            ( ( index < 3 ) );
     return              *( elements + index );
@@ -59,6 +68,7 @@ type&           float3::operator [ ] ( u8 index )
 //-----------------------------------------------------------------------------------
 // operations
 //-----------------------------------------------------------------------------------
+inline
 float3          float3::operator - ( )
 {
     x                   = -x;
@@ -133,14 +143,14 @@ float3          float3::operator /= ( float3::type const value )
 inline
 float3          float3::operator ^= ( float3 const& other )
 {
-    
+
     return              float3(  /**/ );
 }
 
 inline
-float3          float3::set (   float3::value const     x_value,
-                                float3::value const     y_value
-                                float3::value const     z_value )
+float3          float3::set (   float3::type const     x_value,
+                                float3::type const     y_value,
+                                float3::type const     z_value )
 {
     x                   = x_value;
     y                   = y_value;
@@ -155,13 +165,13 @@ float3::type    float3::dot_product ( float3 const& other ) const
 }
 
 inline
-float3::type    float3::square_magintude ( ) const
+float3::type    float3::square_magnitude ( ) const
 {
     return              ( sqr( x ) + sqr( y ) + sqr( z ) );
 }
 
 inline
-float3::type    float3::magintude ( ) const
+float3::type    float3::magnitude ( ) const
 {
     return              sqrtf( square_magnitude( ) );
 }
@@ -169,15 +179,15 @@ float3::type    float3::magintude ( ) const
 inline
 float3                  float3::normalize ( )
 {
-    todo                ( "impl" );
+    #pragma todo        ( "impl" )
     return              * this  /= magnitude ( );
 }
 
 inline
 float3                  float3::orthogonal ( ) const
 {
-    todo                ( "impl" );
-    return              float3( -y, x );
+    #pragma todo        ( "impl" )
+    return              float3( );//float3( -y, x );
 }
 
 inline
@@ -195,25 +205,29 @@ float3::type            float3::distance_to (float3 const& other ) const
 //-----------------------------------------------------------------------------------
 // outer operations
 //-----------------------------------------------------------------------------------
-float3          operator + ( float3 const& right, float3 const& right )
+inline
+float3          operator + ( float3 const& left, float3 const& right )
 {
-    return              float3( right.x + left.x, right.y + left.y );
+    return              float3( left.x + right.x, left.y + right.y, left.z + right.z );
 }
 
-float3          operator + ( float3 const& right, float3::type const& left )
+inline
+float3          operator + ( float3 const& left, float3::type const& right )
 {
-    return              float3( right.x + left, right.x + left );
+    return              float3( left.x + right, left.y + right, left.z + right );
 }
 
-float3          operator - ( float3 const& right, float3 const& left )
+inline
+float3          operator - ( float3 const& left, float3 const& right )
 {
-    return              float3( right.x - left.x, right.y - left.y );
+    return              float3( left.x + right.x, left.y + right.y, left.z + right.z );
 }
 
-float3          operator - ( float3 const& right, float3::type const& left )
+inline
+float3          operator - ( float3 const& left, float3::type const& right )
 {
-bool ddf = not true;
-    return              float3( right.x - left, right.y - left );
+    // bool ddf = not true;
+    return              float3( left.x + right, left.y + right, left.z + right );
 }
 
 
@@ -221,4 +235,4 @@ bool ddf = not true;
 } // namespace math
 } // namespace inex
 
-#endif // #ifndef MATH_float3_H_INCLUDED
+#endif // #ifndef MATH_FLOAT3_INLINE_H_INCLUDED

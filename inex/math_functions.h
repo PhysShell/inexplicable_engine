@@ -9,13 +9,26 @@
 namespace inex {
 namespace math {
 
-#define PI              3.1415926535897932384626433832795f
+#define PI              ( 3.1415926535897932384626433832795f )
 
+/***
+*
+* void multiple_sse_pointer ( float* const, float* const )
+*
+* Entry:
+*
+*   dynamically allocated floats or array elements ONLY! UB when pass ESP vars
+*
+* Exit:
+*
+*   left float becomes the result of multiplication
+*
+****************************************************/
 typedef void ( INEX_CDECL_CONVENTION *multiple_sse_pointer ) ( float* const, float* const );
 
 
-void    multiple_pure ( float* const , float* const );
-void    multiple_sse ( float * const left, float * const right );
+void    multiple_pure   ( float* const , float* const );
+void    multiple_sse    ( float* const left, float* const right );
 
 
 // function returning float/double use fpu so might use declspec( naked )
@@ -33,7 +46,7 @@ T   abs_universal ( T value )
 }
 
 #define fdEPS           machine_epsilon( )
-inline
+inline constexpr
 float   machine_epsilon ( )
 {
 	float e             = 1.0f;
@@ -62,18 +75,19 @@ float   radians_to_degree ( float const value )
     return              value / PI * 180.f;
 }
 
-constexpr inline
+inline
 float   sin ( float const angle )
 {
-#   define sinf( x )    ( float ) sin(  ( double ) x ) ;
-    return              sinf( angle );
+// #   define sinf( x )    ( float ) std::sin(  ( double ) x ) ;
+    return                  __builtin_sin( angle );
 }
 
-constexpr inline
+INEX_CORE_API
+inline
 float   cos ( float const angle )
 {
-#   define cosf( x )    ( float ) sin(  ( double ) x ) ;
-    return              cosf( angle );
+// #   define cosf( x )    ( float ) std::cos(  ( double ) x ) ;
+    return              __builtin_cos( angle );
 }
 
 } // namespace math

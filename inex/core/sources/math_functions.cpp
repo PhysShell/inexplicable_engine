@@ -34,6 +34,7 @@ __asm {
 void    multiple_pure ( float * const left, float * const right )
 {
     logging::Msg( "!!!PURE MULTIPLE!!!");
+    *left               *= * right;
 }
 
 } // namespace math
