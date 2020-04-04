@@ -5,9 +5,10 @@
 namespace inex {
 namespace threading {
 
-void	aquire_processor_information ( )
+u32	aquire_processor_information ( )
 {
 	s32 registers_information[ 4 ]	= { };
+    u32 features_bitmap             = { };
 	// read vendor string
 	detail::cpuid_fill( registers_information, static_cast< s32 >( 0x80000000 ) );
 
@@ -29,6 +30,11 @@ void	aquire_processor_information ( )
 			case 0x80000004: memcpy ( brand + 32,	registers_information, sizeof( registers_information ) ); break;
 		}
 	}
+
+    enum processor_features_enum
+    {
+        sse_feature                 = ( 1 << 0 )
+    }; // enum struct processor_features_enum
 
 	detail::cpuid_fill( registers_information, 1 ); // read cpu features
     string128 features_available { 0 };
@@ -79,6 +85,7 @@ __asm {
 }
 				# endif // #if defined( __GNUC__ )
 		        strcat( features_available,", SSE" );
+                features_bitmap     |= processor_features_enum::sse_feature;
             }
             __catch ( EXCEPTION_EXECUTE_HANDLER ) { }
         }
@@ -146,7 +153,6 @@ __asm {
 
     if ( 0 != is_amd )
     {
-        logging::Msg( "* AMD proc detected..." );
         if (    registers_information[ 3 ] & ( 1 << 23 ) &&
                 edx_reg & ( 1 << 31 ) )
         {
@@ -157,8 +163,9 @@ __asm {
 
     logging::Msg( "* Detected CPU: %s [%s]", brand, vendor );
     logging::Msg( "* CPU Features: %s", features_available );
-    logging::Msg( "* CPU Cores: %d\n", ( registers_information[ 1 ] >> 16 ) & 0xFF );
-    logging::Msg( "* Architecture detected: %s\n", ARCHITECTURE_STRING );
+    logging::Msg( "* CPU Cores: %d", ( registers_information[ 1 ] >> 16 ) & 0xFF );
+
+    return                  features_bitmap;
 }
 
 } // namespace threading

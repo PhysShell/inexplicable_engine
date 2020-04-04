@@ -3,7 +3,7 @@
 
 namespace inex {
 namespace threading {
-    void aquire_processor_information	( );
+    u32 aquire_processor_information	( );
 } // namespace threading
 } // namespace inex
 
