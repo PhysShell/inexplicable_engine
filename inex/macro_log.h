@@ -15,7 +15,7 @@
 //
 //#	define LOGGING_SENSITIVITY					log_trace;
 #	define LOGGER( ... )						inex::logging::Msg( __VA_ARGS__ )
-
+#   define LOG_FLOAT3( X )                      LOGGER( "X = %f\nY = %f\nZ = %f\n", X.x, X.y, X.z )
 
 
 #endif // #ifndef MACRO_LOG_H_INCLUDED

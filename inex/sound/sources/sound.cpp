@@ -2,7 +2,6 @@
 #include <inex/sound/sound.h>
 #include <inex/fs_utils.h>
 #include <vector>
-#include <inex/math_float3.h>
 
 // #pragma comment(lib, "alut.lib")
 // #pragma comment(lib, "OpenAL32.lib")

@@ -45,20 +45,17 @@ void    check_al_errors ( )
 namespace inex {
 namespace sound {
 
-sound_object::sound_object ( )
-// :
+sound_object::sound_object (    float const    x,
+                                float const    y,
+                                float const    z ) :
 //     m_info          ( nullptr ),
 //     m_comment       ( nullptr ),
 //     m_source        ( nullptr ),
 //     m_source_id     { },
-//     m_velocity      ( 0.f, 0.f, 0.f ),
-//     m_position      ( 0.f, 0.f, 0.f ),
-//     m_streamed      ( 0 )
+//     m_streamed      ( 0 ),
+    m_position      ( x, y, z ),
+    m_velocity      ( 0.f, 0.f, 0.f )
 {
-    for (int i = 0; i < 3; ++i)
-    {
-        mPos[i] = mVel[i] = 1.0f;
-    }
 }
 
 void    sound_object::open ( pcstr path, bool looped, bool streamed )
@@ -70,8 +67,8 @@ void    sound_object::open ( pcstr path, bool looped, bool streamed )
 
     alSourcef           ( source_ID, AL_PITCH,		1.0f );
     alSourcef           ( source_ID, AL_GAIN,		1.0f );
-    alSourcefv          ( source_ID, AL_POSITION,	mPos );
-    alSourcefv          ( source_ID, AL_VELOCITY,	mVel );
+    alSourcefv          ( source_ID, AL_POSITION,	m_position.raw_vector( ) );
+    alSourcefv          ( source_ID, AL_VELOCITY,	m_velocity.raw_vector( ) );
     alSourcei           ( source_ID, AL_LOOPING,	m_looped );
 
     load_wave			( path );
@@ -135,8 +132,14 @@ void sound_object::move(    float const&    x,
                             float const&    y,
                             float const&    z )
 {
-	ALfloat Pos[3] = { x, y, z };
-	alSourcefv( source_ID , AL_POSITION, Pos );
+	m_position.set( x, y, z );
+	alSourcefv( source_ID , AL_POSITION, m_position.raw_vector( ) );
+}
+
+void sound_object::move( math::float3 const& position )
+{
+	m_position  = position;
+	alSourcefv( source_ID , AL_POSITION, m_position.raw_vector( ) );
 }
 
 // void    sound_object::preload_buffers ( s32 const buffer_id )
