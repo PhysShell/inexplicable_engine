@@ -20,7 +20,7 @@ public:
     virtual void    initialize      ( pvoid arena, size_t const size, pcstr id );
     virtual void    finalize        ( );
 
-    virtual pvoid   malloc_impl     ( size_t const size /* add declaration for debug */ );
+    virtual pvoid   malloc_impl     ( u32 size /* add declaration for debug */ );
     virtual void    free_impl       ( pvoid pointer );
 
     // inline  bool    initialized     ( ) const   {   return m_arena;     }

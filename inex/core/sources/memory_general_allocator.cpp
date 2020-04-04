@@ -5,14 +5,20 @@
 namespace inex {
 namespace memory {
 
-#ifdef DEBUG_MEMORY_MANAGER
-#   ifdef LOGGER
-#       undef LOGGER
-#   endif // #ifdef LOGGER
-#   define LOGGER( ... )	inex::logging::Msg( __VA_ARGS__ ); printf( __VA_ARGS__ ); printf( "%s", "\n" );
-#endif // #ifdef DEBUG_MEMORY_MANAGER
+// #ifdef DEBUG_MEMORY_MANAGER
+// #   ifdef LOGGER
+// #       undef LOGGER
+// #   endif // #ifdef LOGGER
+// #   define LOGGER( ... )	inex::logging::Msg( __VA_ARGS__ ); printf( __VA_ARGS__ ); printf( "%s", "\n" );
+// #endif // #ifdef DEBUG_MEMORY_MANAGER
 
 //general_allocator::general_allocator ( ) :
+
+constexpr static u32 Kb = 1024;
+constexpr static u32 Mb = 1048576;
+
+// dummy type to be registered in memory leak detector
+struct general_allocator_user_memory { };
 
 inline
 u64     bits_to_bytes ( u64 value )
@@ -34,6 +40,7 @@ general_allocator::general_allocator ( ) :
     m_arena     ( ),
     m_arena_end ( nullptr )
 {
+    m_monitor.size  = m_monitor.deallocations = m_monitor.allocations   = 0;
 }
 
 void    general_allocator::initialize ( pvoid arena, size_t const size, pcstr id )
@@ -59,90 +66,102 @@ void    general_allocator::initialize ( pvoid arena, size_t const size, pcstr id
         LOGGER( "HELPER INFO %p, %d", m_helper->s.ptr, m_helper->s.size );
     }
 
-    logging::Msg(   "* General allocator of size:\t%d\n "
-                    "with address:\t\t\t\t%p named '%s' created.",
-                    0,
-                    m_arena,
-                    m_arena_id );
+    // logging::Msg(   "* General allocator of size:\t%d\n "
+    //                 "with address:\t\t\t\t%p named '%s' created.",
+    //                 0,
+    //                 m_arena,
+    //                 m_arena_id );
+
+    m_monitor.size  = size;
 }
 
 pvoid	general_allocator::malloc_impl ( u32 size )
 {
-    LOGGER( "--------------------------------------------------" );
+    // LOGGER( "--------------------------------------------------" );
     header_type *p, *prevp;
     u32 nunits;
-    nunits = (size+sizeof(header_type)-1)/sizeof(header_type) + 1;
+    nunits      = ( size + sizeof( header_type ) - 1 ) / sizeof( header_type ) + 1;
     if ( ( prevp = m_arena_end ) == nullptr )
     {
-        m_arena->s.ptr	= m_arena_end = prevp = m_arena;
+        m_arena->s.ptr	        = m_arena_end = prevp = m_arena;
     }
 
-    for (p = prevp->s.ptr; ; prevp = p, p = p->s.ptr)
+    for ( p = prevp->s.ptr; ; prevp = p, p = p->s.ptr )
     {
-        if (p->s.size >= nunits)		/*   */
+        if ( p->s.size >= nunits )		/*   */
         {
-            if (p->s.size == nunits)	/*   */
-                prevp->s.ptr = p->s.ptr;
+            if ( p->s.size == nunits )	/*   */
+                prevp->s.ptr    = p->s.ptr;
             else						/*  "" */
             {
-                p->s.size -= nunits;
-                p += p->s.size;
-                p->s.size = nunits;
+                p->s.size       -= nunits;
+                p               += p->s.size;
+                p->s.size       = nunits;
             }
 
-        m_arena_end = prevp;
-        return ( pvoid )( p + 1 );
+            m_arena_end         = prevp;
+            ++                  m_monitor.allocations;
+            pvoid user_memory   = ( pvoid )( p + 1 );
+            memory_register_pointer ( user_memory, typeid( general_allocator_user_memory ).name( ) );
+            return              user_memory;
+        }
+
+        if ( p == m_arena_end )
+        {
+            ++                  m_monitor.allocations;
+            p                   = on_malloc( nunits );
+        }
     }
 
-    if ( p == m_arena_end ) /*     */
-        p = on_malloc( nunits );
-    }
+    ASSERT_D( 0, "Memory corruption in general allocator");
 }
 
 general_allocator::header_type* general_allocator::on_malloc ( unsigned nu )
 {
-    LOGGER( "ask for more memory" );
+    // LOGGER( "ask for more memory" );
     char *cp;
     header_type *up;
     if ( m_helper && nu < m_helper->s.size )
     {
-        LOGGER( "needed %d, available %d", nu, m_helper->s.size);
+        // LOGGER( "needed %d, available %d", nu, m_helper->s.size);
 
         nu						= m_helper->s.size;
         cp						= ( pstr )m_helper->s.ptr;
 
-        LOGGER( "+++++++%p", m_helper->s.ptr );
+        // LOGGER( "+++++++%p", m_helper->s.ptr );
         memory::ie_delete		( m_helper );
+
+        m_monitor.size          += nu;
+
         goto allocation_finished_goto;
     }
     else
     {
-        LOGGER( "preallocated memory is useless" );
+        // LOGGER( "preallocated memory is useless" );
         // preallocated memory is useless
         if ( m_helper )
         {
             free					( m_helper->s.ptr );
             memory::ie_delete		( m_helper );
         }
-
     }
 
     LOGGER( "***Allocating from OS!***" );
-    if ( nu < 1024 )
-        nu      = 1024;
-    cp          = ( pstr )memory::require_arena_from_os( nu * sizeof( header_type ) );
-    
+    if ( nu < 0.5*Kb )
+        nu      = 0.5*Kb ;
+    cp          = ( pstr )memory::require_arena_from_os( nu /** sizeof( header_type )*/ );
+
     /***********************/
     allocation_finished_goto:
     /***********************/
 
-    // already checked in memory::require_arena_from_os
-    // if ( cp == 0 ) /*     */
-    // 	ASSERT_S( 0 );
+    m_monitor.size          += nu ;//* sizeof( header_type );
 
     up          = ( header_type * ) cp;
     up->s.size  = nu;
+    memory_register_pointer( pvoid( up + 1 ), typeid( general_allocator_user_memory ).name( ) );
     free_impl   ( pvoid ( up + 1 ) );
+    --          m_monitor.deallocations; 
     return      m_arena_end;
 }
 
@@ -161,7 +180,7 @@ void    general_allocator::free_impl ( pvoid ap )
         bp->s.ptr       = p->s.ptr->s.ptr;
     } else
         bp->s.ptr       = p->s.ptr;
-    
+
     if ( p + p->s.size == bp )
     {
         p->s.size       += bp->s.size;
@@ -170,11 +189,31 @@ void    general_allocator::free_impl ( pvoid ap )
         p->s.ptr        = bp;
 
     m_arena_end         = p;
+    memory_unregister_pointer   ( ap );
+    ++                  m_monitor.deallocations;
+    --                  m_monitor.allocations;
+}
+
+void    general_allocator::dump_memory_statistics ( ) const
+{
+    // the bigger deallocs value, the bigger the fragmented size
+    float raw_memory    = m_monitor.size - m_monitor.allocations * sizeof ( header_type );
+    float fragmented    = m_monitor.deallocations / raw_memory * 100;
+    float size_in_kb    = m_monitor.size;
+    size_in_kb          /= 1*Kb;
+    LOGGER( "Statistics for '%s' allocator:\n"
+            "\tSize: %0.*fKb\n"
+            "\tAllocated chunks: '%u'\n"
+            "\tDeallocations: '%u'\n"
+            "\tFragmentation: '%0.*f'%%\n",
+            m_arena_id, 2, size_in_kb, m_monitor.allocations, m_monitor.deallocations, fragmented, 2 );
 }
 
 void	general_allocator::finalize		( )
 {
-    memory::ie_delete	( m_arena );
+    LOGGER( "* Destroying allocator *" );
+    dump_memory_statistics  ( );
+    memory::ie_delete	    ( m_arena );
 }
 
 /*

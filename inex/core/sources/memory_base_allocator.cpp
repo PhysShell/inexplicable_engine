@@ -18,7 +18,7 @@ void    base_allocator::finalize (  )
 {
 }
 
-pvoid    base_allocator::malloc_impl ( size_t const size )
+pvoid    base_allocator::malloc_impl ( u32 size )
 {
 	return				0;
 }
