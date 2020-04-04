@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "fs_directory_iterators.h"
-#	include <inex/fs_utils.h>
+#include <inex/fs_utils.h>
 
 namespace inex {
 namespace fs {
@@ -126,8 +126,12 @@ void    recursive_directory_iterator::read_subdirectories ( const char* const fi
 		if ( is_directory( ( *current ).path( ).c_str( ) ) )
         {
             strcat              ( next_subdirectory, "/" );
+#if INEX_PLATFORM_WINDOWS
             strcpy              (   file_path_to_stack.m_p,
                                     strcat( next_subdirectory, "*" ) );
+#else // #if INEX_PLATFORM_WINDOWS
+            strcpy              (   file_path_to_stack.m_p, next_subdirectory );
+#endif // #if INEX_PLATFORM_WINDOWS
             m_directories.push  ( file_path_to_stack );
             read_subdirectories ( next_subdirectory );
         }
