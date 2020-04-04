@@ -81,5 +81,10 @@ pstr	get_value_by_key ( pcstr k, pstr v )
     return  			v;
 }
 
+bool    check_key ( pcstr key )
+{
+    return              ( 0 != strstr( core::get_params( ), key ) ) ? 1 : 0;
+}
+
 } // namespace command_line
 } // namespace inex

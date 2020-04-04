@@ -1,10 +1,12 @@
 #include "stdafx.h"
 #include "logger.h"
 #include <inex/core/sources/ie_memory.h>
+#include <inex/command_line.h>
 
 namespace inex {
 namespace logging {
 
+static bool                         s_log_to_stdout ;//= command_line::check_key( "-log_to_stdout" );
 static string_path					log_file_name	= "engine.log";
 static fs::writer*         			fwriter      	= nullptr;
 static threading::critical_section	log_section		;
@@ -43,8 +45,13 @@ bool	put_string ( pcstr msg )
     //threading::scope_locker crit_sect	( log_section );
     if ( fwriter )
 	{
-        fwriter->w( msg );
+        fwriter->w          ( msg );
 	}
+
+    if ( s_log_to_stdout )
+    {
+        printf              ( "%s", msg );
+    }
 
     return      			fwriter;
 }
@@ -56,6 +63,11 @@ void	initialize ( bool no_log )
 		printf		( "nolog\n" );
 		return;
 	}
+
+    if ( command_line::check_key( "-log_to_stdout" ) )
+    {
+        s_log_to_stdout = 1;
+    }
 
     fwriter			= memory::ie_new< fs::file_writer >( log_file_name );
 
@@ -72,6 +84,8 @@ void 	finalize ( )
 		//memory::dump_memory_contents( );
 		memory::ie_delete( fwriter  );
 	}
+
+    s_log_to_stdout     = 0;
 }
 
 }// namespace logging
