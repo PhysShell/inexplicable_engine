@@ -43,9 +43,10 @@ void	ini_file::load ( pcstr fname )
 		{
 			continue;
 		}
-
-        trim_string					( buf );
+        
         handle_comments				( buf );
+        trim_string					( buf );
+
         if ( buf[ 0 ] == 0 )
 		{
 			continue;
@@ -147,9 +148,61 @@ pcstr	ini_file::r_string ( pcstr sect, pcstr key ) const
     return  								( *it ).second;
 }
 
+pstr    ie_strchr ( const pstr src, u8 tgt )
+{
+    for ( pstr p = src; *p; ++p )
+    {
+        if ( *p == tgt )
+        {
+            printf( "strchr:\t %s\n", p );
+            return              p;
+        }
+    }
+
+    return                      nullptr;
+}
+
+void    extract_sequence_float ( float * destination, pcstr key, u8 size, s8 separator = ',' )
+{
+    // sscanf??
+    pstr temp                   = memory::ie_allocate< char >( strlen( key ) + 1 );
+    strcpy                      ( temp, key );
+    pstr p                      = temp;
+
+    for ( u8 i = 0 ; i < size; ++i )
+    {
+        pstr p_separator        = strchr( p, ',' );
+        if ( 0 == p_separator )
+        {
+            *( destination + i )    = ( float )std::atof( p );
+            break;
+        }
+
+        *p_separator++          = 0;
+        *( destination + i )    = ( float )std::atof( p );
+        p                       = p_separator + 1;
+    }
+    
+    memory::ie_delete           ( temp );
+}
+
+math::float3    ini_file::r_float3 ( pcstr sect, pcstr key ) const
+{
+    pcstr sequence      = r_string( sect, key );
+    float raw_vector    [ 3 ];
+    extract_sequence_float ( raw_vector, sequence, 3 );
+
+    return              math::float3( raw_vector[ 0 ], raw_vector[ 1 ], raw_vector[ 2 ] );
+}
+
 s32		ini_file::r_s32 ( pcstr sect,pcstr key ) const
 {
 	return				static_cast< s32 >( std::atoi( r_string( sect, key) ) );
+}
+
+u32		ini_file::r_u32 ( pcstr sect,pcstr key ) const
+{
+	return				static_cast< u32 >( std::atoi( r_string( sect, key) ) );
 }
 
 float	ini_file::r_float ( pcstr sect,pcstr key ) const

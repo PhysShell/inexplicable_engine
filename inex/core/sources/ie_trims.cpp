@@ -19,19 +19,32 @@ pstr	find_trim_character ( pstr src )
     return			nullptr;
 }
 
+inline
+pstr    ie_strcpy ( pstr dest, pcstr src )
+{
+    size_t          i;
+
+    for ( i = 0; src[ i ] != 0; i++ )
+        dest[ i ]   = src[ i ];
+
+    dest[ i ]       = 0;
+    return          dest;
+}
+
 
 void	trim_string ( pstr tgt )
 {
     pstr p;
     size_t c			= { 0 };
-    while ( (p = find_trim_character( tgt ) ) )
+    while ( ( p = find_trim_character( tgt ) ) )
 	{
         while ( p[ ++c ] <= ' ' && p[ c ] );
-        strcpy			( p, ( p + c ) );
+        // std strcpy corrupts the string when tgt > 32
+        ie_strcpy			( p, ( p + c ) );
         c       		= 0;
     }
-}
 
+}
 
 /*
 int trim (char s [] )
