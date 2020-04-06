@@ -46,7 +46,7 @@ T   abs_universal ( T value )
 }
 
 #define fdEPS           machine_epsilon( )
-inline constexpr
+inline
 float   machine_epsilon ( )
 {
 	float e             = 1.0f;
