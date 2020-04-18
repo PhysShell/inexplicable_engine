@@ -17,7 +17,9 @@ namespace fs {
 		};
         */
 
+	INEX_CORE_API
     fs::reader*	r_open		( pcstr path );
+	INEX_CORE_API
     void		r_close		( fs::reader*&rdr );
 	//void	r_close		( virtual_file_reader*&rdr );
     //writer*	w_open		( pcstr path );

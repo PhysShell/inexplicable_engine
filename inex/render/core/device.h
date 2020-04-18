@@ -14,7 +14,7 @@ namespace ogl       {
 
 class render_device_base;
 
-class device
+class INEX_RENDER_API device
 {
 public:
         void                run             ( )                         ;

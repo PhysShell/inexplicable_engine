@@ -64,11 +64,13 @@ memory_mapped_file::memory_mapped_file ( pcstr name ) :
 {
 	//m_file_raw_pointer	=CreateFile(name,GENERIC_READ,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
 	ASSERT_S( m_file_raw_pointer != INVALID_HANDLE_VALUE );
-	//size	    =GetFileSize(m_file_raw_pointer,0);
+	//m_size	    =GetFileSize(m_file_raw_pointer,0);
 	// 4 & 5 parameters are 0 cuz I don't want to change memory_mapped_file's size, just read it
-	m_mapped_file	    = CreateFileMapping( m_file_raw_pointer, 0, PAGE_READONLY, 0, 0, 0 );
-	//ASSERT_S	(INVALID_HANDLE_VALUE!=m_mapped_file);
-	//Msg("Creating (constructor) address: %p", this);
+	//m_mapped_file	    = CreateFileMapping( m_file_raw_pointer, 0, PAGE_READONLY, 0, 0, 0 );
+	ASSERT_D	(INVALID_HANDLE_VALUE!=m_mapped_file, "Error MMFile: '%s'", name );
+	
+	m_data		= static_cast< pstr >( MapViewOfFile( m_mapped_file, FILE_MAP_READ, 0, 0, 0 ) );
+	// LOGGER("Creating (constructor) address: %p.", this );
 }
 
 memory_mapped_file::memory_mapped_file ( memory_mapped_file&& file ) :

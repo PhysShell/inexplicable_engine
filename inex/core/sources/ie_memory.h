@@ -11,7 +11,9 @@ void    finalize        			( );
 inline
 pvoid 	require_arena_from_os		( size_t const size );
 
+INEX_CORE_API
 pvoid   memory_allocate				( size_t size, pcstr name = 0 );
+INEX_CORE_API
 void    memory_free					( pvoid pointer );
 void    memory_register_pointer		( pvoid pointer, pcstr type );
 void    memory_unregister_pointer	( pvoid pointer );

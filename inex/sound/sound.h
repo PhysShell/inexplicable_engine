@@ -6,9 +6,9 @@
 #ifndef INEX_SOUND_H_INCLUDED
 #	define INEX_SOUND_H_INCLUDED
 
-#include <AL/al.h>
-#include <AL/alc.h>
-#include <AL/alut.h>
+#	include <AL/al.h>
+#	include <AL/alc.h>
+#	include <AL/alut.h>
 
 namespace inex {
 namespace sound {
@@ -19,7 +19,7 @@ enum
 };
 
 // to make a manager abstract class
-class sound_device
+class INEX_SOUND_API  sound_device
 {
 public:
     void        preinitialize       ( );

@@ -3,6 +3,10 @@
 #include <inex/os_include.h>
 #include <inex/core/ie_core.h>
 #include <inex/render/ogl/render_include.h>
+#include <inex/render/ogl/render_include.h>
+#include <inex/sound/sound.h>
+#include <inex/sound/sources/sound_object.h>
+#include <inex/render/core/device.h>
 
 namespace inex {
 namespace platform {
@@ -18,44 +22,39 @@ s32		engine_entry_point ( HINSTANCE inst, HINSTANCE pinst, pstr cmdln, s32 cmdsh
 	string128			buffer;
 	strcpy				( buffer, GetCommandLineA( ) );
 	core::initialize	( buffer );
-	logging::Msg		( "Initializing Engine...\n" );
-	engine::engine		en;
-	//glutInit( ( int * )0, nullptr );
-	//glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);
-	//glutInitWindowSize(400, 1400);
-	//glutInitWindowPosition(100, 200);
-	//glutCreateWindow("Lesson 01");
 	
-	GLFWwindow* window;
-	VERIFY( glfwInit( ) );
-	glfwWindowHint		( GLFW_CONTEXT_VERSION_MAJOR, 3 );
-	glfwWindowHint		( GLFW_CONTEXT_VERSION_MINOR, 3 );
-	glfwWindowHint		( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
-	window				= glfwCreateWindow( 640, 480, "Inex", nullptr, nullptr );
-    ASSERT_D( window, "Couldn't create window and its OpenGL context." );
 
-    /* Make the window's context current */
-    glfwMakeContextCurrent( window );
 
-	ASSERT_D( ogl::init_extensions( ), "Failed to load OpenGL extensions..." );
+	ASSERT_S            ( math::fdEPS != 0.f );
+	logging::Msg        ( "Epsilon is: '%0.*f'", 8, math::fdEPS );
 
-//    glewExperimental	= 1;
-  //  GLenum err			= glewInit( );
-	//ASSERT_D( err == GLEW_OK, "Glew Inititialization failed, something is seriously wrong." );
+	sound::sound_device sound;
+	sound.initialize    ( );
+	sound::sound_object snd{ 1.0f, 1.0f, 1.0f };
+	snd.open            ( "gamedata/sound1.wav" );
+	
+	sound::sound_object snd2;
+	snd2.open           ( "gamedata/motor_a8.wav", 1 );
+	snd2.play           ( );
+	snd.play            ( );
 
-	glViewport			( 0, 0, 640, 480 );
-    while ( !glfwWindowShouldClose( window ) )
-    {
-			
+    ogl::device         device;
+// init proc
+    device.initialize   ( );
+// startup proc
+    device.create       ( );
 
-        glfwSwapBuffers	( window );
-        glfwPollEvents	( );
-    }
 
-    glfwTerminate		( );
+// main cycle
+    device.run          ( );
+
+// destroying
+    sound.finalize      ( );
+    device.destroy      ( );
+    core::finalize      ( );
 
 	core::finalize		( );
-	return				en.get_exit_code( );
+	return				0;
 }
 
 } // namespace platform

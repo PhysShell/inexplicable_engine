@@ -245,10 +245,11 @@ void    initialize ( )
     float* pf2              = memory::ie_allocate< float >( sizeof ( float ) );
     *pf1    = *pf2          = .1f;
     g_CM.matrix_multiple( pf1, pf2 );
-    memory::ie_delete       ( pf1 );
-    memory::ie_delete       ( pf2 );
 
-    // LOGGER ( "pf1=%f, pf2=%f", *pf1, *pf2 );
+
+    LOGGER ( "pf1=%f, pf2=%f", *pf1, *pf2 );
+	memory::ie_delete       ( pf1 );
+    memory::ie_delete       ( pf2 );
 
 	ASSERT_S            ( math::fdEPS != 0.f );
 	logging::Msg        ( "Epsilon is: '%0.*f'", 8, math::fdEPS );
