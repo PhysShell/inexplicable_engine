@@ -1,5 +1,9 @@
-// PhysShell on 22.08.2019
+// Shell on 22.08.2019
 #version 330 core 
+//------------------------------------------------------------------------------
+// bPos	  	= Dummy
+// aPos	  	= Output position
+//------------------------------------------------------------------------------
 
 layout (location=0) in vec3 bPos;
 layout (location=1) in vec3 aPos;

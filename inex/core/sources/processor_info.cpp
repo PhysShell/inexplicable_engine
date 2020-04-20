@@ -121,12 +121,12 @@ __asm {
     u32 is_amd  =   0,  edx_reg     = 0;
 	# if defined ( __GNUC__ )
     __asm (
-        "movl $0x80000000h, %%eax\n\t"
+        "movl $0x80000000, %%eax\n\t"
         "cpuid\n\t"
-        "cmp $0x80000000h, %%eax\n\t"
+        "cmp $0x80000000, %%eax\n\t"
         "jc notamd\n\t"
         //      or 8000000 ???
-        "movl  $0x80000001h, %%eax\n\t"
+        "movl  $0x80000001, %%eax\n\t"
         "cpuid\n\t"
         "movl %%edx, %[edx]\n\t"
         "movl  $1, %[amd]\n\t"

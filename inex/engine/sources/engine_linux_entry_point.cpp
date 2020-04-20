@@ -6,18 +6,14 @@
 #include <type_traits>
 #include <inex/command_line.h>
 
-#include <inex/math_functions.h>
-#include <inex/math_float2.h>
-#include <inex/math_matrix2.h>
-
-#include <atomic>
+#include <inex/math_float3.h>
 
 #pragma message( "doesn't seem to 'need these defines under linux" )
 #define GLEW_STATIC
 #define GLEW_STATIC
 #define FREEGLUT_STATIC
 
-
+#include <inex/core/sources/fs_ini_file.h>
 
 #include <inex/render/ogl/render_include.h>
 #include <inex/sound/sound.h>
@@ -29,6 +25,8 @@ extern "C"
 {
     void    hello_world_in_rust ( );
 }
+
+#include <inex/core/sources/ie_trims.h>
 
 namespace inex {
 namespace platform {
@@ -50,29 +48,29 @@ s32		engine_entry_point ( pcstr command_line_string )
     i                   = command_line::initialize( command_line_string );
 
 	core::initialize	( command_line_string );
-    hello_world_in_rust ( );
+
+    // hello_world_in_rust ( );
 
     // inex::engine::device d; d.run( );
 
-    math::MATH g_CM;
-    g_CM.matrix_multiple = math::multiple_pure;
-
-    // if ( command_line::( "-puremath", temp ) ) return;
-    // if ( !"-nosse" & SSE_available )
-    g_CM.matrix_multiple = math::multiple_sse;
-    // call it like g_CM.matrix_multiple( f1, f2 );
-
-	ASSERT_S            ( math::fdEPS != 0.f );
-	logging::Msg        ( "Epsilon is: '%0.*f'", 8, math::fdEPS );
-
-	sound::sound_device sound;
+    sound::sound_device sound;
 	sound.initialize    ( );
-	sound::sound_object snd;
-	snd.open            ( "gamedata/sound1.wav" );
+{
+	// sound::sound_object snd;
+	// snd.open            ( "gamedata/sound1.wav" );
+    ini::ini_file       settings;
+    settings.load       ( "gamedata/System.ltx" );
+
+    // "gamedata/motor_a8.wav", looped, position
 	sound::sound_object snd2;
-	snd2.open           ( "gamedata/motor_a8.wav", 1 );
+	snd2.open           ( settings.r_string( "sound_test", "path" ), settings.r_s32( "sound_test", "looped" ) ? 1 : 0 );
 	snd2.play           ( );
-	snd.play            ( );
+    INEX_DEBUG_WAIT;
+    snd2.move           ( settings.r_float3( "sound_test", "position" ) );
+    INEX_DEBUG_WAIT;
+    snd2.stop           ( );
+}
+	// snd.play            ( );
 
     ogl::device         device;
 // init proc

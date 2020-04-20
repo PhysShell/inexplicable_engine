@@ -22,7 +22,7 @@ private:
 			union header *ptr;	/*  ,   */
 			u32 size;			/*    */
 		} s;
-		dummy dummy;			/*    */
+		dummy ensure_alignment;			/*    */
 	};
 	typedef union header header_type;
 

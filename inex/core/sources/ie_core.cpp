@@ -16,6 +16,7 @@
 #include "ie_trims.h"
 #include "ie_memory.h"
 #include "memory_general_allocator.h"
+#include "encryption.h"
 
 namespace inex {
 namespace fpu {
@@ -166,6 +167,7 @@ void	compute_build_id ( )
 // 	//LOGGER( "s1 %p",  ptr ); LOGGER( "s2 %p", ptr2 ); LOGGER( "s3 %p", ptr3 );
 // }
 
+
 void	initialize ( pcstr command_line_string )
 {
     // aV[0] is a path to application
@@ -183,6 +185,13 @@ void	initialize ( pcstr command_line_string )
     // logging::Msg( "\n... Command line initialized: '%s'", command_line_parameters );
     s_processor_features    = threading::aquire_processor_information		( );
     fpu::initialize         ( );
+    encryption::initialize_crc32    ( );
+    pstr buff               = memory::ie_allocate< char >( 4 );
+    strings::strncpy        ( buff, "123", sizeof( "123" ) );
+    LOGGER( "Str!:\t%s", buff );
+    u32 crc                 = encryption::crc32( buff, 3 );
+    LOGGER( "CRC!:\t0x%08x", crc );
+    memory::ie_delete       ( buff );
     //threading::get_cpu_feats		( );
 
     string128       temp	{ };
