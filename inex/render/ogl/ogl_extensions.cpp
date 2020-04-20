@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ogl_extensions.h"
-#include <stdio.h>
 
 namespace inex {
 namespace ogl {

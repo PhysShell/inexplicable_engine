@@ -6,6 +6,6 @@
 #ifndef INEX_RENDER_LIBRARY_LINKAGE_H_INCLUDED
 #	define INEX_RENDER_LIBRARY_LINKAGE_H_INCLUDED
 
-#	pragma comment( lib, "render.lib" )
+#	pragma comment( lib, "core.lib" )
 
 #endif // #ifndef INEX_RENDER_LIBRARY_LINKAGE_H_INCLUDED

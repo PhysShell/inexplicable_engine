@@ -13,7 +13,7 @@ protected:
 
 
 
-class reader :
+class INEX_CORE_API reader :
 	public reader_base
 {
 protected:
@@ -43,7 +43,7 @@ public:
 			u32				advance_term_string		( );
 }; // class  reader
 
-class virtual_file_reader :
+class INEX_CORE_API virtual_file_reader :
 	 public reader
 {
 private:

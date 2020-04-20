@@ -4,18 +4,18 @@
 namespace inex {
 namespace fs {
 
-struct memory_mapped_file
+struct INEX_CORE_API memory_mapped_file
 {
 public:
 # if INEX_PLATFORM_WINDOWS
-    pvoid   m_file_raw_pointer;
-	pvoid   m_mapped_file;
-    size_t  m_size;
+    pvoid			m_file_raw_pointer;
+	pvoid			m_mapped_file;
 #elif INEX_PLATFORM_LINUX
     int             m_file_descriptor;
+#endif // # if INEX_PLATFORM_WINDOWS
+
     size_t          m_size;
     char*           m_data;
-#endif // # if INEX_PLATFORM_WINDOWS
 
 public:
 					memory_mapped_file	( ) :

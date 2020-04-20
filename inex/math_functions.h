@@ -75,11 +75,19 @@ float   radians_to_degree ( float const value )
     return              value / PI * 180.f;
 }
 
+#if defined _MSC_VER
+#	define os_sin( x )			( float ) std::sin( x )
+#	define os_cos( x )			( float ) std::cos( x )
+#elif defined __GNUC__
+#	define os_sin( x )			__builtin_sin( x )
+#	define os_cos( x )			__builtin_cos( x )
+#endif // #if defined _MSC_VER
+
 inline
 float   sin ( float const angle )
 {
 // #   define sinf( x )    ( float ) std::sin(  ( double ) x ) ;
-    return                  __builtin_sin( angle );
+    return                  os_sin( angle );
 }
 
 INEX_CORE_API
@@ -87,7 +95,7 @@ inline
 float   cos ( float const angle )
 {
 // #   define cosf( x )    ( float ) std::cos(  ( double ) x ) ;
-    return              __builtin_cos( angle );
+    return              os_cos( angle );
 }
 
 } // namespace math

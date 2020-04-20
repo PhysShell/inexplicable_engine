@@ -104,10 +104,12 @@ void    sound_object::load_wave ( pcstr path )
 
 bool    sound_object::load_ogg ( pcstr path, bool streamed )
 {
+	NODEFAULT;
 }
 
 bool    sound_object::read_next_chunk ( u32 const id, u64 const size )
 {
+	NODEFAULT;
 }
 
 void sound_object::play()

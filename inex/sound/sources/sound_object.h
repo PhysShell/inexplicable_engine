@@ -17,7 +17,7 @@ namespace sound {
 
 struct sound_info;
 
-class sound_object
+class INEX_SOUND_API sound_object
 {
 public:
                     sound_object        (   float const    x = .0f,
