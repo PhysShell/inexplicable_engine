@@ -28,7 +28,7 @@
 #	define NODEFAULT		inex::debug::Debug.do_exit( "unreachable reached :-(" )
 #	define UNREACHABLE_CODE	NODEFAULT
 #else // #ifdef DEBUG
-#	define NODEFAULT		__assume( 0 )
+#	define NODEFAULT		COMPILER_NODEFAULT
 #	define UNREACHABLE_CODE	NODEFAULT
 #endif // #ifdef DEBUG
 

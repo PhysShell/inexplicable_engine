@@ -84,7 +84,7 @@ void	initialize	( pcstr dir )
 #undef INEX_FILESYSTEM_SUPPORTED
 
 #ifndef INEX_FILESYSTEM_SUPPORTED
-    Msg( "Initializing Custom File System..." );
+    Msg( "- [fs]\t: initializing custom fs..." );
 	ASSERT_D( !fs::exists( dir ), "Directory '%s' was not found. Check if it exists.", dir );
 
 	clock_t start_initializing			=			clock( );
@@ -94,14 +94,14 @@ void	initialize	( pcstr dir )
 										it 		!= 	end_it;
 										++it )
     {
-        if ( is_directory( ( * it ).path( ).c_str( ) )
-			|| is_system_catalog( ( *it ).path( ).c_str( ) ))
+        if ( is_directory( ( * it ).path( ).c_str( ) ) || is_system_catalog( ( *it ).path( ).c_str( ) ))
         {
             continue;
         }
 
-        Msg( "Loading memory_mapped_file: %s", ( * it ).path( ).c_str( ) );
         files.insert    ( memory_mapped_file( ( * it ).path( ).c_str( ) ) );
+        Msg( "- [fs][info]\t: loading \"%s\"", ( * it ).path( ).c_str( ) );
+        
     }
 
 	clock_t end_initializing			=	clock( ) - start_initializing ;
@@ -109,7 +109,7 @@ void	initialize	( pcstr dir )
     namespace   std_fs				        = 	std::experimental::filesystem;
 	typedef     std_fs::path::value_type    	path_type;
 
-    Msg( "Initializing STD File System..." );
+    Msg( "- [fs]\t: initializing std fs..." );
 
 #ifdef FS_WHEEL
 // dir doesn't have to have slash at the end
@@ -149,12 +149,12 @@ void	initialize	( pcstr dir )
 	clock_t end_initializing			=	clock( ) - start_initializing ;
 #endif  // #ifdef INEX_FILESYSTEM_SUPPORTED
 
-    Msg( "FS: %d files cached\nInit FileSystem %f sec\n", files.size( ), ( double )end_initializing / CLOCKS_PER_SEC );
+    Msg( "fs: %d files cached. initializing time:\t%f sec\n", files.size( ), ( double )end_initializing / CLOCKS_PER_SEC );
 }
 fs::reader*		r_open ( pcstr path )
 {
 	//reader *r	=nullptr;
-	Msg( "* FS: Download %s", path );
+	Msg( "- [fs][info]\t: loading \"%s\"", path );
 	return			( memory::ie_new< fs::virtual_file_reader >( path ) );
 }
 

@@ -47,7 +47,7 @@ void    sound_device::initialize ( )
             listener_velocity   [ ]         = { 0.f, 0.f, 0.f },
                                                  // front            // above
             listener_orientation [ ]        = { 0.f, 0.f, -1.f, 0.f, 1.f, 0.f };
-    LOGGER                                  ( "Starting SOUND device..." );
+    LOGGER                                  ( "initializing sound device..." );
 
     alListenerfv                            ( AL_POSITION,      listener_position );
     alListenerfv                            ( AL_VELOCITY,      listener_velocity );
@@ -59,19 +59,16 @@ void    sound_device::initialize ( )
     alcMakeContextCurrent                   ( m_context );
     ASSERT_D( m_device, "OpenAL: context not present." );
 
-    LOGGER( "*** OpenAL context information ***\n"
-            "\t* Default device     : %s\n"
-            "\t* Device specifier   : %s\n",
+    LOGGER( "* [sound]\t: context information...\n"
+            "* [sound]\t: device [%s], specifier [%s]",
             //"\t* Extensions         : %s\n",
             ( pcstr )alcGetString( m_device, ALC_DEFAULT_DEVICE_SPECIFIER ),
             ( pcstr )alcGetString( m_device, ALC_DEVICE_SPECIFIER )
             //( pcstr )alcGetString( m_device, ALC_EXTENSIONS )
     );
 
-    LOGGER( "*** OpenAL render information ***\n"
-            "\t* Renderer           : %s\n"
-            "\t* Vendor             : %s\n"
-            "\t* Version            : %s\n",
+    LOGGER( "* [sound]\t: render information...\n"
+            "* [sound]\t: renderer [%s], vendor [%s], version [%s]\n",
             //"\t* Extensions         : %s\n",
             ( pcstr )alGetString(AL_RENDERER),
             ( pcstr )alGetString(AL_VENDOR),
@@ -85,6 +82,7 @@ void    sound_device::finalize ( )
     // alDeleteSources(NUM_SOURCES, source);
     // alDeleteBuffers(NUM_BUFFERS, buffers);
     // alutExit                ( );
+    LOGGER("- [sound]\t: destroying");
     m_context                   = alcGetCurrentContext( );
     m_device                    = alcGetContextsDevice( m_context );
     alcMakeContextCurrent       ( 0 );

@@ -12,7 +12,9 @@
 // #define GLX_GLXEXT_PROTOTYPES
 // for GLintptr
 #define GLX_GLXEXT_LEGACY
-// #include "../../3rd_patry/include/GL/glx.h"
+#if INEX_PLATFORM_LINUX
+#   include "../../3rd_patry/include/GL/glx.h"
+#endif // #if INEX_PLATFORM_LINUX
 #include "../../3rd_patry/include/GL/gl.h"
 #include "../../3rd_patry/include/GL/glext.h"
 //#include <GL/glext.h>
@@ -20,22 +22,29 @@
 #   include <inex/3rd_patry/include/GL/wglext.h>
 #endif // #if INEX_PLATFORM_WINDOWS
 
+// really temporary
+
+#ifdef CAST
+#   error please do not define CAST
+#endif  // #ifdef CAST
+
 #if INEX_PLATFORM_WINDOWS
+#   defiene CAST                            
 #	define GL_GET_PROCESS_ADDRESS	wglGetProcAddress
 #elif INEX_PLATFORM_LINUX // #if INEX_PLATFORM_WINDOWS
 // can this be replaced by #define GL_GLEXT_PROTOTYPES>]?
+#   define CAST                     ( const GLubyte * )
 #	define GL_GET_PROCESS_ADDRESS	glXGetProcAddress
 // #elif define glfwGetProcAddress // #if INEX_PLATFORM_WINDOWS
 #endif // #if INEX_PLATFORM_WINDOWS
 
-#define OPENGL_GET_PROC( type , function ) function = ( type )GL_GET_PROCESS_ADDRESS(  #function ); \
+#define OPENGL_GET_PROC( type , function ) function = ( type )GL_GET_PROCESS_ADDRESS(  CAST #function ); \
 											if ( NULL == function )			return 0; \
-											inex::logging::put_string( "* [OPENGL] : loading " ); \
+											inex::logging::put_string( "- [opengl][info]\t: loading \"" ); \
 											inex::logging::put_string( #type );		\
 											inex::logging::put_string( " ");		\
 											inex::logging::put_string( #function ); \
-											inex::logging::put_string("\n" );
-
+											inex::logging::put_string("\"\n" );
 
 
 namespace inex {
@@ -63,8 +72,9 @@ INEX_RENDER_API void    dump_user_specifications ( );
 }// namespace ogl
 }// namespace inex
 
-// typedef void ( * PFNGLACTIVETEXTUREPROC ) ( GLenum texture );
-
+#if INEX_PLATFORM_LINUX
+typedef void ( * PFNGLACTIVETEXTUREPROC ) ( GLenum texture );
+#endif // #if INEX_PLATFORM_LINUX
 
 
 

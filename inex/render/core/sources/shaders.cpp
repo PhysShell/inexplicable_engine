@@ -138,9 +138,9 @@ void    shader::compile ( )
     // struct stat file_attributes;
     // stat                    ( m_v_source, &file_attributes );
     // tm * clock              = gmtime( file_attributes.st_ctim );
-    logging::put_string ( "*\tCompiling shader [");
+    logging::put_string ( "* [shader] compiling '");
     logging::put_string ( m_source );
-    logging::put_string ( "], ");
+    logging::put_string ( "', author: ");
     //------------------------------------------------
     fs::memory_mapped_file src( m_source );
     fs::reader timestamp ( src.m_data, strlen( src.m_data ) );
@@ -152,7 +152,6 @@ void    shader::compile ( )
     glCompileShader     ( m_object );
 
     check_errors        ( );
-
 }
 
 void    shader::check_errors ( )
@@ -163,8 +162,8 @@ void    shader::check_errors ( )
     {
         string512 error_message = { };
         glGetShaderInfoLog      ( m_object, sizeof ( error_message ), NULL, error_message );
-        ASSERT_D( 0, "Shader compilation failed: [%s]\nLog:\t\t\t%s", m_source, *error_message ? error_message : "no log aquired" );
-    } else { LOGGER( "*\t... Compiled successfully!" ); }
+        ASSERT_D( 0, "* [shader][error]\t: failed to compile\n\t[log]\t:\t\t\t%s", m_source, *error_message ? error_message : "no log aquired" );
+    } else { LOGGER( "* [shader][info]\t: compiled successfully" ); }
 }
 
 //------------------------------------------------
@@ -183,7 +182,7 @@ void    shader::check_errors ( )
 
 void    shader_program::link ( )
 {
-    logging::put_string         ( "*\tLinking shaders ... " );
+    logging::put_string         ( "* [shaders]\t: linking shaders ... " );
     glLinkProgram               ( m_shader_program );
     check_errors                ( );
 }
@@ -197,7 +196,7 @@ void    shader_program::check_errors ( )
         string512 buffer    = { };
         glGetShaderInfoLog  ( m_shader_program, sizeof ( buffer ), nullptr, buffer );
         ASSERT_D( 0 == *buffer, "Shader linking failed: %s", buffer );
-    } else { LOGGER( " linked successfully." ); }
+    } else { LOGGER( " linked successfully" ); }
 }
 
 } // namespace render_ogl

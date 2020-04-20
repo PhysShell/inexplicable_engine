@@ -53,11 +53,11 @@ private:
     bool            read_next_chunk     ( u32 const id, u64 const size )            ;
 
 private:
-    bool            m_looped                                                        ;
-    ALuint          buffers                                                         ;
-    ALuint          source_ID                                                       ;
+    u32             buffers                                                         ;
+    u32             source_ID                                                       ;
     math::float3    m_position                                                      ;
     math::float3    m_velocity                                                      ;
+    bool            m_looped                                                        ;
 
     // sound_file*     m_source                                                        ;
     // sound_info*     m_info                                                          ;

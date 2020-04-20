@@ -58,7 +58,7 @@ bool	init_extensions ( )
     OPENGL_GET_PROC(PFNGLUNIFORM3FPROC,          glUniform3f);
     OPENGL_GET_PROC(PFNGLUNIFORM4FVPROC,         glUniform4fv);
   //OPENGL_CHECK_FOR_ERRORS();
-
+    #undef                                      CAST
   return										1;
 }
 
@@ -67,19 +67,10 @@ void    dump_user_specifications ( )
     s32 gl_major, gl_minor;
     glGetIntegerv( GL_MAJOR_VERSION, &gl_major );
     glGetIntegerv( GL_MINOR_VERSION, &gl_minor );
-    LOGGER( "*** OpenGL render context information ***\n"
-            "\t* Renderer       : %s\n"
-            "\t* Vendor         : %s\n"
-            "\t* Version        : %s\n"
-            "\t* GLSL version   : %s\n"
-            "\t* OpenGL version : %d.%d\n",
+    LOGGER( "* [render]\t: GPU [vendor:%s]: %s",
             // "* [GLEW] version : [%s]"
-            ( pcstr )glGetString( GL_RENDERER ),
             ( pcstr )glGetString( GL_VENDOR ),
-            ( pcstr )glGetString( GL_VERSION ),
-            ( pcstr )glGetString( GL_SHADING_LANGUAGE_VERSION ),
-            gl_major,
-            gl_minor
+            ( pcstr )glGetString( GL_RENDERER )
             // , glewGetString( GLEW_VERSION )
     );
 }

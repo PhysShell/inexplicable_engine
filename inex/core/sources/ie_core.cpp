@@ -206,13 +206,13 @@ void	initialize ( pcstr command_line_string )
 
     // test		( );
 
-    logging::Msg( "* %d Hz clock on your machine", threading::clock_cycle_per_second( ) );
-	logging::Msg( "* L1 Cache line size: %d bits\n", threading::cache_line_size( ) );
+    logging::Msg( "* [cpu][info]\t: cycle per second %ld hz", threading::clock_cycle_per_second( ) );
+	logging::Msg( "* [cpu][info]\t: L1 Cache line size %d bits\n", threading::cache_line_size( ) );
 }
 
 void	finalize ( )
 {
-    logging::Msg		( "*** Destroying core ***" );
+    logging::Msg		( "- [core]\t: destroying" );
     fs::finalize		( );
     memory::finalize    ( );
     logging::finalize   ( );
@@ -237,7 +237,7 @@ namespace fpu {
 ****************************************************/
 void    initialize ( )
 {
-    LOGGER( "Initializing FPU..." );
+    LOGGER( "initializing fpu..." );
     math::MATH g_CM;
     g_CM.matrix_multiple    = math::multiple_pure;
 

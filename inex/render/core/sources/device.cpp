@@ -23,7 +23,7 @@ u32 vertex_array_object     ;
 render_ogl::shader_program      program;
 void    device::initialize ( )
 {
-    LOGGER( "Initializing Engine...");
+    LOGGER( "- [engine]\t: initializing");
     VERIFY( glfwInit( ) );
     m_render_device     = memory::ie_new< render::render_device >( );
     glfwWindowHint		( GLFW_CONTEXT_VERSION_MAJOR, 3 );
@@ -106,6 +106,7 @@ void    device::create ( )
 
 void    device::destroy ( )
 {
+    LOGGER              ( "- [render]\t: destroying" );
     memory::ie_delete   ( m_render_device );
     glBindVertexArray   ( 0u );
     glfwTerminate		( );

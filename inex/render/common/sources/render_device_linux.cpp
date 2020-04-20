@@ -14,8 +14,8 @@ void    render_device::create_helper ( window_impl*&   window,
                                 u32     const&  width,
                                 u32     const&  height )
 {
-    constexpr pcstr window_title        = "Inex";
-    LOGGER( "Starting RENDER device..." );
+    constexpr pcstr window_title        = "inex";
+    LOGGER( "- [render]\t: starting render device" );
     // window_impl* temp;
     temp		        = glfwCreateWindow( width, height, window_title, nullptr, nullptr );
     LOGGER( "* '%s' window: initial config: [%d x %d]", window_title, width, height );
@@ -64,7 +64,7 @@ void    render_device::init_draw ( )
     {
         string512 buffer;
         glGetShaderInfoLog  ( vertex_shader, sizeof ( buffer ), nullptr, buffer );
-        LOGGER( "! Shader compilation error: %s", buffer );
+        LOGGER( "* [shader][error]\t: failed to compile \"%s\"", buffer );
     }
 
     // fragment shader
@@ -85,7 +85,7 @@ void    render_device::init_draw ( )
     {
         string512 buffer;
         glGetShaderInfoLog  ( vertex_shader, sizeof ( buffer ), nullptr, buffer );
-        LOGGER( "! Shader linking error: %s", buffer );
+        LOGGER( "* [shader][error]\t: failed to link \"%s\"", buffer );
     }
 
     glUseProgram        ( shader_program );

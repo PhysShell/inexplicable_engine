@@ -77,12 +77,11 @@ void    sound_object::open ( pcstr path, bool looped, bool streamed )
 void    sound_object::load_wave ( pcstr path )
 {
     // SndInfo		buffer;
-    ALenum		format;
-    ALvoid		*data;
-    ALsizei		size;
-    ALsizei		freq;
-    ALboolean	loop;
-    ALuint		BufID = 0;
+    s32		    format;
+    pvoid		data;
+    s32		    size;
+    s32		    freq;
+    char	    loop;
 
     alGenBuffers                ( 1, &buffers );
 
