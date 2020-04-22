@@ -54,9 +54,12 @@
 		* 	threading: atomic isn't always int. but can use static_asserts to determine if it is or dunno
 		*	в инициализации фс, под линуксом можно юзать оба варианта: "gamedata/", "./gamedata/"
 
+***[Shell]*** BUGS:
+        * fs_file_system: сет ммф файлов не все файлы добавляет
+        * fs_file_system: валится, когда ммф файлов ~1020
+
 ***[Shell]*** TODO:
 ---------------------------
-        * fs_file_system: бага: сет ммф файлов не все файлы добавляет
 		* ie_core: менять дни февраля в зависимости от высокосности года в массиве days_in_month
 		* fs_iterator operator ++: не чекать на сисдиректории внутри
 		* fs_iterator pimpl: сделать правильно, хотя б инеклюдь в импл.х

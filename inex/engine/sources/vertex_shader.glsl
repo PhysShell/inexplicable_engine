@@ -1,17 +1,14 @@
 // Shell on 22.08.2019
 #version 330 core 
 //------------------------------------------------------------------------------
-// bPos	  	= Dummy
-// aPos	  	= Output position
+// position	  	= Dummy
 //------------------------------------------------------------------------------
 
-layout (location=0) in vec3 bPos;
-layout (location=1) in vec3 aPos;
+layout (location=0) in vec4 position;
 
 void main()
 {
     // 4th attribute aPos.w is for perspective division
-    gl_Position.xyz     = aPos;
-    gl_Position.w       = 1.0;
+    gl_Position         = position;
     // we're setting position through gl_position var for next step
 }

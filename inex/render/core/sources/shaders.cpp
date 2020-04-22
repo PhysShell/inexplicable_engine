@@ -61,11 +61,13 @@ void    shader::compilef ( const GLchar* path )
 
 }
 
-shader::shader ( enum_shader_type type, pcstr path ) :
+shader::shader ( enum_shader_type type, pcstr path, u8 auto_compilation ) :
     m_type      { type },
     // m_shader_program    { },
     m_source    { path }
 {
+    if ( auto_compilation )
+        compile ( );
 }
 
 void    shader::load_vs_and_fs ( pcstr vsp, pcstr fsp )

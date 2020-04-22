@@ -6,7 +6,6 @@
 #ifndef SHADERS_H_INCLUDED
 #   define SHADERS_H_INCLUDED
 
-#   include <inex/types.h>
 #   include <inex/render/ogl/ogl_extensions.h>
 
 namespace inex  {
@@ -19,20 +18,18 @@ enum    enum_shader_type
     enum_shader_type_fragment   = GL_FRAGMENT_SHADER // analog of D3D's pixel shader
 }; // enum enum_shader_type
 
-void fsf ( );
-
 //------------------------------------------------
 class shader
 {
 public:
 inline                  shader          ( shader const& right ) : 
-                        m_object        ( right.m_object ),
-                        m_source        ( right.m_source ),
-                        m_type          ( right.m_type )
+                                        m_object        ( right.m_object ),
+                                        m_source        ( right.m_source ),
+                                        m_type          ( right.m_type )
                         {
                         }
 
-                        shader          ( enum_shader_type type, pcstr path );
+                        shader          ( enum_shader_type type, pcstr path, u8 auto_compilation = 1 );
         void            create          ( ) ;
         void            destroy         ( ) ;
         void            compilev        ( pcstr ) ; void compilef( pcstr); void compile();
@@ -80,7 +77,7 @@ inline  s32             find_attribute  ( pcstr attribute )
         template < typename T, typename... Args >
 inline  void            attach          ( T t, Args ... args )
                         {
-                            static_assert   ( helper< T >::value, "Incorrect arguments" );
+                            static_assert   ( helper< T >::value, "expected shader object" );
                             glAttachShader  ( m_shader_program, t.self( ) );
                             // t.destroy( ) ???
                             attach          ( args ... );
@@ -92,7 +89,7 @@ private:
     template < typename T >
 inline  void            attach   ( T t )
                         {
-                            static_assert   ( helper< T >::value, "Incorrect arguments" );
+                            static_assert   ( helper< T >::value, "expected shader object" );
                             glAttachShader  ( m_shader_program, t.self( ) );
                         }
 

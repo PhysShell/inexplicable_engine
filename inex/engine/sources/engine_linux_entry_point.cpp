@@ -55,21 +55,21 @@ s32		engine_entry_point ( pcstr command_line_string )
 
     sound::sound_device sound;
 	sound.initialize    ( );
-{
-	// sound::sound_object snd;
-	// snd.open            ( "gamedata/sound1.wav" );
-    ini::ini_file       settings;
-    settings.load       ( "gamedata/System.ltx" );
+// {
+// 	// sound::sound_object snd;
+// 	// snd.open            ( "gamedata/sound1.wav" );
+//     ini::ini_file       settings;
+//     settings.load       ( "gamedata/System.ltx" );
 
-    // "gamedata/motor_a8.wav", looped, position
-	sound::sound_object snd2;
-	snd2.open           ( settings.r_string( "sound_test", "path" ), settings.r_s32( "sound_test", "looped" ) ? 1 : 0 );
-	snd2.play           ( );
-    INEX_DEBUG_WAIT;
-    snd2.move           ( settings.r_float3( "sound_test", "position" ) );
-    INEX_DEBUG_WAIT;
-    snd2.stop           ( );
-}
+//     // "gamedata/motor_a8.wav", looped, position
+// 	sound::sound_object snd2;
+// 	snd2.open           ( settings.r_string( "sound_test", "path" ), settings.r_s32( "sound_test", "looped" ) ? 1 : 0 );
+// 	snd2.play           ( );
+//     INEX_DEBUG_WAIT;
+//     snd2.move           ( settings.r_float3( "sound_test", "position" ) );
+//     INEX_DEBUG_WAIT;
+//     snd2.stop           ( );
+// }
 	// snd.play            ( );
 
     ogl::device         device;

@@ -101,4 +101,34 @@ A vertex array object stores the following:
 
 
 rasterization phases:
-1. clip space transformation, 
+1. clip space transformation - transform each triangle's vertices into a certain region of space.
+    render only what's on the viewer projection
+clip space - the volume that the triangle is transformed into. triangles coords in such a space are called clip coords.
+clip space has 4 coordinates,  4th is W - the extent os clip space for dis triangle
+2. normalized device coordinates - make all verts fall on [-1, 1] region by division each of x,y,z by W
+3. window transformation - transformation of coordinates relative to ogl window, but at this stage, they are still
+    3D coordinates so their still floats, the origin of this space is at bottom left corner, z goes [0, 1]
+4. scan conversion - getting first approximate area of pixels that the triangle is gonna be rendered within. 
+    during the stage, the triangle will produce the fragment for every pixel sample that's within the area.
+5. fragment processing - takes the scan converted fragments and assign to them 1 or more colors and a single depth value
+6. fragment writing - involves some couputation and the outputs the fragment to the destination image
+ogl uses RGB colorspace
+
+important notice on how ogl is used as an API
+ogl is a state machine - basically big struct with a lot of fields and objects in ogl are simply list of
+this struct. binding an object to a target within the context causes data in this object to replace some of context's state
+
+ogl owns the storage for all ogl objects SO the user can only access it by reference (u32 ususally );
+1. To create:   glGenTYPEofOBJECT( how many, where to put the reference )
+2. To modify:   bind them to context first by glBindObject( target, object name );
+                i think target is like the struct name in the context that we want to get access to and then
+                change the field in this substruct by using the below function
+                then kindof like this glObjectParameteri( target, something that can be set, value );
+
+
+
+
+
+другая книга:
+pixel - picture element
+rendering - converting 3d to 2d

@@ -10,7 +10,7 @@
 #include <time.h>
 
 static
-void    framebuffer_size_callback ( GLFWwindow* window, int width, int height )
+void    framebuffer_size_callback ( window_impl* window, int width, int height )
 {
     glViewport          ( 0, 0, width, height );
 }
@@ -18,12 +18,44 @@ void    framebuffer_size_callback ( GLFWwindow* window, int width, int height )
 namespace inex {
 namespace ogl {
 
-u32 vertex_array_object     ;
+// namespace render            = inex::render_ogl;
 
-render_ogl::shader_program      program;
+constexpr const float           vertex_positions        [ ] =
+{
+    .75f,   .75f,   .0f,    1.0f,
+    .75f,   -.75f,  .0f,    1.0f,
+    -.75f,  -.75f,  .0f,    1.0f,
+};
+
+u32                             vertex_array_object     ;
+// vbo basically. need it to allocate memory ogl can see and load it with 'vertex_positions'
+u32                             position_buffer_object  ;
+render_ogl::shader_program      program                 ;
+
+void    initialize_shaders ( )
+{
+    LOGGER              ( "\tinitializing shaders" );
+    render_ogl::shader f( render_ogl::enum_shader_type_vertex, "vertex_shader.glsl" ),
+    v                   ( render_ogl::enum_shader_type_fragment, "fragment_shader.glsl" );
+    program.create      ( );
+    program.attach      ( v, f );
+    program.link        ( );
+    v.destroy           ( );
+    f.destroy           ( );
+}
+
+void    initialize_vertex_buffer_object ( )
+{
+    LOGGER              ( "\tinitializing vao" );
+    glGenBuffers        ( 1,                &position_buffer_object );                                          // create ptr on ogl
+    glBindBuffer        ( GL_ARRAY_BUFFER,  position_buffer_object );                                           // say 'we'll affect target with 2nd arg
+    glBufferData        ( GL_ARRAY_BUFFER,  sizeof ( vertex_positions ), vertex_positions, GL_STATIC_DRAW );    // finally allocate the mem of sizeof for 'vertex_positions'
+    glBindBuffer        ( GL_ARRAY_BUFFER,  0u );                                                               // undo, unnecessary as next bind call will do it but it makes me comfortable
+}
+
 void    device::initialize ( )
 {
-    LOGGER( "- [engine]\t: initializing");
+    LOGGER( "initializing engine...");
     VERIFY( glfwInit( ) );
     m_render_device     = memory::ie_new< render::render_device >( );
     glfwWindowHint		( GLFW_CONTEXT_VERSION_MAJOR, 3 );
@@ -34,70 +66,34 @@ void    device::initialize ( )
     m_height            = 640;
     m_render_device->   create_helper       ( m_context, m_width, m_height );
     glfwSetFramebufferSizeCallback          ( m_context, framebuffer_size_callback );
+    initialize_shaders                      ( );
+    initialize_vertex_buffer_object         ( );
     
-    using namespace inex::render_ogl;
-    shader f            ( enum_shader_type_vertex, "vertex_shader.glsl" ),
-    v                   ( enum_shader_type_fragment, "fragment_shader" );
-    v.compile           ( );
-    f.compile           ( );
-    program.create      ( );
-    program.attach      ( v, f );
-    // glBindFragDataLocation(shaderProgram, 0, "outColor");
-    program.link        ( );
-    v.destroy( ); f.destroy( );
-    // program.use         ( );
+    glGenVertexArrays                       ( 1, &vertex_array_object );
+    glBindVertexArray                       ( vertex_array_object );
 
-    float vertices[ ]   =
-    {
-    //    X      Y       Z
-        .5f,    .5f,    .0f,
-        .5f,    -.5f,   .0f,
-        -.5f,   -.5f,   .0f,
-        -1.f,   .5f,    .0f,
-        -1.f,   -.5f,   .0f
-    };
+    // glViewport			                    ( 0, 0, m_width, m_height );
+}
 
-    // u32 indices[ ]      = { 0, 1, 3, /*<-orders->*/ 1, 2, 3 };
+void    device::render ( )
+{   
+    glClearColor                ( .0f, .0f, .0f, .0f );
+    glClear                     ( GL_COLOR_BUFFER_BIT );
 
-    // u32 element_buffer_object   ;
-    u32 vertex_buffer_object    ;
-
-    // store data in GPU memory
-    glGenVertexArrays           ( 1, &vertex_array_object );
-    glGenBuffers                ( 1, &vertex_buffer_object );
-    // glGenBuffers                ( 1, &element_buffer_object );
-
-    // set vertex_buffer_object to be modified by any GL_ARRAY_BUFFER calls occur
-    glBindVertexArray(          vertex_array_object         );
+    program.use                 ( );
     
-    // buffer the 'vertices' data into allocated buffer memory
-    glBindBuffer        ( GL_ARRAY_BUFFER, vertex_buffer_object );
-    glBufferData        ( GL_ARRAY_BUFFER, sizeof ( vertices ), vertices, GL_STATIC_DRAW );
-    
-    // glBindBuffer        ( GL_ELEMENT_ARRAY_BUFFER, element_buffer_object );
-    // glBufferData        ( GL_ELEMENT_ARRAY_BUFFER, sizeof ( indices ), indices, GL_STATIC_DRAW );
+    glBindBuffer                ( GL_ARRAY_BUFFER, position_buffer_object );
+    glEnableVertexAttribArray   ( 0 );                              // 0 is the attribute index referring to a vertex shader layout 0. need to be called before rendering!
+    glVertexAttribPointer       ( 0, 4, GL_FLOAT, GL_FALSE, 0, 0 ); // how we want to interpret the array of data stored in buffer
+                                                                    // glVertexAttribPointer takes what is currently bound to GL_ARRAY_BUFFER
+    glDrawArrays                ( GL_TRIANGLES, 0, 3 );             // draws what is defined by glVertexAttribPointer
 
-    // glEnableVertexAttribArray   ( color_iniform );
+    glDisableVertexAttribArray  ( 0 );
+    program.unbind              ( );
 
-    glVertexAttribPointer
-    (
-                                1, // layout (location  = 0 )
-                                3,
-                                GL_FLOAT,
-                                GL_FALSE,
-                                3 * sizeof ( float ),
-                                ( pvoid ) 0
-    );
+    glfwPollEvents              ( );
+    glfwSwapBuffers             ( m_context );
 
-    // glEnableVertexAttribArray   ( 1 );
-    glBindBuffer        ( GL_ARRAY_BUFFER, 0u );
-    glBindVertexArray   ( 0u );
-
-    glViewport			( 0, 0, m_width, m_height );
-
-    // glDeleteVertexArrays            ( 1, &vertex_array_object );
-    // glDeleteBuffers                 ( 1, &vertex_buffer_object );
-    // glDeleteBuffers                 ( 1, &element_buffer_object );
 }
 
 void    device::create ( )
@@ -108,7 +104,7 @@ void    device::destroy ( )
 {
     LOGGER              ( "- [render]\t: destroying" );
     memory::ie_delete   ( m_render_device );
-    glBindVertexArray   ( 0u );
+    // glBindVertexArray   ( 0u );
     glfwTerminate		( );
 }
 
@@ -118,28 +114,6 @@ void    device::process_input ( )
     {
         glfwSetWindowShouldClose( m_context, 1 );
     }
-}
-
-void    device::render ( )
-{
-    // drawcalls
-    glClearColor(               .2f, .3f, .3f, 1.0f     );
-    glClear(                    GL_COLOR_BUFFER_BIT     );
-    // glPolygonMode(              GL_FRONT_AND_BACK, GL_FILL );
-    program.use                 ( );
-    glBindVertexArray           ( vertex_array_object );
-    // glBindBuffer                ( GL_ELEMENT_ARRAY_BUFFER, 0u );
-
-    glEnableVertexAttribArray   ( 1 );
-    // glDrawElements              ( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
-    // glBindVertexArray           ( 0 );
-
-    glDrawArrays(               GL_TRIANGLES, 0, 3      );
-    glDisableVertexAttribArray  ( 1 );
-    program.unbind              ( );
-    // call events and swap buffers
-    glfwPollEvents	( );
-    glfwSwapBuffers	( m_context );
 }
 
 void    update_world ( )

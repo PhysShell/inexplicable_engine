@@ -4,11 +4,10 @@
 // triangleColor	  	= 
 // Color	  	        = 
 //------------------------------------------------------------------------------
-uniform vec3 triangleColor;
-out vec4 Color;
+out vec4 outputColor;
 
 void main()
 {
-    //          in RGBA
-    Color       = vec4(1.0f,0.0f,0.0f,1.0f);
+    //                  in RGBA
+    outputColor         = vec4(1.0f,1.0f,1.0f,1.0f);
 }
