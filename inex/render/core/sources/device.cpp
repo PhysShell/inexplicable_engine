@@ -12,7 +12,7 @@
 static
 void    framebuffer_size_callback ( window_impl* window, int width, int height )
 {
-    glViewport          ( 0, 0, width, height );
+    glViewport          ( 0, 0, width , height  ); // 1st and 2nd are bottom left coordinate system origin. 'w' and 'h' are the other point and they served for building rectangle
 }
 
 namespace inex {
@@ -22,14 +22,17 @@ namespace ogl {
 
 constexpr const float           vertex_positions        [ ] =
 {
-    .75f,   .75f,   .0f,    1.0f,
-    .75f,   -.75f,  .0f,    1.0f,
-    -.75f,  -.75f,  .0f,    1.0f,
+    0.0f,    0.5f, 0.0f, 1.0f,
+    0.5f, -0.366f, 0.0f, 1.0f,
+   -0.5f, -0.366f, 0.0f, 1.0f,
+    1.0f,    0.0f, 0.0f, 1.0f,
+    0.0f,    1.0f, 0.0f, 1.0f,
+    0.0f,    0.0f, 1.0f, 1.0f,
 };
 
 u32                             vertex_array_object     ;
 // vbo basically. need it to allocate memory ogl can see and load it with 'vertex_positions'
-u32                             position_buffer_object  ;
+u32                             vertex_buffer_object  ;
 render_ogl::shader_program      program                 ;
 
 void    initialize_shaders ( )
@@ -46,11 +49,11 @@ void    initialize_shaders ( )
 
 void    initialize_vertex_buffer_object ( )
 {
-    LOGGER              ( "\tinitializing vao" );
-    glGenBuffers        ( 1,                &position_buffer_object );                                          // create ptr on ogl
-    glBindBuffer        ( GL_ARRAY_BUFFER,  position_buffer_object );                                           // say 'we'll affect target with 2nd arg
-    glBufferData        ( GL_ARRAY_BUFFER,  sizeof ( vertex_positions ), vertex_positions, GL_STATIC_DRAW );    // finally allocate the mem of sizeof for 'vertex_positions'
-    glBindBuffer        ( GL_ARRAY_BUFFER,  0u );                                                               // undo, unnecessary as next bind call will do it but it makes me comfortable
+    LOGGER              ( "\tinitializing vbo" );
+    glGenBuffers        ( 1,                &vertex_buffer_object );                                          // create ptr on ogl
+    glBindBuffer        ( GL_ARRAY_BUFFER,  vertex_buffer_object );                                           // say 'we'll affect target with 2nd arg
+    glBufferData        ( GL_ARRAY_BUFFER,  sizeof ( vertex_positions ), vertex_positions, GL_STATIC_DRAW );  // finally allocate the mem of sizeof for 'vertex_positions'
+    glBindBuffer        ( GL_ARRAY_BUFFER,  0u );                                                             // undo, unnecessary as next bind call will do it but it makes me comfortable
 }
 
 void    device::initialize ( )
@@ -66,9 +69,10 @@ void    device::initialize ( )
     m_height            = 640;
     m_render_device->   create_helper       ( m_context, m_width, m_height );
     glfwSetFramebufferSizeCallback          ( m_context, framebuffer_size_callback );
+
     initialize_shaders                      ( );
     initialize_vertex_buffer_object         ( );
-    
+
     glGenVertexArrays                       ( 1, &vertex_array_object );
     glBindVertexArray                       ( vertex_array_object );
 
@@ -76,19 +80,21 @@ void    device::initialize ( )
 }
 
 void    device::render ( )
-{   
+{
     glClearColor                ( .0f, .0f, .0f, .0f );
     glClear                     ( GL_COLOR_BUFFER_BIT );
 
     program.use                 ( );
-    
-    glBindBuffer                ( GL_ARRAY_BUFFER, position_buffer_object );
-    glEnableVertexAttribArray   ( 0 );                              // 0 is the attribute index referring to a vertex shader layout 0. need to be called before rendering!
-    glVertexAttribPointer       ( 0, 4, GL_FLOAT, GL_FALSE, 0, 0 ); // how we want to interpret the array of data stored in buffer
-                                                                    // glVertexAttribPointer takes what is currently bound to GL_ARRAY_BUFFER
-    glDrawArrays                ( GL_TRIANGLES, 0, 3 );             // draws what is defined by glVertexAttribPointer
 
+    glBindBuffer                ( GL_ARRAY_BUFFER, vertex_buffer_object );
+    glEnableVertexAttribArray   ( 0 );                              // 0 is the attribute index referring to a vertex shader layout 0. need to be called before rendering!
+    glEnableVertexAttribArray   ( 1 );
+    glVertexAttribPointer       ( 0, 4, GL_FLOAT, GL_FALSE, 0, 0 ); // how we want to interpret the array of data stored in buffer. can call this during rendering ONLY
+                                                                    // glVertexAttribPointer takes what is currently bound to GL_ARRAY_BUFFER
+    glVertexAttribPointer       ( 1, 4, GL_FLOAT, GL_FALSE, 0, pvoid( 48 ) );
+    glDrawArrays                ( GL_TRIANGLES, 0, 3 );             // draws what is defined by glVertexAttribPointer with HOW to interpret the data being passed to it
     glDisableVertexAttribArray  ( 0 );
+    glDisableVertexAttribArray  ( 1 );
     program.unbind              ( );
 
     glfwPollEvents              ( );
