@@ -29,7 +29,7 @@
 #endif  // #ifdef CAST
 
 #if INEX_PLATFORM_WINDOWS
-#   defiene CAST                            
+#   define CAST                            
 #	define GL_GET_PROCESS_ADDRESS	wglGetProcAddress
 #elif INEX_PLATFORM_LINUX // #if INEX_PLATFORM_WINDOWS
 // can this be replaced by #define GL_GLEXT_PROTOTYPES>]?

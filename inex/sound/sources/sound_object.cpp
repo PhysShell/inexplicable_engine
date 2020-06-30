@@ -79,8 +79,8 @@ void    sound_object::load_wave ( pcstr path )
     // SndInfo		buffer;
     s32		    format;
     pvoid		data;
-    s32		    size;
-    s32		    freq;
+    ALsizei		    size;
+    ALsizei		    freq;
     char	    loop;
 
     alGenBuffers                ( 1, &buffers );
