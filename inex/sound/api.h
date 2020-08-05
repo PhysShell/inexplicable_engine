@@ -6,9 +6,8 @@
 #ifndef INEX_SOUND_API_H_INCLUDED
 #	define INEX_SOUND_API_H_INCLUDED
 
-#	ifndef INEX_SOUND_API
-#   include <inex/macro_compiler.h>
 
+#	ifndef INEX_SOUND_API
 #		ifdef INEX_SOUND_EXPORTS
 #			define INEX_SOUND_API	INEX_DLL_EXPORT
 #		else // #ifdef INEX_SOUND_EXPORTS

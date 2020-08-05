@@ -53,13 +53,6 @@ private:
 	header_type*		m_arena_end;
     header_type*        m_helper;
 
-    struct memory_monitor
-    {
-        u32             allocations;
-        u32             deallocations;
-        size_t          size; // in bytes
-    }; // struct memory_monitor
-
     memory_monitor      m_monitor;
 
 private:

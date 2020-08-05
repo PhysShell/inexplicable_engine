@@ -11,6 +11,13 @@
 namespace inex {
 namespace memory {
 
+struct memory_monitor
+{
+    u32             allocations;
+    u32             deallocations;
+    size_t          size; // in bytes
+}; // struct memory_monitor
+
 class base_allocator : 	private detail::nonassignable,
 						private detail::noncopyable
 {

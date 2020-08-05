@@ -7,15 +7,13 @@
 #	define INEX_UI_API_H_INCLUDED
 
 // just for test purposes
-#	define INEX_STATIC_LIBRARIES
+// #	define INEX_STATIC_LIBRARIES
 
 #	ifndef INEX_UI_API
-#		ifdef INEX_STATIC_LIBRARIES
-#			define INEX_UI_API
-#		else
-#			error work around dlls
-#		endif // #ifdef INEX_STATIC_LIBRARIES
-#	endif // #ifndef INEX_UI_API
+#		define INEX_UI_API	INEX_DLL_EXPORT
+#	else // #ifdef INEX_UI_API
+#		define INEX_UI_API	INEX_DLL_IMPORT
+#	endif // #ifdef INEX_UI_API
 
 namespace inex {
 namespace ui {

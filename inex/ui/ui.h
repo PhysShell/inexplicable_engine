@@ -9,14 +9,14 @@
 #	include <inex/ui/api.h>
 
 
-#	include "common/sources/window_wrapper_base_win.h"
+#	include <inex/ui/sources/window_wrapper_base_win.h>
 
 namespace inex {
 namespace ui {
 
 
 
-struct ui_window : window_wrapper_base
+struct INEX_UI_API ui_window : window_wrapper_base
 {
 
 }; // struct ui_window
