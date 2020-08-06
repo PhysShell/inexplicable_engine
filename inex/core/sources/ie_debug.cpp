@@ -26,23 +26,6 @@ namespace debug {
 using inex::logging::Msg;
 
 #if INEX_PLATFORM_WINDOWS
-// it should use QueryPerformanceCounter
-#elif INEX_PLATFORM_LINUX  // #if INEX_PLATFORM_WINDOWS
-// it should use i don't know what
-#endif // #if INEX_PLATFORM_WINDOWS
-
-
-#if INEX_PLATFORM_LINUX
-float   benchmark ( void ( *function_pointer )( ) )
-{
-    auto    start               = std::chrono::high_resolution_clock::now ( ),
-            end                 = std::chrono::high_resolution_clock::now ( );
-    ( *function_pointer )   ( );
-    return                      std::chrono::duration_cast< std::chrono::nanoseconds >
-                                    ( end - start ).count( );
-    // ( clock( ) - start ) / CLOCKS_PER_SEC;
-}
-#elif INEX_PLATFORM_WINDOWS // #if INEX_PLATFORM_LINUX
 float	benchmark ( void ( *function_pointer ( ) ) )
 {
 	LARGE_INTEGER			frequency, start, stop;
@@ -67,7 +50,7 @@ float	benchmark ( void ( *function_pointer ( ) ) )
 
 	return	( float )( stop.QuadPart - start.QuadPart ) / ( float )frequency.QuadPart;
 }
-#endif // #if INEX_PLATFORM_LINUX
+#endif // #if INEX_PLATFORM_WINDOWS
 
 void 	dump_call_stack_trace ( )
 {
