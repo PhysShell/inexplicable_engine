@@ -8,12 +8,16 @@
 #include <inex/render/core/shaders.h>
 
 #include <time.h>
+#include <math.h>
+#include <vector>
 
 static
 void    framebuffer_size_callback ( window_impl* window, int width, int height )
 {
     glViewport          ( 0, 0, width , height  ); // 1st and 2nd are bottom left coordinate system origin. 'w' and 'h' are the other point and they served for building rectangle
 }
+
+#define ARRAY_COUNT( array ) (sizeof( array ) / (sizeof( array[0] ) * (sizeof( array ) != sizeof(void*) || sizeof( array[0] ) <= sizeof(void*))))
 
 namespace inex {
 namespace ogl {
@@ -22,27 +26,65 @@ namespace ogl {
 
 constexpr const float           vertex_positions        [ ] =
 {
-    0.0f,    0.5f, 0.0f, 1.0f,
-    0.5f, -0.366f, 0.0f, 1.0f,
-   -0.5f, -0.366f, 0.0f, 1.0f,
-    1.0f,    0.0f, 0.0f, 1.0f,
-    0.0f,    1.0f, 0.0f, 1.0f,
-    0.0f,    0.0f, 1.0f, 1.0f,
+	0.25f,  0.25f, 0.0f, 1.0f,
+	0.25f, -0.25f, 0.0f, 1.0f,
+   -0.25f, -0.25f, 0.0f, 1.0f,
 };
 
 u32                             vertex_array_object     ;
-// vbo basically. need it to allocate memory ogl can see and load it with 'vertex_positions'
-u32                             vertex_buffer_object  ;
+u32                             vertex_buffer_object    ;
 render_ogl::shader_program      program                 ;
+s32                             offset_uniform          ;
+s32                             elapsed_time_uniform    ;
+
+void    compute_positions_offsets ( float& x_offset, float& y_offset )
+{
+    float const loop_duration   = 1.f;
+                                // unit circle formula (r=1)
+    float const scale           = 3.14159f * 2.f / loop_duration;
+
+    float elapsed_time          = glfwGetTime( );
+    float current_time_loop     = fmodf( elapsed_time, loop_duration );
+
+    x_offset                    = cosf( current_time_loop * scale ) * .5f;
+    y_offset                    = sinf( current_time_loop * scale ) * .5f;       
+}
+
+void    adjust_vertex_data ( float const x_offset, float const y_offset )
+{
+    std::vector< float > update ( vertex_positions, vertex_positions + ARRAY_COUNT( vertex_positions ) );
+    // memcpy                      ( &update[ 0 ], vertex_positions, sizeof( vertex_positions ) );
+
+    for( int vertex = 0; vertex < ARRAY_COUNT( vertex_positions ); vertex += 4 )
+    {
+        update[ vertex ]        += x_offset;
+        update[ vertex + 1 ]    += y_offset;
+    };
+
+    glBindBuffer                ( GL_ARRAY_BUFFER, vertex_buffer_object );
+    glBufferSubData             ( GL_ARRAY_BUFFER, 0, sizeof( vertex_positions ), &update[ 0 ] );
+    glBindBuffer                ( GL_ARRAY_BUFFER, 0 );
+
+}
 
 void    initialize_shaders ( )
 {
-    LOGGER              ( "\tinitializing shaders" );
-    render_ogl::shader f( render_ogl::enum_shader_type_vertex, "vertex_shader.glsl" ),
-    v                   ( render_ogl::enum_shader_type_fragment, "fragment_shader.glsl" );
+    LOGGER              ( "\tinitializing shaders" );           // TODO: make shader append gamedata/shaders!
+    render_ogl::shader f( render_ogl::enum_shader_type_vertex, "gamedata/shaders/calc_offset.vs" ),
+                       v( render_ogl::enum_shader_type_fragment, "gamedata/shaders/calc_color.fs" );
     program.create      ( );
     program.attach      ( v, f );
     program.link        ( );
+
+    elapsed_time_uniform        = program.find_unifrom( "time" );
+    s32 loop_duration_uniform   = program.find_unifrom( "loopDuration" );
+    s32 frag_loop_uniform       = program.find_unifrom( "fragLoopDuration" );
+
+    program.use         ( );
+    glUniform1f         ( loop_duration_uniform, 5.f );
+    glUniform1f         ( frag_loop_uniform, 10.f );
+    program.unbind      ( );
+
     v.destroy           ( );
     f.destroy           ( );
 }
@@ -52,7 +94,7 @@ void    initialize_vertex_buffer_object ( )
     LOGGER              ( "\tinitializing vbo" );
     glGenBuffers        ( 1,                &vertex_buffer_object );                                          // create ptr on ogl
     glBindBuffer        ( GL_ARRAY_BUFFER,  vertex_buffer_object );                                           // say 'we'll affect target with 2nd arg
-    glBufferData        ( GL_ARRAY_BUFFER,  sizeof ( vertex_positions ), vertex_positions, GL_STATIC_DRAW );  // finally allocate the mem of sizeof for 'vertex_positions'
+    glBufferData        ( GL_ARRAY_BUFFER,  sizeof ( vertex_positions ), vertex_positions, GL_STREAM_DRAW );  // finally allocate the mem of sizeof for 'vertex_positions'
     glBindBuffer        ( GL_ARRAY_BUFFER,  0u );                                                             // undo, unnecessary as next bind call will do it but it makes me comfortable
 }
 
@@ -81,25 +123,28 @@ void    device::initialize ( )
 
 void    device::render ( )
 {
+    float x_offset              = .0f;
+    float y_offset              = .0f;
+    compute_positions_offsets   ( x_offset, y_offset );
+
     glClearColor                ( .0f, .0f, .0f, .0f );
     glClear                     ( GL_COLOR_BUFFER_BIT );
 
     program.use                 ( );
+    
+    glUniform1f                 ( elapsed_time_uniform, glfwGetTime( ) );
 
     glBindBuffer                ( GL_ARRAY_BUFFER, vertex_buffer_object );
-    glEnableVertexAttribArray   ( 0 );                              // 0 is the attribute index referring to a vertex shader layout 0. need to be called before rendering!
-    glEnableVertexAttribArray   ( 1 );
-    glVertexAttribPointer       ( 0, 4, GL_FLOAT, GL_FALSE, 0, 0 ); // how we want to interpret the array of data stored in buffer. can call this during rendering ONLY
-                                                                    // glVertexAttribPointer takes what is currently bound to GL_ARRAY_BUFFER
-    glVertexAttribPointer       ( 1, 4, GL_FLOAT, GL_FALSE, 0, pvoid( 48 ) );
-    glDrawArrays                ( GL_TRIANGLES, 0, 3 );             // draws what is defined by glVertexAttribPointer with HOW to interpret the data being passed to it
+    glEnableVertexAttribArray   ( 0 );                             
+    glVertexAttribPointer       ( 0, 4, GL_FLOAT, GL_FALSE, 0, 0 );
+
+    glDrawArrays                ( GL_TRIANGLES, 0, 3 );
+    
     glDisableVertexAttribArray  ( 0 );
-    glDisableVertexAttribArray  ( 1 );
     program.unbind              ( );
 
-    glfwPollEvents              ( );
     glfwSwapBuffers             ( m_context );
-
+    glfwPollEvents              ( );
 }
 
 void    device::create ( )

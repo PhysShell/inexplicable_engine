@@ -57,22 +57,11 @@ public:
         void            link            ( );
         void            check_errors    ( );
 
-inline  void            create          ( )
-                        {
-                            m_shader_program    = glCreateProgram( );
-                        }
-inline  void            use             ( )
-                        {
-                            glUseProgram        ( m_shader_program );
-                        }
-inline  void            unbind          ( )
-                        {
-                            glUseProgram        ( 0u );
-                        }
-inline  s32             find_attribute  ( pcstr attribute )
-                        {
-                            return              glGetAttribLocation( m_shader_program, attribute );
-                        }
+inline  void            create          ( )                 {   m_shader_program    = glCreateProgram( );                   }
+inline  void            use             ( )                 {   glUseProgram        ( m_shader_program );                   }
+inline  void            unbind          ( )                 {   glUseProgram        ( 0u );                                 }
+inline  s32             find_attribute  ( pcstr attribute ) {   return  glGetAttribLocation( m_shader_program, attribute ); }
+inline  s32             find_unifrom    ( pcstr uniform )   {   return  glGetUniformLocation( m_shader_program, uniform );  }   
 // To do: behave different when it's shader or u32 metaprogrammingly
         template < typename T, typename... Args >
 inline  void            attach          ( T t, Args ... args )
@@ -93,6 +82,7 @@ inline  void            attach   ( T t )
                             glAttachShader  ( m_shader_program, t.self( ) );
                         }
 
+private:
     u32                 m_shader_program                    ;
 }; // class shader_program
 

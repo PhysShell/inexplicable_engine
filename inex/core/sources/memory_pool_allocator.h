@@ -7,7 +7,7 @@
 #	define MEMORY_POOL_ALLOCATOR_H_INCLUDED
 
 #	include "memory_base_allocator.h"
-
+#   include <malloc.h>
 namespace inex {
 namespace memory {
 
@@ -18,12 +18,12 @@ namespace memory {
 #endif // #if INEX_PLATFORM_WINDOWS
 
 template < class allocator_type >
-struct allocator_wrapper : private allocator_type 
+struct allocator_wrapper : private allocator_type
 {
 	typedef		allocator_type			super;
 	pvoid		malloc			( size_t const size )
 				{
-					size_t * pointer_size	= static_cast< size_t * >( super::malloc_impl( size + sizeof( size_ t ) ) );
+					size_t * pointer_size	= static_cast< size_t * >( super::malloc_impl( size + sizeof( size_t ) ) );
 					return					*pointer_size = size, pointer_size + 1;		// skip head
 				}
 
