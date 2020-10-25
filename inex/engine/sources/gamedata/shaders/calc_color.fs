@@ -10,8 +10,9 @@ const vec4 secnodColor  = vec4(0.f,1.f,0.f,1.f);
 
 void main()
 {
-    float currentTime   = mod(time,fragLoopDuration);
-    float currentLerp   = currentTime/fragLoopDuration;
+    float halfw         = fragLoopDuration/2.f;
+    float area          = 3.14159f/halfw;
+    float innerLoop     = mod(time+halfw/2.f,halfw);
 
-    outputColor         = mix(firstColor,secnodColor,currentLerp);
+    outputColor         = vec4(sin(innerLoop*area),1.f,sin(innerLoop*area),1.f);
 }

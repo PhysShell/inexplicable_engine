@@ -5,7 +5,26 @@ namespace inex {
 namespace memory {
 
 #	define	TEMPLATE_SPECIALIZATION	template < typename T >
-#	define	SHARED_OBJECT_TEMPLATE shared_object< T >
+#	define	SHARED_OBJECT_TEMPLATE shared_object < T >
+#   define  INTRUSIVE_PTR_TEMPLATE intrusive_ptr < T >
+
+TEMPLATE_SPECIALIZATION
+inline
+INTRUSIVE_PTR_TEMPLATE::intrusive_ptr ( ) :
+    m_data      ( nullptr )
+{
+}
+
+TEMPLATE_SPECIALIZATION
+inline
+INTRUSIVE_PTR_TEMPLATE::intrusive_ptr ( pointer const& raw_pointer, bool add_reference = 1  ) :
+    m_data      ( raw_pointer )
+{
+    if ( raw_pointer && add_reference )
+    {
+    // http://doc.crossplatform.ru/boost/1.37.0/doc/html/boost/interprocess/intrusive_ptr.html#id2906626-bb
+    }
+}
 
 TEMPLATE_SPECIALIZATION
 inline
@@ -17,7 +36,7 @@ SHARED_OBJECT_TEMPLATE::shared_object ( ) :
 
 TEMPLATE_SPECIALIZATION
 inline
-SHARED_OBJECT_TEMPLATE::shared_object ( T* const data ) :
+SHARED_OBJECT_TEMPLATE::shared_object ( pointer const data ) :
     m_owners    (  memory::ie_new< size_t > ( 1u ) ),
     m_data      ( data )
 {
@@ -166,6 +185,8 @@ const T* const  SHARED_OBJECT_TEMPLATE::get ( ) const
 
 #undef	TEMPLATE_SPECIALIZATION
 #undef	SHARED_OBJECT_TEMPLATE
+#undef  INTRUSIVE_PTR_TEMPLATE
+
 
 } // namespace memory
 } // namespace inex

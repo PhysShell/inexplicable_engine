@@ -36,6 +36,7 @@ u32                             vertex_buffer_object    ;
 render_ogl::shader_program      program                 ;
 s32                             offset_uniform          ;
 s32                             elapsed_time_uniform    ;
+s32                             loop_duration_uniform   ;
 
 void    compute_positions_offsets ( float& x_offset, float& y_offset )
 {
@@ -77,7 +78,7 @@ void    initialize_shaders ( )
     program.link        ( );
 
     elapsed_time_uniform        = program.find_unifrom( "time" );
-    s32 loop_duration_uniform   = program.find_unifrom( "loopDuration" );
+    loop_duration_uniform       = program.find_unifrom( "loopDuration" );
     s32 frag_loop_uniform       = program.find_unifrom( "fragLoopDuration" );
 
     program.use         ( );
@@ -139,6 +140,12 @@ void    device::render ( )
     glVertexAttribPointer       ( 0, 4, GL_FLOAT, GL_FALSE, 0, 0 );
 
     glDrawArrays                ( GL_TRIANGLES, 0, 3 );
+
+    glUniform1f                 ( loop_duration_uniform, 2.5f );
+
+    glDrawArrays                ( GL_TRIANGLES, 0, 3 );
+
+    glUniform1f                 ( loop_duration_uniform, 5.f );
     
     glDisableVertexAttribArray  ( 0 );
     program.unbind              ( );
