@@ -31,7 +31,7 @@ inline
 SHARED_OBJECT_TEMPLATE::shared_object ( ) :
     m_owners    ( nullptr ),
     m_data      ( nullptr )
-{	 //LOGGER (	"+\tDEFAULT ctor:\t %p\n\tm_data:\t\t %p\n\tm_owners:\t\t%d\n", this, m_data, m_owners ? *m_owners : 0 ); 
+{
 }
 
 TEMPLATE_SPECIALIZATION
@@ -39,9 +39,7 @@ inline
 SHARED_OBJECT_TEMPLATE::shared_object ( pointer const data ) :
     m_owners    (  memory::ie_new< size_t > ( 1u ) ),
     m_data      ( data )
-{
- 	//LOGGER (	"+\tDATA ctor:\t %p\n\tm_data:\t\t %p\n\tm_owners:\t\t%d\n", this, m_data, *m_owners );
- 
+{ 
 }
 
 TEMPLATE_SPECIALIZATION
@@ -50,15 +48,7 @@ SHARED_OBJECT_TEMPLATE::shared_object ( SHARED_OBJECT_TEMPLATE const& owner ) :
     m_data      ( owner.m_data ),
     m_owners    ( owner.m_owners )
 {
-/*     if ( !owner.m_owners )
-    {
-        //LOGGER          ( "no OWNERS COPY ctor has\n" );
-        getchar         ( );
-    } */
-
     increment         ( );
-
-  	//LOGGER (	"+\tCOPY ctor:\t %p\n\tm_data:\t\t %p\n\tm_owners:\t\t%d\n", this, m_data, *m_owners );   
  }
 
 TEMPLATE_SPECIALIZATION
@@ -67,19 +57,13 @@ SHARED_OBJECT_TEMPLATE::~shared_object ( )
 {
     if ( !m_data )
     {
-         //LOGGER  ( "theres nothing to delete!\n" ); 
         return ;
     }
 
     if ( decrement( ) < 1 )
     {
-         //LOGGER (	"-\tDTOR FREE:\t %p\n\tm_data:\t\t %p\n\tm_owners:\t\t%d\n", this, m_data, *m_owners );   
          release ( );
     }
-    else
-    {
-         //LOGGER (	"-\tDTOR REF_DEC:\t %p\n\tm_data:\t\t %p\n\tm_owners:\t\t%d\n", this, m_data, *m_owners );   
-     }
 }
 
 TEMPLATE_SPECIALIZATION
@@ -96,26 +80,22 @@ void  SHARED_OBJECT_TEMPLATE::reset ( T* const data )
 #   pragma message ( "review this one" )
     if ( !data )
     {
-		//LOGGER( "NULLPTR PASSED" );
         release ( );
         return              ;
     }
 
     if ( !m_owners )
     {
-         //LOGGER  ( "no owners, allocate.\n" ); 
         m_owners            = memory::ie_new< size_t > ( 1u );
         m_data              = data;
     }
     else if ( unique( ) )
     {
-         //LOGGER  ( "unique owner, reset.\n" ); 
         memory::ie_delete	( m_data );
         m_data              = data;
     }
     else
     {
-         //LOGGER  ( "many owner, decrement and reset.\n" ); 
         decrement           ( );
         m_owners            = memory::ie_new< size_t > ( 1u );
         m_data              = data;
@@ -171,14 +151,14 @@ size_t  SHARED_OBJECT_TEMPLATE::decrement ( )
 
 TEMPLATE_SPECIALIZATION
 inline
-T* const    SHARED_OBJECT_TEMPLATE::get ( )
+typename SHARED_OBJECT_TEMPLATE::pointer const    SHARED_OBJECT_TEMPLATE::get ( )
 {
     return              m_data;
 }
 
 TEMPLATE_SPECIALIZATION
 inline
-const T* const  SHARED_OBJECT_TEMPLATE::get ( ) const
+const typename SHARED_OBJECT_TEMPLATE::pointer const  SHARED_OBJECT_TEMPLATE::get ( ) const
 {
     return              m_data;
 }

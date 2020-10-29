@@ -21,12 +21,9 @@ namespace fs {
 
 inline
 directory_iterator::directory_iterator ( ) :
-    m_impl      { },
+    m_impl      ( ),
     m_end       ( 1 )
 {
-/*     printf (    "directory_iterator DEF called\nPTR:\t%p\n",
-        this
-    ); */
 }
 
 inline
@@ -34,11 +31,6 @@ directory_iterator::directory_iterator ( directory_iterator const& rhs ) :
     m_impl          ( rhs.m_impl ),
     m_end           ( rhs.m_end )
 {
-/*     printf (    "directory_iterator copy ctor called\nfrom:\t%p\nto:\t%p\n",
-                &rhs,
-                this
-            ); */
-
     m_entry.append  ( rhs.m_entry.path( ).c_str( ) );
 #if INEX_PLATFORM_WINDOWS
 	m_entry.append	( "*" );
@@ -64,10 +56,6 @@ directory_iterator::directory_iterator ( const char* const file_path_raw ) :
 #if INEX_PLATFORM_WINDOWS
 	m_entry.path( ).disappend_star( );
 #endif // INEX_PLATFORM_WINDOWS
-/*     printf (    "directory_iterator CHAR* called\nstr:\t%s\nto:\t%p\n",
-            file_path_raw,
-            this
-        ); */
 
     operator ++         ( );
 
@@ -112,9 +100,6 @@ directory_iterator const&   begin ( directory_iterator const& iterator )
 inline
 directory_iterator  end ( directory_iterator const& )
 {
-    //directory_iterator  end_iterator;
-    /* printf              ( "end ITER is %p\n", &end_iterator ); */
-
     return              directory_iterator( );
 }
 

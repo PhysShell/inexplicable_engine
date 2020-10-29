@@ -21,12 +21,12 @@
 #	endif // #ifdef INEX_CORE_API
 
 namespace inex {
-namespace ui {
+namespace render {
 
 INEX_RENDER_API	void	create_world	( );
 INEX_RENDER_API	void	destroy_world	( );
 
-} // namespace ui
+} // namespace render
 } // namespace inex
 
 #endif // #ifndef INEX_RENDER_API_H_INCLUDED

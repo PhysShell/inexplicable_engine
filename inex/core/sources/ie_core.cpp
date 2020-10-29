@@ -167,6 +167,16 @@ void	compute_build_id ( )
 // 	//LOGGER( "s1 %p",  ptr ); LOGGER( "s2 %p", ptr2 ); LOGGER( "s3 %p", ptr3 );
 // }
 
+void	bench ( u32* value_1, u32  size )
+{
+	Sleep( 1000 );
+	for ( u32 i = 0; i < size; ++i )
+	{
+		value_1[ i ]			+= i;
+	}
+
+	return ;
+}
 
 void	initialize ( pcstr command_line_string )
 {
@@ -203,6 +213,11 @@ void	initialize ( pcstr command_line_string )
 	{
 		fs::initialize	( "gamedata/" );
 	}
+
+	u32* arr	= memory::ie_allocate< u32 >( 32 );
+	memset				( arr, 0, 32 );
+
+	BENCHMARK( bench, arr, 32 );
 
     // test		( );
 

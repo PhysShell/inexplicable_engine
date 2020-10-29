@@ -1,8 +1,6 @@
 #ifndef SHARED_OBJECT_H_INCLUDED
 #   define SHARED_OBJECT_H_INCLUDED
 
-#   define INEX_USE_CRITICAL_SECTIONS_IN_SHARED_OBJECT
-
 namespace inex {
 namespace memory {
 
@@ -36,6 +34,7 @@ private:
 template < typename T >
 class shared_object 
 {
+public:
     typedef shared_object < T >     self_type;
     typedef T*                      pointer;
     typedef T                       element_type;
