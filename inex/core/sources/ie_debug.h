@@ -1,38 +1,68 @@
 #ifndef INEX_DEBUG_H_INCLUDED
 #	define INEX_DEBUG_H_INCLUDED
 
+#	include <functional>
+#	include <utility>
+#	include <type_traits>
+
 namespace inex {
 namespace debug {
 
-// better make a wrapper on gettimeofday
-// other most dumb way would be to add five hundred versions of
-/*
-template < typename R, typename P1, typename P2 >
-float   benchmark ( R ( *function_pointer ) ( P1 , P2  ), P1 p1, P2 p2 )
+namespace detail {
+template <
+	typename		ReturnType, 
+	typename		Function, 
+	typename ...	ForwardedArguments
+>
+inline
+ReturnType	wrapper ( Function function, ForwardedArguments && ... forwarded_arguments )
+{
+	return					function( std::forward< ForwardedArguments >( forwarded_arguments ) ... );
+}
+
+template < typename Function, typename ... ForwardedArguments >
+struct helper
+{
+	using type				= typename std::result_of< Function( ForwardedArguments... ) >::type;
+}; // struct helper
+
+} // namespace detail
+
+#if INEX_PLATFORM_LINUX
+template < typename Function, typename ... ForwardedArguments >
+void   benchmark ( Function function, ForwardedArguments ... forwarded_arguments )
 {
 	timeval 				time;
 	double 					start, end;
 	gettimeofday			( &time, nullptr );
 	start 					= time.tv_usec;
-	function_pointer        ( p1, p2 );
+	wrapper< helper< Function, ForwardedArguments... >::type >				( function, forwarded_arguments ... );
 	gettimeofday			( &time, nullptr );
 	end 					= time.tv_usec;
-	return 					end - start;
+	LOGGER					( "[benchmark][-]\t\t: %f usec", end - start );
 }
-*/
-
-#if INEX_PLATFORM_LINUX
-#	define BENCHMARK_RPOLOGUE 	timeval time; double start, end; gettimeofday( &time, nullptr ); start = time.tv_usec; 
-#	define BENCHMARK_EPILOGUE	gettimeofday ( &time, nullptr ); end = time.tv_usec;
 #elif INEX_PLATFORM_WINDOWS // #if INEX_PLATFORM_LINUX
-#	error please specify benchmark routines for your platform 
+
+template < typename Function, typename ... ForwardedArguments >
+float   benchmark ( Function function, ForwardedArguments && ... forwarded_arguments )
+{
+	LARGE_INTEGER			frequency;
+	LARGE_INTEGER			start, end;
+	float					elapsed_time;
+
+	ASSERT_S				( QueryPerformanceFrequency( &frequency ) );
+	QueryPerformanceCounter	( &start );
+	
+	detail::wrapper< detail::helper< Function, ForwardedArguments ... >::type >				( function, forwarded_arguments ... );
+	QueryPerformanceCounter	( &end );
+	elapsed_time			= ( float )( end.QuadPart - start.QuadPart ) / frequency.QuadPart;
+
+	return					elapsed_time;
+}
 #endif // #if INEX_PLATFORM_LINUX
 
 // todo: dd debug/release #ifdef's
-#define BENCHMARK( x )  BENCHMARK_RPOLOGUE		\
-						x; 						\
-						BENCHMARK_EPILOGUE 		\
-						LOGGER ( "[benchmark][%s]\t\t: %f usec", #x , end - start )
+#define BENCHMARK( x, ... ) float b = inex::debug::benchmark( x, __VA_ARGS__ ); LOGGER ( "[benchmark][%s]\t\t: %f usec", #x , b )
 
 INEX_CORE_API
 void INEX_CCALL	fatal					( 	pcstr 	file,
