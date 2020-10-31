@@ -23,6 +23,9 @@ typedef		std::int16_t		s16;
 typedef		std::uint32_t		u32;
 typedef		std::int32_t		s32;
 
+typedef		std::uint_fast32_t	u32f;
+typedef		std::int_fast32_t	s32f;
+
 typedef		std::uint64_t		u64;
 typedef		std::int32_t		s64;
 #endif // #ifdef USE_COMPILER_FIXED_SIZE_TYPES

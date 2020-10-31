@@ -21,6 +21,7 @@
 #   include <inex/core/sources/ie_debug.h>
 #   include <inex/core/sources/logger.h>
 #   include <inex/os_extensions.h>
+#	include <inex/memory_extensions.h>
 //#include _stl_extensions_vector.h
 #   include <inex/core/sources/ie_syncronize.h>
 //#include ie_memory.h

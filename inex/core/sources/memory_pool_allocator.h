@@ -8,14 +8,15 @@
 
 #	include "memory_base_allocator.h"
 #   include <malloc.h>
+
 namespace inex {
 namespace memory {
 
-#if INEX_PLATFORM_WINDOWS
-#	define MALLOC_SIZE( x )	_msize( x )
-#elif INEX_PLATFORM_LINUX // #ifINEX_PLATFORM_WINDOWS
-#	define MALLOC_SIZE( x ) malloc_usable_size( x )
-#endif // #if INEX_PLATFORM_WINDOWS
+#	if INEX_PLATFORM_WINDOWS
+#		define MALLOC_SIZE( x )	_msize( x )
+#	elif INEX_PLATFORM_LINUX // #ifINEX_PLATFORM_WINDOWS
+#		define MALLOC_SIZE( x ) malloc_usable_size( x )
+#	endif // #if INEX_PLATFORM_WINDOWS
 
 template < class allocator_type >
 struct allocator_wrapper : private allocator_type
@@ -33,8 +34,10 @@ struct allocator_wrapper : private allocator_type
 				}
 }; // struct allocator_wrapper
 
+#	if !INEX_USE_CRT_MEMORY_ALLOCATOR
 
 // there's basically one pool of const size allocated, and after it's finished it frees all the memory.
+// template < u64 size = 65536u, u64 alignment = sizeof ( pvoid ) >
 class pool_allocator : public base_allocator
 {
 public:
@@ -49,7 +52,7 @@ public:
     virtual void        initialize				( pvoid arena, size_t const size, pcstr id );
     virtual void	    free_impl				( pvoid ap );
     virtual pvoid	    malloc_impl				( u32 size );
-	void				dump_memory_statistics  ( ) const;
+			void		dump_memory_statistics  ( ) const;
 
     template < typename T >
     inline  T*          malloc_impl				( u32 size )									{   return reinterpret_cast< T* >( malloc_impl( size ) ); }
@@ -66,6 +69,11 @@ private:
 
 
 }; // class pool_allocator
+
+#	else
+class crt_allocator;
+typedef crt_allocator	pool_allocator
+#	endif
 
 } // namespace memory
 } // namespace inex

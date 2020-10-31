@@ -1,6 +1,8 @@
 #ifndef UTILS_H_INCLUDED
 #	define UTILS_H_INCLUDED
 
+#	include <mutex>
+
 namespace inex {
 namespace detail {
 
@@ -43,6 +45,35 @@ private:
     Node*       m_first;
     Node*       m_last;
 }; // struct stack
+
+template < typename T >
+class singleton : public detail::nonassignable, public detail::noncopyable
+{
+public:
+	virtual		~singleton< T >	( )	= default;
+
+	static	T*	get_instance	( )
+	{
+		std::call_once( m_once, [ ]( ){ m_insance.reset( new T ); } );
+		return					m_instance.get( );
+	}
+
+	template < typename ... Args >
+	static	T*	get_instance	( Args && ... args )
+	{
+		std::call_once( m_once, [ & ]( ) { m_insance.reset( new T( std::forward< Args >( args ... ) ) ); } );
+		return					m_instance.get( );
+	}
+
+
+private:
+	static	std::unique_ptr< T >	m_instance;
+	static std::once_flag			m_once;
+
+}; // class singleton
+
+template < typename T > std::unique_ptr< T >	singleton < T >::m_instance;
+template < typename T > std::once_flag			singleton < T >::m_once;
 
 } // namespace inex
 

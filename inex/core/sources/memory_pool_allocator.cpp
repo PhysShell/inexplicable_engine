@@ -4,9 +4,11 @@
 namespace inex {
 namespace memory {
 
-void	f ( )
+pool_allocator::pool_allocator ( ) :
+	m_arena		( ),
+	m_monitor	( )
 {
-	//std::max_align_t d;
+
 }
 
 } // namespace ui

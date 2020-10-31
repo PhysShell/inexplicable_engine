@@ -10,41 +10,42 @@ namespace debug {
 
 namespace detail {
 template <
-	typename		ReturnType, 
-	typename		Function, 
-	typename ...	ForwardedArguments
+	typename		return_type, 
+	typename		function, 
+	typename ...	parameters_pack
 >
+
 inline
-ReturnType	wrapper ( Function function, ForwardedArguments && ... forwarded_arguments )
+return_type	wrapper ( function function_to_benchmark, parameters_pack && ... parameters )
 {
-	return					function( std::forward< ForwardedArguments >( forwarded_arguments ) ... );
+	return					function_to_benchmark( std::forward< parameters_pack >( parameters ) ... );
 }
 
-template < typename Function, typename ... ForwardedArguments >
+template < typename function, typename ... parameters_pack >
 struct helper
 {
-	using type				= typename std::result_of< Function( ForwardedArguments... ) >::type;
+	using type				= typename std::result_of< function( parameters_pack... ) >::type;
 }; // struct helper
 
 } // namespace detail
 
 #if INEX_PLATFORM_LINUX
-template < typename Function, typename ... ForwardedArguments >
-void   benchmark ( Function function, ForwardedArguments ... forwarded_arguments )
+template < typename function, typename ... parameters_pack >
+void   benchmark ( function function, parameters_pack ... parameters )
 {
 	timeval 				time;
 	double 					start, end;
 	gettimeofday			( &time, nullptr );
 	start 					= time.tv_usec;
-	wrapper< helper< Function, ForwardedArguments... >::type >				( function, forwarded_arguments ... );
+	wrapper< helper< function, parameters_pack... >::type >				( function, parameters ... );
 	gettimeofday			( &time, nullptr );
 	end 					= time.tv_usec;
 	LOGGER					( "[benchmark][-]\t\t: %f usec", end - start );
 }
 #elif INEX_PLATFORM_WINDOWS // #if INEX_PLATFORM_LINUX
 
-template < typename Function, typename ... ForwardedArguments >
-float   benchmark ( Function function, ForwardedArguments && ... forwarded_arguments )
+template < typename function, typename ... parameters_pack >
+float   benchmark ( function function_to_benchmark, parameters_pack && ... parameters )
 {
 	LARGE_INTEGER			frequency;
 	LARGE_INTEGER			start, end;
@@ -53,7 +54,7 @@ float   benchmark ( Function function, ForwardedArguments && ... forwarded_argum
 	ASSERT_S				( QueryPerformanceFrequency( &frequency ) );
 	QueryPerformanceCounter	( &start );
 	
-	detail::wrapper< detail::helper< Function, ForwardedArguments ... >::type >				( function, forwarded_arguments ... );
+	detail::wrapper< detail::helper< function, parameters_pack ... >::type >				( function_to_benchmark, parameters ... );
 	QueryPerformanceCounter	( &end );
 	elapsed_time			= ( float )( end.QuadPart - start.QuadPart ) / frequency.QuadPart;
 

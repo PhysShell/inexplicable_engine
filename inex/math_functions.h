@@ -75,6 +75,20 @@ float   radians_to_degree ( float const value )
     return              value / PI * 180.f;
 }
 
+template < typename T >
+T	align_down ( T value, T align_to )
+{
+	ASSERT_S			( value > 0 );
+	T temp				= align_to - 1;
+	return				value + temp & ( ~align_to );
+}
+
+template < typename T >
+T	align_up ( T value, T align_to )
+{
+	ASSERT_S			( value > 0 );
+	return				( ( value - 1 ) | ( align_to - 1 ) ) + 1;
+
 #if defined _MSC_VER
 #	define os_sin( x )			( float ) std::sin( x )
 #	define os_cos( x )			( float ) std::cos( x )

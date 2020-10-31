@@ -6,6 +6,10 @@
 #ifndef INEX_CORE_API_H_INCLUDED
 #	define INEX_CORE_API_H_INCLUDED
 
+#	ifndef EXTENSIONS_H_INCLUDED
+#		error please include extenstions.h instead
+#	endif // ifndef EXTENSIONS_H_INCLUDED
+
 #	ifndef INEX_CORE_API
 #   include <inex/macro_compiler.h>
 
