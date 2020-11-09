@@ -8,7 +8,7 @@
 
 #	include <AL/al.h>
 #	include <AL/alc.h>
-#	include <AL/alut.h>
+#	include <inex/sound/api.h>
 
 namespace inex {
 namespace sound {

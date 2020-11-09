@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "fs_ini_file.h"
 #include "ie_trims.h"
 #include <iostream>
@@ -31,9 +31,9 @@ ini_file::~ini_file ( )
 
 void	ini_file::load ( pcstr fname )
 {
-	fs::reader *r			= { fs::r_open( fname ) };
+	memory::reader *r		=	{ fs::r_open( fname ) };
 	ASSERT_D( r, "Reader was set to 0!" );
-	section* current			= nullptr;
+	section* current		=	nullptr;
 
     while ( !r->eof( ) )
 	{
@@ -44,8 +44,8 @@ void	ini_file::load ( pcstr fname )
 			continue;
 		}
         
-        handle_comments				( buf );
-        trim_string					( buf );
+        handle_comments			( buf );
+        trim_string				( buf );
 
         if ( buf[ 0 ] == 0 )
 		{

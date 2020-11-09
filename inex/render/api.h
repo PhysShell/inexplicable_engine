@@ -23,8 +23,14 @@
 namespace inex {
 namespace render {
 
-INEX_RENDER_API	void	create_world	( );
-INEX_RENDER_API	void	destroy_world	( );
+struct world;
+
+namespace engine {
+	struct wrapper;
+} // namespace engine
+
+INEX_RENDER_API	world*	create_world	( render::engine::wrapper& engine, HWND window_handle );
+INEX_RENDER_API	void	destroy_world	( world*& world );
 
 } // namespace render
 } // namespace inex

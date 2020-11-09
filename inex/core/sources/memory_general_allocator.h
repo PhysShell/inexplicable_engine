@@ -11,7 +11,7 @@
 
 namespace inex {
 namespace memory {
-class general_allocator : public base_allocator
+class INEX_CORE_API general_allocator : public base_allocator
 {
 private:
 	typedef alignment_type dummy;
@@ -27,17 +27,17 @@ private:
 	typedef union header header_type;
 
 public:
-				        general_allocator	( );
+				        general_allocator	( )						;
 				        ~general_allocator	( )                     { finalize( ) ; }
 
     virtual size_t      fragmented_size     ( ) const override		{	return 0;	}
     virtual size_t      total_size          ( ) const override		{	return 0;	}
 	virtual size_t      allocated_size      ( ) const override		{	return 0;	}
 
-	virtual void	    finalize		    ( );
+	virtual void	    finalize		    ( )						;
     virtual void        initialize          ( pvoid arena, size_t const size, pcstr id );
-    virtual void	    free_impl		    ( pvoid ap );
-    virtual pvoid	    malloc_impl		    ( u32 size );
+	virtual void	    free_impl		    ( pvoid ap ) ;
+	virtual pvoid	    malloc_impl		    ( u32 size ) ;
 
     template < typename T >
     inline  T*          malloc_impl         ( u32 size )            {   return reinterpret_cast< T* >( malloc_impl( size ) ); }

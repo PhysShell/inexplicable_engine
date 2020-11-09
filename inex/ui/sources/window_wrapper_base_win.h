@@ -5,7 +5,9 @@
 
 #ifndef INEX_UI_WINDOW_WRAPPER_BASE_H_INCLUDED
 #	define INEX_UI_WINDOW_WRAPPER_BASE_H_INCLUDED
+
 #	include <inex/utils.h>
+#	include <inex/ui/api.h>
 
 namespace inex {
 namespace ui {
@@ -51,7 +53,7 @@ private:
 	HWND			m_hwnd;
 	string32		m_class_name;
 	string64		m_window_title;
-	__int64			m_style;
+	DWORD			m_style;
 
 	u32				m_x_coordinate,
 					m_y_coordinate,

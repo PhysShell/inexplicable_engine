@@ -88,6 +88,7 @@ T	align_up ( T value, T align_to )
 {
 	ASSERT_S			( value > 0 );
 	return				( ( value - 1 ) | ( align_to - 1 ) ) + 1;
+}
 
 #if defined _MSC_VER
 #	define os_sin( x )			( float ) std::sin( x )

@@ -6,9 +6,12 @@
 #ifndef MATH_FLOAT3_INLINE_H_INCLUDED
 #   define MATH_FLOAT3_INLINE_H_INCLUDED
 
-#   include <inex/macro_string.h>
-#   include <inex/math_functions.h>
 #   include <math.h>
+#	include <inex/math_functions.h>
+#	if defined LOG_FLOAT3
+#		undef LOG_FLOAT3
+#		define LOG_FLOAT3( x )
+#	endif // #if defined LOG_FLOAT3
 
 namespace inex {
 namespace math {

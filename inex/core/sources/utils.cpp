@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include <inex/utils.h>
 
 namespace inex {

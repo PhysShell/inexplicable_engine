@@ -11,7 +11,7 @@
 namespace inex {
 namespace engine  {
 
-struct /*_declspec(novtable)*/  engine_base											
+struct /*_declspec(novtable)*/   engine_base											
 {
 	virtual void 	exit					( s32 exit_code ) = 0;
 	virtual void 	set_exit_code			( s32 exit_code ) = 0;

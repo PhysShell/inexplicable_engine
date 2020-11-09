@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{f5d384ae-e7bb-4a6e-ba35-cb8a42c98724}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="world">
+      <UniqueIdentifier>{18008d1c-4525-4d0b-9544-1fc9cc224f04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="world\engine_enderer">
+      <UniqueIdentifier>{70c774d3-d155-4c69-af28-999952659fb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\base">
+      <UniqueIdentifier>{26510343-733a-47d6-89ac-4417087f6ea6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="commands">
+      <UniqueIdentifier>{ce62a730-05e3-40c8-b8a3-451c135640a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platforms">
+      <UniqueIdentifier>{d043b3b7-b2de-4ca1-9a36-e083a2c9cb15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platforms\pc">
+      <UniqueIdentifier>{727f091d-384e-4076-b33d-78cb150ec2df}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\world.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\api.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine_renderer.h">
+      <Filter>include\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\game_renderer.h">
+      <Filter>include\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine_wrapper.h">
+      <Filter>include\base</Filter>
+    </ClInclude>
+    <ClInclude Include="engine_renderer.h">
+      <Filter>world\engine_enderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\platform.h">
+      <Filter>include\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\visual.h">
+      <Filter>include\base</Filter>
+    </ClInclude>
+    <ClInclude Include="command_processor.h">
+      <Filter>commands</Filter>
+    </ClInclude>
+    <ClInclude Include="platform_api.h">
+      <Filter>platforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\extended_renderer.h">
+      <Filter>include\base</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="game_renderer.h">
+      <Filter>world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\core\shaders.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="platform_gl4_inline.h">
+      <Filter>platforms\pc</Filter>
+    </ClInclude>
+    <ClInclude Include="platform_gl4.h">
+      <Filter>platforms\pc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="engine_renderer.cpp">
+      <Filter>world\engine_enderer</Filter>
+    </ClCompile>
+    <ClCompile Include="command_processor.cpp">
+      <Filter>commands</Filter>
+    </ClCompile>
+    <ClCompile Include="platform_api_pc.cpp">
+      <Filter>platforms\pc</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="render_base_world.cpp" />
+    <ClCompile Include="render_base_entry_point.cpp" />
+    <ClCompile Include="render_base.cpp" />
+    <ClCompile Include="game_renderer.cpp">
+      <Filter>world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\core\sources\shaders.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="platform_gl4.cpp">
+      <Filter>platforms\pc</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

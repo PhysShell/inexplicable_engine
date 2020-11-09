@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="ie_trims.cpp" />
+    <ClCompile Include="logger.cpp" />
+    <ClCompile Include="utils.cpp" />
+    <ClCompile Include="fs_file_system.cpp">
+      <Filter>filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="fs_file_system_internal.cpp">
+      <Filter>filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="fs_ini_file.cpp">
+      <Filter>filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="fs_directory_iterators.cpp">
+      <Filter>fs_manager</Filter>
+    </ClCompile>
+    <ClCompile Include="ie_debug.cpp">
+      <Filter>debug</Filter>
+    </ClCompile>
+    <ClCompile Include="ie_memory.cpp">
+      <Filter>memory</Filter>
+    </ClCompile>
+    <ClCompile Include="RpcExStackTraceEngine.cpp">
+      <Filter>debug\win</Filter>
+    </ClCompile>
+    <ClCompile Include="command_line.cpp" />
+    <ClCompile Include="processor_info.cpp">
+      <Filter>threading</Filter>
+    </ClCompile>
+    <ClCompile Include="ie_syncronize.cpp">
+      <Filter>threading</Filter>
+    </ClCompile>
+    <ClCompile Include="cpuid_internal.cpp">
+      <Filter>threading</Filter>
+    </ClCompile>
+    <ClCompile Include="memory_pool_allocator.cpp">
+      <Filter>memory</Filter>
+    </ClCompile>
+    <ClCompile Include="memory_base_allocator.cpp">
+      <Filter>memory</Filter>
+    </ClCompile>
+    <ClCompile Include="memory_multi.cpp">
+      <Filter>memory</Filter>
+    </ClCompile>
+    <ClCompile Include="memory_general_allocator.cpp">
+      <Filter>memory</Filter>
+    </ClCompile>
+    <ClCompile Include="math_functions.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="encryption.cpp" />
+    <ClCompile Include="core_entry_point.cpp" />
+    <ClCompile Include="build_extensions.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="ie_debug_linux.cpp">
+      <Filter>debug</Filter>
+    </ClCompile>
+    <ClCompile Include="inex_debug_win.cpp">
+      <Filter>debug</Filter>
+    </ClCompile>
+    <ClCompile Include="memory_chunk_reader_win.cpp">
+      <Filter>memory\win</Filter>
+    </ClCompile>
+    <ClCompile Include="memory_chunk_reader_linux.cpp">
+      <Filter>memory\linux</Filter>
+    </ClCompile>
+    <ClCompile Include="memory_chunk_reader.cpp">
+      <Filter>memory</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\extensions.h" />
+    <ClInclude Include="..\..\stl_extensions.h" />
+    <ClInclude Include="..\..\stl_extensions_inline.h" />
+    <ClInclude Include="..\..\stl_extensions_vector.h" />
+    <ClInclude Include="..\..\types.h" />
+    <ClInclude Include="..\ie_core.h" />
+    <ClInclude Include="ie_trims.h" />
+    <ClInclude Include="logger.h" />
+    <ClInclude Include="fs_file_system.h">
+      <Filter>filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="fs_file_system_internal.h">
+      <Filter>filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="fs_ini_file.h">
+      <Filter>filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="fs_directory_entry.h">
+      <Filter>fs_manager</Filter>
+    </ClInclude>
+    <ClInclude Include="fs_directory_entry_inline.h">
+      <Filter>fs_manager</Filter>
+    </ClInclude>
+    <ClInclude Include="fs_directory_iterators.h">
+      <Filter>fs_manager</Filter>
+    </ClInclude>
+    <ClInclude Include="fs_directory_iterators_inline.h">
+      <Filter>fs_manager</Filter>
+    </ClInclude>
+    <ClInclude Include="fs_manager.h">
+      <Filter>fs_manager</Filter>
+    </ClInclude>
+    <ClInclude Include="fs_path_string.h">
+      <Filter>fs_manager</Filter>
+    </ClInclude>
+    <ClInclude Include="fs_path_string_inline.h">
+      <Filter>fs_manager</Filter>
+    </ClInclude>
+    <ClInclude Include="fs_catalog_operations_linux_impl.h">
+      <Filter>fs_manager\linux</Filter>
+    </ClInclude>
+    <ClInclude Include="fs_catalog_operations_win_impl.h">
+      <Filter>fs_manager\win</Filter>
+    </ClInclude>
+    <ClInclude Include="ie_debug.h">
+      <Filter>debug</Filter>
+    </ClInclude>
+    <ClInclude Include="ie_memory.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="ie_memory_inline.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\macro_compiler.h">
+      <Filter>macros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\macro_debug.h">
+      <Filter>macros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\macro_declarations.h">
+      <Filter>macros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\macro_extensions.h">
+      <Filter>macros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\macro_log.h">
+      <Filter>macros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\macro_platform.h">
+      <Filter>macros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\macro_string.h">
+      <Filter>macros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\macro_unreferenced_parameter.h">
+      <Filter>macros</Filter>
+    </ClInclude>
+    <ClInclude Include="memory_shared_object.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="memory_shared_object_inline.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\os_windows.h">
+      <Filter>os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\os_extensions.h">
+      <Filter>os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\os_include.h">
+      <Filter>os</Filter>
+    </ClInclude>
+    <ClInclude Include="RpcExStackTraceEngine.h">
+      <Filter>debug\win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\command_line.h" />
+    <ClInclude Include="..\..\library_dependencies.h" />
+    <ClInclude Include="cpuid_internal.h">
+      <Filter>threading</Filter>
+    </ClInclude>
+    <ClInclude Include="processor_info.h">
+      <Filter>threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\os_linux.h">
+      <Filter>os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils.h" />
+    <ClInclude Include="..\..\utils_inline.h" />
+    <ClInclude Include="ie_syncronize.h">
+      <Filter>threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\api.h" />
+    <ClInclude Include="memory_pool_allocator.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="memory_base_allocator.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="memory_platform.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\math_matrix2_inline.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\math_float2.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\math_float2_inline.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\math_functions.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\math_functions_inline.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\math_matrix2.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="memory_general_allocator.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\threading_functions.h">
+      <Filter>threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\threading_functions_win_inline.h">
+      <Filter>threading</Filter>
+    </ClInclude>
+    <ClInclude Include="encryption.h" />
+    <ClInclude Include="..\..\strings_functions.h" />
+    <ClInclude Include="..\..\math_float3_inline.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\math_float3.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\monitoring.h" />
+    <ClInclude Include="..\..\memory_fixed_size_allocator.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\resources.h">
+      <Filter>resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tasks_packaged_task.h">
+      <Filter>tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\memory_extensions.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\engine.h" />
+    <ClInclude Include="..\core.h" />
+    <ClInclude Include="..\..\memory_macros.h" />
+    <ClInclude Include="build_extensions.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="..\..\math_float4x4.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="memory_chunk_reader.h">
+      <Filter>filesystem</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="core.cbp">
+      <Filter>miscellanous</Filter>
+    </None>
+    <None Include="core.depend">
+      <Filter>miscellanous</Filter>
+    </None>
+    <None Include="core.layout">
+      <Filter>miscellanous</Filter>
+    </None>
+    <None Include="post_build.bat">
+      <Filter>miscellanous</Filter>
+    </None>
+    <None Include="stdafx.h.gch" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="macros">
+      <UniqueIdentifier>{4b9df2af-f992-413c-b4c7-1f9caa880697}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="filesystem">
+      <UniqueIdentifier>{2f956f8e-199a-45d0-9425-e0c5cc5635da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="fs_manager">
+      <UniqueIdentifier>{0ea4c719-dd66-4791-8003-ff922fc495be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="memory">
+      <UniqueIdentifier>{433b2a9e-f208-4109-8d46-ca9f62bd28e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="os">
+      <UniqueIdentifier>{32b06807-53c5-420e-8e60-6fb660841637}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="fs_manager\win">
+      <UniqueIdentifier>{2ccc7416-b725-4a53-a6b2-638fb2e3ebd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="fs_manager\linux">
+      <UniqueIdentifier>{92182366-8288-4ea3-b095-956e8cab4195}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="debug">
+      <UniqueIdentifier>{91e62b92-a094-45ff-ad84-e0744cce9478}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="miscellanous">
+      <UniqueIdentifier>{b233a1fa-73bc-438e-a5e4-c2589b245384}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="debug\win">
+      <UniqueIdentifier>{0012377d-78e9-4fe8-aa23-8b0816d6fdfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="threading">
+      <UniqueIdentifier>{7043676e-0efd-4bc3-8c27-27064aba5d55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="math">
+      <UniqueIdentifier>{53db3014-4ab0-47ec-b5b0-74a054a4e1cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{e9efb106-51aa-4279-bbaa-d1613bf4f641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tasks">
+      <UniqueIdentifier>{0643979d-b970-41e8-9c1e-80c51cf7a900}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="memory\win">
+      <UniqueIdentifier>{ff04e68b-2031-4c9c-8a74-8c865078e604}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="memory\linux">
+      <UniqueIdentifier>{5d28bd88-c56d-47af-9e71-3600f9391ebf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

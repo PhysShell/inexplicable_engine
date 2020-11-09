@@ -1,8 +1,9 @@
 #include "pch.h"
-#include "sound_object.h"
-#include <inex/fs_utils.h>
-#include <AL/alc.h>
+
+#include <AL/al.h>
 #include <AL/alut.h>
+#include <inex/fs_utils.h>
+#include "sound_object.h"
 
 
 #define PRELOADED_BUFFERS_COUND             ( 1u << 1u )
@@ -103,12 +104,12 @@ void    sound_object::load_wave ( pcstr path )
 
 bool    sound_object::load_ogg ( pcstr path, bool streamed )
 {
-	NODEFAULT;
+	NOT_IMPLEMENTED( );
 }
 
 bool    sound_object::read_next_chunk ( u32 const id, u64 const size )
 {
-	NODEFAULT;
+	NOT_IMPLEMENTED( );
 }
 
 void sound_object::play()

@@ -31,13 +31,13 @@ struct helper
 
 #if INEX_PLATFORM_LINUX
 template < typename function, typename ... parameters_pack >
-void   benchmark ( function function, parameters_pack ... parameters )
+void   benchmark ( function function_to_benchmark, parameters_pack && ... parameters )
 {
 	timeval 				time;
 	double 					start, end;
 	gettimeofday			( &time, nullptr );
 	start 					= time.tv_usec;
-	wrapper< helper< function, parameters_pack... >::type >				( function, parameters ... );
+	detail::wrapper< detail::helper< function, parameters_pack ... >::type >				( function_to_benchmark, parameters ... );
 	gettimeofday			( &time, nullptr );
 	end 					= time.tv_usec;
 	LOGGER					( "[benchmark][-]\t\t: %f usec", end - start );
@@ -63,7 +63,7 @@ float   benchmark ( function function_to_benchmark, parameters_pack && ... param
 #endif // #if INEX_PLATFORM_LINUX
 
 // todo: dd debug/release #ifdef's
-#define BENCHMARK( x, ... ) float b = inex::debug::benchmark( x, __VA_ARGS__ ); LOGGER ( "[benchmark][%s]\t\t: %f usec", #x , b )
+#define BENCHMARK( x, ... ) do { float b = inex::debug::benchmark( x, __VA_ARGS__ ); LOGGER ( "[benchmark][%s]\t\t: %f usec", #x , b ); } while ( 0 )
 
 INEX_CORE_API
 void INEX_CCALL	fatal					( 	pcstr 	file,

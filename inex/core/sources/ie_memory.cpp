@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 
 #include "ie_memory.h"
 #include <iostream>
@@ -7,6 +7,10 @@
 
 namespace inex {
 namespace memory {
+
+void	preinitialize ( )
+{
+}
 
 //#define DEBUG_MEMORY_MANAGER
 

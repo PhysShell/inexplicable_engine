@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include <inex/core/sources/memory_pool_allocator.h>
 
 namespace inex {

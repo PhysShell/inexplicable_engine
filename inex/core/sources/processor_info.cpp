@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "processor_info.h"
 #include "cpuid_internal.h"
 

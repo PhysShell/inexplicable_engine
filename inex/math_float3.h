@@ -22,7 +22,8 @@ public:
             type        y;
             type        z;
 		};
-		float			elements[ 3 ];
+		
+		type			elements[ 3 ];
 	};
 
 

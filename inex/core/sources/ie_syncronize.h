@@ -10,6 +10,7 @@
 #		define CS_LEAVE( x )	LeaveCriticalSection        ( x )
 #		define CS_OBJ	        CRITICAL_SECTION
 #	elif INEX_PLATFORM_LINUX		// #if INEX_PLATFORM_WINDOWS 
+		// probably need futex here
 #		define CS_INIT( x ) 	pthread_mutex_init          ( x, nullptr )
 #		define CS_DEL( x )	    pthread_mutex_destroy       ( x )
 #		define CS_ENTER( x )	pthread_mutex_lock          ( x )

@@ -1,7 +1,7 @@
 #ifndef FS_FILE_SYSTEM_H_INCLUDED
 #	define FS_FILE_SYSTEM_H_INCLUDED
 
-#   include <inex/core/sources/fs_read_write.h>
+#   include <inex/core/sources/memory_chunk_reader.h>
 
 // to work with files, create find_file_it,
 // which finds the file iterator through the find
@@ -17,15 +17,10 @@ namespace fs {
 		};
         */
 
-	INEX_CORE_API
-    fs::reader*	r_open		( pcstr path );
-	INEX_CORE_API
-    void		r_close		( fs::reader*&rdr );
-	//void	r_close		( virtual_file_reader*&rdr );
-    //writer*	w_open		( pcstr path );
-    //void	w_close		( writer*&wrt );
-    void		initialize	( pcstr dir );
-    void		finalize		( );
+INEX_CORE_API	memory::reader*	r_open		( pcstr path );
+INEX_CORE_API		void		r_close		( memory::reader*&rdr );
+					void		initialize	( pcstr dir );
+					void		finalize	( );
 
 } // namespace fs
 } // namespace inex

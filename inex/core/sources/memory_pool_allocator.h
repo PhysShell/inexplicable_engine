@@ -48,10 +48,10 @@ public:
     virtual size_t      total_size				( ) const override								{	return 0;	}
 	virtual size_t      allocated_size			( ) const override								{	return MALLOC_SIZE( m_arena );	}
 
-	virtual void	    finalize				( );
-    virtual void        initialize				( pvoid arena, size_t const size, pcstr id );
-    virtual void	    free_impl				( pvoid ap );
-    virtual pvoid	    malloc_impl				( u32 size );
+	virtual void	    finalize				( )												{}
+    virtual void        initialize				( pvoid arena, size_t const size, pcstr id )	{}
+    virtual void	    free_impl				( pvoid ap )									{}
+	virtual pvoid	    malloc_impl				( u32 size )									{	return	0;	}
 			void		dump_memory_statistics  ( ) const;
 
     template < typename T >

@@ -6,8 +6,8 @@
 #ifndef INEX_SOUND_OBJECT_H_INCLUDED
 #	define INEX_SOUND_OBJECT_H_INCLUDED
 
-#   include <AL/al.h>
 #   include <inex/math_float3.h>
+#	include <inex/sound/api.h>
 // #   include <AL/alc.h>
 // // #include <AL/alu.h>
 // #   include <AL/alut.h>

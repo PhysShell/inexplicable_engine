@@ -18,7 +18,7 @@ struct memory_monitor
     size_t          size; // in bytes
 }; // struct memory_monitor
 
-class base_allocator : 	private detail::nonassignable,
+class INEX_CORE_API base_allocator : 	private detail::nonassignable,
 						private detail::noncopyable
 {
 public:

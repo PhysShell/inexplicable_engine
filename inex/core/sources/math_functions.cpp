@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include <inex/math_functions.h>
 
 
@@ -19,7 +19,7 @@ void    multiple_sse ( float * const left, float * const right )
         : [ a ] "m" ( * left ), [ b ] "m" ( * right )
         : "%xmm0", "%xmm1"
     );
-	# elif defined ( _MSC_VER ) && not defined INEX_PLATFORM_WINDOWS_64 // #if defined ( __GNUC__ )
+	# elif defined ( _MSC_VER ) && ! defined INEX_PLATFORM_WINDOWS_64 // #if defined ( __GNUC__ )
 	// memory must be aligned by 128
 	INEX_FORCE_ALIGNMENT( 16 ) float l				= * left;
 	INEX_FORCE_ALIGNMENT( 16 ) float r				= * right;

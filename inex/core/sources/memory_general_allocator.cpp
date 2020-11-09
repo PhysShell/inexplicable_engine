@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "memory_general_allocator.h"
 
 
@@ -23,7 +23,7 @@ struct general_allocator_user_memory { };
 inline
 u64     bits_to_bytes ( u64 value )
 {
-    return              value / __CHAR_BIT__;
+    return              value / CHAR_BIT;
 }
 
 inline

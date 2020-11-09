@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 
 #include "ie_trims.h"
 #include <inex/core/ie_core.h>

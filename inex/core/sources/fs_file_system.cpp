@@ -1,12 +1,12 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "fs_file_system.h"
 #include "fs_file_system_internal.h"
 #include <inex/stl_extensions.h>
 #include "fs_ini_file.h"
 
-#ifdef INEX_FILESYSTEM_SUPPORTED
+#ifdef INEX_STD_FILESYSTEM_SUPPORTED
 #   include <experimental/filesystem>
-#endif  // #ifdef INEX_FILESYSTEM_SUPPORTED
+#endif  // #ifdef INEX_STD_FILESYSTEM_SUPPORTED
 
 #include <set>
 #include <ctime>
@@ -36,68 +36,40 @@ void    finalize ( )
 										it		!=	end_it;
 										++it )
 	{
-        // we can use destructor of memory_mapped_file
-        // to avoid this
-        //Msg("Deleting address: %file_path, size %d", &(*I), (*I).size);
-        const_cast< memory_mapped_file& >( *it ).close( );
+        const_cast< memory_mapped_file& >( * it ).close( );
     }
 }
 
-void    wchar_to_char ( pstr dest, wchar_t const* src, size_t sz )
+void    wchar_to_char ( pstr dest, wchar_t const * src, size_t sz )
 {
 	size_t i			= 0;
-    //wchar_t wc;
-	for ( wchar_t wide/*, i = 0*/; i < sz ; ++i )
-    {
+
+	for ( wchar_t wide; i < sz ; ++i ) {
 		wide			= src[ i ];
 		dest[ i ]		= char( wide );
 	}
 
 	dest[ sz ]			= 0;
-
-    //INEX_DEBUG_WAIT;
-
 }
-
-// place slash in ie_core.cpp in _initialize in FS
-//#define FS_WHEEL
-#ifdef FS_WHEEL
-pstr	util ( pcstr file_path )
-{
-    pstr n			= memory::ie_allocate< char >( strlen( file_path ) + 1 );
-
-    for ( u32 i = { 0 }; i < strlen( file_path ); ++i )
-	{
-        if ( isalpha( file_path[ i ] ) )
-		{
-            n[ i ]	= file_path[ i ];
-		}
-	}
-
-    return 			n;
-}
-#endif // #ifdef FS_WHEEL
 
 void	initialize	( pcstr dir )
 {
 // when testing our fs-wheel
-#undef INEX_FILESYSTEM_SUPPORTED
+#undef INEX_STD_FILESYSTEM_SUPPORTED
 
-#ifndef INEX_FILESYSTEM_SUPPORTED
+#ifndef INEX_STD_FILESYSTEM_SUPPORTED
     Msg( "- [fs]\t: initializing custom fs..." );
 	ASSERT_D( !fs::exists( dir ), "Directory '%s' was not found. Check if it exists.", dir );
 
 	clock_t start_initializing			=			clock( );
 
     for ( recursive_directory_iterator  it			( dir ),
-										end_it	= 	recursive_directory_iterator( ); // don't do just E( )...
+										end_it	= 	recursive_directory_iterator( );
 										it 		!= 	end_it;
 										++it )
     {
-        if ( is_directory( ( * it ).path( ).c_str( ) ) || is_system_catalog( ( *it ).path( ).c_str( ) ))
-        {
+        if ( is_directory( ( * it ).path( ).c_str( ) ) || is_system_catalog( ( *it ).path( ).c_str( ) ) )
             continue;
-        }
 
         files.insert    ( memory_mapped_file( ( * it ).path( ).c_str( ) ) );
         Msg( "- [fs][info]\t: loading \"%s\"", ( * it ).path( ).c_str( ) );
@@ -105,26 +77,15 @@ void	initialize	( pcstr dir )
     }
 
 	clock_t end_initializing			=	clock( ) - start_initializing ;
-#else   // #ifdef INEX_FILESYSTEM_SUPPORTED
+#else   // #ifdef INEX_STD_FILESYSTEM_SUPPORTED
     namespace   std_fs				        = 	std::experimental::filesystem;
 	typedef     std_fs::path::value_type    	path_type;
 
     Msg( "- [fs]\t: initializing std fs..." );
 
-#ifdef FS_WHEEL
-// dir doesn't have to have slash at the end
-#   ifdef __GNUC__
-        pstr n			= 	util( dir );
-        ASSERT_D( std_fs::exists( std_fs::path{ n } ), "Data directory '%s' isn't found", n );
-        memory::ie_delete		( n ); // never called...
-#   else // #ifdef __GNUC__
-        ASSERT_D( std_fs::exists( std_fs::path{ dir } ), "Data directory %s isn't found", dir );
-#   endif // #ifdef __GNUC__
-#else // #ifdef FS_WHEEL
     ASSERT_D( std_fs::exists( std_fs::path{ dir } ), "Data directory '%s' isn't found", dir );
-#endif // #ifdef FS_WHEEL
 	clock_t start_initializing			=			clock( );
-	for ( auto const& it : std_fs::recursive_directory_iterator( dir ) )
+	for ( auto const & it : std_fs::recursive_directory_iterator( dir ) )
 	{
 		if ( std_fs::is_regular_file( it ) )
 		{
@@ -147,18 +108,18 @@ void	initialize	( pcstr dir )
 		}
 	}
 	clock_t end_initializing			=	clock( ) - start_initializing ;
-#endif  // #ifdef INEX_FILESYSTEM_SUPPORTED
+#endif  // #ifdef INEX_STD_FILESYSTEM_SUPPORTED
 
-    Msg( "fs: %d files cached. initializing time:\t%f sec\n", files.size( ), ( double )end_initializing / CLOCKS_PER_SEC );
+    Msg				( "fs: %d files cached. initializing time:\t%f sec\n", files.size( ), ( double )end_initializing / CLOCKS_PER_SEC );
 }
-fs::reader*		r_open ( pcstr path )
+memory::reader *	r_open ( pcstr path )
 {
 	//reader *r	=nullptr;
-	Msg( "- [fs][info]\t: loading \"%s\"", path );
-	return			( memory::ie_new< fs::virtual_file_reader >( path ) );
+	Msg				( "- [fs][info]\t: loading \"%s\"", path );
+	return			( memory::ie_new< memory::virtual_file_reader >( path ) );
 }
 
-void	r_close	( fs::reader*& rdr )
+void	r_close	( memory::reader *& rdr )
 {
 	memory::ie_delete( rdr );
 }

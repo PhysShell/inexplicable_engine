@@ -1,0 +1,40 @@
+	glfwSetErrorCallback( error_callback );
+	// glfwSetKeyCallback( window, key_callback );
+	VERIFY				( glfwInit( ) );
+
+	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
+	//glfwDefaultWindowHints( );
+
+	glfwWindowHint		( GLFW_CONTEXT_VERSION_MAJOR, 3 );
+    glfwWindowHint		( GLFW_CONTEXT_VERSION_MINOR, 3 );
+    glfwWindowHint		( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
+	glfwWindowHint		( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
+
+	// Create the device
+	g_gl3_context		= glfwCreateWindow( size_x, size_y, "__INEX__", nullptr, nullptr );
+	LOGGER          ( "* '%s' window: initial config: [%d x %d]", "__INEX__", size_x, size_y );
+	ASSERT_D        ( g_gl3_context, "Couldn't create window and its OpenGL context." );
+	glfwMakeContextCurrent( g_gl3_context );
+
+	VERIFY			( initialize_extensions( ) );
+	// Display the name of video board
+	s32 gl_major	= -1;
+	s32 gl_minor	= -1;
+    glGetIntegerv	( GL_MAJOR_VERSION, &gl_major );
+    glGetIntegerv	( GL_MINOR_VERSION, &gl_minor );
+	ASSERT_D		( ( gl_major != -1 ) || ( gl_minor != -1 ), "opengl fcked up" );
+
+    LOGGER			(
+		"* [hw_wrapper]\t: GPU [vendor:%s]: %s\n\t"
+        "* [OpenGL] version : [%d.%d]",
+        ( pcstr ) glGetString( GL_VENDOR ),
+        ( pcstr ) glGetString( GL_RENDERER ), gl_major, gl_minor
+            // , glewGetString( GLEW_VERSION )
+    );
+
+	glfwSwapInterval( 1 );
+
+	glfwSetFramebufferSizeCallback          ( g_gl3_context, framebuffer_size_callback );
+	glfwSetWindowSizeCallback				( g_gl3_context, windowSizeCallback );
+
+	glfwShowWindow	( g_gl3_context);

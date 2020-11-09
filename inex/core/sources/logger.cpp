@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "logger.h"
 #include <inex/core/sources/ie_memory.h>
 #include <inex/command_line.h>
@@ -6,20 +6,51 @@
 namespace inex {
 namespace logging {
 
-static bool                         s_log_to_stdout ;//= command_line::check_key( "-log_to_stdout" );
+static logging_to_enum				dest;
 static string_path					log_file_name	= "engine.log";
-static fs::writer*         			fwriter      	= nullptr;
+static memory::writer*         		fwriter			;
 static threading::critical_section	log_section		;
 
+void	preinitialize ( )
+{
+	dest			= logging_to_enum::file;
+
+	if ( command_line::check_key( "-log_to_stdout" ) )
+        dest		= logging_to_enum::terminal;
+}
+
+void	initialize ( bool no_log )
+{
+    if ( no_log )
+	{
+		printf		( "nolog\n" );
+		return;
+	}
+
+    fwriter			= memory::ie_new< memory::file_writer >( log_file_name );
+}
+
+void 	finalize ( )
+{
+	if ( fwriter )
+		memory::ie_delete( fwriter  );
+}
+
+void	set_output_destination	( logging_to_enum destination )
+{
+	dest			= destination;
+}
 
 void 	Msg ( pcstr format, ... )
 {
 
     threading::scope_locker crit_sect( log_section );
-    if ( !fwriter )
-	{
+
+	if ( dest == logging_to_enum::suspend_logging )
 		return;
-	}
+
+    if ( !fwriter )
+		return;
 
 	va_list mark;
 	string2048 buf;
@@ -43,49 +74,15 @@ void 	Msg ( pcstr format, ... )
 bool	put_string ( pcstr msg )
 {
     //threading::scope_locker crit_sect	( log_section );
-    if ( fwriter )
+	switch ( dest )
 	{
-        fwriter->w          ( msg );
+		case logging_to_enum::file :			if ( fwriter ) fwriter->w ( msg ); break;
+		case logging_to_enum::terminal:			printf( "%s", msg ); break;
+		case logging_to_enum::std_error_out: 
+		default:								UNREACHABLE_CODE( );
 	}
-
-    if ( s_log_to_stdout )
-    {
-        printf              ( "%s", msg );
-    }
 
     return      			fwriter;
-}
-
-void	initialize ( bool no_log )
-{
-    if ( no_log )
-	{
-		printf		( "nolog\n" );
-		return;
-	}
-
-    if ( command_line::check_key( "-log_to_stdout" ) )
-    {
-        s_log_to_stdout = 1;
-    }
-
-    fwriter			= memory::ie_new< fs::file_writer >( log_file_name );
-
-    //Msg( "* Created writer in LOG.cpp. Address: %p!", fwriter );
-}
-
-void 	finalize ( )
-{
-	//Msg( "* Attempting to finalize writer in LOG.cpp. Address: %p!", fwriter );
-	//Msg( "* casted to file_writer in LOG.cpp. Address: %p!", ( fs::file_writer* )fwriter );
-	if ( fwriter )
-	{
-		//Msg( "*		Pass file_writer to ie_delete." );
-		//memory::dump_memory_contents( );
-		memory::ie_delete( fwriter  );
-	}
-
-    s_log_to_stdout     = 0;
 }
 
 }// namespace logging

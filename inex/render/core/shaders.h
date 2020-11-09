@@ -4,9 +4,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #ifndef SHADERS_H_INCLUDED
-#   define SHADERS_H_INCLUDED
+#	define SHADERS_H_INCLUDED
 
-#   include <inex/render/ogl/ogl_extensions.h>
+#	include <inex/render/gl4/gl4_external.h>
 
 namespace inex  {
 namespace render_ogl   {
@@ -15,7 +15,8 @@ enum    enum_shader_type
 {
     enum_shader_type_vertex     = GL_VERTEX_SHADER,
     enum_shader_type_geometry   = GL_GEOMETRY_SHADER,
-    enum_shader_type_fragment   = GL_FRAGMENT_SHADER // analog of D3D's pixel shader
+    enum_shader_type_fragment   = GL_FRAGMENT_SHADER, // analog of D3D's pixel shader
+	enum_shader_type_tesselation
 }; // enum enum_shader_type
 
 //------------------------------------------------
@@ -29,18 +30,22 @@ inline                  shader          ( shader const& right ) :
                         {
                         }
 
-                        shader          ( enum_shader_type type, pcstr path, u8 auto_compilation = 1 );
-        void            create          ( ) ;
+						shader			( )	= default;
+
+						shader          ( enum_shader_type type, pcstr path, bool auto_compilation = 1 );
+inline	void			create			( enum_shader_type type, pcstr path, bool auto_compilation = 1 )	{ m_type = type; m_source = path; if ( auto_compilation ) compile( ); }
         void            destroy         ( ) ;
-        void            compilev        ( pcstr ) ; void compilef( pcstr); void compile();
+		void			compile			( )	;
         void            check_errors    ( ) ;
-        // void            use             ( ) {     glUseProgram        ( m_shader_program ); }
-        void            load_vs_and_fs  ( pcstr vsp, pcstr fsp );
+
 inline  u32             self            ( ) {   return m_object;    }
+inline	void			set_uniform1f	( float const value )	{	/*check if shader active active*/ glUniform1f( m_object, value );	}
+
+
 private:
-    pcstr               m_source           ;
-    u32                 m_object;
-    enum_shader_type    m_type             ;
+    pcstr               m_source			;
+    u32                 m_object			;
+    enum_shader_type    m_type				;
 }; // class shader
 
 //------------------------------------------------
@@ -57,11 +62,12 @@ public:
         void            link            ( );
         void            check_errors    ( );
 
+		void			validate		( );
 inline  void            create          ( )                 {   m_shader_program    = glCreateProgram( );                   }
 inline  void            use             ( )                 {   glUseProgram        ( m_shader_program );                   }
 inline  void            unbind          ( )                 {   glUseProgram        ( 0u );                                 }
 inline  s32             find_attribute  ( pcstr attribute ) {   return  glGetAttribLocation( m_shader_program, attribute ); }
-inline  s32             find_unifrom    ( pcstr uniform )   {   return  glGetUniformLocation( m_shader_program, uniform );  }   
+inline  s32             find_unifrom    ( pcstr uniform )   {   s32 result = glGetUniformLocation( m_shader_program, uniform ); VERIFY( result != -1 ); return result;	}   
 // To do: behave different when it's shader or u32 metaprogrammingly
         template < typename T, typename... Args >
 inline  void            attach          ( T t, Args ... args )

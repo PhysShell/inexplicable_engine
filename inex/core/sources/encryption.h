@@ -6,12 +6,14 @@
 #ifndef INEX_ENCRYPTION_H_INCLUDED
 #	define INEX_ENCRYPTION_H_INCLUDED
 
-#include "stdafx.h"
+#include "pch.h"
 
 #include "encryption.h"
 
 namespace inex {
 namespace encryption {
+
+void	initialize			( );
 
 void    initialize_crc32    ( );
 u32     crc32               ( pvoid const pointer, u32 length );

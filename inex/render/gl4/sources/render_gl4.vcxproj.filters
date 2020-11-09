@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="render_ogl3.cpp" />
+    <ClCompile Include="pch.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="stage.cpp">
+      <Filter>scene_render\stages</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_context.cpp">
+      <Filter>scene_render</Filter>
+    </ClCompile>
+    <ClCompile Include="gl4_external.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="gl4_entry_point.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\sources\hw_wrapper_gl4.cpp">
+      <Filter>render_common\hw_wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="visual.cpp">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="model_manager.cpp">
+      <Filter>objects</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="pch.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\sources\hw_wrapper.h">
+      <Filter>render_common\hw_wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\sources\hw_wrapper_base_gl4.h">
+      <Filter>render_common\hw_wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\sources\hw_wrapper_inline.h">
+      <Filter>render_common\hw_wrapper\hw_caps</Filter>
+    </ClInclude>
+    <ClInclude Include="stage.h">
+      <Filter>scene_render\stages</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_context.h">
+      <Filter>scene_render\stages</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_render.h">
+      <Filter>scene_render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\renderer.h">
+      <Filter>include\gl4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gl4_extensions.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gl4_external.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="visual.h">
+      <Filter>objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\sources\res_shader.h">
+      <Filter>resources</Filter>
+    </ClInclude>
+    <ClInclude Include="model_manager.h">
+      <Filter>objects</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="core">
+      <UniqueIdentifier>{b205c6a7-337f-4b3d-9250-97b9e609ae2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render_common">
+      <UniqueIdentifier>{283bf03e-c286-4637-85d2-26d5d385aceb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render_common\hw_wrapper">
+      <UniqueIdentifier>{430ecbe3-0455-4690-8bd9-d6a6f2d3c33b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render_common\hw_wrapper\hw_caps">
+      <UniqueIdentifier>{ee4edfb9-532f-4817-a304-c323481f532a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene_render">
+      <UniqueIdentifier>{8d4476a8-188d-436e-8f57-9e8558476057}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene_render\stages">
+      <UniqueIdentifier>{decc0aa8-09f1-4b99-987d-1bf14297419b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{085f1c63-e452-4dc0-9ca3-cf334fb1bbf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\gl4">
+      <UniqueIdentifier>{28da3e22-bf7e-4b66-bc36-3ecbbf24ace5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="misc">
+      <UniqueIdentifier>{3e438818-49c6-41b3-8f8c-7887ff8d6b93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="objects">
+      <UniqueIdentifier>{d97d0082-8af3-4143-b7f0-9421ce156b31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{78ce5553-b480-4dc0-b450-33788fb07c70}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

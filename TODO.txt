@@ -27,24 +27,20 @@
 		*	NEW:		базовая файлсистем
 		* 	NEW:		репозиторий на гитхаб
 		* 	NEW:		выпилить из таргетов исходы другиъ платформ
-        *   NEW:        rust static lib вызывающаяся из ++ кода
+        *   NEW:        rust static lib вызывающаяся из ++ кода ( удалил )
         *   BUG:        переписал general_allocator у К&Р по-сути
+		* 	NEW:		benchmarking
+		*	NEW:		float4x4
 
 ***[Shell]*** In progress:
 -------------------------
 		1.		отформатировать кроссплатформ код, пока нагло стоят заглушки
 		2.		стек дамп.. пока только линукс и вин32 ( msvc )
-        3.      дата холдер - рендер агент
-        4.      атомики
-        5.      девайс - основное на данный момент
-        6.      opengl get proc шаблон
-        7.      vorbis, sound_(device/object)
-        8.      надо наконец допилить статус сообщения лога
+		3.		
 
 
 		------------- не нравится и вааще впадло ---------------------
-		---P	залинковать гл статически на всех мингв
-        ---Р    раст на виндовс
+		---P	перенести теперь это на линукс и вин64
 		--------------------------------------------------------------
 		
 		bugs/features:
@@ -57,6 +53,7 @@
 ***[Shell]*** BUGS:
         * fs_file_system: сет ммф файлов не все файлы добавляет
         * fs_file_system: валится, когда ммф файлов ~1020
+		* math,cam?: увеличивается скорость на 26м вращении камеры (переполнение?)
 
 ***[Shell]*** TODO:
 ---------------------------
@@ -65,7 +62,6 @@
 		* fs_iterator pimpl: сделать правильно, хотя б инеклюдь в импл.х
 		* fs_iterator: убрать m_end а юзать m_entry для этого
 		* fs_internal: обойтись без заглушек для платформы
-        * pool_allocator: ресерчить
 		* профайлер и поисковик утечек:
 			valgrind valgrind.org,
 			perf eax.me,
@@ -76,10 +72,7 @@
 			strace ltrace
 			flamegraph eax
 		* file_pa
-		* OBJ file loader ( Python script to export custom JSON files from Blender. C++ JSON )
 		* сделать классы для лога\рендердевайса, а вдруг их понадобится два
-		* использовать полный список namespaces, inex::core::log, а не просто лог
-		* сделать Msg ( и lowercase ) глобальным для inex namespace
 		* вынести все инлайны в *_inline.h файлы	-> не всегда это лучший кейс
 		* debug memory manager
 		* copy-on-write/shared str
@@ -94,55 +87,19 @@
 			
 		* 	метод с наследованием от платформозависимого интерфейса вааще
 			платформозависимый костыльныя. хотя, мой код такой же. апдейтну потом...
-		*	consider some ways of how to store platform-specific code?? ( pimpl, inheritance, or just conditional compilation )
-		*	https://gitlab.com/gitlab-org repository
-		*	get rid of all the inline assembly? (intrinsics  rules?)
-		*	типы сообщений лога? warning, error, etc.
 		*   использовать типа ie_memcpy or ie_memset и там чекать type_traits в дебаге. typeid ???
-		*	encrypting / decrypting data
-		*	serialization
 		*	reflection data
-		*	tagged pointers
 		*	pool alloc, doug lea alloc, region-based memory, jemalloc, ptmalloc-implementation
-		*	store binaries in one folder
-		* 	почитать про как дампить программу
 		* 	структуры данных: unrolled linked list, R-tree, Quadtree,Red-black tree
 		*	алгоритмы: дихотомия
-		*	циклический избыточный код (CRC)
-		*	global illumination
-		*	тут о том, что GC не нужен, а нужен shared_ptr
-			https://www.gamedev.net/forums/topic/631744-garbage-collector/
 		*	о сети
 			https://gafferongames.com/post/udp_vs_tcp/
 			и в книгах (Programming Abstractions in C++ or Stephen Rod)
 		* 	gamedev blog
 			https://preshing.com
 		* 	прочитать про fold
-
-		https://nazva.net/; http://www.braingames.ru; https://leetcode.com/; https://www.careercup.com/
-		
+				
 		очень большой кусок:
 			window, engine api...
 		
 ***[ Shell ]*** Notes:
-		* 	ЛИБЫ в командной строке должны идти до сорцев и объектов!
-
-		* 	кроссплатформ штуки:
-			1. если имплементация немного отличается, а интерфейс одинаков
-				юзай разные файлы имплементации
-			2.	выноси независимые штуки в отдельный файл
-			3. 	не называй типы с префиксом платфорым
-		
-		* 	по поводу енджин: он должен содержать включать ренддер
-			в вин32 он еще и дллкой делается. тогда сделать типа енджинапи для лин и вин 
-			и гейм тоже так же...
-			рендер синглетон, еще есть рендер фактори
-			и у рендера есть дллмаин и там они аттачат енджин
-			вместо класс апликейшн - енджин, виндов в енджин прожекте и юзает рендер штоле
-			
-		*	класс текстуры и реализация под рендера своя. имадж манажер который управляет этой лабудой
-		*	лучше написать апи ГЛ на ++ а потом юзать в раст..
-		*	или рендер на расте тупо сделать и инвокать в с++ коде
-		*	bigocheatsheet.com - complexity of algorithms
-        
-        *   возможно выкинуть всякие хедеры с гл спеками

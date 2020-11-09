@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="render.cpp" />
+    <ClCompile Include="..\..\ogl\ogl_extensions.cpp" />
+    <ClCompile Include="device.cpp" />
+    <ClCompile Include="shaders.cpp" />
+    <ClCompile Include="..\..\common\sources\render_device_linux.cpp" />
+    <ClCompile Include="pch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\library_linkage.h" />
+    <ClInclude Include="..\..\ogl\ogl_include.h" />
+    <ClInclude Include="..\..\ogl\render_include.h" />
+    <ClInclude Include="..\..\common\sources\render_agent.h" />
+    <ClInclude Include="..\..\ogl\ogl_extensions.h" />
+    <ClInclude Include="..\device.h" />
+    <ClInclude Include="..\shaders.h" />
+    <ClInclude Include="..\..\common\sources\render_device.h" />
+    <ClInclude Include="pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="miscellanous">
+      <UniqueIdentifier>{9d1a89e6-360f-4362-89c1-cb7698aa61f6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="render.depend">
+      <Filter>miscellanous</Filter>
+    </None>
+  </ItemGroup>
+</Project>

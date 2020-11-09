@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{23e87474-acc5-462d-bacb-aff021fb3103}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\ogl3">
+      <UniqueIdentifier>{d4a33c75-c0f5-4f62-9a4a-4d4723981d9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render_common">
+      <UniqueIdentifier>{0f9265b3-bc64-4aed-acef-61d72df08119}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render_common\hw_wrapper">
+      <UniqueIdentifier>{30f7ef93-57db-4fd0-9d2a-2ab11077665c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render_common\hw_wrapper\hw_caps">
+      <UniqueIdentifier>{6df7844a-1993-48b9-8fec-0a4dbeb4fdfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene_render">
+      <UniqueIdentifier>{cb7b66bc-e22a-4e5e-8a7c-35d6e560e0cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene_render\stages">
+      <UniqueIdentifier>{e19e9fdc-644c-4fd0-8eb4-37906f3c975e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="objects">
+      <UniqueIdentifier>{4112b9bc-d664-4c41-ba4a-08054f5070a7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\renderer.h">
+      <Filter>include\ogl3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\sources\hw_wrapper.h">
+      <Filter>render_common\hw_wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\sources\hw_wrapper_inline.h">
+      <Filter>render_common\hw_wrapper\hw_caps</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_render.h">
+      <Filter>scene_render</Filter>
+    </ClInclude>
+    <ClInclude Include="stage.h">
+      <Filter>scene_render\stages</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_context.h">
+      <Filter>scene_render\stages</Filter>
+    </ClInclude>
+    <ClInclude Include="visual.h">
+      <Filter>objects</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="..\..\common\sources\hw_wrapper_base_gl4.h">
+      <Filter>render_common\hw_wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gl4_extensions.h" />
+    <ClInclude Include="..\gl4_external.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="scene_context.cpp">
+      <Filter>scene_render\stages</Filter>
+    </ClCompile>
+    <ClCompile Include="stage.cpp">
+      <Filter>scene_render\stages</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="render_ogl3.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="..\..\common\sources\hw_wrapper_gl4.cpp">
+      <Filter>render_common\hw_wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="gl4_entry_point.cpp" />
+    <ClCompile Include="gl4_external.cpp" />
+  </ItemGroup>
+</Project>

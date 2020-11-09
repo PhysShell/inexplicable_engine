@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 
 // to suppress warnings in winapi-specific files
 #pragma warning( push )

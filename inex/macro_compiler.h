@@ -33,20 +33,23 @@
  * #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
  * #pragma clang diagnostic pop
 **/
-#		define __CHAR_BIT__							CHAR_BIT
-#		define INEX_PUSH_WARNINGS( )		        __pragma ( warning ( push ) )
+#		define NOVTABLE								__declspec( novtable )
+#		define INEX_PUSH_WARNING					__pragma ( warning ( push ) )
 #		define INEX_DISABLE_WARNING( x )	        __pragma ( warning ( disable : x ) )
-#		define INEX_POP_WARNINGS( )		            __pragma ( warning ( pop ) )
+#		define INEX_POP_WARNING						__pragma ( warning ( pop ) )
 #       define COMPILER_PURE_VIRTUAL_DESTRUCTOR( x ) virtual ~x( ) = 0 { }
 #       define INEX_CDECL_CONVENTION                __cdecl
 #       define INEX_FORCE_ALIGNMENT( x )            _declspec ( align( x ) )
 #       define COMPILER_NODEFAULT                   __assume( 0 )
 
 #   else // #ifdef _MSC_VER
+#		define NOVTABLE				
+#		define INEX_PUSH_WARNING		        
+#		define INEX_DISABLE_WARNING( x )	        
+#		define INEX_POP_WARNING		            
 #       define COMPILER_PURE_VIRTUAL_DESTRUCTOR( x ) virtual ~x( ) { }
-
-#       define INEX_FORCE_ALIGNMENT( x )            __attribute__ ( ( __aligned__ ( ( x ) ) ) )
 #       define INEX_CDECL_CONVENTION                __attribute__ ( ( __cdecl__ ) )
+#       define INEX_FORCE_ALIGNMENT( x )            __attribute__ ( ( __aligned__ ( ( x ) ) ) )
 #       define COMPILER_NODEFAULT                   // is there rly one?
 #	endif //#ifdef _MSC_VER
 
@@ -58,7 +61,7 @@
 
 #	if defined ( _MSC_VER ) && ( _MSC_VER >= 1900 ) \
 			|| ( defined ( __GNUC__ ) ) // && ( __GNUC__ >= 7 ) )
-#	   define  INEX_FILESYSTEM_SUPPORTED
+#	   define  INEX_STD_FILESYSTEM_SUPPORTED
 #	else // #if defined ( _MSC_VER ) || ( __GNUC__ >= 7 )
 #	   pragma  message( "Use custom filesystem..." )
 #	endif  // #if defined ( _MSC_VER ) || ( __GNUC__ >= 7 )

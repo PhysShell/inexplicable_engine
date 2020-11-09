@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 
 #include "encryption.h"
 
@@ -8,7 +8,6 @@ namespace inex {
 namespace encryption {
 
 static  u32                 polynom_values      [ 256 ];
-
 
 /***
 * void initialize_crc32(void)
@@ -50,6 +49,11 @@ u32     crc32 ( pvoid const pointer, u32 length )
     crc             = ~crc;
     return          crc;
 
+}
+
+void	initialize ( )
+{
+	initialize_crc32	( );
 }
 
 } // namespace encryption

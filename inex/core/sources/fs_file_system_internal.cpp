@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 
 
 #include "fs_file_system_internal.h"
@@ -7,8 +7,6 @@ namespace inex {
 namespace fs {
 
 # if INEX_PLATFORM_LINUX
-
-
 
 memory_mapped_file::memory_mapped_file ( pcstr rhs )
 {
@@ -26,6 +24,7 @@ memory_mapped_file::memory_mapped_file ( pcstr rhs )
             descriptor,
             0
         );
+
     ASSERT_S                    ( data != MAP_FAILED );
 
     m_file_descriptor           = descriptor;
@@ -62,15 +61,11 @@ memory_mapped_file::memory_mapped_file ( pcstr name ) :
     m_mapped_file     	( CreateFileMapping( m_file_raw_pointer, 0, PAGE_READONLY, 0, 0, 0 ) ),
     m_size        		( GetFileSize( m_file_raw_pointer, 0 ) )
 {
-	//m_file_raw_pointer	=CreateFile(name,GENERIC_READ,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
-	ASSERT_S( m_file_raw_pointer != INVALID_HANDLE_VALUE );
-	//m_size	    =GetFileSize(m_file_raw_pointer,0);
-	// 4 & 5 parameters are 0 cuz I don't want to change memory_mapped_file's size, just read it
-	//m_mapped_file	    = CreateFileMapping( m_file_raw_pointer, 0, PAGE_READONLY, 0, 0, 0 );
-	ASSERT_D	(INVALID_HANDLE_VALUE!=m_mapped_file, "Error MMFile: '%s'", name );
+	ASSERT_S	( m_file_raw_pointer != INVALID_HANDLE_VALUE );
+
+	ASSERT_D	( m_mapped_file != INVALID_HANDLE_VALUE, "Error MMFile: '%s'", name );
 	
 	m_data		= static_cast< pstr >( MapViewOfFile( m_mapped_file, FILE_MAP_READ, 0, 0, 0 ) );
-	// LOGGER("Creating (constructor) address: %p.", this );
 }
 
 memory_mapped_file::memory_mapped_file ( memory_mapped_file&& file ) :
@@ -78,10 +73,7 @@ memory_mapped_file::memory_mapped_file ( memory_mapped_file&& file ) :
     m_size				( file.m_size ),
     m_mapped_file     	( file.m_mapped_file )
 {
-	//Msg("Creating (move) address: %p, from %p", this, &file);
-	//m_file_raw_pointer	=file.m_file_raw_pointer;
-	//m_mapped_file		=file.m_mapped_file;
-	//size		=file.size;
+
 	file.m_file_raw_pointer	= file.m_mapped_file = nullptr;
 	file.m_size				= 0;
 }

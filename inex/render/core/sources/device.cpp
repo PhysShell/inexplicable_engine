@@ -105,12 +105,21 @@ void    device::initialize ( )
     VERIFY( glfwInit( ) );
     m_render_device     = memory::ie_new< render::render_device >( );
     glfwWindowHint		( GLFW_CONTEXT_VERSION_MAJOR, 3 );
-    glfwWindowHint		( GLFW_CONTEXT_VERSION_MINOR, 3 );
+    glfwWindowHint		( GLFW_CONTEXT_VERSION_MINOR, 0 );
     glfwWindowHint		( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
 
     m_width             = 480;
     m_height            = 640;
-    m_render_device->   create_helper       ( m_context, m_width, m_height );
+
+    LOGGER              ( "starting render device..." );
+    m_context		        = glfwCreateWindow( m_width, m_height, "__INEX__", nullptr, nullptr );
+    LOGGER              ( "* '%s' window: initial config: [%d x %d]", "__INEX__",  m_width, m_height );
+    ASSERT_D            ( m_context, "Couldn't create window and its OpenGL context." );
+    glfwMakeContextCurrent( m_context );
+    ogl::dump_user_specifications ( );
+	bool success		= ogl::init_extensions( );
+    ASSERT_D            ( success , "Failed to load OpenGL extensions\n") ;
+
     glfwSetFramebufferSizeCallback          ( m_context, framebuffer_size_callback );
 
     initialize_shaders                      ( );

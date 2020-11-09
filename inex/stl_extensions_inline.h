@@ -1,11 +1,9 @@
 #ifndef STL_EXTENSIONS_INLINE_H_INCLUDED
 #	define STL_EXTENSIONS_INLINE_H_INCLUDED
 
-#define	TEMPLATE_SPECIALIZATION	\
-				template <typename T>
+#define	TEMPLATE_SPECIALIZATION	template <typename T>
 
-#define	_ie_vector	\
-				ie_vector<T>
+#define	_ie_vector	ie_vector<T>
 
 TEMPLATE_SPECIALIZATION
  

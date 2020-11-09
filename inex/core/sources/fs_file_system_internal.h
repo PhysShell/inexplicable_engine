@@ -11,11 +11,11 @@ public:
     pvoid			m_file_raw_pointer;
 	pvoid			m_mapped_file;
 #elif INEX_PLATFORM_LINUX
-    int             m_file_descriptor;
+    s32             m_file_descriptor;
 #endif // # if INEX_PLATFORM_WINDOWS
 
     size_t          m_size;
-    char*           m_data;
+    pstr			m_data;
 
 public:
 					memory_mapped_file	( ) :
@@ -43,16 +43,11 @@ explicit    		memory_mapped_file 		( memory_mapped_file&& file );
 
 struct memory_mapped_file_predicate
 {
-	inline bool operator( ) ( memory_mapped_file const& f1, memory_mapped_file const& f2) const
-				{
-					return ( f1.m_size < f2.m_size ) ? 1 : 0;
-				}
+	bool operator( ) ( memory_mapped_file const& left, memory_mapped_file const& right) const
+	{
+		return ( left.m_size < right.m_size ) ? 1 : 0;
+	}
 }; // struct memory_mapped_file_predicate
-
-//IC bool operator<(const memory_mapped_file& f1, const memory_mapped_file& f2)
-//{
-//	return f1.size<f2.size?1:0;
-//}
 
 } // namespace fs
 } // namespace inex

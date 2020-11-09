@@ -20,7 +20,8 @@ void    render_device::create_helper ( window_impl*&   window,
     ASSERT_D            ( temp, "Couldn't create window and its OpenGL context." );
     glfwMakeContextCurrent( temp );
     ogl::dump_user_specifications ( );
-    ASSERT_D            ( ogl::init_extensions( ), "Failed to load OpenGL extensions\n") ;
+	bool success		= ogl::init_extensions( );
+    ASSERT_D            ( success , "Failed to load OpenGL extensions\n") ;
     window              = temp;
 }
 

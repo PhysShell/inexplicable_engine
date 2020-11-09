@@ -1,46 +1,40 @@
-#include "stdafx.h"
+#include "pch.h"
 #include <inex/command_line.h>
 #include <inex/core/ie_core.h>
+
+static string128	s_command_line;
 
 namespace inex {
 namespace command_line {
 
-void    concat_command_line ( s32 argc, pstr* argv, pstr dest )
+void 	initialize ( pcstr const line )
 {
-    string512 cmd_line              = { };
-    for (   s32 i                   = 1;
-            i                       < argc;
-            ++                      i)
-    {
-        strcat                      ( cmd_line, argv [ i ] );
-    }
+	strcat		( s_command_line, line );
 
-    strcpy ( dest, cmd_line );
+	u32	parameters_count	= 0;
+    if ( !strcmp( line, "" ) )
+	{
+		LOGGER	( "* [command line][info]: empty command line" );
+		return;
+	}
+
+	for ( pcstr skip = line; *skip;  )
+	{
+		if ( *skip++ == '-' )
+			++parameters_count;
+	}
+
+    LOGGER	( "* [command line][info]: '%d' parameters: '%s'", parameters_count, line );
 }
 
-u32 	initialize ( pcstr line )
+void    concat_command_line ( s32 argc, pstr* argv, pstr dest )
 {
-	u32			console_parameters_count	= 0;
-    if          ( !strcmp( line, "" ) )   return console_parameters_count;
-	// string512	console_parameters;
+    string512 cmd_line	= { 0 };
 
-	// strncpy		( console_parameters, GetCommandLineA( ), sizeof ( console_parameters ) );
-    
-    pcstr       skip	                    = line; //+ strlen( line ) - 1;
-    // for ( ; ; )
-	// {
-	// 	if ( *--skip == '"' )				break;
-	// }
-    // printf ( "skip = %s, len %d\n", skip, strlen( line ) );
-	for ( ; *skip;  )
-	{
-        // printf ( "%c ", * skip );
+    for ( s32 i = 1; i < argc; ++i )
+        strcat			( cmd_line, argv [ i ] );
 
-		if ( *skip++ == '-' )				++console_parameters_count;
-        
-	}
-    printf ( "" );
-    return                                  console_parameters_count;
+    strcpy ( dest, cmd_line );
 }
 
 void	copy_argument ( pcstr src, pstr dst, u8 separator )
@@ -58,14 +52,11 @@ void	copy_argument ( pcstr src, pstr dst, u8 separator )
 }
 
 
-
 pstr	get_value_by_key ( pcstr k, pstr v )
 {
     pcstr p;
-    if ( !( p = strstr( core::get_params( ), k ) ) )
-    {
+    if ( !( p = strstr( s_command_line, k ) ) )
 		return			nullptr;
-	}
 
     size_t n			= { };
     p   				= strchr( p,'=' );
@@ -83,7 +74,7 @@ pstr	get_value_by_key ( pcstr k, pstr v )
 
 bool    check_key ( pcstr key )
 {
-    return              ( 0 != strstr( core::get_params( ), key ) ) ? 1 : 0;
+    return              ( 0 != strstr( s_command_line, key ) ) ? 1 : 0;
 }
 
 } // namespace command_line

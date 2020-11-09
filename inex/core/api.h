@@ -22,6 +22,8 @@
 #				define INEX_CORE_API	INEX_DLL_IMPORT
 #			endif // #ifdef IECORE_EXPORTS
 //#		endif // #ifndef INEX_STATIC_LIBRARIES
+#	else
+#		error please do not define INEX_CORE_API
 #	endif // #ifdef INEX_CORE_API
 
 namespace inex {

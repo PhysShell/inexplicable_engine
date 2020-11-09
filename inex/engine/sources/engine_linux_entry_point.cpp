@@ -6,7 +6,6 @@
 #include <type_traits>
 #include <inex/command_line.h>
 
-#include <inex/math_float3.h>
 
 #pragma message( "doesn't seem to 'need these defines under linux" )
 #define GLEW_STATIC
