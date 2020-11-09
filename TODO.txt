@@ -47,13 +47,10 @@
 		*	BUG: использовать биты char [] в get_cpu_fts()
 
 		to think:
-		* 	threading: atomic isn't always int. but can use static_asserts to determine if it is or dunno
-		*	в инициализации фс, под линуксом можно юзать оба варианта: "gamedata/", "./gamedata/"
 
 ***[Shell]*** BUGS:
         * fs_file_system: сет ммф файлов не все файлы добавляет
         * fs_file_system: валится, когда ммф файлов ~1020
-		* math,cam?: увеличивается скорость на 26м вращении камеры (переполнение?)
 
 ***[Shell]*** TODO:
 ---------------------------

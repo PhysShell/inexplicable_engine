@@ -84,11 +84,11 @@ render::platform * create_render_platform( inex::render::engine::wrapper& wrappe
 
 //extern float4 g_debug_color;
 
-platform* pw = NULL;
-platform& get_w() {	return *pw;}
+platform* pw				= nullptr;
+platform&	get_w ( )		{ return *pw; }
 
-float cam_speed				= .025f;		// 1 unit per second
-float cam_yaw_speed			= 1.0f;	// 10 degrees p er second
+float cam_speed				= .01f;		// 1 unit per second
+float cam_yaw_speed			= .5f;	// 10 degrees p er second
 float cam_pos[]				= {0.0f, 0.0f, 2.0f};	// don't start at zero, or we will be too close
 
 float cam_yaw = 0.0f;					// y-rotation in degrees
@@ -97,6 +97,7 @@ int	  view_mat_location;
 void	initialize_model_manager ( model_manager& manager )
 {
 	LOGGER( "initializing model manager...\n" );
+
 	resources::managed_resource_ptr resource;
 	resource.m_vertices	= points1;
 	resource.fs			= "gamedata/shaders/ogl4.fs";
@@ -132,7 +133,7 @@ platform::platform					( inex::render::engine::wrapper& wrapper, HWND const wind
 {
 
 
-	pw = this;
+	pw							= this;
 
 	m_scene						= new scene_render( true );
 
@@ -145,20 +146,9 @@ platform::platform					( inex::render::engine::wrapper& wrapper, HWND const wind
 
 	initialize_model_manager	( m_model_manager );
 
-	//float cam_speed				= 1.0f;		// 1 unit per second
-	//float cam_yaw_speed			= 10.0f;	// 10 degrees p er second
-	//float cam_pos[]				= {0.0f, 0.0f, 2.0f};	// don't start at zero, or we will be too close
-
-	//float cam_yaw = 0.0f;					// y-rotation in degrees
-
-
 	math::float4x4 T			= math::translate4x4( math::identity4x4( ), math::float3( -cam_pos[ 0 ], -cam_pos[ 1 ], -cam_pos[ 2 ] ) );
 	math::float4x4 R			= math::rotate_yaw( math::identity4x4( ), -cam_yaw );
 	math::float4x4 view_matrix	= R * T;
-
-	T.print						( );
-	R.print						( );
-	view_matrix.print			( );
 
 	// input variables
 	float znear					= 0.1f;								// clipping plane
@@ -218,9 +208,9 @@ platform::~platform					( )
 
 void	update_fps_counter ( GLFWwindow * window )
 {
-	static	float	previous_seconds	= glfwGetTime ();
+	static	float	previous_seconds	= glfwGetTime( );
 	static	s32		frame_count;
-			float	current_seconds		= glfwGetTime ();
+			float	current_seconds		= glfwGetTime( );
 			float	elapsed_seconds		= current_seconds - previous_seconds;
 
 	if ( elapsed_seconds > 0.25f )
@@ -233,7 +223,7 @@ void	update_fps_counter ( GLFWwindow * window )
 		frame_count						= 0;
 	}
 
-	++frame_count;
+	++									frame_count;
 }
 
 
@@ -255,8 +245,6 @@ void platform::draw_frame			( )
 	render_visuals	( );
 
 	//glDrawArrays ( GL_TRIANGLES, 0, 3);
-	glfwPollEvents              ( );
-    glfwSwapBuffers             ( g_gl4_context );
 
 	if ( glfwWindowShouldClose ( g_gl4_context ) )
 		exit					( 0 );
@@ -265,37 +253,34 @@ void platform::draw_frame			( )
 		glfwSetWindowShouldClose (g_gl4_context, 1);
 	}
 
-	//float elapsed_seconds		= glfwGetTime( );
-		// control keys
+	// control keys
 	bool cam_moved = 0 ;
 	if (glfwGetKey (g_gl4_context, GLFW_KEY_A)) {
 		cam_pos[0] -= cam_speed ;
 		cam_moved = true;
-		//LOGGER( "go left : %f\n", cam_pos[ 0 ] );
 	}
 
 	if (glfwGetKey (g_gl4_context, GLFW_KEY_D)) {
 		cam_pos[0] += cam_speed ;
 		cam_moved = true;
-		//LOGGER( "go rigth : %f\n", cam_pos[ 0 ] );
 	}
 
 	if (glfwGetKey (g_gl4_context, GLFW_KEY_PAGE_UP)) {
 
 		cam_pos[1] += cam_speed ;
-		cam_moved = true; 		//LOGGER( "go up: %f\n", cam_pos[ 1 ] );
+		cam_moved = true;
 	}
 
 	if (glfwGetKey (g_gl4_context, GLFW_KEY_PAGE_DOWN)) {
 
 		cam_pos[1] -= cam_speed ;
-		cam_moved = true; 		//LOGGER( "go down: %f\n", cam_pos[ 1 ] );
+		cam_moved = true;
 	}
 
 	if (glfwGetKey (g_gl4_context, GLFW_KEY_W)) {
 
 		cam_pos[2] -= cam_speed ;
-		cam_moved = true; 		//LOGGER( "go forward: %f\n", cam_pos[ 2 ] );
+		cam_moved = true; 
 	}
 
 	if (glfwGetKey (g_gl4_context, GLFW_KEY_S)) {
@@ -319,20 +304,17 @@ void platform::draw_frame			( )
 	// update view matrix
 	if (cam_moved)
 	{
-		logging::set_output_destination( logging::logging_to_enum::terminal );
-		LOGGER( "recalculating..." );
-		math::float4x4 T		= math::translate4x4( math::identity4x4 ( ), float3 (-cam_pos[0], -cam_pos[1], -cam_pos[2])); // cam translation
-		math::float4x4 R		= math::rotate_yaw	( math::identity4x4 ( ), -cam_yaw ); //
+		math::float4x4 T		= math::translate4x4( math::identity4x4 ( ), float3 (-cam_pos[0], -cam_pos[1], -cam_pos[2] ) ); // cam translation
+		math::float4x4 R		= math::rotate_yaw	( math::identity4x4 ( ), -cam_yaw );
 		math::float4x4 view_mat = R * T;
 
-		//T.print( ); R.print( ); view_mat.print( );
 		glUniformMatrix4fv (view_mat_location, 1, GL_FALSE, view_mat.elements);
-		//cam_moved				= false;
-		logging::set_output_destination( logging::logging_to_enum::file );
 	}
 	
 	m_model_manager.get_visuals( ).at( 0 )->m_program.unbind( );
 
+	glfwPollEvents              ( );
+    glfwSwapBuffers             ( g_gl4_context );
 	//triangle.epilogue			( );
 
 //	float4x4 ident;

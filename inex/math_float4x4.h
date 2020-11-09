@@ -106,11 +106,11 @@ public:
 
 	inline	void	print				( ) const
 	{
-		printf( "\n" );
-		printf( "[%.2f][%.2f][%.2f][%.2f]\n", elements[0], elements[4], elements[8], elements[12] );
-		printf( "[%.2f][%.2f][%.2f][%.2f]\n", elements[1], elements[5], elements[9], elements[13] );
-		printf( "[%.2f][%.2f][%.2f][%.2f]\n", elements[2], elements[6], elements[10], elements[14] );
-		printf( "[%.2f][%.2f][%.2f][%.2f]\n", elements[3], elements[7], elements[11], elements[15] );
+		LOGGER( "\n" );
+		LOGGER( "[%.2f][%.2f][%.2f][%.2f]\n", elements[0], elements[4], elements[8], elements[12] );
+		LOGGER( "[%.2f][%.2f][%.2f][%.2f]\n", elements[1], elements[5], elements[9], elements[13] );
+		LOGGER( "[%.2f][%.2f][%.2f][%.2f]\n", elements[2], elements[6], elements[10], elements[14] );
+		LOGGER( "[%.2f][%.2f][%.2f][%.2f]\n", elements[3], elements[7], elements[11], elements[15] );
 	}
 
 }; // class float4x4
