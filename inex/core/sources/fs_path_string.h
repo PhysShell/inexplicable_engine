@@ -17,35 +17,20 @@ public:
 
                 void                operator /      ( pcstr const file_path_raw );
 
-				pcstr const	c_str           ( )  const;
-
-				#if INEX_PLATFORM_WINDOWS
-				void				disappend_star	( )
-									{
-										u32 string_length		= strlen ( m_string_value );
-										//inex::core::logging::Msg( "path before:\t%s\n", m_string_value );
-										ASSERT_S( * ( m_string_value + string_length ) != '*'  );
-										* ( m_string_value + string_length - 1  )	= 0;
-										//inex::core::logging::Msg( "path after:\t%s\n", m_string_value );
-									}
-				#endif // #if INEX_PLATFORM_WINDOWS
-
-                pcstr const   file_name       ( ) const
+				pcstr const			c_str			( )  const;
+                pcstr const			file_name		( ) const
                 {
                     const char* substring;
                     if ( !( substring = strrchr( m_string_value, '/') ) )
                     {
-                        printf                  ( "sshit occured with\n%s\n", m_string_value );
-                        getchar                 ( );
+						ASSERT_S( !"please review this" );
                         return                  nullptr;
                     }
 
                     if ( * (substring + 1 ) == 0 )
                     {
-                        printf                  ( "dumb / at end of %s\n", m_string_value );
                         for ( ; * (substring ) != '/'; --substring )
                             ;
-                        printf                  ( "real filename: %s\n", m_string_value );
                     }
 
                     return                      ++substring;

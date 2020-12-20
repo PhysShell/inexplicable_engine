@@ -57,17 +57,19 @@ pcstr    file_path_raw_c_str ( directory_iterator_impl* impl_representation )
 inline
 void    open_directory ( directory_iterator_impl* impl_representation, const char* const file_path_raw )
 {
-	ASSERT_D( ( strchr( file_path_raw, '*' ) ), "Append '*' to '%s' before opening", file_path_raw );
+//	ASSERT_D( ( strchr( file_path_raw, '*' ) ), "Append '*' to '%s' before opening", file_path_raw );
+	string256 file_path_with_directory_marker;
+	strcat( strcpy( file_path_with_directory_marker, file_path_raw ), "*" );
 
-    impl_representation->m_entry_pointer			=
+	impl_representation->m_entry_pointer			=
 		FindFirstFile(
-			file_path_raw,
+			file_path_with_directory_marker,
 			&impl_representation->m_directory
 		);
 
 	ASSERT_D			(	impl_representation->m_entry_pointer,
 							"Error opening ( open_directory proc ) %s: %s",
-							file_path_raw, strerror( errno ) );
+							file_path_with_directory_marker, strerror( errno ) );
 }
 
 inline

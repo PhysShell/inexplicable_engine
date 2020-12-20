@@ -55,14 +55,7 @@ recursive_directory_iterator::recursive_directory_iterator ( const char* const f
     m_impl.reset        ( memory::ie_new< detail::directory_iterator_impl >( ) );
     m_end               = 0;
     m_entry.append      ( m_directories.back( ).m_p );
-#if INEX_PLATFORM_WINDOWS
-	m_entry.path( ) /	( "*" );
-	//LOGGER( "%s", m_entry.path( ).c_str( ) );
-#endif // INEX_PLATFORM_WINDOWS
     detail::open_directory  ( m_impl.get( ), m_entry.path( ).c_str( ) );
-#if INEX_PLATFORM_WINDOWS
-	m_entry.path( ).disappend_star( );
-#endif // INEX_PLATFORM_WINDOWS
     operator            ++ ( );
 }
 
@@ -86,13 +79,7 @@ recursive_directory_iterator&   recursive_directory_iterator::operator ++ ( )
         {
             detail::close_directory     ( m_impl.get( ) );
             m_entry.append              ( m_directories.back( ).m_p );
-#if INEX_PLATFORM_WINDOWS
-			m_entry.path( ) /	( "*" );
-#endif // INEX_PLATFORM_WINDOWS
             detail::open_directory      ( m_impl.get( ), m_entry.path( ).c_str( ) );
- #if INEX_PLATFORM_WINDOWS
-			m_entry.path( ).disappend_star( );
-#endif // INEX_PLATFORM_WINDOWS
 			operator ++                 ( );
         }
     }

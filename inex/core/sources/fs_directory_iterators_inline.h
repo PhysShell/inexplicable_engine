@@ -32,13 +32,7 @@ directory_iterator::directory_iterator ( directory_iterator const& rhs ) :
     m_end           ( rhs.m_end )
 {
     m_entry.append  ( rhs.m_entry.path( ).c_str( ) );
-#if INEX_PLATFORM_WINDOWS
-	m_entry.append	( "*" );
-#endif // INEX_PLATFORM_WINDOWS
     detail::open_directory( m_impl.get( ), rhs.m_entry.path( ).c_str( ) );
-#if INEX_PLATFORM_WINDOWS
-	m_entry.path( ).disappend_star( );
-#endif // INEX_PLATFORM_WINDOWS
     operator ++     ( );
 }
 
@@ -48,16 +42,8 @@ directory_iterator::directory_iterator ( const char* const file_path_raw ) :
     m_impl      ( memory::ie_new< detail::directory_iterator_impl > ( ) ),
     m_end       ( 0 )
 {
-
-#if INEX_PLATFORM_WINDOWS
-	m_entry.path( ) /	( "*" );
-#endif // INEX_PLATFORM_WINDOWS
-    detail::open_directory( m_impl.get( ), m_entry.path( ).c_str( ) );
-#if INEX_PLATFORM_WINDOWS
-	m_entry.path( ).disappend_star( );
-#endif // INEX_PLATFORM_WINDOWS
-
-    operator ++         ( );
+    detail::open_directory	( m_impl.get( ), m_entry.path( ).c_str( ) );
+    operator ++				( );
 
 }
 
