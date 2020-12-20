@@ -20,19 +20,19 @@ public:
             intrusive_ptr&  operator =      ( pointer );
             element_type&   operator *      ( ) const;
             const pointer&  operator ->     ( ) const;
-            pointer&        operator ->     ( ) const;
+            pointer&        operator ->     ( );
                             operator bool   ( ) {   return m_data;  }
             bool            operator !      ( ) {   return !m_data; }
-            
+
             pointer&        get             ( );
             const pointer&  get             ( ) const;
-            void            swap            ( self_type& );  
+            void            swap            ( self_type& );
 private:
     pointer m_data;
 }; // class intrusive_ptr
 
 template < typename T >
-class shared_object 
+class shared_object
 {
 public:
     typedef shared_object < T >     self_type;
@@ -44,7 +44,7 @@ public:
                         shared_object   ( self_type const& owner );
     explicit            shared_object   ( pointer const data );
                         shared_object   ( self_type&& ) =   delete;
-                        ~shared_object  ( ); 
+                        ~shared_object  ( );
 
     size_t              owners          ( ) const;
     bool                unique          ( ) const;

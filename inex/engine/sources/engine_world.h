@@ -59,8 +59,8 @@ public:
 	//rtp::world*				rtp_world				( )			{ return m_rtp_world; }
 private:
 	virtual	void			tick					( );
-	virtual	bool			on_before_editor_tick	( )	{ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; return 1;}
-	virtual	void			on_after_editor_tick	( ) { LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
+	virtual	bool			on_before_editor_tick	( );
+	virtual	void			on_after_editor_tick	( );
 	virtual	void			run_renderer_commands	( ) { LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
 	virtual	void			draw_frame				( ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
 	virtual	void			flush_debug_commands	( ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
@@ -70,9 +70,9 @@ private:
 	virtual	void			delete_on_editor_tick	( render::engine::command* command ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
 	virtual	void			run_in_window_thread	( render::engine::window_thread_callback_type const& callback ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
 	virtual	void			draw_frame_logic		( );
-	virtual	void			draw_frame_editor		( ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
+	virtual	void			draw_frame_editor		( );
 	virtual	void			exit					( int exit_code ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
-	virtual	void			enter_editor_mode		( ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
+	virtual	void			enter_editor_mode		( );
 	virtual	render::world&	get_renderer_world		( ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; return *((render::world*)(0)); }
 	virtual	sound::world&	get_sound_world			( ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; return *((sound::world*)(0));}
 	virtual	animation::world& get_animation_world	( ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; return *((animation::world*)(0)); }
@@ -85,7 +85,7 @@ private:
 
 private:
 			void			initialize_core			( );
-			void			initialize_editor		( ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
+			void			initialize_editor		( );
 			void			initialize_render		( );
 			void			initialize_logic		( );
 			void			post_initialize			( );
@@ -108,7 +108,7 @@ private:
 			void			create_render			( );
 			void			destroy_render			( );
 			void	delete_processed_logic_orders	( bool destroying );
-			void	delete_processed_editor_orders	( bool destroying ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
+			void	delete_processed_editor_orders	( bool destroying );
 			void			logic_tick				( );
 			void			logic					( );
 			void			editor					( ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
@@ -117,13 +117,13 @@ private:
 			void			sound_tick				( ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
 			void			sound					( ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
 			void			try_load_editor			( ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
-			void			unload_editor			( ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
+			void			unload_editor			( );
 			void			show_window				( );
 			bool			process_messages		( );
 			void			logic_clear_resources	( );
 			void			network_clear_resources	( ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
 			void			sound_clear_resources	( ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
-			void			editor_clear_resources	( ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
+			void			editor_clear_resources	( );
 			void			finalize_logic_modules	( );
 			void	initialize_editor_thread_ids	( ){ LOGGER( "FIX ME %s", __FILE__LINE__ ) ; }
 private:

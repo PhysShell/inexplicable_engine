@@ -1,6 +1,7 @@
 #include "pch.h"
 #include <inex/render/gl4/gl4_external.h>
 
+#if INEX_PLATFORM_WINDOWS
 // Texture
 PFNGLACTIVETEXTUREPROC glActiveTexture  ;
 // VAO
@@ -43,8 +44,8 @@ PFNGLUNIFORMMATRIX4FVPROC   glUniformMatrix4fv    ;
 PFNGLUNIFORM1FPROC          glUniform1f           ;
 PFNGLUNIFORM1IPROC          glUniform1i           ;
 PFNGLUNIFORM1FVPROC         glUniform1fv          ;
-PFNGLUNIFORM2FPROC			    glUniform2f           ;
+PFNGLUNIFORM2FPROC			glUniform2f           ;
 PFNGLUNIFORM3FVPROC         glUniform3fv          ;
 PFNGLUNIFORM3FPROC          glUniform3f           ;
 PFNGLUNIFORM4FVPROC         glUniform4fv          ;
-
+#endif // #if INEX_PLATFORM_WINDOWS

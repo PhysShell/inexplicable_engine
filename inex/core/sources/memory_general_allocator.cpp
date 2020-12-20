@@ -23,7 +23,7 @@ struct general_allocator_user_memory { };
 inline
 u64     bits_to_bytes ( u64 value )
 {
-    return              value / CHAR_BIT;
+    return              value / 8;
 }
 
 inline
@@ -161,7 +161,7 @@ general_allocator::header_type* general_allocator::on_malloc ( unsigned nu )
     up->s.size  = nu;
     memory_register_pointer( pvoid( up + 1 ), typeid( general_allocator_user_memory ).name( ) );
     free_impl   ( pvoid ( up + 1 ) );
-    --          m_monitor.deallocations; 
+    --          m_monitor.deallocations;
     return      m_arena_end;
 }
 

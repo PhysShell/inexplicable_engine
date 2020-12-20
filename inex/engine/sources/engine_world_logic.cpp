@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "engine_world.h"
-#include "rpc.h"
+//#include "rpc.h"
 // input wold.h and api.h, sound world.h and api.h
 #include <inex/render/base/world.h>
 #include <inex/render/base/game_renderer.h>
@@ -40,15 +40,15 @@ void engine_world::initialize_engine_user		( )
 
 	//m_engine_user_module_proxy->set_memory_allocator	( m_engine_user_allocator );
 
-	m_engine_user_world			= m_engine_user_module_proxy->create_world( 
-									*this, 
-									*m_input_world, 
-									*m_render_world, 
-									*m_ui_world, 
-									*m_physics_world, 
-									*m_rtp_world, 
+	m_engine_user_world			= m_engine_user_module_proxy->create_world(
+									*this,
+									*m_input_world,
+									*m_render_world,
+									*m_ui_world,
+									*m_physics_world,
+									*m_rtp_world,
 									*m_animation_world,
-									*m_sound_world 
+									*m_sound_world
 									);
 
 	engine_user_world().enable		( m_game_enabled );
@@ -109,7 +109,7 @@ void engine_world::initialize_logic_modules( )
 	//m_processed_logic.set_pop_thread_id				( );
 
 	initialize_input								( );
-	
+
 	initialize_physics								( );
 	initialize_ui									( );
 	initialize_animation							( );
@@ -160,7 +160,7 @@ void engine_world::logic_tick				( )
 	//}
 	//
 	//m_engine_user_world->tick			( m_logic_frame_id );
-	
+
 	///////////////////////////////////
 	// call stack of : render_world().game( ).draw_frame	( ): -> game_renderer.cpp (draw_frame) -> THIS file name.cpp (draw_frame_logic) -> engine_renderer.cpp (draw_frame) -> platform_gl4.cpp (draw_frame)
 	///////////////////////////////////
@@ -178,7 +178,7 @@ void engine_world::logic				( )
 	//		break;
 
 		logic_tick				( );
-	//	
+	//
 	//	while ( ( m_logic_frame_id > m_render_world->engine().frame_id( ) + 1 ) && !m_destruction_started ) {
 	//		if ( !rpc::try_process_single_call( rpc::logic ) )
 	//			threading::yield( 1 );

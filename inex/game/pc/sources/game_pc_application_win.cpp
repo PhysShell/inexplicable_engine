@@ -101,7 +101,7 @@ static void splash_screen_main		( )
 
 void application::preinitialize					( )
 {
-	inex::engine::preinitialize		( GetCommandLine( ), "demo", __DATE__ );
+	inex::engine::preinitialize		( g_command_line, "demo", __DATE__ );
 
 	//void   decode_finger_print		(inex::fixed_string512 * );
 	//decode_finger_print				( & s_finger_print );

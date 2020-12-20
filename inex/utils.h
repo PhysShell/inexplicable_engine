@@ -18,7 +18,7 @@ struct nonassignable
 private:
 	void	operator =	( nonassignable const& ) = delete;
 }; // struct nonassignable
-} // namespace detail 
+} // namespace detail
 
 template < typename data_type >
 struct stack
@@ -41,7 +41,7 @@ private:
 		data_type	value;
 		Node*		previous;
 	}; // struct Node
-	
+
     Node*       m_first;
     Node*       m_last;
 }; // struct stack
@@ -54,14 +54,15 @@ public:
 
 	static	T*	get_instance	( )
 	{
-		std::call_once( m_once, [ ]( ){ m_insance.reset( new T ); } );
+		std::call_once( m_once, [ ]( ){ m_instance.reset( new T ); } );
 		return					m_instance.get( );
 	}
 
 	template < typename ... Args >
-	static	T*	get_instance	( Args && ... args )
+	static	T*	get_instance	( Args && ... pars )
 	{
-		std::call_once( m_once, [ & ]( ) { m_insance.reset( new T( std::forward< Args >( args ... ) ) ); } );
+	    auto helper             = [ ]( auto&& ...pars )  { return sizeof ... ( pars ); };
+		std::call_once( m_once, [ args = forward_as_tuple(pars...), helper ]( ) { m_instance.reset( new T( std::forward( args  ) ) ); } );
 		return					m_instance.get( );
 	}
 

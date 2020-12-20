@@ -2,16 +2,17 @@
 #include <inex/render/base/sources/platform_gl4.h>
 #include <inex/render/gl4/sources/visual.h>
 
-#include <inex/3rd_patry/include/GLFW/glfw3.h>
 #include <inex/render/core/shaders.h>
-
+#include <inex/3rd_patry/include/GLFW/glfw3.h>
 
 #include <time.h>
 #include <math.h>
 #include <vector>
 
-#pragma comment( lib, "glfw3.lib" )
-#pragma comment( lib, "opengl32.lib" )
+#if INEX_PLATFORM_WINDOWS
+#   pragma comment( lib, "glfw3.lib" )
+#   pragma comment( lib, "opengl32.lib" )
+#endif // #if INEX_PLATFORM_WINDOWS
 //#pragma comment(lib,"d3d9.lib")
 //#pragma comment(lib,"d3gl3.lib")
 //#pragma comment(lib,"dxerr.lib")
@@ -280,7 +281,7 @@ void platform::draw_frame			( )
 	if (glfwGetKey (g_gl4_context, GLFW_KEY_W)) {
 
 		cam_pos[2] -= cam_speed ;
-		cam_moved = true; 
+		cam_moved = true;
 	}
 
 	if (glfwGetKey (g_gl4_context, GLFW_KEY_S)) {
@@ -310,7 +311,7 @@ void platform::draw_frame			( )
 
 		glUniformMatrix4fv (view_mat_location, 1, GL_FALSE, view_mat.elements);
 	}
-	
+
 	m_model_manager.get_visuals( ).at( 0 )->m_program.unbind( );
 
 	glfwPollEvents              ( );
@@ -324,7 +325,7 @@ void platform::draw_frame			( )
 //	++m_render_frame_id;
 //
 //// 	game().debug().tick		( );
-//// 	editor().tick			( ); 
+//// 	editor().tick			( );
 //
 //	m_render_device.end_frame( );
 //
@@ -359,11 +360,11 @@ void	platform::render_visuals ( )
 	{
 		//if( !it->system_object )
 	}
-	
+
 	m_model_manager.render_static	( );
 }
 
 } // namespace gl4
-} // namespace render 
-} // namespace inex 
+} // namespace render
+} // namespace inex
 

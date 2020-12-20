@@ -37,20 +37,23 @@
 #		define INEX_PUSH_WARNING					__pragma ( warning ( push ) )
 #		define INEX_DISABLE_WARNING( x )	        __pragma ( warning ( disable : x ) )
 #		define INEX_POP_WARNING						__pragma ( warning ( pop ) )
-#       define COMPILER_PURE_VIRTUAL_DESTRUCTOR( x ) virtual ~x( ) = 0 { }
 #       define INEX_CDECL_CONVENTION                __cdecl
 #       define INEX_FORCE_ALIGNMENT( x )            _declspec ( align( x ) )
+#       define COMPILER_PURE_VIRTUAL_DESTRUCTOR( x ) virtual ~x( ) = 0 { }
 #       define COMPILER_NODEFAULT                   __assume( 0 )
-
+#       define COMPILER_DEBUG_BREAK                 __debugbreak( )       
+#       define SLEEP                                Sleep
 #   else // #ifdef _MSC_VER
 #		define NOVTABLE				
 #		define INEX_PUSH_WARNING		        
 #		define INEX_DISABLE_WARNING( x )	        
 #		define INEX_POP_WARNING		            
-#       define COMPILER_PURE_VIRTUAL_DESTRUCTOR( x ) virtual ~x( ) { }
 #       define INEX_CDECL_CONVENTION                __attribute__ ( ( __cdecl__ ) )
 #       define INEX_FORCE_ALIGNMENT( x )            __attribute__ ( ( __aligned__ ( ( x ) ) ) )
-#       define COMPILER_NODEFAULT                   // is there rly one?
+#       define COMPILER_PURE_VIRTUAL_DESTRUCTOR( x ) virtual ~x( ) { }
+#       define COMPILER_NODEFAULT                   __builtin_unreachable( )
+#       define COMPILER_DEBUG_BREAK                 asm( "int $3" )
+#       define SLEEP                                sleep
 #	endif //#ifdef _MSC_VER
 
 // don't forget that conventions were removed from msvc64 ( or not only )

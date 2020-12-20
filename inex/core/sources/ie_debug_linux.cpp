@@ -44,9 +44,9 @@ dump						:
 
             s32 status;
            	pstr demangled_string = abi::__cxa_demangle( mangled_name, 0, 0, &status );
-			
+
 			if ( status == 0 ) {
-				Msg				( "%s", demangled_string );
+				LOGGER			( "%s", demangled_string );
 				free			( demangled_string );
 			}
 

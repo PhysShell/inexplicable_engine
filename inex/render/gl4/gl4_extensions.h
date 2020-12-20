@@ -3,8 +3,8 @@
 //	Author		: Feudor Shelipov
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef GL3_EXTENSIONS_H_INCLUDED
-#   define GL3_EXTENSIONS_H_INCLUDED
+#ifndef GL4_EXTENSIONS_H_INCLUDED
+#   define GL4_EXTENSIONS_H_INCLUDED
 
 #	include "gl4_external.h"
 
@@ -15,4 +15,4 @@ namespace render {
 }// namespace inex
 
 
-#endif // #ifndef OGL3_EXTENSIONS_H_INCLUDED
+#endif // #ifndef OGL4_EXTENSIONS_H_INCLUDED

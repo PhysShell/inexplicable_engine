@@ -10,33 +10,35 @@ static int	 s_build_id;
 
 using namespace inex;
 
-//s32	INEX_CCALL	_stricmp ( pcstr lhs, pcstr rhs )
-//{
-//	pstr str			= memory::ie_allocate< char >( std::strlen( lhs ) + 1 );
-//	pstr str2			= memory::ie_allocate< char >( std::strlen( rhs ) + 1 );
-//	pstr c				= str;
-//
-//	std::strcpy			( str, lhs );
-//	std::strcpy			( str2, rhs );
-//    while ( *c && isalpha( *c ) )
-//    {
-//        *c              = tolower( *c );
-//        ++              c;
-//    }
-//
-//	c					= str2;
-//    while ( *c && isalpha( *c ) )
-//    {
-//        *c              = tolower( *c );
-//        ++              c;
-//    }
-//
-//	s32 result          = { std::strcmp( str, str2 ) };
-//	memory::ie_delete	( str );
-//	memory::ie_delete	( str2 );
-//
-//	return 				result;
-//}
+#if INEX_PLATFORM_LINUX
+s32	INEX_CCALL	_stricmp ( pcstr lhs, pcstr rhs )
+{
+	pstr str			= memory::ie_allocate< char >( std::strlen( lhs ) + 1 );
+	pstr str2			= memory::ie_allocate< char >( std::strlen( rhs ) + 1 );
+	pstr c				= str;
+
+	std::strcpy			( str, lhs );
+	std::strcpy			( str2, rhs );
+    while ( *c && isalpha( *c ) )
+    {
+        *c              = tolower( *c );
+        ++              c;
+    }
+
+	c					= str2;
+    while ( *c && isalpha( *c ) )
+    {
+        *c              = tolower( *c );
+        ++              c;
+    }
+
+	s32 result          = { std::strcmp( str, str2 ) };
+	memory::ie_delete	( str );
+	memory::ie_delete	( str2 );
+
+	return 				result;
+}
+#endif // #if INEX_PLATFORM_LINUX
 
 static u32 build_id				( u16 const day, u16 const month, u16 const year, pcstr current_date )
 {

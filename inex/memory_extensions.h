@@ -6,6 +6,8 @@
 #ifndef MEMORY_EXTENSIONS_H_INCLUDED
 #	define MEMORY_EXTENSIONS_H_INCLUDED
 
+#   include <memory>
+
 namespace inex {
 
 constexpr u32 KiB	= 1024u;

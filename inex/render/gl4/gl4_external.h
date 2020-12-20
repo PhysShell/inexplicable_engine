@@ -6,25 +6,26 @@
 #ifndef GL4_EXTERNAL_H_INCLUDED
 #   define GL4_EXTERNAL_H_INCLUDED
 
-#	define GLX_GLXEXT_LEGACY
-
-#	if INEX_PLATFORM_LINUX
-#	   include "../../3rd_patry/include/GL/glx.h"
-#	endif // #if INEX_PLATFORM_LINUX
-
-#	include <inex/3rd_patry/include/GL/gl.h>
-#	include <inex/3rd_patry/include/GL/glext.h>
-
-#	if INEX_PLATFORM_WINDOWS
-#	   include <inex/3rd_patry/include/GL/wglext.h>
+# 	if INEX_PLATFORM_LINUX
+#		define GL_GLEXT_PROTOTYPES
+#		define GLX_GLXEXT_PROTOTYPES
+#		include <GL/gl.h>
+#		include <GL/glx.h>
+#		include <GL/glext.h>
+#	elif INEX_PLATFORM_WINDOWS
+#		define GLX_GLXEXT_LEGACY
+#		include <inex/3rd_patry/include/GL/gl.h>
+#		include <inex/3rd_patry/include/GL/glext.h>
+#	   	include <inex/3rd_patry/include/GL/wglext.h>
 #	endif // #if INEX_PLATFORM_WINDOWS
 
 
-		/**************************************		Global extension	/**************************************/
+		/**************************************		Global extension	**************************************/
 // Context
 struct GLFWwindow;
 extern GLFWwindow		*		g_gl4_context;
 
+#	if INEX_PLATFORM_WINDOWS // linux already defines these
 // Texture
 extern PFNGLACTIVETEXTUREPROC	glActiveTexture;
 // VAO
@@ -71,5 +72,6 @@ extern PFNGLUNIFORM2FPROC			glUniform2f;
 extern PFNGLUNIFORM3FVPROC         	glUniform3fv;
 extern PFNGLUNIFORM3FPROC          	glUniform3f;
 extern PFNGLUNIFORM4FVPROC         	glUniform4fv;
+#	endif
 
 #endif // GL4_EXTERNAL_H_INCLUDED

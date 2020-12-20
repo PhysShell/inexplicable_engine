@@ -40,7 +40,7 @@ public:
 
 class float4 : public float4_pod {
 public:
-	inline				float4			( )										{ x = y = z = w = 0; } 
+	inline				float4			( )										{ x = y = z = w = 0; }
 	inline				float4			( type x_, type y_, type z_, type w_ )	{ x = x_; y = y_; z = z_; w = w_; }
 	//inline				float4			( float3 const& xyz, type w );
 	inline				float4			( float4_pod const& other )				{ x = other.x; y = other.y; z = other.z; w =other.w; }
@@ -133,7 +133,7 @@ math::float4x4	operator *				( math::float4x4 const& left, math::float4x4 const&
 {
 	math::float4x4	result		= zero4x4( );
 	s32			index		= 0;
-	
+
 	for ( int col = 0; col < 4; ++col ) {
 		for ( int row = 0; row < 4; ++row ) {
 			float sum		= 0.f;
@@ -154,8 +154,7 @@ math::float4x4	operator *				( math::float4x4 const& left, math::float4x4 const&
 INEX_CORE_API inline
 math::float4x4	mul4x4					( math::float4x4 const& left, math::float4x4 const& right )
 {
-	__assume( 0 );
-	return							math::float4x4( );
+	NOT_IMPLEMENTED                 ( );
 }
 
 INEX_CORE_API inline

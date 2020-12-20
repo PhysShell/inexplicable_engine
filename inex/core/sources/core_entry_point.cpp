@@ -34,9 +34,9 @@ static inex::core::engine * s_engine	= nullptr;
 
 static u32		s_processor_features        { };
 
-void inex::core::preinitialize		( core::engine *								engine, 
-									  pcstr const									command_line, 
-									  bool const									command_line_contains_application, 
+void inex::core::preinitialize		( core::engine *								engine,
+									  pcstr const									command_line,
+									  bool const									command_line_contains_application,
 									  pcstr	const									application,
 									  pcstr	const									build_date
 									)
@@ -62,7 +62,7 @@ void inex::core::preinitialize		( core::engine *								engine,
 
 void	bench ( u32* value_1, u32  size )
 {
-	Sleep( 1000 );
+	SLEEP( 1000 );
 	for ( u32 i = 0; i < size; ++i )
 	{
 		value_1[ i ]			+= i;

@@ -8,22 +8,23 @@
 #	endif  // #ifdef CAST
 
 #	if INEX_PLATFORM_WINDOWS
-#	   define CAST                            
-#		define GL_GET_PROCESS_ADDRESS	wglGetProcAddress
+#	   define CAST
+#	    define GL_GET_PROCESS_ADDRESS	wglGetProcAddress
+#	    define OPENGL_GET_PROC( type , function ) function = ( type )GL_GET_PROCESS_ADDRESS(  CAST #function ); \
+                                                    ASSERT_D( function, "[opengl]\t: error getting '%s' address", #function ); \
+                                                    inex::logging::put_string( "- [opengl][info]\t: loading \"" ); \
+                                                    inex::logging::put_string( #type );		\
+                                                    inex::logging::put_string( " ");		\
+                                                    inex::logging::put_string( #function ); \
+                                                    inex::logging::put_string("\"\n" )
 #	elif INEX_PLATFORM_LINUX // #if INEX_PLATFORM_WINDOWS
-// can this be replaced by #define GL_GLEXT_PROTOTYPES>]?
-#	   define CAST                     ( const GLubyte * )
-#		define GL_GET_PROCESS_ADDRESS	glXGetProcAddress
-// #elif define glfwGetProcAddress // #if INEX_PLATFORM_WINDOWS
+#	    define CAST                     ( const GLubyte * )
+#	    define GL_GET_PROCESS_ADDRESS	glXGetProcAddress
+#	    define OPENGL_GET_PROC( type , function )
 #	endif // #if INEX_PLATFORM_WINDOWS
 
-#	define OPENGL_GET_PROC( type , function ) function = ( type )GL_GET_PROCESS_ADDRESS(  CAST #function ); \
-												ASSERT_D( function, "[opengl]\t: error getting '%s' address", #function ); \
-												inex::logging::put_string( "- [opengl][info]\t: loading \"" ); \
-												inex::logging::put_string( #type );		\
-												inex::logging::put_string( " ");		\
-												inex::logging::put_string( #function ); \
-												inex::logging::put_string("\"\n" )
+
+
 
 bool	inex::render::initialize	( )
 {
@@ -83,3 +84,58 @@ bool	inex::render::initialize	( )
     #undef											CAST
 	return											true;
 }
+
+#ifndef _WIN32
+typedef void* HMODULE ;
+#endif /* not _WIN32 */
+
+//HMODULE LibHandle = 0;
+//bool isInit = false;
+//
+//void* glgGetProcAddress( char * procName )
+//{
+//#if INEX_PLATFORM_WINDOWS
+//  return wglGetProcAddress(procName);
+//#elif INEX_PLATFORM_LINUX
+//  return ( void * )glXGetProcAddress( ( const GLubyte * ) procName );
+//#endif
+//}
+//
+//bool glgInit()
+//{
+//  if (isInit)
+//    return false;
+//#if INEX_PLATFORM_WINDOWS
+//  // LibHandle = LoadLibrary("OpenGL32.dll");
+//#elif INEX_PLATFORM_LINUX
+//  //LibHandle = dlopen(NULL, RTLD_LAZY | RTLD_LOCAL);
+//#endif
+//
+//  if (LibHandle)
+//  {
+//#ifndef _WIN32
+//    //glXGetProcAddress = dlsym(LibHandle, "glXGetProcAddress");
+//    if (!glXGetProcAddress)
+//    {
+//      //glXGetProcAddress = dlsym(LibHandle, "glXGetProcAddressARB");
+//      if (!glXGetProcAddress)
+//        return false;
+//    }
+//#endif /* not _WIN32 */
+//    isInit = true;
+//    return true;
+//  }
+//  else
+//  {
+//    ASSERT_D( 0, "NOT INIT" );
+//  }
+//}
+//
+//void glgDeinit()
+//{
+//  if (!isInit)
+//    return;
+//#ifndef _WIN32
+//  dlclose(LibHandle);
+//#endif /* not _WIN32 */
+//}

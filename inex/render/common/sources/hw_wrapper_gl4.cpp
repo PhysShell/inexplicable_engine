@@ -1,17 +1,25 @@
 #include "pch.h"
 #include "hw_wrapper.h"
 #include <inex/render/base/engine_wrapper.h>
+
 #include <inex/render/gl4/gl4_extensions.h>
 
 #define GLFW_INCLUDE_NONE
 #include <inex/3rd_patry/include/GLFW/glfw3.h>
 
-#pragma comment( lib, "glfw3.lib" )
-#pragma comment( lib, "opengl32.lib" )
+#if INEX_PLATFORM_WINDOWS
+
+#	pragma comment( lib, "glfw3.lib" )
+#	pragma comment( lib, "opengl32.lib" )
+#endif // #if INEX_PLATFORM_WINDOWS
+
+
 
 bool	initialize_extensions ( )
 {
-	GLenum params[] = {
+	inex::render::initialize	( );
+
+	GLenum params[ ] 	= {
 		GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
 		GL_MAX_CUBE_MAP_TEXTURE_SIZE,
 		GL_MAX_DRAW_BUFFERS,
@@ -26,7 +34,7 @@ bool	initialize_extensions ( )
 		GL_STEREO
 	};
 
-	const char* names[] = {
+	pcstr names[ ] 		= {
 		"GL_MAX_COMBINED_TE XTURE_IMAGE_UNITS",
 		"GL_MAX_CUBE_MAP_TEXTURE_SIZE",
 		"GL_MAX_DRAW_BUFFERS",
@@ -41,16 +49,17 @@ bool	initialize_extensions ( )
 		"GL_STEREO"
 	};
 
-	LOGGER("GL Context Params:\n");
+	LOGGER				("GL Context Params:");
 	string256 msg;
 	// integers - only works if the order is 0-10 integer return types
-	for (int i = 0; i < 10; i++) {
-		int v = 0;
-		glGetIntegerv (params[i], &v);
-		LOGGER ("%s %i", names[i], v);
+	for ( s32 i = 0; i < 10; ++i ) {
+		s32 v 			= 0;
+		glGetIntegerv 	( params[ i ], &v );
+		LOGGER 			("%s %i", names[ i ], v );
 	}
 
-	return				inex::render::initialize	( );
+	inex::logging::put_string("\n" );
+	return				true;
 }
 
 void windowSizeCallback(GLFWwindow *, int width, int height) {
@@ -123,16 +132,24 @@ void controls(GLFWwindow* window, int key, int scancode, int action, int mods)
 GLFWwindow* initWindow(const int resX, const int resY)
 {
 	glfwSetErrorCallback( error_callback );
-	glfwWindowHint		( GLFW_SAMPLES, 4 );
 
-    if(!glfwInit())
+    if( !glfwInit( ) )
          ASSERT_D( 0, "Failed to initialize GLFW\n");
 #if INEX_PLATFORM_MAC
 	glfwWindowHint	(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint	(GLFW_CONTEXT_VERSION_MINOR, 2);
 	glfwWindowHint	(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint	(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+# elif INEX_PLATFORM_LINUX
+    // glfwWindowHint(GLFW_SAMPLES, 4);
+    // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #endif // #if INEX_PLATFORM_MAC
+
+	glfwWindowHint		( GLFW_SAMPLES, 4 );
+
 	//GLFWmonitor* mon = glfwGetPrimaryMonitor ();
 	//const GLFWvidmode* vmode = glfwGetVideoMode (mon);
 	g_gl4_context = glfwCreateWindow ( resX, resY, "Extended GLInit", 0, NULL);
@@ -140,17 +157,18 @@ GLFWwindow* initWindow(const int resX, const int resY)
     if(g_gl4_context == NULL)
         ASSERT_D( 0, "Failed to open GLFW window.\n");
 
-    glfwMakeContextCurrent(g_gl4_context);
-    glfwSetKeyCallback(g_gl4_context, controls);
-	glfwSetWindowSizeCallback (g_gl4_context, windowSizeCallback);
+    glfwMakeContextCurrent		( g_gl4_context );
+    glfwSetKeyCallback			( g_gl4_context, controls );
+	glfwSetWindowSizeCallback 	( g_gl4_context, windowSizeCallback );
 
-	VERIFY			( initialize_extensions( ) );
+	VERIFY						( initialize_extensions( ) );
+
     // Get info of GPU and supported OpenGL version
-    printf("Renderer: %s\n", glGetString(GL_RENDERER));
-    printf("OpenGL version supported %s\n", glGetString(GL_VERSION));
+    LOGGER	( "Renderer: %s\nOpenGL version supported %s\n", glGetString( GL_RENDERER ), glGetString( GL_VERSION ) );
 
 	glEnable					( GL_DEPTH_TEST ); // enable depth-testing
 	glDepthFunc					( GL_LESS );
+
     return g_gl4_context;
 }
 
@@ -167,7 +185,7 @@ void hw_wrapper::create_device(HWND hwnd, bool move_window)
 	if (windowed)
 	{
 
-	} else 
+	} else
 	{
 	}
 
@@ -269,5 +287,5 @@ void hw_wrapper::reset()
 	bool windowed	= true;
 }
 
-} // namespace render 
-} // namespace inex 
+} // namespace render
+} // namespace inex

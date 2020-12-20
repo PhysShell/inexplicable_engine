@@ -17,7 +17,7 @@ INTRUSIVE_PTR_TEMPLATE::intrusive_ptr ( ) :
 
 TEMPLATE_SPECIALIZATION
 inline
-INTRUSIVE_PTR_TEMPLATE::intrusive_ptr ( pointer const& raw_pointer, bool add_reference = 1  ) :
+INTRUSIVE_PTR_TEMPLATE::intrusive_ptr ( pointer const& raw_pointer, bool add_reference  ) :
     m_data      ( raw_pointer )
 {
     if ( raw_pointer && add_reference )
@@ -39,7 +39,7 @@ inline
 SHARED_OBJECT_TEMPLATE::shared_object ( pointer const data ) :
     m_owners    (  memory::ie_new< size_t > ( 1u ) ),
     m_data      ( data )
-{ 
+{
 }
 
 TEMPLATE_SPECIALIZATION
@@ -113,8 +113,8 @@ TEMPLATE_SPECIALIZATION
 inline
 void  SHARED_OBJECT_TEMPLATE::release ( )
 {
-     //LOGGER ( "releasing DATA: %p\n", m_data ); 
-	
+     //LOGGER ( "releasing DATA: %p\n", m_data );
+
     memory::ie_delete	( m_data );
     memory::ie_delete	( m_owners);
     m_owners            = nullptr;

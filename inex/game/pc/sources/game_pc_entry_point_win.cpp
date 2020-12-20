@@ -264,6 +264,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_ int       nCmdShow)
 {
 	INEX_UNREFERENCED_PARAMETERS		( hInstance, hPrevInstance, nCmdShow, lpCmdLine );
+	strcpy 								( g_command_line, GetCommandLine( ) );
 	protected_call						( &main_protected, 0 );
 	return								( s_exit_code );
 }

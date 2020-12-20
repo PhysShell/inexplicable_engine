@@ -74,17 +74,17 @@ void game_renderer::add_visual				( u32 id, inex::render::visual_ptr v, float4x4
 	//m_world.commands( ).push_command	( L_NEW( command_add_visual ) ( m_world, id, v, transform, selected, system_object, false ) );
 }
 
-void game_renderer::remove_visual			( u32 id ) 
+void game_renderer::remove_visual			( u32 id )
 {
 	//m_world.commands( ).push_command	( L_NEW( command_remove_visual ) ( m_world, id ) );
 }
 
-void game_renderer::update_visual			( u32 id, float4x4 const& transform, bool selected ) 
+void game_renderer::update_visual			( u32 id, float4x4 const& transform, bool selected )
 {
 	//m_world.commands( ).push_command	( L_NEW( command_update_visual ) ( m_world, id, transform, selected  ) );
 }
 
-void game_renderer::render_visuals			(  ) 
+void game_renderer::render_visuals			(  )
 {
 	//m_world.commands( ).push_command	( L_NEW( command_render_visuals ) ( m_world ) );
 }
@@ -101,9 +101,9 @@ void game_renderer::render_visuals			(  )
 namespace inex{ namespace render { namespace debug { struct renderer { }; } } }
 inex::render::debug::renderer& game_renderer::debug	( )
 {
-	ASSERT_S	( m_debug );
-	UNREACHABLE_CODE( );//*m_debug;
-	return		inex::render::debug::renderer( );
+	ASSERT_S	    ( m_debug );
+	NOT_IMPLEMENTED ( );
+//  return          *m_debug;
 }
 
 void game_renderer::initialize_command_queue	( inex::render::engine::command* null_command )

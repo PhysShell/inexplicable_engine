@@ -4,12 +4,6 @@
 #include <inex/render/world.h>
 #include <inex/render/base/api.h>
 
-#if !defined _MSC_VER
-template class XRAY_RENDER_BASE_API inex::intrusive_ptr< inex::resources::managed_resource, 
-												  inex::resources::managed_intrusive_base, 
-												  inex::threading::multi_threading_mutex_policy >;
-#endif // #ifdef _MSC_VER
-
 namespace inex {
 namespace render {
 
@@ -50,11 +44,11 @@ public:
 
 			void				draw_frame_logic			( );
 			void				draw_frame_editor			( );
-			
+
 
 protected:
 	inline	engine::wrapper&	wrapper						( ) const { return m_wrapper; }
-	
+
 private:
 								base_world					( base_world const& other );
 			world&				operator =					( base_world const& other );

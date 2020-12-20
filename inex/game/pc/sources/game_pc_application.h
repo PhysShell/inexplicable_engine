@@ -6,7 +6,7 @@
 #ifndef GAME_PC_APPLICATION_H_INCLUDED
 #	define GAME_PC_APPLICATION_H_INCLUDED
 
-#include <inex/game/game_module_proxy.h>
+#   include <inex/game/game_module_proxy.h>
 
 namespace game {
 
@@ -31,5 +31,7 @@ private:
 }; // class application
 
 } // namespace game
+
+extern string512 g_command_line;
 
 #endif // #ifndef GAME_PC_APPLICATION_H_INCLUDED

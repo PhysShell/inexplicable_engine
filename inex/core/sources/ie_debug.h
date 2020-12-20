@@ -4,14 +4,17 @@
 #	include <functional>
 #	include <utility>
 #	include <type_traits>
+#   if INEX_PLATFORM_LINUX
+#       include <sys/time.h>
+#   endif // #if INEX_PLATFORM_LINUX
 
 namespace inex {
 namespace debug {
 
 namespace detail {
 template <
-	typename		return_type, 
-	typename		function, 
+	typename		return_type,
+	typename		function,
 	typename ...	parameters_pack
 >
 
@@ -40,7 +43,6 @@ void   benchmark ( function function_to_benchmark, parameters_pack && ... parame
 	detail::wrapper< detail::helper< function, parameters_pack ... >::type >				( function_to_benchmark, parameters ... );
 	gettimeofday			( &time, nullptr );
 	end 					= time.tv_usec;
-	LOGGER					( "[benchmark][-]\t\t: %f usec", end - start );
 }
 #elif INEX_PLATFORM_WINDOWS // #if INEX_PLATFORM_LINUX
 
@@ -53,7 +55,7 @@ float   benchmark ( function function_to_benchmark, parameters_pack && ... param
 
 	ASSERT_S				( QueryPerformanceFrequency( &frequency ) );
 	QueryPerformanceCounter	( &start );
-	
+
 	detail::wrapper< detail::helper< function, parameters_pack ... >::type >				( function_to_benchmark, parameters ... );
 	QueryPerformanceCounter	( &end );
 	elapsed_time			= ( float )( end.QuadPart - start.QuadPart ) / frequency.QuadPart;
