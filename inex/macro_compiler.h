@@ -54,6 +54,8 @@
 #       define COMPILER_PURE_VIRTUAL_DESTRUCTOR( x ) virtual ~x( ) { }
 #       define COMPILER_NODEFAULT                   __builtin_unreachable( )
 #       define COMPILER_DEBUG_BREAK                 asm( "int $3" )
+#	    define UNLIKELY( x )                        __builtin_expect( !!( x ), 0 )
+#	    define PROPAGATE_ERROR( x )                 { auto problem = x; if ( UNLIKELY( problem ) ) return problem; }
 #       define SLEEP                                sleep
 #	endif //#ifdef _MSC_VER
 
