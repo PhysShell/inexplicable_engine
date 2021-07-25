@@ -16,7 +16,7 @@ doug_lea_allocator_type							inex::engine::g_allocator;
 static inex::engine::engine_world		*		s_world;
 void inex::engine::preinitialize				( pcstr command_line, pcstr application, pcstr build_date )
 {
-	//XRAY_CONSTRUCT_REFERENCE		( s_world, engine_world )	( command_line, application, build_date );
+	//INEX_CONSTRUCT_REFERENCE		( s_world, engine_world )	( command_line, application, build_date );
 	s_world							= new inex::engine::engine_world( command_line, application, build_date );
 }
 
@@ -28,7 +28,7 @@ void inex::engine::initialize		( inex::engine_user::module_proxy* module_proxy )
 
 void inex::engine::finalize						( )
 {
-	//XRAY_DESTROY_REFERENCE			( s_world );
+	//INEX_DESTROY_REFERENCE			( s_world );
 	delete								s_world;
 }
 

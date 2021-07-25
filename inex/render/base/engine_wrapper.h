@@ -4,12 +4,12 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #ifndef INEX_RENDER_BASE_ENGINE_WRAPPER_H_INCLUDED
-#define INEX_RENDER_BASE_ENGINE_WRAPPER_H_INCLUDED
+#	define INEX_RENDER_BASE_ENGINE_WRAPPER_H_INCLUDED
 
-#include <functional>
+#	include <functional>
 
-#define	MAX_CACHE_LINE_PAD	64
-#define	INEX_MAX_CACHE_LINE_PAD			char (m_cache_line_pad_$, __LINE__) [XRAY_MAX_CACHE_LINE_SIZE]
+#	define	MAX_CACHE_LINE_PAD	64
+#	define	INEX_MAX_CACHE_LINE_PAD			char (m_cache_line_pad_$, __LINE__) [INEX_MAX_CACHE_LINE_SIZE]
 
 //#include <inex/limited_intrusive_list.h>
 // #include <boost/function.hpp>
@@ -23,7 +23,7 @@ namespace collision {
 namespace render {
 namespace engine {
 
-struct /*XRAY_NOVTABLE */ command {
+struct NOVTABLE command {
 	inline			command					( ) : remove_frame_id( 0 ) {}
 	INEX_DECLARE_PURE_VIRTUAL_DESTRUCTOR( command )
 	virtual	void	execute					( ) = 0;

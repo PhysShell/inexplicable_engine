@@ -69,11 +69,11 @@ static pbyte allocate				( u32 const size )
 
 #if INEX_PLATFORM_WINDOWS_32
 #	define RETURN_TYPE	BOOL
-#elif INEX_PLATFORM_WINDOWS_32 // #ifdef XRAY_PLATFORM_WINDOWS_32
+#elif INEX_PLATFORM_WINDOWS_32 // #ifdef INEX_PLATFORM_WINDOWS_32
 #	define RETURN_TYPE	INT_PTR
-#else // #elif XRAY_PLATFORM_WINDOWS_64 // #ifdef XRAY_PLATFORM_WINDOWS_32
+#else // #elif INEX_PLATFORM_WINDOWS_32 // #ifdef INEX_PLATFORM_WINDOWS_32
 #	error do not use this file in non-Windows platforms
-#endif // #elif XRAY_PLATFORM_WINDOWS_64 // #ifdef XRAY_PLATFORM_WINDOWS_32
+#endif // #elif INEX_PLATFORM_WINDOWS_32 // #ifdef INEX_PLATFORM_WINDOWS_32
 
 static RETURN_TYPE CALLBACK window_procedure ( HWND window_handle, UINT msg, WPARAM wp, LPARAM lp)
 {

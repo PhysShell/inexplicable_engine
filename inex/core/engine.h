@@ -9,7 +9,7 @@
 namespace inex {
 namespace core {
 
-struct /*XRAY_NOVTABLE */ engine {
+struct NOVTABLE engine {
 	virtual			~engine					( ) { }
 	virtual void 	exit					( int exit_code ) = 0;
 	virtual void 	set_exit_code			( int exit_code ) = 0;
