@@ -18,9 +18,14 @@
                                                     inex::logging::put_string( #function ); \
                                                     inex::logging::put_string("\"\n" )
 #	elif INEX_PLATFORM_LINUX // #if INEX_PLATFORM_WINDOWS
-#	    define CAST                     ( const GLubyte * )
-#	    define GL_GET_PROCESS_ADDRESS	glXGetProcAddress
-#	    define OPENGL_GET_PROC( type , function )
+
+#	  define OPENGL_GET_PROC( type , function ) function = ( type )glXGetProcAddress(  ( const GLubyte * ) #function ); \
+                                                    ASSERT_D( function, "[opengl]\t: error getting '%s' address", #function ); \
+                                                    inex::logging::put_string( "- [opengl][info]\t: loading \"" ); \
+                                                    inex::logging::put_string( #type );		\
+                                                    inex::logging::put_string( " ");		\
+                                                    inex::logging::put_string( #function ); \
+                                                    inex::logging::put_string("\"\n" )
 #	endif // #if INEX_PLATFORM_WINDOWS
 
 
@@ -28,9 +33,12 @@
 
 bool	inex::render::initialize	( )
 {
-     // Texture
-	OPENGL_GET_PROC( PFNGLACTIVETEXTUREPROC,        glActiveTexture );
+    LOGGER( "init extensions\n" );
+    // Texture
 
+#if !INEX_PLATFORM_LINUX
+    OPENGL_GET_PROC( PFNGLACTIVETEXTUREPROC,        glActiveTexture );
+#endif // #if !INEX_PLATFORM_LINUX
     // VAO
     OPENGL_GET_PROC( PFNGLGENVERTEXARRAYSPROC,      glGenVertexArrays );
     OPENGL_GET_PROC( PFNGLGENVERTEXARRAYSPROC,      glGenVertexArrays );

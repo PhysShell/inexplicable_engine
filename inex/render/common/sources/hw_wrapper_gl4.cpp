@@ -1,11 +1,8 @@
 #include "pch.h"
 #include "hw_wrapper.h"
 #include <inex/render/base/engine_wrapper.h>
-
+#include <inex/core/sources/ie_memory.h>
 #include <inex/render/gl4/gl4_extensions.h>
-
-#define GLFW_INCLUDE_NONE
-#include <inex/3rd_patry/include/GLFW/glfw3.h>
 
 #if INEX_PLATFORM_WINDOWS
 
@@ -13,13 +10,74 @@
 #	pragma comment( lib, "opengl32.lib" )
 #endif // #if INEX_PLATFORM_WINDOWS
 
+/* Global extension */
+// Texture
+#if !INEX_PLATFORM_LINUX
+PFNGLACTIVETEXTUREPROC glActiveTexture  ;
+#endif // #if !INEX_PLATFORM_LINUX
+// VAO
+PFNGLGENVERTEXARRAYSPROC    glGenVertexArrays    ;
+PFNGLDELETEVERTEXARRAYSPROC glDeleteVertexArrays ;
+PFNGLBINDVERTEXARRAYPROC    glBindVertexArray    ;
+// VBO
+PFNGLGENBUFFERSPROC    glGenBuffers    ;
+PFNGLDELETEBUFFERSPROC glDeleteBuffers ;
+PFNGLBINDBUFFERPROC    glBindBuffer    ;
+PFNGLBUFFERDATAPROC    glBufferData    ;
+PFNGLBUFFERSUBDATAPROC glBufferSubData ;
+PFNGLMAPBUFFERPROC     glMapBuffer     ;
+PFNGLUNMAPBUFFERPROC   glUnmapBuffer   ;
+// Shaders
+PFNGLCREATEPROGRAMPROC     glCreateProgram     ;
+PFNGLDELETEPROGRAMPROC     glDeleteProgram     ;
+PFNGLLINKPROGRAMPROC       glLinkProgram       ;
+PFNGLVALIDATEPROGRAMPROC   glValidateProgram   ;
+PFNGLUSEPROGRAMPROC        glUseProgram        ;
+PFNGLGETPROGRAMIVPROC      glGetProgramiv      ;
+PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog ;
+PFNGLCREATESHADERPROC      glCreateShader      ;
+PFNGLDELETESHADERPROC      glDeleteShader      ;
+PFNGLSHADERSOURCEPROC      glShaderSource      ;
+PFNGLCOMPILESHADERPROC     glCompileShader     ;
+PFNGLATTACHSHADERPROC      glAttachShader      ;
+PFNGLDETACHSHADERPROC      glDetachShader      ;
+PFNGLGETSHADERIVPROC       glGetShaderiv       ;
+PFNGLGETSHADERINFOLOGPROC  glGetShaderInfoLog  ;
+// Attributes
+PFNGLGETATTRIBLOCATIONPROC        glGetAttribLocation        ;
+PFNGLVERTEXATTRIBPOINTERPROC      glVertexAttribPointer      ;
+PFNGLENABLEVERTEXATTRIBARRAYPROC  glEnableVertexAttribArray  ;
+PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray ;
+// Uniforms
+PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation  ;
+PFNGLUNIFORMMATRIX3FVPROC   glUniformMatrix3fv    ;
+PFNGLUNIFORMMATRIX4FVPROC   glUniformMatrix4fv    ;
+PFNGLUNIFORM1FPROC          glUniform1f           ;
+PFNGLUNIFORM1IPROC          glUniform1i           ;
+PFNGLUNIFORM1FVPROC         glUniform1fv          ;
+PFNGLUNIFORM2FPROC			    glUniform2f           ;
+PFNGLUNIFORM3FVPROC         glUniform3fv          ;
+PFNGLUNIFORM3FPROC          glUniform3f           ;
+PFNGLUNIFORM4FVPROC         glUniform4fv          ;
 
+gl_context			*           g_gl4_context;
+
+void 	make_context_current ( gl_context * context )
+{
+	glXMakeCurrent	( GLX.display, GLX.window, GLX.context );
+}
+
+void 	set_window_title ( gl_context * context, pcstr const window_name )
+{
+	XStoreName		( GLX.display, GLX.window, window_name );
+}
 
 bool	initialize_extensions ( )
 {
 	inex::render::initialize	( );
 
-	GLenum params[ ] 	= {
+	GLenum const params[ ] 	=
+	{
 		GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
 		GL_MAX_CUBE_MAP_TEXTURE_SIZE,
 		GL_MAX_DRAW_BUFFERS,
@@ -34,7 +92,8 @@ bool	initialize_extensions ( )
 		GL_STEREO
 	};
 
-	pcstr names[ ] 		= {
+	pcstr const names[ ] 	=
+	{
 		"GL_MAX_COMBINED_TE XTURE_IMAGE_UNITS",
 		"GL_MAX_CUBE_MAP_TEXTURE_SIZE",
 		"GL_MAX_DRAW_BUFFERS",
@@ -49,42 +108,89 @@ bool	initialize_extensions ( )
 		"GL_STEREO"
 	};
 
-	LOGGER				("GL Context Params:");
+	LOGGER				("* [render][info]\t: OpenGL context parameters:\n[\n");
 	string256 msg;
 	// integers - only works if the order is 0-10 integer return types
 	for ( s32 i = 0; i < 10; ++i ) {
 		s32 v 			= 0;
 		glGetIntegerv 	( params[ i ], &v );
-		LOGGER 			("%s %i", names[ i ], v );
+		LOGGER 			("\t%s %i", names[ i ], v );
 	}
 
-	inex::logging::put_string("\n" );
+	inex::logging::put_string("]\n" );
+
 	return				true;
 }
 
-void windowSizeCallback(GLFWwindow *, int width, int height) {
-  glViewport(0, 0, width, height);
-    /* update any perspective matrices used here */
+gl_context * 	gl_create_window ( u32 const x, u32 const y, pcstr window_name )
+{
+	LOGGER 				( "- [hw-wrapper][info]\t: requesting '%d' bytes to store context... " );
+	g_gl4_context		= inex::memory::ie_new< gl_context >( );
+	LOGGER 				( "\t\t\t\t... successfully allocated at '%p'", g_gl4_context );
+	GLX.display 		= XOpenDisplay( NULL );
+	ASSERT_D			( GLX.display, "Xlib error: Cannot connect to X server" );
+
+	GLX.root			= DefaultRootWindow( GLX.display );
+	GLX.visual_info		= glXChooseVisual( GLX.display, 0, GLX.attributes );
+	ASSERT_D			( GLX.visual_info, "Xlib error: No appropriate visual found" );
+	LOGGER				( "- [hw-wrapper][info]\t: glx visual '%p' selected", ( pvoid ) GLX.visual_info->visualid );
+
+	GLX.color_map		=
+		XCreateColormap (
+			GLX.display,
+			GLX.root,
+			GLX.visual_info->visual,
+			AllocNone
+		);
+
+	GLX.window_attributes.colormap	= GLX.color_map;
+	GLX.window_attributes.event_mask = ExposureMask | KeyPressMask;
+
+ 	GLX.window 			=
+		XCreateWindow (
+			GLX.display,
+			GLX.root,
+			0,
+			0,
+			600,
+			600,
+			0,
+			GLX.visual_info->depth,
+			InputOutput,
+			GLX.visual_info->visual,
+			CWColormap | CWEventMask,
+			&GLX.window_attributes
+		 );
+
+	XSelectInput	( GLX.display, GLX.window, KeyPressMask | KeyReleaseMask );
+
+	XMapWindow		( GLX.display, GLX.window );
+	XStoreName		( GLX.display, GLX.window, window_name );
+
+ 	GLX.context		= glXCreateContext( GLX.display, GLX.visual_info, NULL, GL_TRUE );
+    make_context_current    ( g_gl4_context );
+	VERIFY			( initialize_extensions( ) );
+	return 			g_gl4_context;
 }
 
-GLFWwindow			*           g_gl4_context;
+void 	gl_terminate ( )
+{
+	// glfwTerminate
+	glXMakeCurrent		( GLX.display, None, NULL );
+	glXDestroyContext	( GLX.display, GLX.context );
+	XDestroyWindow		( GLX.display, GLX.window);
+	XCloseDisplay		( GLX.display );
+
+	inex::memory::ie_delete	( &GLX );
+}
 
 void	error_callback ( int error, const char * description )
 {
    LOGGER	( " [hw_wrapper:gl4][error]: %s\n", description );
 }
 
-//static
-//void	key_callback ( GLFWwindow* window, int key, int scancode, int action, int mods )
-//{
-//    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-//        glfwSetWindowShouldClose(window, GLFW_TRUE);
-//}
-
 namespace inex {
 namespace render {
-
-
 
 hw_wrapper::hw_wrapper( inex::render::engine::wrapper& wrapper, HWND hwnd ):
 	m_wrapper		( wrapper ),
@@ -122,65 +228,29 @@ void hw_wrapper::create_device( )
 	create_device(m_hwnd, false);
 }
 
-void controls(GLFWwindow* window, int key, int scancode, int action, int mods)
+gl_context * 	initialize_context ( u32 const x, u32 const y )
 {
-    if(action == GLFW_PRESS)
-        if(key == GLFW_KEY_ESCAPE)
-            glfwSetWindowShouldClose(window, GL_TRUE);
-}
+	g_gl4_context 		= gl_create_window ( x, y, "In-EX engine" );
+    ASSERT_D			( g_gl4_context != nullptr, "Failed to open GLX window.\n");
+    LOGGER	(
+		"* [render][info]\t: %s\n* [render][info]\t: OpenGL version supported %s\n",
+		glGetString( GL_RENDERER ),
+		glGetString( GL_VERSION )
+	);
 
-GLFWwindow* initWindow(const int resX, const int resY)
-{
-	glfwSetErrorCallback( error_callback );
+	glEnable			( GL_DEPTH_TEST ); // enable depth-testing
+	glDepthFunc			( GL_LESS );
 
-    if( !glfwInit( ) )
-         ASSERT_D( 0, "Failed to initialize GLFW\n");
-#if INEX_PLATFORM_MAC
-	glfwWindowHint	(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint	(GLFW_CONTEXT_VERSION_MINOR, 2);
-	glfwWindowHint	(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint	(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-# elif INEX_PLATFORM_LINUX
-    // glfwWindowHint(GLFW_SAMPLES, 4);
-    // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#endif // #if INEX_PLATFORM_MAC
-
-	glfwWindowHint		( GLFW_SAMPLES, 4 );
-
-	//GLFWmonitor* mon = glfwGetPrimaryMonitor ();
-	//const GLFWvidmode* vmode = glfwGetVideoMode (mon);
-	g_gl4_context = glfwCreateWindow ( resX, resY, "Extended GLInit", 0, NULL);
-
-    if(g_gl4_context == NULL)
-        ASSERT_D( 0, "Failed to open GLFW window.\n");
-
-    glfwMakeContextCurrent		( g_gl4_context );
-    glfwSetKeyCallback			( g_gl4_context, controls );
-	glfwSetWindowSizeCallback 	( g_gl4_context, windowSizeCallback );
-
-	VERIFY						( initialize_extensions( ) );
-
-    // Get info of GPU and supported OpenGL version
-    LOGGER	( "Renderer: %s\nOpenGL version supported %s\n", glGetString( GL_RENDERER ), glGetString( GL_VERSION ) );
-
-	glEnable					( GL_DEPTH_TEST ); // enable depth-testing
-	glDepthFunc					( GL_LESS );
-
-    return g_gl4_context;
+    return 				g_gl4_context;
 }
 
 void hw_wrapper::create_device(HWND hwnd, bool move_window)
 {
-	m_move_window	= move_window;
-
+	m_move_window			= move_window;
 	// for dll
-	create_d3d();
+	create_d3d				( );
 
-	bool  windowed	= true;
-
+	bool  windowed			= true;
 
 	if (windowed)
 	{
@@ -189,73 +259,19 @@ void hw_wrapper::create_device(HWND hwnd, bool move_window)
 	{
 	}
 
-	constexpr u32 size_x	= 480;
-	constexpr u32 size_y	= 320;
+	constexpr u32 size_x	= 1024;
+	constexpr u32 size_y	= 620;
 
-	g_gl4_context  = initWindow(1024, 620);
-	VERIFY ( g_gl4_context );
-
-	/*
-		glfwSetErrorCallback( error_callback );
-	// glfwSetKeyCallback( window, key_callback );
-	VERIFY				( glfwInit( ) );
-
-	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
-	//glfwDefaultWindowHints( );
-
-	glfwWindowHint		( GLFW_CONTEXT_VERSION_MAJOR, 3 );
-    glfwWindowHint		( GLFW_CONTEXT_VERSION_MINOR, 3 );
-    glfwWindowHint		( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
-	glfwWindowHint		( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
-
-	// Create the device
-	g_gl4_context		= glfwCreateWindow( size_x, size_y, "__INEX__", nullptr, nullptr );
-	LOGGER          ( "* '%s' window: initial config: [%d x %d]", "__INEX__", size_x, size_y );
-	ASSERT_D        ( g_gl4_context, "Couldn't create window and its OpenGL context." );
-	glfwMakeContextCurrent( g_gl4_context );
-
-	VERIFY			( initialize_extensions( ) );
-	// Display the name of video board
-	s32 gl_major	= -1;
-	s32 gl_minor	= -1;
-    glGetIntegerv	( GL_MAJOR_VERSION, &gl_major );
-    glGetIntegerv	( GL_MINOR_VERSION, &gl_minor );
-	ASSERT_D		( ( gl_major != -1 ) || ( gl_minor != -1 ), "opengl fcked up" );
-
-    LOGGER			(
-		"* [hw_wrapper]\t: GPU [vendor:%s]: %s\n\t"
-        "* [OpenGL] version : [%d.%d]",
-        ( pcstr ) glGetString( GL_VENDOR ),
-        ( pcstr ) glGetString( GL_RENDERER ), gl_major, gl_minor
-            // , glewGetString( GLEW_VERSION )
-    );
-
-	glfwSwapInterval( 1 );
-
-	glfwSetFramebufferSizeCallback          ( g_gl4_context, framebuffer_size_callback );
-	glfwSetWindowSizeCallback				( g_gl4_context, windowSizeCallback );
-
-	glfwShowWindow	( g_gl4_context);
-	*/
-		// Fatal error! Cannot create rendering device AT STARTUP !!!
-		//LOG_ERROR("Failed to initialize graphics hardware.\nPlease try to restart the game.");
-
-
-	//log_ref_count("* CREATE: Device", m_device);
-		//LOG_INFO("* Vertex Processor: SOFTWARE");
-
-	// Capture misc data
-	//LOG_INFO("*     Texture memory: %d M",	memory/(1024*1024));
-	//LOG_INFO("*          DDI-level: %2.1f",	float(D3DXGetDriverLevel(m_device))/100.f);
-
+	g_gl4_context  			= initialize_context( size_x, size_y );
+	VERIFY 					( g_gl4_context );
 }
 
 void hw_wrapper::destroy_device()
 {
 	//log_ref_count("* DESTROY: Device", m_device);
-	 LOGGER              ( "- [hw_wrapper]\t: destroying" );
+	LOGGER              ( "- [hw_wrapper]\t: destroying" );
+	gl_terminate		( );
     // glBindVertexArray   ( 0u );
-    glfwTerminate		( );
 	destroy_d3d();
 }
 

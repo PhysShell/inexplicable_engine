@@ -1,0 +1,144 @@
+# depslib dependency file v1.0
+1608309179 source:/home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/game/pc/sources/game_pc_application.cpp
+	"pch.h"
+	"game_pc_application.h"
+	<inex/engine/api.h>
+
+1608309179 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/game/pc/sources/pch.h
+	<inex/extensions.h>
+
+1608367613 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/extensions.h
+	<stdarg.h>
+	<cstring>
+	<iostream>
+	<cstdint>
+	<inex/macro_extensions.h>
+	<inex/core/api.h>
+	<inex/types.h>
+	<inex/core/sources/ie_debug.h>
+	<inex/core/sources/logger.h>
+	<inex/os_extensions.h>
+	<inex/memory_extensions.h>
+	<inex/core/sources/ie_syncronize.h>
+	<inex/math_functions.h>
+	<inex/math_float3.h>
+	<inex/math_float4x4.h>
+	<inex/core/sources/fs_file_system.h>
+
+1589820401 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/macro_extensions.h
+	"macro_platform.h"
+	"macro_compiler.h"
+	"macro_string.h"
+	"macro_debug.h"
+	"macro_declarations.h"
+	"macro_log.h"
+	"macro_unreferenced_parameter.h"
+
+1589820403 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/macro_platform.h
+
+1627206364 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/macro_compiler.h
+	<iostream>
+	<cstdlib>
+
+1589820401 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/macro_string.h
+
+1608534268 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/macro_debug.h
+
+1589820401 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/macro_declarations.h
+
+1589820401 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/macro_log.h
+
+1589820401 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/macro_unreferenced_parameter.h
+
+1608309179 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/core/api.h
+	<inex/macro_compiler.h>
+
+1608309179 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/types.h
+
+1608534205 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/core/sources/ie_debug.h
+	<functional>
+	<utility>
+	<type_traits>
+	<sys/time.h>
+
+1608309179 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/core/sources/logger.h
+
+1608367679 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/os_extensions.h
+	<inex/macro_platform.h>
+	<inex/types.h>
+
+1608312870 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/memory_extensions.h
+	<memory>
+
+1608309179 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/core/sources/ie_syncronize.h
+	<inex/os_include.h>
+
+1589820401 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/os_include.h
+	<inex/os_windows.h>
+	<inex/os_linux.h>
+
+1589820402 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/os_windows.h
+	<windows.h>
+
+1608367559 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/os_linux.h
+	<sys/mman.h>
+	<fcntl.h>
+	<sys/stat.h>
+	<unistd.h>
+
+1608309179 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/math_functions.h
+	<inex/math_functions_inline.h>
+
+1608309179 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/math_functions_inline.h
+
+1608309179 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/math_float3.h
+	<inex/math_float3_inline.h>
+
+1608309179 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/math_float3_inline.h
+	<math.h>
+	<inex/math_functions.h>
+
+1608311993 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/math_float4x4.h
+
+1608309179 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/core/sources/fs_file_system.h
+	<inex/core/sources/memory_chunk_reader.h>
+
+1608309179 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/core/sources/memory_chunk_reader.h
+
+1608384154 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/game/pc/sources/game_pc_application.h
+	<inex/game/game_module_proxy.h>
+
+1608309179 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/game/game_module_proxy.h
+	<inex/engine/engine_user.h>
+
+1608309179 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/engine/engine_user.h
+
+1608309179 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/engine/api.h
+	<inex/macro_compiler.h>
+
+1608309179 source:/home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/game/pc/sources/pch.h
+	<inex/extensions.h>
+
+1608384893 source:/home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/game/pc/sources/game_pc_application_linux.cpp
+	"pch.h"
+	<inex/math_functions.h>
+	<inex/engine/api.h>
+	"game_pc_application.h"
+
+1608384410 source:/home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/game/pc/sources/game_pc_entry_point_linux.cpp
+	"pch.h"
+	"game_pc_application.h"
+	<inex/core/core.h>
+	<inex/command_line.h>
+	<signal.h>
+
+1608309179 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/core/core.h
+	<inex/core/api.h>
+
+1608309179 /home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/command_line.h
+
+1608309179 source:/home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/game/pc/sources/pch.cpp
+	"pch.h"
+
+1608309179 source:/home/phys_shell/Documents/inex_engine_linux/projects/engine/inex/game/pc/sources/game_pc.rc
+

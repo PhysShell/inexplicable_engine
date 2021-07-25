@@ -44,6 +44,9 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "utility": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "bitset": "cpp",
+        "memory": "cpp",
+        "functional": "cpp"
     }
 }

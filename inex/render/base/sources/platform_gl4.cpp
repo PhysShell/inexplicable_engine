@@ -3,7 +3,8 @@
 #include <inex/render/gl4/sources/visual.h>
 
 #include <inex/render/core/shaders.h>
-#include <inex/3rd_patry/include/GLFW/glfw3.h>
+
+#include <inex/core/sources/fs_ini_file.h>
 
 #include <time.h>
 #include <math.h>
@@ -88,8 +89,8 @@ render::platform * create_render_platform( inex::render::engine::wrapper& wrappe
 platform* pw				= nullptr;
 platform&	get_w ( )		{ return *pw; }
 
-float cam_speed				= .01f;		// 1 unit per second
-float cam_yaw_speed			= .5f;	// 10 degrees p er second
+float cam_speed				/*= .01f*/;		// 1 unit per second
+float cam_yaw_speed			/*= .5f*/;	// 10 degrees p er second
 float cam_pos[]				= {0.0f, 0.0f, 2.0f};	// don't start at zero, or we will be too close
 
 float cam_yaw = 0.0f;					// y-rotation in degrees
@@ -138,14 +139,23 @@ platform::platform					( inex::render::engine::wrapper& wrapper, HWND const wind
 
 	m_scene						= new scene_render( true );
 
-	glEnable					(GL_CULL_FACE); // cull face
-	glCullFace					(GL_BACK);		// cull back fa ce
-	glFrontFace					(GL_CW);		// GL_CCW for coun ter clock-wise
+	glEnable					( GL_CULL_FACE ); 	// cull face
+	glCullFace					( GL_BACK );		// cull back fa ce
+	glFrontFace					( GL_CW );			// GL_CCW for coun ter clock-wise
 
+	// LOGGER( "initialize debugging..." );
+    // core::debug::initialize		( nullptr );
+	// core::debug::postinitialize	( );
+	// LOGGER( "initialize debugging successfully" );
 	//initialize_shaders          ( );
     //initialize_vertex_buffer_object ( );
 
 	initialize_model_manager	( m_model_manager );
+
+	ini::ini_file system_config;
+	system_config.load			( "gamedata/System.ltx");
+	cam_speed					= system_config.r_float("Camera", "speed");
+	cam_yaw_speed				= system_config.r_float("Camera", "yaw_speed");
 
 	math::float4x4 T			= math::translate4x4( math::identity4x4( ), math::float3( -cam_pos[ 0 ], -cam_pos[ 1 ], -cam_pos[ 2 ] ) );
 	math::float4x4 R			= math::rotate_yaw( math::identity4x4( ), -cam_yaw );
@@ -181,8 +191,6 @@ platform::platform					( inex::render::engine::wrapper& wrapper, HWND const wind
 	glUniformMatrix4fv		(proj_mat_location, 1, GL_FALSE, prj_mtx.elements);
 
     m_model_manager.get_visuals( ).at( 0 )->m_program.unbind( );
-
-
 }
 
 platform::~platform					( )
@@ -207,11 +215,18 @@ platform::~platform					( )
 //
 //}
 
-void	update_fps_counter ( GLFWwindow * window )
+void	update_fps_counter ( gl_context * window )
 {
-	static	float	previous_seconds	= glfwGetTime( );
+	struct 	timeval tp;
+	gettimeofday						( &tp, NULL );
+
+			long int ms 				= tp.tv_sec * 1000 + tp.tv_usec / 1000;		
+	static	float	previous_seconds	= ms;
 	static	s32		frame_count;
-			float	current_seconds		= glfwGetTime( );
+
+	gettimeofday						( &tp, NULL );
+					ms 					= tp.tv_sec * 1000 + tp.tv_usec / 1000;		
+			float	current_seconds		= ms;
 			float	elapsed_seconds		= current_seconds - previous_seconds;
 
 	if ( elapsed_seconds > 0.25f )
@@ -220,7 +235,7 @@ void	update_fps_counter ( GLFWwindow * window )
 		float		fps					= ( float )frame_count / elapsed_seconds;
 		string128	tmp;
 		sprintf							(tmp, "opengl @ fps: %.2f", fps);
-		glfwSetWindowTitle				( window, tmp );
+		set_window_title				( window, tmp );
 		frame_count						= 0;
 	}
 
@@ -230,12 +245,18 @@ void	update_fps_counter ( GLFWwindow * window )
 
 void platform::draw_frame			( )
 {
+	XNextEvent					( GLX.display, &GLX.x_event );
+	bool cam_moved 	= 0;
+
+if( 1 ||  GLX.x_event.type == Expose )
+{
 	update_fps_counter			( g_gl4_context );
 
-    glClearColor                ( 0.6f, 0.6f, 0.8f, 1.f );
-    glClear                     ( GL_COLOR_BUFFER_BIT );
-
+    XGetWindowAttributes		( g_gl4_context->display, g_gl4_context->window, &g_gl4_context->x_window_attributes );
+    glClear                 	( GL_COLOR_BUFFER_BIT );
 	glClear						( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glViewport					( 0, 0, g_gl4_context->x_window_attributes.width, g_gl4_context->x_window_attributes.height );
+
 	//triangle.prologue			( );
 	//program.use( );
 	//triangle.draw_static		( );
@@ -245,66 +266,90 @@ void platform::draw_frame			( )
 	m_model_manager.get_visuals( ).at( 0 )->m_program.use( );
 	render_visuals	( );
 
-	//glDrawArrays ( GL_TRIANGLES, 0, 3);
+	glXSwapBuffers				( GLX.display, GLX.window );
+}
+/*
+  // XSelectInput(Pixel.GetX11Display(),Pixel.GetX11Window(),KeyPressMask|KeyReleaseMask);
+    while(XPending(Pixel.GetX11Display())) { //Repeats until all events are computed
+      XEvent KeyEvent;
+      XNextEvent(Pixel.GetX11Display(),&KeyEvent); //Gets exactly one event
+      if(KeyEvent.type==KeyPress) {
+        uint32_t KeyEventCode=KeyEvent.xkey.keycode; //Gets the key code, NOT HIS CHAR EQUIVALENT
+        std::cout << KeyEventCode << '\n'; //Displays the key code
 
-	if ( glfwWindowShouldClose ( g_gl4_context ) )
-		exit					( 0 );
+        // Code handling a Keypress event 
 
-	if (GLFW_PRESS == glfwGetKey ( g_gl4_context, GLFW_KEY_ESCAPE)) {
-		glfwSetWindowShouldClose (g_gl4_context, 1);
+      } else if(KeyEvent.type==KeyRelease) {
+         uint32_t KeyEventCode=KeyEvent.xkey.keycode;
+         std::cout << KeyEventCode << '\n'; //Displays the key code
+
+         / Code handling a KeyRelease event 
+
+      }
+    }
+
+    // General code 
+
+  }
+*/
+ if( GLX.x_event.type == KeyPress )
+{
+	#define KEY_ESCAPE	0x09
+	// rotating
+	#define KEY_RIGHT 	114
+	#define KEY_LEFT 	113
+	#define KEY_UP		111
+	#define KEY_DOWN	116
+
+	// moving
+	#define KEY_A		38
+	#define KEY_D		40
+	#define KEY_S		39
+	#define KEY_W		25
+
+
+    if ( GLX.x_event.xkey.keycode == KEY_ESCAPE )
+    {
+		exit 		( EXIT_SUCCESS );
 	}
 
-	// control keys
-	bool cam_moved = 0 ;
-	if (glfwGetKey (g_gl4_context, GLFW_KEY_A)) {
-		cam_pos[0] -= cam_speed ;
-		cam_moved = true;
+	if ( 	GLX.x_event.xkey.keycode == KEY_A || GLX.x_event.xkey.keycode == KEY_D ||
+		 	GLX.x_event.xkey.keycode == KEY_W || GLX.x_event.xkey.keycode == KEY_S || 
+			GLX.x_event.xkey.keycode == KEY_UP || GLX.x_event.xkey.keycode == KEY_DOWN || 
+			GLX.x_event.xkey.keycode == KEY_LEFT || GLX.x_event.xkey.keycode == KEY_RIGHT )
+	{
+		cam_moved	= 1;
 	}
-
-	if (glfwGetKey (g_gl4_context, GLFW_KEY_D)) {
-		cam_pos[0] += cam_speed ;
-		cam_moved = true;
-	}
-
-	if (glfwGetKey (g_gl4_context, GLFW_KEY_PAGE_UP)) {
-
-		cam_pos[1] += cam_speed ;
-		cam_moved = true;
-	}
-
-	if (glfwGetKey (g_gl4_context, GLFW_KEY_PAGE_DOWN)) {
-
-		cam_pos[1] -= cam_speed ;
-		cam_moved = true;
-	}
-
-	if (glfwGetKey (g_gl4_context, GLFW_KEY_W)) {
-
-		cam_pos[2] -= cam_speed ;
-		cam_moved = true;
-	}
-
-	if (glfwGetKey (g_gl4_context, GLFW_KEY_S)) {
-
-		cam_pos[2] += cam_speed ;
-		cam_moved = true; 		//LOGGER( "go back: %f\n", cam_pos[ 2 ] );
-	}
-
-	if (glfwGetKey (g_gl4_context, GLFW_KEY_LEFT)) {
-
-		cam_yaw += cam_yaw_speed ;
-		cam_moved = true; 		//LOGGER( "rotated right: %f\n", cam_yaw );
-	}
-
-	if (glfwGetKey (g_gl4_context, GLFW_KEY_RIGHT)) {
-
-		cam_yaw -= cam_yaw_speed ;
-		cam_moved = true; 		//LOGGER( "rotated right: %f\n", cam_yaw );
-	}
+}
 
 	// update view matrix
-	if (cam_moved)
+	if ( cam_moved )
 	{
+		// control keys
+		if ( GLX.x_event.xkey.keycode == KEY_A )
+			cam_pos[ 0 ] 		-= cam_speed ;
+
+		if ( GLX.x_event.xkey.keycode == KEY_D )
+			cam_pos[ 0 ] 		+= cam_speed ;
+
+		if ( GLX.x_event.xkey.keycode == KEY_UP )
+			cam_pos[ 1 ] 		+= cam_speed ;
+
+		if ( GLX.x_event.xkey.keycode == KEY_DOWN )
+			cam_pos[ 1 ] 		-= cam_speed ;
+
+		if ( GLX.x_event.xkey.keycode == KEY_W )
+			cam_pos[ 2 ] 		-= cam_speed ;
+
+		if ( GLX.x_event.xkey.keycode == KEY_S )
+			cam_pos[ 2 ] 		+= cam_speed ;
+
+		if ( GLX.x_event.xkey.keycode == KEY_LEFT )
+			cam_yaw 			+= cam_yaw_speed ;
+
+		if ( GLX.x_event.xkey.keycode == KEY_RIGHT )
+			cam_yaw 			-= cam_yaw_speed ;
+
 		math::float4x4 T		= math::translate4x4( math::identity4x4 ( ), float3 (-cam_pos[0], -cam_pos[1], -cam_pos[2] ) ); // cam translation
 		math::float4x4 R		= math::rotate_yaw	( math::identity4x4 ( ), -cam_yaw );
 		math::float4x4 view_mat = R * T;
@@ -314,8 +359,13 @@ void platform::draw_frame			( )
 
 	m_model_manager.get_visuals( ).at( 0 )->m_program.unbind( );
 
-	glfwPollEvents              ( );
-    glfwSwapBuffers             ( g_gl4_context );
+if( GLX.x_event.type == Expose )
+{
+	glXSwapBuffers				( GLX.display, GLX.window );
+}
+
+	//glfwPollEvents              ( );
+    //glfwSwapBuffers             ( g_gl4_context );
 	//triangle.epilogue			( );
 
 //	float4x4 ident;

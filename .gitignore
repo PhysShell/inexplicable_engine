@@ -4354,3 +4354,6 @@ inex/engine/sources/content/x-shaders/shared/common.h
 inex/engine/sources/content/x-shaders/shared/waterconfig.h
 inex/engine/sources/content/x-shaders/shared/watermove.h
 inex/engine/sources/content/x-shaders/shared/wmark.h
+inex/engine/sources/engine.cbp
+inex/game/pc/sources/gamedata/sound1.wav
+inex/game/pc/sources/gamedata/motor_a8.wav

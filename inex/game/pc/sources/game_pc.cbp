@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="game_pc" />
+		<Option pch_mode="2" />
+		<Option compiler="clang" />
+		<Build>
+			<Target title="clang7_0_linux">
+				<Option output="game_pc" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../../../../../binaries/intermediates/$(TARGET_NAME)/" />
+				<Option type="1" />
+				<Option compiler="clang" />
+				<Compiler>
+					<Add option="-fPIC" />
+					<Add option="-g" />
+					<Add option="-std=c++14" />
+					<Add directory="./" />
+					<Add directory="../../../../../engine" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-lX11 -lGL -lGLU -lpthread" />
+					<Add library="/home/phys_shell/Documents/inex_engine_linux/projects/binaries/clang7_0_linux/libsound_clang_linux.so" />
+					<Add library="/home/phys_shell/Documents/inex_engine_linux/projects/binaries/clang7_0_linux/libengine_clang_linux.a" />
+					<Add library="/home/phys_shell/Documents/inex_engine_linux/projects/binaries/clang7_0_linux/libcore_clang_linux.so" />
+					<Add library="/home/phys_shell/Documents/inex_engine_linux/projects/binaries/clang7_0_linux/librender_base_clang_linux.a" />
+					<Add library="/home/phys_shell/Documents/inex_engine_linux/projects/binaries/clang7_0_linux/librender_gl4_clang_linux.a" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Weverything" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="../../game_module_proxy.h" />
+		<Unit filename="game_pc_application.cpp" />
+		<Unit filename="game_pc_application.h" />
+		<Unit filename="game_pc_application_linux.cpp" />
+		<Unit filename="game_pc_entry_point_linux.cpp" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

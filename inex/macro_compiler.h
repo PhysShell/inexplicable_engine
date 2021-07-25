@@ -13,7 +13,7 @@
 #   define INEX_ALIGNOF __alignof
 #endif // #ifdef __linux__
 
-#	ifdef _WIN32
+#	if defined _WIN32
 #       ifdef _MSC_VER
 # 		    define INEX_DLL_IMPORT	__declspec ( dllimport )
 #		    define INEX_DLL_EXPORT	__declspec ( dllexport )
@@ -21,11 +21,12 @@
 #		    define INEX_DLL_IMPORT	__attribute__ ( ( dllimport ) )
 #		    define INEX_DLL_EXPORT	__attribute__ ( ( dllexport ) )
 #       endif // #ifdef _MSC_VER
-#   else // #ifdef _WIN32
-#       pragma error specify dll export/import attributes
+#   elif defined __linux__ // #if defined _WIN32
 #		define INEX_DLL_IMPORT
-#		define INEX_DLL_EXPORT
-#	endif // #ifdef _WIN32
+#		define INEX_DLL_EXPORT      __attribute__( ( visibility("default" ) ) )
+#   else // #if defined _WIN32
+#       error specify dll export/import attributes for your target
+#	endif // #if defined _WIN32
 
 #	ifdef _MSC_VER
 /** Check if there's such a thing in GCC/CLang
@@ -41,13 +42,13 @@
 #       define INEX_FORCE_ALIGNMENT( x )            _declspec ( align( x ) )
 #       define COMPILER_PURE_VIRTUAL_DESTRUCTOR( x ) virtual ~x( ) = 0 { }
 #       define COMPILER_NODEFAULT                   __assume( 0 )
-#       define COMPILER_DEBUG_BREAK                 __debugbreak( )       
+#       define COMPILER_DEBUG_BREAK                 __debugbreak( )
 #       define SLEEP                                Sleep
 #   else // #ifdef _MSC_VER
-#		define NOVTABLE				
-#		define INEX_PUSH_WARNING		        
-#		define INEX_DISABLE_WARNING( x )	        
-#		define INEX_POP_WARNING		            
+#		define NOVTABLE
+#		define INEX_PUSH_WARNING
+#		define INEX_DISABLE_WARNING( x )
+#		define INEX_POP_WARNING
 #       define INEX_CDECL_CONVENTION                __attribute__ ( ( __cdecl__ ) )
 #       define INEX_FORCE_ALIGNMENT( x )            __attribute__ ( ( __aligned__ ( ( x ) ) ) )
 #       define COMPILER_PURE_VIRTUAL_DESTRUCTOR( x ) virtual ~x( ) { }

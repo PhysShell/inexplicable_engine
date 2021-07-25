@@ -22,19 +22,19 @@ void inex::render::memory_allocator		(
 		editor_allocator_type&	editor_allocator
 	)
 {
-	//R_ASSERT			( !g_allocator );
+	//ASSERT_S			( !g_allocator );
 	//g_allocator			= &render_allocator;
 
-	//R_ASSERT			( !logic::g_allocator );
+	//ASSERT_S			( !logic::g_allocator );
 	//logic::g_allocator	= &logic_allocator;
 
-	//R_ASSERT			( !editor::g_allocator );
+	//ASSERT_S			( !editor::g_allocator );
 	//editor::g_allocator	= &editor_allocator;
 }
 
 inex::render::world* inex::render::create_world	( inex::render::engine::wrapper& wrapper, HWND window_handle )
 {
-	//XRAY_CONSTRUCT_REFERENCE( s_world, base_world)	( wrapper, window_handle );
+	//INEX_CONSTRUCT_REFERENCE( s_world, base_world)	( wrapper, window_handle );
 	s_world					= new base_world( wrapper, window_handle );
 	return					( &*s_world );
 }
@@ -43,6 +43,6 @@ void inex::render::destroy_world					( inex::render::world*& world )
 {
 	//ASSERT_S				( &*s_world == world );
 	delete					s_world;
-	//XRAY_DESTROY_REFERENCE	( s_world );
+	//INEX_DESTROY_REFERENCE	( s_world );
 	world					= 0;
 }

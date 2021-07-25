@@ -1,7 +1,7 @@
 #ifndef INEX_RENDER_BASE_API_H_INCLUDED
-#define INEX_RENDER_BASE_API_H_INCLUDED
+#	define INEX_RENDER_BASE_API_H_INCLUDED
 
-#include <inex/render/api.h>
+#	include <inex/render/api.h>
 
 //#		ifdef INEX_STATIC_LIBRARIES
 //#			define INEX_CORE_API
@@ -13,7 +13,7 @@
 #			endif // #ifdef IECORE_EXPORTS
 //#		endif // #ifndef INEX_STATIC_LIBRARIES
 
-#include <inex/core/sources/memory_general_allocator.h>
+#	include <inex/core/sources/memory_general_allocator.h>
 
 namespace inex {
 namespace render {

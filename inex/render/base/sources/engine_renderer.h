@@ -1,7 +1,7 @@
 #ifndef ENGINE_RENDERER_H_INCLUDED
-#define ENGINE_RENDERER_H_INCLUDED
+#   define ENGINE_RENDERER_H_INCLUDED
 
-#include <inex/render/base/engine_renderer.h>
+#   include <inex/render/base/engine_renderer.h>
 
 namespace inex {
 namespace render {
@@ -12,7 +12,7 @@ class base_world;
 using inex::math::float4x4;
 
 namespace engine {
-	
+
 
 class engine_renderer :
 	public inex::render::engine::renderer //private boost::noncopyable
@@ -30,7 +30,7 @@ public:
 	virtual	void	flush_debug_commands	( );
 	virtual	void 	test_cooperative_level	( );
 
-	
+
 private:
 	render::base_world&		m_world;
 	platform&				m_platform;

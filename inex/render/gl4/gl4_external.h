@@ -7,11 +7,11 @@
 #   define GL4_EXTERNAL_H_INCLUDED
 
 # 	if INEX_PLATFORM_LINUX
-#		define GL_GLEXT_PROTOTYPES
-#		define GLX_GLXEXT_PROTOTYPES
+#		include <X11/X.h>
+#		include <X11/Xlib.h>
 #		include <GL/gl.h>
-#		include <GL/glx.h>
 #		include <GL/glext.h>
+#		include <GL/glx.h>
 #	elif INEX_PLATFORM_WINDOWS
 #		define GLX_GLXEXT_LEGACY
 #		include <inex/3rd_patry/include/GL/gl.h>
@@ -20,14 +20,30 @@
 #	endif // #if INEX_PLATFORM_WINDOWS
 
 
-		/**************************************		Global extension	**************************************/
 // Context
-struct GLFWwindow;
-extern GLFWwindow		*		g_gl4_context;
+struct gl_context
+{
+	Display *				display;
+	Window                  root;
+	GLint                   attributes[ 5 ] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
+	XVisualInfo *			visual_info;
+	Colormap                color_map;
+	XSetWindowAttributes    window_attributes;
+	Window                  window;
+	GLXContext              context;
+	XWindowAttributes       x_window_attributes;
+	XEvent                  x_event;
+}; // struct gl_context
 
-#	if INEX_PLATFORM_WINDOWS // linux already defines these
+extern gl_context		*		g_gl4_context;
+#	define GLX 					( * g_gl4_context )
+
+		/**************************************		Global extension	**************************************/
+
 // Texture
+#	if !INEX_PLATFORM_LINUX
 extern PFNGLACTIVETEXTUREPROC	glActiveTexture;
+#	endif // #if !INEX_PLATFORM_LINUX
 // VAO
 extern PFNGLGENVERTEXARRAYSPROC   	glGenVertexArrays;
 extern PFNGLDELETEVERTEXARRAYSPROC 	glDeleteVertexArrays;
@@ -72,6 +88,10 @@ extern PFNGLUNIFORM2FPROC			glUniform2f;
 extern PFNGLUNIFORM3FVPROC         	glUniform3fv;
 extern PFNGLUNIFORM3FPROC          	glUniform3f;
 extern PFNGLUNIFORM4FVPROC         	glUniform4fv;
+
+#	if INEX_PLATFORM_WINDOWS // linux already defines this
+// Texture
+extern PFNGLACTIVETEXTUREPROC	glActiveTexture;
 #	endif
 
 #endif // GL4_EXTERNAL_H_INCLUDED

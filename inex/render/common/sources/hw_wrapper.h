@@ -13,8 +13,11 @@
 
 //	hw_wrapper_base contains all platform specific data
 //	and interface.
-//	hw_wrapper defines uniform interface that has 
+//	hw_wrapper defines uniform interface that has
 //	platform-specific implementation.
+
+struct gl_context;
+void 	set_window_title ( gl_context * context, pcstr window_name );
 
 namespace inex {
 namespace render {
@@ -28,17 +31,17 @@ struct	render_options
 	u32			smap_size;
 	bool		hw_smap;
 	//D3DFORMAT	hw_smap_format;
-	
+
 	//D3DFORMAT	null_rt_format;
 
 	bool		fp16_filter;
 	bool		fp16_blend;
 };
 
-class hw_wrapper : 
+class hw_wrapper :
 	public hw_wrapper_base//,
 	//public quasi_singleton<hw_wrapper>
-{ 
+{
 public:
 	hw_wrapper( inex::render::engine::wrapper& wrapper, HWND hwnd);
 	~hw_wrapper();
@@ -61,7 +64,7 @@ public:
 
 	//bool	support(D3DFORMAT fmt, DWORD type, DWORD usage);
 	//void	update_caps() { m_caps.update();}
-	
+
 
 	//const	hw_caps&	get_caps() const { return m_caps;}
 
@@ -81,17 +84,17 @@ private:
 	bool		m_move_window;
 	//hw_caps		m_caps;
 	HWND		m_hwnd;
-	
+
 }; // class hw_wrapper
 
 
 
-u32 hw_wrapper::get_width() const
+u32 	hw_wrapper::get_width ( ) const
 {
 	return 1;
 }
 
-u32 hw_wrapper::get_height() const
+u32 	hw_wrapper::get_height ( ) const
 {
 	return 1;
 }
@@ -103,8 +106,8 @@ u32 hw_wrapper::get_height() const
 
 //#include <inex/render/common/sources/hw_wrapper_inline.h>
 
-} // namespace render 
-} // namespace inex 
+} // namespace render
+} // namespace inex
 
 
 #endif // #ifndef HW_WRAPPER_H_INCLUDED

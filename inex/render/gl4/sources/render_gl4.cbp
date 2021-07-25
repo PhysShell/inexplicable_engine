@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="render_gl4" />
+		<Option pch_mode="2" />
+		<Option compiler="clang" />
+		<Build>
+			<Target title="clang7_0_linux">
+				<Option output="../../../../../binaries/$(TARGET_NAME)/render_gl4_clang_linux" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="../../../../../binaries/intermediates/$(TARGET_NAME)/" />
+				<Option deps_output="../binaries/msvc_Win32/" />
+				<Option type="2" />
+				<Option compiler="clang" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-fPIC" />
+					<Add option="-g" />
+					<Add option="-std=c++14" />
+					<Add option="-DINEX_RENDER_GL4_EXPORTS" />
+					<Add directory="./" />
+					<Add directory="../../../../../engine" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-lX11 -lGL -lGLU -lXxf86vm -lXrandr -lpthread -lXi" />
+				</Linker>
+			</Target>
+			<Target title="Copy of clang7_0_linux">
+				<Option output="../../../../../binaries/$(TARGET_NAME)/render_gl4_clang_linux" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../../../../binaries/$(TARGET_NAME)" />
+				<Option object_output="../../../../../binaries/intermediates/$(TARGET_NAME)/" />
+				<Option deps_output="../binaries/msvc_Win32/" />
+				<Option type="3" />
+				<Option compiler="clang" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-fPIC" />
+					<Add option="-g" />
+					<Add option="-std=c++14" />
+					<Add option="-DINEX_RENDER_GL4_EXPORTS" />
+					<Add directory="./" />
+					<Add directory="../../../../../engine" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-shared -lX11 -lGL -lGLU -lXxf86vm -lXrandr -lpthread -lXi" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add directory="." />
+		</Compiler>
+		<ResourceCompiler>
+			<Add directory="." />
+		</ResourceCompiler>
+		<Unit filename="../../common/sources/hw_wrapper.h" />
+		<Unit filename="../../common/sources/hw_wrapper_base_gl4.h" />
+		<Unit filename="../../common/sources/hw_wrapper_gl4.cpp" />
+		<Unit filename="../../common/sources/hw_wrapper_inline.h" />
+		<Unit filename="../gl4_extensions.h" />
+		<Unit filename="../gl4_external.h" />
+		<Unit filename="../renderer.h" />
+		<Unit filename="gl4_entry_point.cpp" />
+		<Unit filename="gl4_external.cpp" />
+		<Unit filename="model_manager.cpp" />
+		<Unit filename="model_manager.h" />
+		<Unit filename="pch.cpp" />
+		<Unit filename="pch.h">
+			<Option compile="1" />
+			<Option weight="0" />
+		</Unit>
+		<Unit filename="render_ogl3.cpp" />
+		<Unit filename="scene_context.cpp" />
+		<Unit filename="scene_context.h" />
+		<Unit filename="scene_render.h" />
+		<Unit filename="stage.cpp" />
+		<Unit filename="stage.h" />
+		<Unit filename="targetver.h" />
+		<Unit filename="visual.cpp" />
+		<Unit filename="visual.h" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
