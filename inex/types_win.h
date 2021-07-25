@@ -1,4 +1,0 @@
-#ifndef TYPES_WIN_H_INCLUDED
-#	define TYPES_WIN_H_INCLUDED
-
-#endif	// #ifndef TYPES_WIN_H_INCLUDED
