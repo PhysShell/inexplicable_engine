@@ -68,7 +68,7 @@ struct NOVTABLE platform {
 	//virtual	void	draw_3D_screen_lines			( float3 const* points, u32 count, math::color clr, float width, u32 pattern, bool use_depth ) = 0;
 	virtual	void	setup_grid_render_mode			( u32 grid_density ) = 0;
 	virtual	void	remove_grid_render_mode			( ) = 0;
-	virtual	void	setup_rotation_control_modes	(  bool color_write) {/*XRAY_UNREFERENCED_PARAMETERS( color_write);*/};
+	virtual	void	setup_rotation_control_modes	(  bool color_write) {INEX_UNREFERENCED_PARAMETERS( color_write );};
 	virtual	void 	test_cooperative_level			( ) = 0;
 
 //protected:
