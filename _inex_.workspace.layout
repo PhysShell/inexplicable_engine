@@ -2,4 +2,5 @@
 <CodeBlocks_workspace_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveProject path="inex/game/pc/sources/game_pc.cbp" />
+	<PreferredTarget name="clang7_0_linux" />
 </CodeBlocks_workspace_layout_file>

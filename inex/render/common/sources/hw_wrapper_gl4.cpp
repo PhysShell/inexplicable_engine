@@ -68,6 +68,7 @@ GLFWwindow			*			g_gl4_context;
 void 	make_context_current ( gl_context * context )
 {
 #if INEX_PLATFORM_LINUX
+#   define GLFWwindow gl_context
 	glXMakeCurrent	( GLX.display, GLX.window, GLX.context );
 #endif // #if INEX_PLATFORM_LINUX
 }
@@ -179,7 +180,7 @@ gl_context * 	gl_create_window ( u32 const x, u32 const y, pcstr window_name )
 
  	GLX.context		= glXCreateContext( GLX.display, GLX.visual_info, NULL, GL_TRUE );
     make_context_current    ( g_gl4_context );
-	
+
 #endif // #if INEX_PLATFORM_LINUX
 	VERIFY			( initialize_extensions( ) );
 	return 			g_gl4_context;
@@ -242,7 +243,7 @@ void hw_wrapper::create_device( )
 
 	create_device(m_hwnd, false);
 }
-
+#if INEX_PLATFORM_WINDOWS
 void windowSizeCallback(GLFWwindow *, int width, int height) {
   glViewport(0, 0, width, height);
     /* update any perspective matrices used here */
@@ -259,6 +260,7 @@ void	error_callback ( int error, const char * description )
 {
    LOGGER	( " [hw_wrapper:gl4][error]: %s\n", description );
 }
+#endif // #if INEX_PLATFORM_WINDOWS
 
 gl_context * 	initialize_context ( u32 const x, u32 const y )
 {
@@ -298,7 +300,7 @@ gl_context * 	initialize_context ( u32 const x, u32 const y )
 #endif // #if INEX_PLATFORM_MAC
 
 
-	
+
     ASSERT_D			( g_gl4_context != nullptr, "Failed to open GLX window.\n");
     LOGGER	(
 		"* [render][info]\t: %s\n* [render][info]\t: OpenGL version supported %s\n",
