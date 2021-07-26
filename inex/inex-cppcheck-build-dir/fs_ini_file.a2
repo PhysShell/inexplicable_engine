@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="2284159698">
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="load" lineNumber="32"/>
+    <functiondecl functionName="r_section" lineNumber="116"/>
+    <functiondecl functionName="r_string" lineNumber="133"/>
+    <functiondecl functionName="ie_strchr" lineNumber="151"/>
+    <functiondecl functionName="extract_sequence_float" lineNumber="165"/>
+    <functiondecl functionName="r_float3" lineNumber="189"/>
+    <functiondecl functionName="r_s32" lineNumber="198"/>
+    <functiondecl functionName="r_u32" lineNumber="203"/>
+    <functiondecl functionName="r_float" lineNumber="208"/>
+    <functioncall functionName="ASSERT_D"/>
+    <functioncall functionName="ASSERT_S"/>
+    <functioncall functionName="LOGGER"/>
+    <functioncall functionName="allocate_raw_arena"/>
+    <functioncall functionName="atof"/>
+    <functioncall functionName="atoi"/>
+    <functioncall functionName="begin"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="buf"/>
+    <functioncall functionName="const"/>
+    <functioncall functionName="const_cast"/>
+    <functioncall functionName="const_iterator"/>
+    <functioncall functionName="continue"/>
+    <functioncall functionName="current"/>
+    <functioncall functionName="end"/>
+    <functioncall functionName="eof"/>
+    <functioncall functionName="extract_sequence_float"/>
+    <functioncall functionName="first"/>
+    <functioncall functionName="float"/>
+    <functioncall functionName="float3"/>
+    <functioncall functionName="fname"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="handle_comments"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="ie_allocate"/>
+    <functioncall functionName="ie_delete"/>
+    <functioncall functionName="ie_new"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="insert"/>
+    <functioncall functionName="iterator"/>
+    <functioncall functionName="key"/>
+    <functioncall functionName="memory_allocate"/>
+    <functioncall functionName="memory_free"/>
+    <functioncall functionName="name"/>
+    <functioncall functionName="new"/>
+    <functioncall functionName="nullptr"/>
+    <functioncall functionName="obj"/>
+    <functioncall functionName="p"/>
+    <functioncall functionName="parameter_1"/>
+    <functioncall functionName="parameter_2"/>
+    <functioncall functionName="pcvoid"/>
+    <functioncall functionName="pointer"/>
+    <functioncall functionName="printf"/>
+    <functioncall functionName="r"/>
+    <functioncall functionName="r_close"/>
+    <functioncall functionName="r_open"/>
+    <functioncall functionName="r_section"/>
+    <functioncall functionName="r_string"/>
+    <functioncall functionName="raw_arena"/>
+    <functioncall functionName="raw_vector"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="second"/>
+    <functioncall functionName="sect"/>
+    <functioncall functionName="sequence"/>
+    <functioncall functionName="size"/>
+    <functioncall functionName="sizeof"/>
+    <functioncall functionName="src"/>
+    <functioncall functionName="static_cast"/>
+    <functioncall functionName="strchr"/>
+    <functioncall functionName="strcmp"/>
+    <functioncall functionName="strcpy"/>
+    <functioncall functionName="strlen"/>
+    <functioncall functionName="t"/>
+    <functioncall functionName="temp"/>
+    <functioncall functionName="trim_string"/>
+    <functioncall functionName="type_allocated"/>
+    <functioncall functionName="typeid"/>
+    <functioncall functionName="while"/>
+  </FileInfo>
+</analyzerinfo>

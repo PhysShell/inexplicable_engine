@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="3755029236">
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="reset_matrices" lineNumber="7"/>
+    <functioncall functionName="m_view_dir"/>
+    <functioncall functionName="m_view_pos"/>
+  </FileInfo>
+</analyzerinfo>

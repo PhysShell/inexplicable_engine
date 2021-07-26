@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="2320695630">
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="cpuid_fill" lineNumber="18"/>
+    <functiondecl functionName="cpuid_platform" lineNumber="23"/>
+    <functioncall functionName="__cpuidex"/>
+    <functioncall functionName="eax_contents"/>
+    <functioncall functionName="registers"/>
+  </FileInfo>
+</analyzerinfo>

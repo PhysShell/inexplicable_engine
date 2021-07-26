@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="719621834">
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="DllMain" lineNumber="4"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="switch"/>
+    <functioncall functionName="ul_reason_for_call"/>
+  </FileInfo>
+</analyzerinfo>

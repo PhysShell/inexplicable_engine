@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="game_pc" />
+		<Option pch_mode="2" />
+		<Option compiler="clang" />
+		<Build>
+			<Target title="Debug Win32">
+				<Option output="../binaries/msvc_Win32/game_pc" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../binaries/Win32/intermediates/msvc_Debug/game_pc/" />
+				<Option deps_output="../binaries/msvc_Win32/" />
+				<Option type="0" />
+				<Option compiler="clang" />
+				<Compiler>
+					<Add option="/D_MBCS" />
+					<Add option="/Zi" />
+					<Add option="/DWIN32" />
+					<Add option="/D_DEBUG" />
+					<Add option="/D_WINDOWS" />
+					<Add option="/Od" />
+					<Add option="/W3" />
+					<Add directory="inex/3rd_patry/include/" />
+					<Add directory="Z:/inex_engine/projects/engine/inex/render/core/sources/include/" />
+				</Compiler>
+				<Linker>
+					<Add option="/debug" />
+					<Add library="core.lib" />
+					<Add library="engine.lib" />
+					<Add library="ui.lib" />
+					<Add library="sound.lib" />
+					<Add library="render_base.lib" />
+					<Add library="kernel32.lib" />
+					<Add library="user32.lib" />
+					<Add library="gdi32.lib" />
+					<Add library="winspool.lib" />
+					<Add library="comdlg32.lib" />
+					<Add library="advapi32.lib" />
+					<Add library="shell32.lib" />
+					<Add library="ole32.lib" />
+					<Add library="oleaut32.lib" />
+					<Add library="uuid.lib" />
+					<Add library="odbc32.lib" />
+					<Add library="odbccp32.lib" />
+					<Add library="winmm.lib" />
+					<Add library="comctl32.lib" />
+					<Add directory="inex/3rd_patry/libraries/x86/" />
+					<Add directory="../binaries/libraries/msvc_Win32/" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add directory="." />
+		</Compiler>
+		<ResourceCompiler>
+			<Add directory="." />
+		</ResourceCompiler>
+		<Linker>
+			<Add option="/pdb:$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).pdb" />
+		</Linker>
+		<Unit filename="../../game_module_proxy.h" />
+		<Unit filename="Resource.h" />
+		<Unit filename="game_pc.h" />
+		<Unit filename="game_pc.rc" />
+		<Unit filename="game_pc_application.cpp" />
+		<Unit filename="game_pc_application.h" />
+		<Unit filename="game_pc_application_win.cpp" />
+		<Unit filename="game_pc_entry_point.cpp" />
+		<Unit filename="pch.cpp" />
+		<Unit filename="pch.h" />
+		<Unit filename="targetver.h" />
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>

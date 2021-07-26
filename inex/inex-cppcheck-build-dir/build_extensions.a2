@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="1106644956">
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="build_id" lineNumber="47"/>
+    <functiondecl functionName="calculate_build_id" lineNumber="103"/>
+    <functiondecl functionName="preinitialize" lineNumber="108"/>
+    <functiondecl functionName="initialize" lineNumber="113"/>
+    <functiondecl functionName="build_date" lineNumber="121"/>
+    <functioncall functionName="Msg"/>
+    <functioncall functionName="__DATE__"/>
+    <functioncall functionName="_stricmp"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="buffer1"/>
+    <functioncall functionName="build_date"/>
+    <functioncall functionName="build_id"/>
+    <functioncall functionName="calculate_build_id"/>
+    <functioncall functionName="continue"/>
+    <functioncall functionName="current_date"/>
+    <functioncall functionName="current_month"/>
+    <functioncall functionName="day"/>
+    <functioncall functionName="days"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="id"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="leap_years"/>
+    <functioncall functionName="month"/>
+    <functioncall functionName="s_build_date"/>
+    <functioncall functionName="sscanf"/>
+    <functioncall functionName="start_year"/>
+    <functioncall functionName="strcpy"/>
+    <functioncall functionName="year"/>
+    <functioncall functionName="years"/>
+  </FileInfo>
+</analyzerinfo>

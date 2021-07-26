@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="1795671761">
+        <error id="preprocessorErrorDirective" severity="error" msg="#error please define your platform here" verbose="#error please define your platform here">
+            <location file="Z:\inex_engine\projects\engine\inex\core\sources\fs_directory_iterators_inline.h" line="9"/>
+        </error>
+</analyzerinfo>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="840898256">
+  <FileInfo check="CheckUnusedFunctions">
+    <functioncall functionName="CS_DEL"/>
+    <functioncall functionName="CS_ENTER"/>
+    <functioncall functionName="CS_INIT"/>
+    <functioncall functionName="CS_LEAVE"/>
+    <functioncall functionName="enter"/>
+    <functioncall functionName="lock"/>
+    <functioncall functionName="m_cs"/>
+    <functioncall functionName="m_lock"/>
+  </FileInfo>
+</analyzerinfo>

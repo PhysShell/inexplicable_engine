@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="2775728452">
+        <error id="noExplicitConstructor" severity="style" msg="Class &apos;stage&apos; has a constructor with 1 argument that is not explicit." verbose="Class &apos;stage&apos; has a constructor with 1 argument that is not explicit. Such constructors should in general be explicit for type safety reasons. Using the explicit keyword in the constructor means some mistakes when using the class can be avoided." cwe="398">
+            <location file0="Z:\inex_engine\projects\engine\inex\render\gl3\sources\stage.cpp" file="Z:\inex_engine\projects\engine\inex\render\gl3\sources\stage.h" line="17"/>
+        </error>
+        <error id="constStatement" severity="warning" msg="Redundant code: Found a statement that begins with numeric constant." verbose="Redundant code: Found a statement that begins with numeric constant." cwe="398">
+            <location file0="Z:\inex_engine\projects\engine\inex\render\gl3\sources\stage.cpp" file="Z:\inex_engine\projects\engine\inex\render\gl3\sources\stage.cpp" line="9"/>
+        </error>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="set_default_rt" lineNumber="13"/>
+    <functiondecl functionName="rm_near" lineNumber="17"/>
+    <functiondecl functionName="rm_normal" lineNumber="21"/>
+    <functiondecl functionName="rm_far" lineNumber="25"/>
+    <functiondecl functionName="u_compute_texgen_jitter" lineNumber="30"/>
+    <functiondecl functionName="u_compute_texgen_screen" lineNumber="34"/>
+    <functioncall functionName="context"/>
+    <functioncall functionName="m_context"/>
+    <functioncall functionName="m_view_dir"/>
+    <functioncall functionName="m_view_pos"/>
+    <functioncall functionName="stage"/>
+  </FileInfo>
+</analyzerinfo>

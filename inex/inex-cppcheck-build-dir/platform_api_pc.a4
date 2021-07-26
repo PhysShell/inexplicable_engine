@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="3776820133">
+        <error id="knownConditionTrueFalse" severity="style" msg="Condition &apos;!0&apos; is always true" verbose="Condition &apos;!0&apos; is always true" cwe="571">
+            <location file0="Z:\inex_engine\projects\engine\inex\render\base\sources\platform_api_pc.cpp" file="Z:\inex_engine\projects\engine\inex\render\base\sources\platform_api_pc.cpp" line="21" info="Condition &apos;!0&apos; is always true"/>
+        </error>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="create_render_platform" lineNumber="19"/>
+    <functioncall functionName="create_render_platform"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="window_handle"/>
+    <functioncall functionName="wrapper"/>
+  </FileInfo>
+</analyzerinfo>

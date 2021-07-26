@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="500989053">
+  <FileInfo check="CheckUnusedFunctions">
+    <functioncall functionName="m_arena"/>
+    <functioncall functionName="m_monitor"/>
+    <functioncall functionName="pool_allocator"/>
+  </FileInfo>
+</analyzerinfo>

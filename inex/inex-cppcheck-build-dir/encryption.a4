@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="820042580">
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="initialize_crc32" lineNumber="16"/>
+    <functiondecl functionName="crc32" lineNumber="38"/>
+    <functiondecl functionName="initialize" lineNumber="54"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="initialize_crc32"/>
+    <functioncall functionName="pointer"/>
+    <functioncall functionName="static_cast"/>
+    <functioncall functionName="while"/>
+  </FileInfo>
+</analyzerinfo>

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="418442988">
+        <error id="noConstructor" severity="style" msg="The class &apos;application&apos; does not have a constructor." verbose="The class &apos;application&apos; does not have a constructor although it has private member variables. Member variables of builtin types are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398">
+            <location file0="Z:\inex_engine\projects\engine\inex\game\pc\sources\game_pc_entry_point.cpp" file="Z:\inex_engine\projects\engine\inex\game\pc\sources\game_pc_application.h" line="13"/>
+        </error>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="main_protected" lineNumber="30"/>
+    <functiondecl functionName="unhandled_exception_handler" lineNumber="47"/>
+    <functiondecl functionName="unhandled_exception_filter" lineNumber="68"/>
+    <functiondecl functionName="protected_call" lineNumber="247"/>
+    <functiondecl functionName="wWinMain" lineNumber="261"/>
+    <functioncall functionName="EXCEPTION_CONTINUE_SEARCH"/>
+    <functioncall functionName="GetExceptionCode"/>
+    <functioncall functionName="GetExceptionInformation"/>
+    <functioncall functionName="INEX_UNREFERENCED_PARAMETERS"/>
+    <functioncall functionName="SetUnhandledExceptionFilter"/>
+    <functioncall functionName="__except"/>
+    <functioncall functionName="application"/>
+    <functioncall functionName="argument"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="current_handler"/>
+    <functioncall functionName="exception_code"/>
+    <functioncall functionName="execute"/>
+    <functioncall functionName="finalize"/>
+    <functioncall functionName="get_exit_code"/>
+    <functioncall functionName="guard"/>
+    <functioncall functionName="hInstance"/>
+    <functioncall functionName="hPrevInstance"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="initialize"/>
+    <functioncall functionName="initialized"/>
+    <functioncall functionName="lpCmdLine"/>
+    <functioncall functionName="main_protected"/>
+    <functioncall functionName="nCmdShow"/>
+    <functioncall functionName="protected_call"/>
+    <functioncall functionName="pvoid"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="s_exit_code"/>
+    <functioncall functionName="switch"/>
+    <functioncall functionName="unhandled_exception_filter"/>
+    <functioncall functionName="unhandled_exception_handler"/>
+  </FileInfo>
+</analyzerinfo>

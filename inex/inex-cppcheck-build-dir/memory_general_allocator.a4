@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="2579834027">
+        <error id="knownConditionTrueFalse" severity="style" msg="Condition &apos;!(16==16UL)&apos; is always false" verbose="Condition &apos;!(16==16UL)&apos; is always false" cwe="570">
+            <location file0="Z:\inex_engine\projects\engine\inex\core\sources\memory_general_allocator.cpp" file="Z:\inex_engine\projects\engine\inex\core\sources\memory_general_allocator.cpp" line="48" info="Condition &apos;!(16==16UL)&apos; is always false"/>
+        </error>
+        <error id="knownConditionTrueFalse" severity="style" msg="Condition &apos;16==16UL&apos; is always true" verbose="Condition &apos;16==16UL&apos; is always true" cwe="571">
+            <location file0="Z:\inex_engine\projects\engine\inex\core\sources\memory_general_allocator.cpp" file="Z:\inex_engine\projects\engine\inex\core\sources\memory_general_allocator.cpp" line="48" info="Condition &apos;16==16UL&apos; is always true"/>
+        </error>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="bits_to_bytes" lineNumber="24"/>
+    <functiondecl functionName="pointer_difference" lineNumber="30"/>
+    <functiondecl functionName="initialize" lineNumber="46"/>
+    <functiondecl functionName="malloc_impl" lineNumber="78"/>
+    <functiondecl functionName="on_malloc" lineNumber="119"/>
+    <functiondecl functionName="free_impl" lineNumber="168"/>
+    <functiondecl functionName="dump_memory_statistics" lineNumber="197"/>
+    <functiondecl functionName="finalize" lineNumber="212"/>
+    <functioncall functionName="ASSERT_D"/>
+    <functioncall functionName="CHAR_BIT"/>
+    <functioncall functionName="INEX_ALIGNOF"/>
+    <functioncall functionName="LOGGER"/>
+    <functioncall functionName="alignment_value"/>
+    <functioncall functionName="allocation_finished_goto"/>
+    <functioncall functionName="allocations"/>
+    <functioncall functionName="ap"/>
+    <functioncall functionName="arena"/>
+    <functioncall functionName="begin"/>
+    <functioncall functionName="bp"/>
+    <functioncall functionName="break"/>
+    <functioncall functionName="const"/>
+    <functioncall functionName="cp"/>
+    <functioncall functionName="deallocations"/>
+    <functioncall functionName="dump_memory_statistics"/>
+    <functioncall functionName="end"/>
+    <functioncall functionName="exit"/>
+    <functioncall functionName="finalize"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="fragmented"/>
+    <functioncall functionName="free"/>
+    <functioncall functionName="free_impl"/>
+    <functioncall functionName="general_allocator"/>
+    <functioncall functionName="general_allocator_user_memory"/>
+    <functioncall functionName="header"/>
+    <functioncall functionName="header_type"/>
+    <functioncall functionName="id"/>
+    <functioncall functionName="ie_delete"/>
+    <functioncall functionName="ie_new"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="m_arena"/>
+    <functioncall functionName="m_arena_end"/>
+    <functioncall functionName="m_arena_id"/>
+    <functioncall functionName="m_helper"/>
+    <functioncall functionName="malloc_impl"/>
+    <functioncall functionName="memory_register_pointer"/>
+    <functioncall functionName="memory_unregister_pointer"/>
+    <functioncall functionName="name"/>
+    <functioncall functionName="nu"/>
+    <functioncall functionName="nullptr"/>
+    <functioncall functionName="nunits"/>
+    <functioncall functionName="on_malloc"/>
+    <functioncall functionName="p"/>
+    <functioncall functionName="pointer"/>
+    <functioncall functionName="prevp"/>
+    <functioncall functionName="private:"/>
+    <functioncall functionName="pstr"/>
+    <functioncall functionName="ptr"/>
+    <functioncall functionName="pvoid"/>
+    <functioncall functionName="reinterpret_cast"/>
+    <functioncall functionName="require_arena_from_os"/>
+    <functioncall functionName="s"/>
+    <functioncall functionName="s64"/>
+    <functioncall functionName="size"/>
+    <functioncall functionName="size_in_kb"/>
+    <functioncall functionName="sizeof"/>
+    <functioncall functionName="typeid"/>
+    <functioncall functionName="user_memory"/>
+  </FileInfo>
+</analyzerinfo>

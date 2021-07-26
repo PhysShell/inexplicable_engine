@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<results version="2">
+    <cppcheck version="1.83"/>
+    <errors>
+        <error id="preprocessorErrorDirective" severity="error" msg="#error please specify your architecture macros" verbose="#error please specify your architecture macros" sinceDate="08.11.2020">
+            <location file="macro_platform.h" line="79"/>
+        </error>
+        <error id="redundantAssignment" severity="style" msg="Variable &amp;#039;messages&amp;#039; is reassigned a value before the old one has been used." verbose="Variable &amp;#039;messages&amp;#039; is reassigned a value before the old one has been used." sinceDate="08.11.2020">
+            <location file="core\sources\ie_debug_linux.cpp" line="22" info=""/>
+            <location file="core\sources\ie_debug_linux.cpp" line="19" info=""/>
+        </error>
+        <error id="preprocessorErrorDirective" severity="error" msg="#error please define your platform here" verbose="#error please define your platform here" sinceDate="08.11.2020">
+            <location file="core\sources\fs_directory_iterators_inline.h" line="9"/>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &amp;#039;memory_mapped_file::m_size&amp;#039; is not initialized in the constructor." verbose="Member variable &amp;#039;memory_mapped_file::m_size&amp;#039; is not initialized in the constructor." sinceDate="08.11.2020">
+            <location file="core\sources\fs_file_system_internal.h" line="37"/>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &amp;#039;f1&amp;#039; is assigned a value that is never used." verbose="Variable &amp;#039;f1&amp;#039; is assigned a value that is never used." sinceDate="08.11.2020">
+            <location file="core\sources\core_entry_point.cpp" line="154"/>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &amp;#039;f2&amp;#039; is assigned a value that is never used." verbose="Variable &amp;#039;f2&amp;#039; is assigned a value that is never used." sinceDate="08.11.2020">
+            <location file="core\sources\core_entry_point.cpp" line="155"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;bench&amp;#039; is never used." verbose="The function &amp;#039;bench&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\core_entry_point.cpp" line="63"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;initialize_logging&amp;#039; is never used." verbose="The function &amp;#039;initialize_logging&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\core_entry_point.cpp" line="79"/>
+        </error>
+        <error id="knownConditionTrueFalse" severity="style" msg="Condition &amp;#039;!(16==16UL)&amp;#039; is always false" verbose="Condition &amp;#039;!(16==16UL)&amp;#039; is always false" sinceDate="08.11.2020">
+            <location file="core\sources\memory_general_allocator.cpp" line="48"/>
+        </error>
+        <error id="knownConditionTrueFalse" severity="style" msg="Condition &amp;#039;16==16UL&amp;#039; is always true" verbose="Condition &amp;#039;16==16UL&amp;#039; is always true" sinceDate="08.11.2020">
+            <location file="core\sources\memory_general_allocator.cpp" line="48"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;bits_to_bytes&amp;#039; is never used." verbose="The function &amp;#039;bits_to_bytes&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\memory_general_allocator.cpp" line="24"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;pointer_difference&amp;#039; is never used." verbose="The function &amp;#039;pointer_difference&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\memory_general_allocator.cpp" line="30"/>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &amp;#039;result&amp;#039; is assigned a value that is never used." verbose="Variable &amp;#039;result&amp;#039; is assigned a value that is never used." sinceDate="08.11.2020">
+            <location file="engine\sources\engine_world.cpp" line="131"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;function&amp;#039; is never used." verbose="The function &amp;#039;function&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="engine\sources\engine_world.cpp" line="64"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;on_mounted_disk&amp;#039; is never used." verbose="The function &amp;#039;on_mounted_disk&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="engine\sources\engine_world.cpp" line="91"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;thread_dispatch_callbacks&amp;#039; is never used." verbose="The function &amp;#039;thread_dispatch_callbacks&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="engine\sources\engine_world.cpp" line="58"/>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &amp;#039;bdraw_editor&amp;#039; is assigned a value that is never used." verbose="Variable &amp;#039;bdraw_editor&amp;#039; is assigned a value that is never used." sinceDate="08.11.2020">
+            <location file="engine\sources\engine_world_win.cpp" line="251"/>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &amp;#039;bdraw_game&amp;#039; is assigned a value that is never used." verbose="Variable &amp;#039;bdraw_game&amp;#039; is assigned a value that is never used." sinceDate="08.11.2020">
+            <location file="engine\sources\engine_world_win.cpp" line="252"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;create_window&amp;#039; is never used." verbose="The function &amp;#039;create_window&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="engine\sources\engine_world_win.cpp" line="77"/>
+        </error>
+        <error id="noConstructor" severity="style" msg="The class &amp;#039;ogg_file&amp;#039; does not have a constructor." verbose="The class &amp;#039;ogg_file&amp;#039; does not have a constructor although it has private member variables. Member variables of builtin types are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." sinceDate="08.11.2020">
+            <location file="sound\sources\sound_file.h" line="38"/>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &amp;#039;sound_object::m_looped&amp;#039; is not initialized in the constructor." verbose="Member variable &amp;#039;sound_object::m_looped&amp;#039; is not initialized in the constructor." sinceDate="08.11.2020">
+            <location file="sound\sources\sound_object.cpp" line="49"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;check_al_errors&amp;#039; is never used." verbose="The function &amp;#039;check_al_errors&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="sound\sources\sound_object.cpp" line="37"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;close&amp;#039; is never used." verbose="The function &amp;#039;close&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="sound\sources\sound_object.cpp" line="125"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;load_ogg&amp;#039; is never used." verbose="The function &amp;#039;load_ogg&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="sound\sources\sound_object.cpp" line="105"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;move&amp;#039; is never used." verbose="The function &amp;#039;move&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="sound\sources\sound_object.cpp" line="141"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;play&amp;#039; is never used." verbose="The function &amp;#039;play&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="sound\sources\sound_object.cpp" line="115"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;read_next_chunk&amp;#039; is never used." verbose="The function &amp;#039;read_next_chunk&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="sound\sources\sound_object.cpp" line="110"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;stop&amp;#039; is never used." verbose="The function &amp;#039;stop&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="sound\sources\sound_object.cpp" line="120"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;update&amp;#039; is never used." verbose="The function &amp;#039;update&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="sound\sources\sound_object.cpp" line="129"/>
+        </error>
+        <error id="noConstructor" severity="style" msg="The class &amp;#039;application&amp;#039; does not have a constructor." verbose="The class &amp;#039;application&amp;#039; does not have a constructor although it has private member variables. Member variables of builtin types are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." sinceDate="08.11.2020">
+            <location file="game\pc\sources\game_pc_application.h" line="13"/>
+        </error>
+        <error id="preprocessorErrorDirective" severity="error" msg="#error do not use this file in non-Windows platforms" verbose="#error do not use this file in non-Windows platforms" sinceDate="08.11.2020">
+            <location file="game\pc\sources\game_pc_application_win.cpp" line="75"/>
+        </error>
+        <error id="unreachableCode" severity="style" msg="Statements following return, break, continue, goto or throw will never be executed." verbose="Statements following return, break, continue, goto or throw will never be executed." sinceDate="08.11.2020">
+            <location file="render\base\sources\command_processor.cpp" line="42"/>
+        </error>
+        <error id="unusedVariable" severity="style" msg="Unused variable: order" verbose="Unused variable: order" sinceDate="08.11.2020">
+            <location file="render\base\sources\command_processor.cpp" line="113"/>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Class &amp;#039;command_processor&amp;#039; has a constructor with 1 argument that is not explicit." verbose="Class &amp;#039;command_processor&amp;#039; has a constructor with 1 argument that is not explicit. Such constructors should in general be explicit for type safety reasons. Using the explicit keyword in the constructor means some mistakes when using the class can be avoided." sinceDate="08.11.2020">
+            <location file="render\base\sources\command_processor.h" line="22"/>
+        </error>
+        <error id="knownConditionTrueFalse" severity="style" msg="Condition &amp;#039;!0&amp;#039; is always true" verbose="Condition &amp;#039;!0&amp;#039; is always true" sinceDate="08.11.2020">
+            <location file="render\base\sources\platform_api_pc.cpp" line="21"/>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &amp;#039;elapsed_seconds&amp;#039; is assigned a value that is never used." verbose="Variable &amp;#039;elapsed_seconds&amp;#039; is assigned a value that is never used." sinceDate="08.11.2020">
+            <location file="render\base\sources\platform_gl3.cpp" line="326"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;get_w&amp;#039; is never used." verbose="The function &amp;#039;get_w&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="render\base\sources\platform_gl3.cpp" line="170"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;mul4x4&amp;#039; is never used." verbose="The function &amp;#039;mul4x4&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="render\base\sources\platform_gl3.cpp" line="67"/>
+        </error>
+        <error id="redundantPointerOp" severity="style" msg="Redundant pointer operation on &amp;#039;s_world&amp;#039; - it&amp;#039;s already a pointer." verbose="Redundant pointer operation on &amp;#039;s_world&amp;#039; - it&amp;#039;s already a pointer." sinceDate="08.11.2020">
+            <location file="render\base\sources\render_base_entry_point.cpp" line="39"/>
+        </error>
+        <error id="knownConditionTrueFalse" severity="style" msg="Condition &amp;#039;windowed&amp;#039; is always true" verbose="Condition &amp;#039;windowed&amp;#039; is always true" sinceDate="08.11.2020">
+            <location file="render\common\sources\hw_wrapper_gl3.cpp" line="167" info="Condition &amp;#039;windowed&amp;#039; is always true"/>
+            <location file="render\common\sources\hw_wrapper_gl3.cpp" line="164" info="Assignment &amp;#039;windowed=true&amp;#039;, assigned value is 1"/>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &amp;#039;windowed&amp;#039; is assigned a value that is never used." verbose="Variable &amp;#039;windowed&amp;#039; is assigned a value that is never used." sinceDate="08.11.2020">
+            <location file="render\common\sources\hw_wrapper_gl3.cpp" line="269"/>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &amp;#039;hw_wrapper::o&amp;#039; is not initialized in the constructor." verbose="Member variable &amp;#039;hw_wrapper::o&amp;#039; is not initialized in the constructor." sinceDate="08.11.2020">
+            <location file="render\common\sources\hw_wrapper_gl3.cpp" line="80"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;reset&amp;#039; is never used." verbose="The function &amp;#039;reset&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="render\common\sources\hw_wrapper_gl3.cpp" line="267"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;select_gpu&amp;#039; is never used." verbose="The function &amp;#039;select_gpu&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="render\common\sources\hw_wrapper_gl3.cpp" line="249"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;select_resolution&amp;#039; is never used." verbose="The function &amp;#039;select_resolution&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="render\common\sources\hw_wrapper_gl3.cpp" line="254"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;update_window_props&amp;#039; is never used." verbose="The function &amp;#039;update_window_props&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="render\common\sources\hw_wrapper_gl3.cpp" line="244"/>
+        </error>
+        <error id="uninitMemberVar" severity="warning" msg="Member variable &amp;#039;hw_wrapper_base::m_device&amp;#039; is not initialized in the constructor." verbose="Member variable &amp;#039;hw_wrapper_base::m_device&amp;#039; is not initialized in the constructor." sinceDate="08.11.2020">
+            <location file="render\common\sources\hw_wrapper_base_gl3.h" line="28"/>
+        </error>
+        <error id="unusedPrivateFunction" severity="style" msg="Unused private function: &amp;#039;hw_wrapper::select_resolution&amp;#039;" verbose="Unused private function: &amp;#039;hw_wrapper::select_resolution&amp;#039;" sinceDate="08.11.2020">
+            <location file="render\common\sources\hw_wrapper.h" line="72"/>
+        </error>
+        <error id="unusedPrivateFunction" severity="style" msg="Unused private function: &amp;#039;hw_wrapper::select_gpu&amp;#039;" verbose="Unused private function: &amp;#039;hw_wrapper::select_gpu&amp;#039;" sinceDate="08.11.2020">
+            <location file="render\common\sources\hw_wrapper.h" line="75"/>
+        </error>
+        <error id="unusedPrivateFunction" severity="style" msg="Unused private function: &amp;#039;hw_wrapper::update_window_props&amp;#039;" verbose="Unused private function: &amp;#039;hw_wrapper::update_window_props&amp;#039;" sinceDate="08.11.2020">
+            <location file="render\common\sources\hw_wrapper.h" line="77"/>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Class &amp;#039;stage&amp;#039; has a constructor with 1 argument that is not explicit." verbose="Class &amp;#039;stage&amp;#039; has a constructor with 1 argument that is not explicit. Such constructors should in general be explicit for type safety reasons. Using the explicit keyword in the constructor means some mistakes when using the class can be avoided." sinceDate="08.11.2020">
+            <location file="render\gl3\sources\stage.h" line="17"/>
+        </error>
+        <error id="constStatement" severity="warning" msg="Redundant code: Found a statement that begins with numeric constant." verbose="Redundant code: Found a statement that begins with numeric constant." sinceDate="08.11.2020">
+            <location file="render\gl3\sources\stage.cpp" line="9"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;rm_far&amp;#039; is never used." verbose="The function &amp;#039;rm_far&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="render\gl3\sources\stage.cpp" line="25"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;rm_near&amp;#039; is never used." verbose="The function &amp;#039;rm_near&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="render\gl3\sources\stage.cpp" line="17"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;rm_normal&amp;#039; is never used." verbose="The function &amp;#039;rm_normal&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="render\gl3\sources\stage.cpp" line="21"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;set_default_rt&amp;#039; is never used." verbose="The function &amp;#039;set_default_rt&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="render\gl3\sources\stage.cpp" line="13"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;u_compute_texgen_jitter&amp;#039; is never used." verbose="The function &amp;#039;u_compute_texgen_jitter&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="render\gl3\sources\stage.cpp" line="30"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;u_compute_texgen_screen&amp;#039; is never used." verbose="The function &amp;#039;u_compute_texgen_screen&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="render\gl3\sources\stage.cpp" line="34"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;DllMain&amp;#039; is never used." verbose="The function &amp;#039;DllMain&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="render\gl3\sources\dllmain.cpp" line="4"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;aquire_macros&amp;#039; is never used." verbose="The function &amp;#039;aquire_macros&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\ie_debug.cpp" line="11"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;fatal&amp;#039; is never used." verbose="The function &amp;#039;fatal&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\ie_debug.cpp" line="22"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;concat_command_line&amp;#039; is never used." verbose="The function &amp;#039;concat_command_line&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\command_line.cpp" line="30"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;copy_argument&amp;#039; is never used." verbose="The function &amp;#039;copy_argument&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\command_line.cpp" line="40"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;cpuid_platform&amp;#039; is never used." verbose="The function &amp;#039;cpuid_platform&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\cpuid_internal.cpp" line="23"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;crc32&amp;#039; is never used." verbose="The function &amp;#039;crc32&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\encryption.cpp" line="38"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;dummy&amp;#039; is never used." verbose="The function &amp;#039;dummy&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="render\gl3\sources\render_ogl3.cpp" line="9"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;error2string&amp;#039; is never used." verbose="The function &amp;#039;error2string&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\inex_debug_win.cpp" line="33"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;ie_strchr&amp;#039; is never used." verbose="The function &amp;#039;ie_strchr&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\fs_ini_file.cpp" line="151"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;r_float&amp;#039; is never used." verbose="The function &amp;#039;r_float&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\fs_ini_file.cpp" line="208"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;r_float3&amp;#039; is never used." verbose="The function &amp;#039;r_float3&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\fs_ini_file.cpp" line="189"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;r_s32&amp;#039; is never used." verbose="The function &amp;#039;r_s32&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\fs_ini_file.cpp" line="198"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;r_u32&amp;#039; is never used." verbose="The function &amp;#039;r_u32&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\fs_ini_file.cpp" line="203"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;logic_dispatch_callbacks&amp;#039; is never used." verbose="The function &amp;#039;logic_dispatch_callbacks&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="engine\sources\engine_world_logic.cpp" line="142"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;memory_check_pointer&amp;#039; is never used." verbose="The function &amp;#039;memory_check_pointer&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\ie_memory.cpp" line="106"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;r_stringZ&amp;#039; is never used." verbose="The function &amp;#039;r_stringZ&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\fs_read_write.cpp" line="32"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;reset_matrices&amp;#039; is never used." verbose="The function &amp;#039;reset_matrices&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="render\gl3\sources\scene_context.cpp" line="7"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;trim_string_left&amp;#039; is never used." verbose="The function &amp;#039;trim_string_left&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\ie_trims.cpp" line="85"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;trim_string_right&amp;#039; is never used." verbose="The function &amp;#039;trim_string_right&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="core\sources\ie_trims.cpp" line="97"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;wWinMain&amp;#039; is never used." verbose="The function &amp;#039;wWinMain&amp;#039; is never used." sinceDate="08.11.2020">
+            <location file="game\pc\sources\game_pc_entry_point.cpp" line="261"/>
+        </error>
+    </errors>
+</results>

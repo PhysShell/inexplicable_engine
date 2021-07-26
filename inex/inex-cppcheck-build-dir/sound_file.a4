@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="1688272777">
+        <error id="noConstructor" severity="style" msg="The class &apos;ogg_file&apos; does not have a constructor." verbose="The class &apos;ogg_file&apos; does not have a constructor although it has private member variables. Member variables of builtin types are left uninitialized when the class is instantiated. That may cause bugs or undefined behavior." cwe="398">
+            <location file0="Z:\inex_engine\projects\engine\inex\sound\sources\sound_file.cpp" file="Z:\inex_engine\projects\engine\inex\sound\sources\sound_file.h" line="38"/>
+        </error>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="initialize" lineNumber="11"/>
+    <functioncall functionName="override"/>
+    <functioncall functionName="sound_file"/>
+  </FileInfo>
+</analyzerinfo>

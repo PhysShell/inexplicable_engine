@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="1062611813">
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="r_string" lineNumber="21"/>
+    <functiondecl functionName="r_stringZ" lineNumber="32"/>
+    <functiondecl functionName="w" lineNumber="37"/>
+    <functiondecl functionName="close" lineNumber="44"/>
+    <functiondecl functionName="advance_term_string" lineNumber="50"/>
+    <functioncall functionName="ASSERT_D"/>
+    <functioncall functionName="INEX_UNREFERENCED_PARAMETERS"/>
+    <functioncall functionName="VERIFY"/>
+    <functioncall functionName="advance_term_string"/>
+    <functioncall functionName="data"/>
+    <functioncall functionName="delete"/>
+    <functioncall functionName="dest"/>
+    <functioncall functionName="eof"/>
+    <functioncall functionName="errno"/>
+    <functioncall functionName="fclose"/>
+    <functioncall functionName="fflush"/>
+    <functioncall functionName="file_name"/>
+    <functioncall functionName="file_writer"/>
+    <functioncall functionName="fopen"/>
+    <functioncall functionName="fputs"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="m_data"/>
+    <functioncall functionName="m_file"/>
+    <functioncall functionName="m_pos"/>
+    <functioncall functionName="m_size"/>
+    <functioncall functionName="nullptr"/>
+    <functioncall functionName="override"/>
+    <functioncall functionName="p"/>
+    <functioncall functionName="pcstr"/>
+    <functioncall functionName="reader"/>
+    <functioncall functionName="reader_base"/>
+    <functioncall functionName="size"/>
+    <functioncall functionName="src"/>
+    <functioncall functionName="static_cast"/>
+    <functioncall functionName="strncpy"/>
+    <functioncall functionName="sz"/>
+    <functioncall functionName="tgt_size"/>
+    <functioncall functionName="virtual_file_reader"/>
+    <functioncall functionName="while"/>
+    <functioncall functionName="writer_base"/>
+  </FileInfo>
+</analyzerinfo>

@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="3760881686">
+        <error id="unreadVariable" severity="style" msg="Variable &apos;f1&apos; is assigned a value that is never used." verbose="Variable &apos;f1&apos; is assigned a value that is never used." cwe="563">
+            <location file0="Z:\inex_engine\projects\engine\inex\core\sources\core_entry_point.cpp" file="Z:\inex_engine\projects\engine\inex\core\sources\core_entry_point.cpp" line="154"/>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &apos;f2&apos; is assigned a value that is never used." verbose="Variable &apos;f2&apos; is assigned a value that is never used." cwe="563">
+            <location file0="Z:\inex_engine\projects\engine\inex\core\sources\core_entry_point.cpp" file="Z:\inex_engine\projects\engine\inex\core\sources\core_entry_point.cpp" line="155"/>
+        </error>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="initialize" lineNumber="17"/>
+    <functiondecl functionName="bench" lineNumber="63"/>
+    <functiondecl functionName="initialize_logging" lineNumber="79"/>
+    <functiondecl functionName="finalize" lineNumber="111"/>
+    <functiondecl functionName="initialize" lineNumber="140"/>
+    <functioncall functionName="ASSERT_D"/>
+    <functioncall functionName="ASSERT_S"/>
+    <functioncall functionName="LC_CTYPE"/>
+    <functioncall functionName="LOGGER"/>
+    <functioncall functionName="Msg"/>
+    <functioncall functionName="Sleep"/>
+    <functioncall functionName="allocate_raw_arena"/>
+    <functioncall functionName="aquire_processor_information"/>
+    <functioncall functionName="build_date"/>
+    <functioncall functionName="cache_line_size"/>
+    <functioncall functionName="check_key"/>
+    <functioncall functionName="clock_cycle_per_second"/>
+    <functioncall functionName="command_line"/>
+    <functioncall functionName="const"/>
+    <functioncall functionName="const_cast"/>
+    <functioncall functionName="engine"/>
+    <functioncall functionName="false"/>
+    <functioncall functionName="fdEPS"/>
+    <functioncall functionName="finalize"/>
+    <functioncall functionName="float"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="free_impl"/>
+    <functioncall functionName="get_value_by_key"/>
+    <functioncall functionName="i"/>
+    <functioncall functionName="ie_allocate"/>
+    <functioncall functionName="ie_delete"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="initialize"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="malloc_impl"/>
+    <functioncall functionName="matrix_multiple"/>
+    <functioncall functionName="memory_allocate"/>
+    <functioncall functionName="memory_free"/>
+    <functioncall functionName="multiple_pure"/>
+    <functioncall functionName="multiple_sse"/>
+    <functioncall functionName="name"/>
+    <functioncall functionName="new"/>
+    <functioncall functionName="nullptr"/>
+    <functioncall functionName="obj"/>
+    <functioncall functionName="parameter_1"/>
+    <functioncall functionName="parameter_2"/>
+    <functioncall functionName="pcvoid"/>
+    <functioncall functionName="pf1"/>
+    <functioncall functionName="pf2"/>
+    <functioncall functionName="pointer"/>
+    <functioncall functionName="preinitialize"/>
+    <functioncall functionName="private:"/>
+    <functioncall functionName="raw_arena"/>
+    <functioncall functionName="reinterpret_cast"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="s_engine"/>
+    <functioncall functionName="s_initialized"/>
+    <functioncall functionName="setlocale"/>
+    <functioncall functionName="size"/>
+    <functioncall functionName="sizeof"/>
+    <functioncall functionName="static_cast"/>
+    <functioncall functionName="temp"/>
+    <functioncall functionName="true"/>
+    <functioncall functionName="type_allocated"/>
+    <functioncall functionName="typeid"/>
+  </FileInfo>
+</analyzerinfo>

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="2418600160">
+  <FileInfo check="CheckUnusedFunctions">
+    <functioncall functionName="ASSERT_D"/>
+    <functioncall functionName="ASSERT_S"/>
+    <functioncall functionName="CloseHandle"/>
+    <functioncall functionName="CreateFile"/>
+    <functioncall functionName="CreateFileMapping"/>
+    <functioncall functionName="FILE_ATTRIBUTE_NORMAL"/>
+    <functioncall functionName="FILE_MAP_READ"/>
+    <functioncall functionName="FILE_SHARE_READ"/>
+    <functioncall functionName="GENERIC_READ"/>
+    <functioncall functionName="GetFileSize"/>
+    <functioncall functionName="MapViewOfFile"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="OPEN_EXISTING"/>
+    <functioncall functionName="PAGE_READONLY"/>
+    <functioncall functionName="UnmapViewOfFile"/>
+    <functioncall functionName="delete"/>
+    <functioncall functionName="file_writer"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="m_data"/>
+    <functioncall functionName="m_file_raw_pointer"/>
+    <functioncall functionName="m_mapped_file"/>
+    <functioncall functionName="m_pos"/>
+    <functioncall functionName="m_size"/>
+    <functioncall functionName="name"/>
+    <functioncall functionName="override"/>
+    <functioncall functionName="p"/>
+    <functioncall functionName="pcstr"/>
+    <functioncall functionName="reader"/>
+    <functioncall functionName="reader_base"/>
+    <functioncall functionName="static_cast"/>
+    <functioncall functionName="virtual_file_reader"/>
+    <functioncall functionName="writer_base"/>
+  </FileInfo>
+</analyzerinfo>

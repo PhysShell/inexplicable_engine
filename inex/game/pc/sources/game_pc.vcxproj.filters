@@ -20,8 +20,8 @@
   <ItemGroup>
     <ClCompile Include="game_pc_application.cpp" />
     <ClCompile Include="game_pc_application_win.cpp" />
-    <ClCompile Include="game_pc_entry_point.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="game_pc_entry_point_win.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game_pc.rc">

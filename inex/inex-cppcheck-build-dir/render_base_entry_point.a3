@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="249318935">
+        <error id="redundantPointerOp" severity="style" msg="Redundant pointer operation on &apos;s_world&apos; - it&apos;s already a pointer." verbose="Redundant pointer operation on &apos;s_world&apos; - it&apos;s already a pointer." cwe="398">
+            <location file0="Z:\inex_engine\projects\engine\inex\render\base\sources\render_base_entry_point.cpp" file="Z:\inex_engine\projects\engine\inex\render\base\sources\render_base_entry_point.cpp" line="39"/>
+        </error>
+  <FileInfo check="CheckUnusedFunctions">
+    <functioncall functionName="base_world"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="window_handle"/>
+    <functioncall functionName="wrapper"/>
+  </FileInfo>
+</analyzerinfo>

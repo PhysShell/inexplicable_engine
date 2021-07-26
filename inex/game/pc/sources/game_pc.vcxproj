@@ -94,6 +94,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)inex\3rd_patry\include;Z:\inex_engine\projects\engine\inex\render\core\sources\include;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AssemblerOutput>All</AssemblerOutput>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -164,7 +165,7 @@
   <ItemGroup>
     <ClCompile Include="game_pc_application.cpp" />
     <ClCompile Include="game_pc_application_win.cpp" />
-    <ClCompile Include="game_pc_entry_point.cpp" />
+    <ClCompile Include="game_pc_entry_point_win.cpp" />
     <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <ItemGroup>

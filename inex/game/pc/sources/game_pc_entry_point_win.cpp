@@ -7,7 +7,7 @@
 #pragma comment( lib, "delayimp.lib" )
 
 static game::application	*	s_application;
-
+string512 g_command_line;
 static int s_exit_code					= 0;
 
 struct guard {

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="2240228307">
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="initialize" lineNumber="13"/>
+    <functiondecl functionName="finalize" lineNumber="17"/>
+    <functiondecl functionName="malloc_impl" lineNumber="21"/>
+    <functiondecl functionName="free_impl" lineNumber="26"/>
+    <functioncall functionName="base_allocator"/>
+    <functioncall functionName="long"/>
+    <functioncall functionName="m_arena_id"/>
+    <functioncall functionName="nullptr"/>
+    <functioncall functionName="private:"/>
+    <functioncall functionName="pvoid"/>
+    <functioncall functionName="sizeof"/>
+  </FileInfo>
+</analyzerinfo>
