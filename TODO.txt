@@ -59,6 +59,7 @@
 		* fs_iterator pimpl: сделать правильно, хотя б инеклюдь в импл.х
 		* fs_iterator: убрать m_end а юзать m_entry для этого
 		* fs_internal: обойтись без заглушек для платформы
+		* hw_wrapper_gl4: сделать context_resolver а не тупые макро
 		* профайлер и поисковик утечек:
 			valgrind valgrind.org,
 			perf eax.me,

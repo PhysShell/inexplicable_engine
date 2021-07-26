@@ -57,9 +57,6 @@
     <ClCompile Include="ie_debug_linux.cpp">
       <Filter>debug</Filter>
     </ClCompile>
-    <ClCompile Include="inex_debug_win.cpp">
-      <Filter>debug</Filter>
-    </ClCompile>
     <ClCompile Include="memory_chunk_reader_win.cpp">
       <Filter>memory\win</Filter>
     </ClCompile>
@@ -68,6 +65,9 @@
     </ClCompile>
     <ClCompile Include="memory_chunk_reader.cpp">
       <Filter>memory</Filter>
+    </ClCompile>
+    <ClCompile Include="ie_debug_win.cpp">
+      <Filter>debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

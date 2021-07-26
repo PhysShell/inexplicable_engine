@@ -12,6 +12,7 @@
 #endif
 
 namespace inex {
+namespace core {
 namespace debug {
 
 using inex::logging::Msg;
@@ -52,3 +53,4 @@ pcstr	error2string ( u32 code )
 
 } // namespace debug
 } // namespace core
+} // namespace inex
