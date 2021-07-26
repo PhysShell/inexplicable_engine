@@ -1,0 +1,8 @@
+1. g++ -c -Wall -fPIC render_gl4.cpp 
+2. g++ -c -Wall -fPIC render_base_platform.cpp
+3. ar rcs librender_gl4.a render_gl4.o
+4. ar rcs librender_base_platform.a render_base_platform.o
+5. g++ -Wall -fPIC engine.cpp -lX11 -lGL -lGLU librender_base_platform.a librender_gl4.a
+
+-lX11 -lGL -lGLU -lXxf86vm -lXrandr -lpthread -lXi
+

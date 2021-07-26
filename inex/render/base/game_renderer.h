@@ -1,10 +1,10 @@
-#ifndef XRAY_RENDER_BASE_GAME_RENDERER_H_INCLUDED
-#define XRAY_RENDER_BASE_GAME_RENDERER_H_INCLUDED
+#ifndef INEX_RENDER_BASE_GAME_RENDERER_H_INCLUDED
+#	define INEX_RENDER_BASE_GAME_RENDERER_H_INCLUDED
 
 //#include <inex/resources.h>
 //#include <inex/render/base/common_types.h>
 //#include <inex/render/base/light_props.h>
-#include <inex/render/base/visual.h>
+#	include <inex/render/base/visual.h>
 
 namespace inex {
 namespace render {

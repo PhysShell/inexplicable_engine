@@ -11,6 +11,7 @@
 #include <inex/threading_functions.h>
 
 namespace inex {
+namespace core {
 namespace debug {
 
 void 	dump_call_stack_trace ( )
@@ -65,4 +66,5 @@ pcstr	error2string ( u32 code )
 }
 
 } // namespace debug
+} // namespace core
 } // namespace inex

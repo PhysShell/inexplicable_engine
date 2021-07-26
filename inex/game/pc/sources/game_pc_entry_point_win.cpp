@@ -13,7 +13,7 @@ static int s_exit_code					= 0;
 struct guard {
 	inline	guard						( )
 	{
-		// XRAY_CONSTRUCT_REFERENCE		( s_application, stalker2::application );
+		// INEX_CONSTRUCT_REFERENCE		( s_application, game_title::application );
 		s_application					= new game::application( );
 		s_application->initialize		( );
 	}
@@ -23,7 +23,7 @@ struct guard {
 		s_exit_code						= s_application->get_exit_code();
 		s_application->finalize			( );
 		delete							s_application;
-		// XRAY_DESTROY_REFERENCE			( s_application );
+		// INEX_DESTROY_REFERENCE		( s_application );
 	}
 }; // struct guard
 
@@ -60,7 +60,7 @@ static LONG WINAPI unhandled_exception_handler					( _EXCEPTION_POINTERS* const 
 
 #if !defined(NDEBUG)
 	return						( EXCEPTION_CONTINUE_SEARCH );
-#endif // #if !defined(NDEBUG) || !XRAY_PLATFORM_XBOX_360
+#endif // #if !defined(NDEBUG) || !INEX_PLATFORM_XBOX_360
 }
 
 typedef LONG WINAPI UnhandledExceptionFilterType(struct _EXCEPTION_POINTERS *pExceptionInfo);

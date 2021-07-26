@@ -9,6 +9,10 @@
 #   endif // #if INEX_PLATFORM_LINUX
 
 namespace inex {
+
+namespace core {
+	struct engine;
+
 namespace debug {
 
 namespace detail {
@@ -67,6 +71,10 @@ float   benchmark ( function function_to_benchmark, parameters_pack && ... param
 // todo: dd debug/release #ifdef's
 #define BENCHMARK( x, ... ) do { float b = inex::debug::benchmark( x, __VA_ARGS__ ); LOGGER ( "[benchmark][%s]\t\t: %f usec", #x , b ); } while ( 0 )
 
+void 			initialize 				( core::engine * engine );
+void 			postinitialize			( );
+void 			finalize 				( );
+
 INEX_CORE_API
 void INEX_CCALL	fatal					( 	pcstr 	file,
 											u32 	line,
@@ -84,6 +92,7 @@ pcstr		    error2string			( u32 code );
 void 			dump_call_stack_trace 	( );
 
 } // namespace debug
+} // namespace core
 } // namespace inex
 
 #endif // #ifndef INEX_DEBUG_H_INCLUDED

@@ -48,8 +48,6 @@ void inex::core::preinitialize		( core::engine *								engine,
 	console::initialize		( );
 	command_line::initialize( command_line );
 
-	//debug::initialize		( s_engine );
-
 	//set_application_name	( application );
 
 	//platform::preinitialize	( );
@@ -92,7 +90,11 @@ void inex::core::initialize			(
 	// for language-dependent strings
 	setlocale				( LC_CTYPE, "" );
 
+
 	logging::initialize		( );
+
+	debug::initialize		( s_engine );
+	debug::postinitialize	( );
 
 	build::initialize		( s_engine );
     fpu::initialize         ( );
@@ -116,7 +118,7 @@ void	finalize ( )
     fs::finalize			( );
     memory::finalize		( );
     logging::finalize		( );
-
+	debug::finalize			( );
 	s_initialized			= false;
 }
 

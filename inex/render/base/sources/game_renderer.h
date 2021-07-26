@@ -1,7 +1,7 @@
 #ifndef GAME_RENDERER_H_INCLUDED
-#define GAME_RENDERER_H_INCLUDED
+#   define GAME_RENDERER_H_INCLUDED
 
-#include <inex/render/base/game_renderer.h>
+#   include <inex/render/base/game_renderer.h>
 
 namespace inex {
 namespace render {
@@ -50,7 +50,7 @@ private:
 	virtual	void	set_command_push_thread_id	( );
 	virtual	void set_command_processor_frame_id	( u32 frame_id );
 	virtual	void	initialize_command_queue	( engine::command* null_command );
-	
+
 private:
 	render::base_world&		m_world;
 	platform&				m_platform;

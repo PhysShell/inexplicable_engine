@@ -1,7 +1,7 @@
 #ifndef PLATFORM_API_H_INCLUDED
-#define PLATFORM_API_H_INCLUDED
+#   define PLATFORM_API_H_INCLUDED
 
-#include <inex/render/base/engine_wrapper.h>
+#   include <inex/render/base/engine_wrapper.h>
 
 namespace inex {
 namespace render {

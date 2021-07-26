@@ -1,11 +1,11 @@
 #ifndef INEX_RENDER_BASE_ENGINE_RENDERER_H_INCLUDED
-#define INEX_RENDER_BASE_ENGINE_RENDERER_H_INCLUDED
+#	define INEX_RENDER_BASE_ENGINE_RENDERER_H_INCLUDED
 
 namespace inex {
 namespace render {
 namespace engine {
 
-struct /*XRAY_NOVTABLE */renderer {
+struct NOVTABLE renderer {
 	virtual	bool	run						( bool wait_for_command ) = 0;
 	virtual	bool	run_editor_commands		( bool wait_for_command ) = 0;
 	//virtual	u32		frame_id				( ) = 0;

@@ -108,7 +108,7 @@ void	ini_file::load ( pcstr fname )
 								it	!=	m_contents.end( );
 								++it )
 	{
-		std::cout << ( *it )->name << '\n';
+		// std::cout << ( *it )->name << '\n';
 	}
 
 }

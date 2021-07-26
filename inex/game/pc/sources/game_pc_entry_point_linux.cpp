@@ -16,7 +16,7 @@ string512 g_command_line;
 struct guard {
 	inline	guard						( )
 	{
-		// XRAY_CONSTRUCT_REFERENCE		( s_application, stalker2::application );
+		// INEX_CONSTRUCT_REFERENCE		( s_application, stalker2::application );
 		s_application					= new game::application( );
 		s_application->initialize		( );
 	}
@@ -26,7 +26,7 @@ struct guard {
 		s_exit_code						= s_application->get_exit_code();
 		s_application->finalize			( );
 		delete							s_application;
-		// XRAY_DESTROY_REFERENCE			( s_application );
+		// INEX_DESTROY_REFERENCE		( s_application );
 	}
 }; // struct guard
 

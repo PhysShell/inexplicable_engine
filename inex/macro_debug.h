@@ -22,7 +22,7 @@
 // #define ASSERT(expr, ...) if(!(a))do{FATAL(#a__VA_OPT__(,) __VA_ARGS__);}while(0)
 #ifdef ASSERTIONS_ENABLED
 #	define SLOW_ASSERT
-#	define FATAL( expr, ... ) 	inex::debug::fatal( DEBUG_INFO, #expr, __VA_ARGS__ )
+#	define FATAL( expr, ... ) 	inex::core::debug::fatal( DEBUG_INFO, #expr, __VA_ARGS__ )
 #	define ASSERT_D( a, ... ) 	if ( !( a ) )do { FATAL( #a, __VA_ARGS__ ); } while ( 0 )
 #	define ASSERT_S( a )		if ( !( a ) )do { FATAL( #a, nullptr ); } while ( 0 )
 #	define VERIFY( x )       	ASSERT_S( x )

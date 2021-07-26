@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="Workspace">
+		<Project filename="inex/core/sources/core.cbp" />
+		<Project filename="inex/sound/sources/sound.cbp">
+			<Depends filename="inex/core/sources/core.cbp" />
+		</Project>
+		<Project filename="inex/render/gl4/sources/render_gl4.cbp" />
+		<Project filename="inex/render/base/sources/render_base.cbp">
+			<Depends filename="inex/core/sources/core.cbp" />
+			<Depends filename="inex/render/gl4/sources/render_gl4.cbp" />
+		</Project>
+		<Project filename="inex/engine/sources/engine.cbp">
+			<Depends filename="inex/render/base/sources/render_base.cbp" />
+		</Project>
+		<Project filename="inex/game/pc/sources/game_pc.cbp">
+			<Depends filename="inex/sound/sources/sound.cbp" />
+			<Depends filename="inex/render/base/sources/render_base.cbp" />
+			<Depends filename="inex/engine/sources/engine.cbp" />
+		</Project>
+	</Workspace>
+</CodeBlocks_workspace_file>
