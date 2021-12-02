@@ -40,6 +40,8 @@ public:
     u32         r_u32       ( pcstr sect, pcstr key ) const;
 	float		r_float		( pcstr sect, pcstr key ) const;
     math::float3 r_float3   ( pcstr sect, pcstr key ) const;
+	math::float4 r_float4   ( pcstr sect, pcstr key ) const;
+	math::float4x4 r_float4x4( pcstr sect, pcstr key) const;
 	pcstr		r_string   	( pcstr sect, pcstr key ) const;
 				~ini_file	( );
 }; // class ini_file

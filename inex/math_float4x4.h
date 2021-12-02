@@ -17,14 +17,17 @@ public:
     typedef float           type;
 
 public:
-	union {
-		struct {
+	union
+	{
+		struct 
+		{
 			type		x;
 			type		y;
 			type		z;
 			type		w;
 		};
-			struct {
+			struct
+		{
 			type		r;
 			type		g;
 			type		b;
@@ -38,7 +41,8 @@ public:
 
 }; // class float4_pod
 
-class float4 : public float4_pod {
+class float4 : public float4_pod
+{
 public:
 	inline				float4			( )										{ x = y = z = w = 0; }
 	inline				float4			( type x_, type y_, type z_, type w_ )	{ x = x_; y = y_; z = z_; w = w_; }
@@ -55,18 +59,22 @@ public:
     typedef float           type;
 
 public:
-	union {
-		struct {
+	union
+	{
+		struct
+		{
 			float4_pod	i,j,k,c;
 		};
 
 		type			elements[ 16 ];
-		struct {
+		struct
+		{
 			type		e00, e01, e02, e03;
 			type		e10, e11, e12, e13;
 			type		e20, e21, e22, e23;
 			type		e30, e31, e32, e33;
 		};
+
 		float4_pod		lines[ 4 ];
 	};
 
@@ -104,14 +112,16 @@ public:
 		return		( result );
 	}
 
-	inline	void	print				( ) const
-	{
-		LOGGER( "\n" );
-		LOGGER( "[%.2f][%.2f][%.2f][%.2f]\n", elements[0], elements[4], elements[8], elements[12] );
-		LOGGER( "[%.2f][%.2f][%.2f][%.2f]\n", elements[1], elements[5], elements[9], elements[13] );
-		LOGGER( "[%.2f][%.2f][%.2f][%.2f]\n", elements[2], elements[6], elements[10], elements[14] );
-		LOGGER( "[%.2f][%.2f][%.2f][%.2f]\n", elements[3], elements[7], elements[11], elements[15] );
-	}
+	inline float4			get_single	( u8 const index )						{ ASSERT_S( 0 < index < 4 ); return float4( lines[ index ] ); }
+
+	// inline	void	print				( ) const
+	// {
+	// 	LOGGER( "\n" );
+	// 	LOGGER( "-- [float4x4][debug][i][%.2f][%.2f][%.2f][%.2f]\n", elements[0], elements[4], elements[8], elements[12] );
+	// 	LOGGER( "-- [float4x4][debug][j][%.2f][%.2f][%.2f][%.2f]\n", elements[1], elements[5], elements[9], elements[13] );
+	// 	LOGGER( "-- [float4x4][debug][k][%.2f][%.2f][%.2f][%.2f]\n", elements[2], elements[6], elements[10], elements[14] );
+	// 	LOGGER( "-- [float4x4][debug][c][%.2f][%.2f][%.2f][%.2f]\n", elements[3], elements[7], elements[11], elements[15] );
+	// }
 
 }; // class float4x4
 

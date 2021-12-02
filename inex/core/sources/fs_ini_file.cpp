@@ -6,7 +6,7 @@
 #include <cstring>
 #include <stdlib.h>
 #include "ie_memory.h"
-  
+
 namespace inex {
 namespace ini {
 
@@ -16,8 +16,8 @@ ini_file::~ini_file ( )
 								it	!=	m_contents.end( );
 								++it )
 	{
-		for ( section_contents_const_iterator	sect_it	=	( *it )->data.begin( ); 
-												sect_it	!=	( *it )->data.end( ); 
+		for ( section_contents_const_iterator	sect_it	=	( *it )->data.begin( );
+												sect_it	!=	( *it )->data.end( );
 												++sect_it )
 		{
 			memory::ie_delete( ( *sect_it ).first );
@@ -43,7 +43,7 @@ void	ini_file::load ( pcstr fname )
 		{
 			continue;
 		}
-        
+
         handle_comments			( buf );
         trim_string				( buf );
 
@@ -154,7 +154,6 @@ pstr    ie_strchr ( const pstr src, u8 tgt )
     {
         if ( *p == tgt )
         {
-            printf( "strchr:\t %s\n", p );
             return              p;
         }
     }
@@ -162,7 +161,7 @@ pstr    ie_strchr ( const pstr src, u8 tgt )
     return                      nullptr;
 }
 
-void    extract_sequence_float ( float * destination, pcstr key, u8 size, s8 separator = ',' )
+void    extract_sequence_float ( float * destination, pcstr key, u8 const size, s8 const separator = ',' )
 {
     // sscanf??
     pstr temp                   = memory::ie_allocate< char >( strlen( key ) + 1 );
@@ -171,18 +170,20 @@ void    extract_sequence_float ( float * destination, pcstr key, u8 size, s8 sep
 
     for ( u8 i = 0 ; i < size; ++i )
     {
-        pstr p_separator        = strchr( p, ',' );
+        pstr p_separator        = strchr( p, separator );
         if ( 0 == p_separator )
         {
             *( destination + i )    = ( float )std::atof( p );
+            //LOGGER( "- [ini][extract][float4]\t: processed:  '%s' is '%f'", p,  *( destination + i ) );
             break;
         }
 
         *p_separator++          = 0;
         *( destination + i )    = ( float )std::atof( p );
-        p                       = p_separator + 1;
+        p                       = p_separator;
+        //LOGGER( "- [ini][extract][float4]\t: processed:  '%s' is '%f'", p,  *( destination + i ) );
     }
-    
+
     memory::ie_delete           ( temp );
 }
 
@@ -193,6 +194,24 @@ math::float3    ini_file::r_float3 ( pcstr sect, pcstr key ) const
     extract_sequence_float ( raw_vector, sequence, 3 );
 
     return              math::float3( raw_vector[ 0 ], raw_vector[ 1 ], raw_vector[ 2 ] );
+}
+
+math::float4    ini_file::r_float4 ( pcstr sect, pcstr key ) const
+{
+    pcstr sequence              = r_string( sect, key );
+    float raw_vector            [ 4 ];
+    extract_sequence_float      ( raw_vector, sequence, 4 );
+
+    return                      math::float4( raw_vector[ 0 ], raw_vector[ 1 ], raw_vector[ 2 ], raw_vector[ 3 ] );
+}
+
+math::float4x4    ini_file::r_float4x4 ( pcstr sect, pcstr key ) const
+{
+    pcstr sequence      = r_string( sect, key );
+    float raw_vector    [ 4 * 4 ];
+    extract_sequence_float ( raw_vector, sequence, 4 * 4 );
+    // raw_vector[ 0 ], raw_vector[ 1 ], raw_vector[ 2 ], raw_vector[ 3 ], raw_vector[ 4 ], raw_vector[ 5 ], raw_vector[ 6 ], raw_vector[ 7 ], raw_vector[ 8 ], raw_vector[ 9 ], raw_vector[ 10 ], raw_vector[ 11 ], raw_vector[ 12 ], raw_vector[ 13 ], raw_vector[ 14 ], raw_vector[ 15 ]
+    return              math::float4x4( raw_vector );
 }
 
 s32		ini_file::r_s32 ( pcstr sect,pcstr key ) const

@@ -6,6 +6,8 @@
 
 #include <inex/core/sources/fs_ini_file.h>
 
+#include <inex/macro_log.h>
+
 #include <time.h>
 #include <math.h>
 #include <vector>
@@ -38,20 +40,10 @@ using math::float3;
 using inex::render_ogl::shader;
 using inex::render_ogl::shader_program;
 
-GLfloat points1[ ] = {
-	0.0f, 0.5f, 0.0f, 1.f,
-	0.5f, -0.5f, 0.0f, 1.f,
-	-0.5f, -0.5f, 0.0f, 1.f
-};
-
-GLfloat points[ ] = {
-	1.0f, 0.5f, 0.0f, 1.f,
-	0.5f, -0.5f, 0.0f, 1.f,
-	-0.5f, -0.5f, 0.0f, 1.f
-};
 
 // just testing
-math::float4x4 vertices = points;
+math::float4x4 vertices; // = points;
+math::float4x4 vertices_2;
 
 render::triangle_primitive_visual triangle;
 
@@ -90,11 +82,11 @@ render::platform * create_render_platform( inex::render::engine::wrapper& wrappe
 platform* pw				= nullptr;
 platform&	get_w ( )		{ return *pw; }
 
-float cam_speed				/*= .01f*/;		// 1 unit per second
-float cam_yaw_speed			/*= .5f*/;	// 10 degrees p er second
-float cam_pos[]				= {0.0f, 0.0f, 2.0f};	// don't start at zero, or we will be too close
+float cam_speed				/*= .01f*/;				// 1 unit per second
+float cam_yaw_speed			/*= .5f*/;				// 10 degrees p er second
+float cam_pos[ ]			= { .0f, .0f, 2.f };	// don't start at zero, or we will be too close
+float cam_yaw 				= .0f;					// y-rotation in degrees
 
-float cam_yaw = 0.0f;					// y-rotation in degrees
 int	  view_mat_location;
 
 void	initialize_model_manager ( model_manager& manager )
@@ -102,11 +94,18 @@ void	initialize_model_manager ( model_manager& manager )
 	LOGGER( "initializing model manager...\n" );
 
 	resources::managed_resource_ptr resource;
-	resource.m_vertices	= points1;
+	resource.m_vertices	= vertices;
 	resource.fs			= "gamedata/shaders/ogl4.fs";
 	resource.vs			= "gamedata/shaders/ogl4.vs";
 
+	resources::managed_resource_ptr resource2;
+	resource2.m_vertices	= vertices_2;
+	//resource2.m_vertices.print  ( );
+	resource2.fs			= "gamedata/shaders/ogl4.fs";
+	resource2.vs			= "gamedata/shaders/ogl4.vs";
+
 	manager.add_static	( resource, resource, resource  );
+	manager.add_static	( resource2, resource2, resource2  );
 
 
 }
@@ -151,12 +150,18 @@ platform::platform					( inex::render::engine::wrapper& wrapper, HWND const wind
 	//initialize_shaders          ( );
     //initialize_vertex_buffer_object ( );
 
-	initialize_model_manager	( m_model_manager );
-
 	ini::ini_file system_config;
-	system_config.load			( "gamedata/System.ltx");
-	cam_speed					= system_config.r_float("Camera", "speed");
-	cam_yaw_speed				= system_config.r_float("Camera", "yaw_speed");
+	system_config.load			( "gamedata/System.ltx" );
+	cam_speed					= system_config.r_float( "Camera", "speed" );
+	cam_yaw_speed				= system_config.r_float( "Camera", "yaw_speed" );
+
+	vertices 					= system_config.r_float4x4( "Visuals", "visual_1_pos" );
+	vertices_2					= system_config.r_float4x4( "Visuals", "visual_2_pos" );
+
+	LOG_FLOAT4X3				( vertices );
+	LOG_FLOAT4X3				( vertices_2 );
+
+	initialize_model_manager	( m_model_manager );
 
 	math::float4x4 T			= math::translate4x4( math::identity4x4( ), math::float3( -cam_pos[ 0 ], -cam_pos[ 1 ], -cam_pos[ 2 ] ) );
 	math::float4x4 R			= math::rotate_yaw( math::identity4x4( ), -cam_yaw );
@@ -164,16 +169,16 @@ platform::platform					( inex::render::engine::wrapper& wrapper, HWND const wind
 
 	// input variables
 	float znear					= 0.1f;								// clipping plane
-	float zfar					= 100.0f;							// clipping plan e
+	float zfar					= 100.f;							// clipping plan e
 	float fov					= math::degrees_to_radians( 67.f );
 	float aspect				= 1024.f / 620.f;					// aspect ratio
 	// matrix components
 
-	float range					= tan ( fov * 0.5f) * znear;
-	float Sx					= (2.0f * znear) / (range * aspect + range * aspect);
+	float range					= tan ( fov * .5f ) * znear;
+	float Sx					= ( 2.f * znear ) / ( range * aspect + range * aspect );
 	float Sy					= znear / range;
-	float Sz					= -(zfar + znear) / (zfar - znear);
-	float Pz					= -(2.0f * zfar * znear) / (zfar - znear);
+	float Sz					= -( zfar + znear ) / ( zfar - znear );
+	float Pz					= -( 2.f * zfar * znear ) / ( zfar - znear );
 
 	float proj_mat[] = {
 		Sx, 0.0f, 0.0f, 0.0f,
@@ -187,9 +192,9 @@ platform::platform					( inex::render::engine::wrapper& wrapper, HWND const wind
     m_model_manager.get_visuals( ).at( 0 )->m_program.use( );
 
 	view_mat_location		= m_model_manager.get_visuals( ).at( 0 )->m_program.find_unifrom( "view" );
-	glUniformMatrix4fv		(view_mat_location, 1, GL_FALSE, view_matrix.elements);
+	glUniformMatrix4fv		( view_mat_location, 1, GL_FALSE, view_matrix.elements );
 	int proj_mat_location	= m_model_manager.get_visuals( ).at( 0 )->m_program.find_unifrom( "proj" );
-	glUniformMatrix4fv		(proj_mat_location, 1, GL_FALSE, prj_mtx.elements);
+	glUniformMatrix4fv		( proj_mat_location, 1, GL_FALSE, prj_mtx.elements );
 
     m_model_manager.get_visuals( ).at( 0 )->m_program.unbind( );
 }
@@ -222,12 +227,12 @@ void	update_fps_counter ( gl_context * window )
 	struct 	timeval tp;
 	gettimeofday						( &tp, NULL );
 
-			long int ms 				= tp.tv_sec * 1000 + tp.tv_usec / 1000;		
+			long int ms 				= tp.tv_sec * 1000 + tp.tv_usec / 1000;
 	static	float	previous_seconds	= ms;
 	static	s32		frame_count;
 
 	gettimeofday						( &tp, NULL );
-					ms 					= tp.tv_sec * 1000 + tp.tv_usec / 1000;		
+					ms 					= tp.tv_sec * 1000 + tp.tv_usec / 1000;
 			float	current_seconds		= ms;
 			float	elapsed_seconds		= current_seconds - previous_seconds;
 #elif INEX_PLATFORM_WINDOWS // #if INEX_PLATFORM_LINUX
@@ -264,26 +269,26 @@ void platform::draw_frame			( )
 	XNextEvent					( GLX.display, &GLX.x_event );
 
 
-if( 1 ||  GLX.x_event.type == Expose )
-{
-	update_fps_counter			( g_gl4_context );
+	if( 1 ||  GLX.x_event.type == Expose )
+	{
+		update_fps_counter			( g_gl4_context );
 
-    XGetWindowAttributes		( g_gl4_context->display, g_gl4_context->window, &g_gl4_context->x_window_attributes );
-    glClear                 	( GL_COLOR_BUFFER_BIT );
-	glClear						( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glViewport					( 0, 0, g_gl4_context->x_window_attributes.width, g_gl4_context->x_window_attributes.height );
+		XGetWindowAttributes		( g_gl4_context->display, g_gl4_context->window, &g_gl4_context->x_window_attributes );
+		glClear                 	( GL_COLOR_BUFFER_BIT );
+		glClear						( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glViewport					( 0, 0, g_gl4_context->x_window_attributes.width, g_gl4_context->x_window_attributes.height );
 
-	//triangle.prologue			( );
-	//program.use( );
-	//triangle.draw_static		( );
-	//program.validate	( );
+		//triangle.prologue			( );
+		//program.use( );
+		//triangle.draw_static		( );
+		//program.validate	( );
 
-	//glBindVertexArray (vao);
-	m_model_manager.get_visuals( ).at( 0 )->m_program.use( );
-	render_visuals	( );
+		//glBindVertexArray (vao);
+		m_model_manager.get_visuals( ).at( 0 )->m_program.use( );
+		render_visuals	( );
 
-	glXSwapBuffers				( GLX.display, GLX.window );
-}
+		glXSwapBuffers				( GLX.display, GLX.window );
+	}
 /*
   // XSelectInput(Pixel.GetX11Display(),Pixel.GetX11Window(),KeyPressMask|KeyReleaseMask);
     while(XPending(Pixel.GetX11Display())) { //Repeats until all events are computed
@@ -293,50 +298,50 @@ if( 1 ||  GLX.x_event.type == Expose )
         uint32_t KeyEventCode=KeyEvent.xkey.keycode; //Gets the key code, NOT HIS CHAR EQUIVALENT
         std::cout << KeyEventCode << '\n'; //Displays the key code
 
-        // Code handling a Keypress event 
+        // Code handling a Keypress event
 
       } else if(KeyEvent.type==KeyRelease) {
          uint32_t KeyEventCode=KeyEvent.xkey.keycode;
          std::cout << KeyEventCode << '\n'; //Displays the key code
 
-         / Code handling a KeyRelease event 
+         / Code handling a KeyRelease event
 
       }
     }
 
-    // General code 
+    // General code
 
   }
 */
- if( GLX.x_event.type == KeyPress )
-{
-	#define KEY_ESCAPE	0x09
-	// rotating
-	#define KEY_RIGHT 	114
-	#define KEY_LEFT 	113
-	#define KEY_UP		111
-	#define KEY_DOWN	116
-
-	// moving
-	#define KEY_A		38
-	#define KEY_D		40
-	#define KEY_S		39
-	#define KEY_W		25
-
-
-    if ( GLX.x_event.xkey.keycode == KEY_ESCAPE )
-    {
-		exit 		( EXIT_SUCCESS );
-	}
-
-	if ( 	GLX.x_event.xkey.keycode == KEY_A || GLX.x_event.xkey.keycode == KEY_D ||
-		 	GLX.x_event.xkey.keycode == KEY_W || GLX.x_event.xkey.keycode == KEY_S || 
-			GLX.x_event.xkey.keycode == KEY_UP || GLX.x_event.xkey.keycode == KEY_DOWN || 
-			GLX.x_event.xkey.keycode == KEY_LEFT || GLX.x_event.xkey.keycode == KEY_RIGHT )
+	if( GLX.x_event.type == KeyPress )
 	{
-		cam_moved	= 1;
+		#define KEY_ESCAPE	0x09
+		// rotating
+		#define KEY_RIGHT 	114
+		#define KEY_LEFT 	113
+		#define KEY_UP		111
+		#define KEY_DOWN	116
+
+		// moving
+		#define KEY_A		38
+		#define KEY_D		40
+		#define KEY_S		39
+		#define KEY_W		25
+
+
+		if ( GLX.x_event.xkey.keycode == KEY_ESCAPE )
+		{
+			exit 		( EXIT_SUCCESS );
+		}
+
+		if ( 	GLX.x_event.xkey.keycode == KEY_A || GLX.x_event.xkey.keycode == KEY_D ||
+				GLX.x_event.xkey.keycode == KEY_W || GLX.x_event.xkey.keycode == KEY_S ||
+				GLX.x_event.xkey.keycode == KEY_UP || GLX.x_event.xkey.keycode == KEY_DOWN ||
+				GLX.x_event.xkey.keycode == KEY_LEFT || GLX.x_event.xkey.keycode == KEY_RIGHT )
+		{
+			cam_moved	= 1;
+		}
 	}
-}
 
 	// update view matrix
 	if ( cam_moved )
@@ -370,15 +375,15 @@ if( 1 ||  GLX.x_event.type == Expose )
 		math::float4x4 R		= math::rotate_yaw	( math::identity4x4 ( ), -cam_yaw );
 		math::float4x4 view_mat = R * T;
 
-		glUniformMatrix4fv (view_mat_location, 1, GL_FALSE, view_mat.elements);
+		glUniformMatrix4fv ( view_mat_location, 1, GL_FALSE, view_mat.elements );
 	}
 
 	m_model_manager.get_visuals( ).at( 0 )->m_program.unbind( );
 
-if( GLX.x_event.type == Expose )
-{
-	glXSwapBuffers				( GLX.display, GLX.window );
-}
+	if( GLX.x_event.type == Expose )
+	{
+		glXSwapBuffers				( GLX.display, GLX.window );
+	}
 
 #elif INEX_PLATFORM_WINDOWS // #if INEX_PLATFORM_LINUX
 	//update_fps_counter			( g_gl4_context );
@@ -520,11 +525,11 @@ void	platform::render_visuals ( )
 	model_manager::Visuals::const_iterator	end = visuals.end();
 
 	for( ; it != end; ++it )
-	{
 		//if( !it->system_object )
-	}
 
+	//logging::set_output_destination	( logging::logging_to_enum::terminal );
 	m_model_manager.render_static	( );
+	//logging::set_output_destination	( logging::logging_to_enum::file );
 }
 
 } // namespace gl4
