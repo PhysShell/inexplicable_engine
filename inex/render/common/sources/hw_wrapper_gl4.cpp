@@ -302,6 +302,12 @@ gl_context * 	initialize_context ( u32 const x, u32 const y )
 
 
     ASSERT_D			( g_gl4_context != nullptr, "Failed to open GLX window.\n");
+    s32 gl_major		= -1;
+    s32 gl_minor		= -1;
+    glGetIntegerv		( GL_MAJOR_VERSION, &gl_major );
+    glGetIntegerv		( GL_MINOR_VERSION, &gl_minor );
+    ASSERT_D			( ( gl_major != -1 ) || ( gl_minor != -1 ), "Failed to execute low-level OpenGL functionality. Problem with -lGL-like libs." );
+	
     LOGGER	(
 		"* [render][info]\t: %s\n* [render][info]\t: OpenGL version supported %s\n",
 		glGetString( GL_RENDERER ),
