@@ -13,7 +13,43 @@ namespace inex {
 namespace threading {
 
 inline
-atomic32_value_type		interlocked_increment	( atomic32_type* )	{	return 0;	}
+atomic32_value_type		interlocked_increment	( atomic32_value_type * value )
+{
+	return 											InterlockedIncrement( value );
+}
+
+inline
+atomic32_value_type		interlocked_decrement	( atomic32_value_type * value )
+{
+	return 											InterlockedDecrement( value );
+}
+
+//INEX_THREADING_INLINE
+atomic32_value_type 	interlocked_exchange	( atomic32_type& target, atomic32_value_type value )
+{
+	return											_InterlockedExchange( &target, value );
+}
+
+inline
+u32		current_thread_id (  )
+{
+	return 											GetCurrentThreadId( );
+}
+
+inline
+void inex::threading::yield ( u32 ms )
+{
+	if ( ms )
+	{
+		Sleep										( ms );
+		return;
+	}
+	
+	if ( SwitchToThread() )
+		return;
+	
+	Sleep											( 0 );
+}
 
 
 inline

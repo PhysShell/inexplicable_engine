@@ -4,5 +4,7 @@
 
 #include "pch.h"
 
+#define INEX_LOG_MODULE_INITIATOR	"render"
+
 // TODO: reference any additional headers you need in STDAFX.H
 // and not in this file

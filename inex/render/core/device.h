@@ -2,47 +2,54 @@
 //	Created 	: 15.06.2019
 //	Author		: Feudor Shelipov
 ////////////////////////////////////////////////////////////////////////////
-#ifndef DEVICE_H_INCLUDED
-#	define DEVICE_H_INCLUDED
+#ifndef RENDER_DEVICE_H_INCLUDED
+#	define RENDER_DEVICE_H_INCLUDED
 
-typedef struct GLFWwindow window_impl;
+
 namespace inex      {
 namespace render    {
-    class render_device;
-} // namespace render
-namespace ogl       {
+#	if INEX_PLATFORM_WINDOWS
 
-class render_device_base;
+class device_base
+{
+	
+private:
 
-class INEX_RENDER_API device
+}; // device_base
+
+#	elif INEX_PLATFORM_LINUX // #if INEX_PLATFORM_WINDOWS
+class device_base
+{
+private:
+
+}; // device_base
+
+# 	endif // #if INEX_PLATFORM_WINDOWS
+
+class INEX_RENDER_API device : public quasi_singleton< device >
 {
 public:
-        void                run             ( )                         ;
-        void                create          ( )                         ;
-        void                destroy         ( )                         ;
-        void                render          ( )                         ;
-        void                process_input   ( )                         ;
-
+							device 			( )								;
+							~device 		( )								;
 public:
-        void                initialize      ( )                         ;
-inline  render::render_device*render_device ( )
-                                {
-                                    return  m_render_device             ;
-                                }
+        void                initialize      ( )                         	;
+inline  					base_device 	( ) { return  m_device_base; }	;
 
-private:                                  ;
-    render::render_device*  m_render_device                             ;
-    window_impl*            m_context                                   ;
-    float                   m_delta                                     ; 
-    u32                     m_width, m_height;
+private:
+	enum device_state_enum
+	{
+		ds_ok = 0,
+		ds_lost,
+		ds_need_reset
+	};
+	
+private:
+	device_base * 			m_device_base;
+	device_context * 		m_device_context;
 
-// need to store window data, delta, camera, render ( or render agents ) itself
-// or render here contains render agents????????
 }; // class device
 
-float    get_time ( );
-
-} // namespace ogl 
+} // namespace render
 } // namespace inex 
 
-#endif // #ifndef DEVICE_H_INCLUDED
+#endif // #ifndef RENDER_DEVICE_H_INCLUDED

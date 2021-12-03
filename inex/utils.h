@@ -83,29 +83,69 @@ class fixed_array
 {
 public:
 					fixed_array		( )
-					{
-					}
+	{
+	}
 
-	Type&			operator [ ]( int i )
-					{
-						return	m_data[ i ];
-					}
+	Type&			operator [ ]	( int i )
+	{
+		return	m_data[ i ];
+	}
 	// why don't use Type const& operator [ ] ( int i ) const?
-	Type const&		elem		( int i ) const
-					{
-						return	m_data[ i ];
-					}
+	Type const&		elem			( int i ) const
+	{
+		return	m_data[ i ];
+	}
 
-	void			set_elem	( int i, Type const& other )
-                    {
-                        m_data[ i ]         = other;
-                    }
+	void			set_elem		( int i, Type const& other )
+	{
+		m_data[ i ]         = other;
+	}
 
-	explicit    	operator int*( ) { return &m_data[ 0 ]; }
+	explicit    	operator int * ( )
+	{
+		return &m_data[ 0 ];
+	}
 
 private:
 	Type	m_data	[ max_count ];
 }; // class fixed_array
+
+template < typename Type, int max_count >
+class fixed_vector : public fixed_array< Type, max_count >
+{
+public:
+			fixed_vector	( ) :
+				m_count		( 0u ),
+				m_available	( max_count ),
+				m_max_count	( max_count )
+	{
+	}
+
+	void	push_back		( Type value )
+	{
+		set_elem				( m_count, value );
+		increment_counters		( );
+	}
+
+
+private:
+	void 	increment_counters	( )
+	{
+		++m_count;
+		--m_available;
+	}
+
+	void 	decrement_counters	( )
+	{
+		--m_count;
+		++m_available;
+	}
+	
+private:
+	unsigned 		m_count;
+	unsigned 		m_available;
+	unsigned 		m_max_count;
+}; // class fixed_vector
 
 #include "utils_inline.h"
 

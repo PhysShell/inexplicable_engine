@@ -6,15 +6,15 @@
 namespace inex {
 namespace logging {
 
-static logging_to_enum				dest;
+static logging_to_enum				dest = logging_to_enum::file;
 static string_path					log_file_name	= "engine.log";
 static memory::writer*         		fwriter			;
-static threading::critical_section	log_section		;
+//static threading::critical_section	log_section		;
+
+// logging/sources/helper.cpp: static void fill_log_string
 
 void	preinitialize ( )
 {
-	dest			= logging_to_enum::file;
-
 	if ( command_line::check_key( "-log_to_stdout" ) )
         dest		= logging_to_enum::terminal;
 }
@@ -43,8 +43,8 @@ void	set_output_destination	( logging_to_enum destination )
 
 void 	Msg ( pcstr format, ... )
 {
-
-    threading::scope_locker crit_sect( log_section );
+	debug_log_disable_raii	debug_log_disable;
+    //threading::scope_locker crit_sect( log_section );
 
 	if ( dest == logging_to_enum::suspend_logging )
 		return;
@@ -83,6 +83,21 @@ bool	put_string ( pcstr msg )
 	}
 
     return      			fwriter;
+}
+
+bool 	check_verbosity ( pcstr initiator, verbosity verbosity )
+{
+	debug_log_disable_raii					debug_log_disable;
+	
+	/*
+	path_parts								path(initiator);
+	
+	int const allowed_verbosity			=	get_tree_verbosity( &path );
+	if ( verbosity > allowed_verbosity )
+		return								false;
+	*/
+	
+	return true;
 }
 
 }// namespace logging

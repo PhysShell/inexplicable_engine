@@ -31,7 +31,9 @@ inline  u64 clock_cycle_per_second              ( );
 #		error please define atomics for your platform here
 #   endif // #if INEX_PLATFORM_LINUX
 
-INEX_CORE_API    inline  atomic32_value_type         interlocked_increment   ( atomic32_type* );
+INEX_CORE_API	inline  atomic32_value_type         interlocked_increment   ( atomic32_type* );
+INEX_CORE_API	inline 	u32 						current_thread_id		( );
+INEX_CORE_API	inline	void 						yield					( u32 ms );
 
 
 } // namespace threading

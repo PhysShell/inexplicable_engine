@@ -36,7 +36,7 @@ struct helper
 
 } // namespace detail
 
-#if INEX_PLATFORM_LINUX
+#	if INEX_PLATFORM_LINUX
 template < typename function, typename ... parameters_pack >
 void   benchmark ( function function_to_benchmark, parameters_pack && ... parameters )
 {
@@ -48,7 +48,7 @@ void   benchmark ( function function_to_benchmark, parameters_pack && ... parame
 	gettimeofday			( &time, nullptr );
 	end 					= time.tv_usec;
 }
-#elif INEX_PLATFORM_WINDOWS // #if INEX_PLATFORM_LINUX
+#	elif INEX_PLATFORM_WINDOWS // #if INEX_PLATFORM_LINUX
 
 template < typename function, typename ... parameters_pack >
 float   benchmark ( function function_to_benchmark, parameters_pack && ... parameters )
@@ -66,10 +66,10 @@ float   benchmark ( function function_to_benchmark, parameters_pack && ... param
 
 	return					elapsed_time;
 }
-#endif // #if INEX_PLATFORM_LINUX
+#	endif // #if INEX_PLATFORM_LINUX
 
 // todo: dd debug/release #ifdef's
-#define BENCHMARK( x, ... ) do { float b = inex::debug::benchmark( x, __VA_ARGS__ ); LOGGER ( "[benchmark][%s]\t\t: %f usec", #x , b ); } while ( 0 )
+#	define BENCHMARK( x, ... ) do { float b = inex::debug::benchmark( x, __VA_ARGS__ ); LOGGER ( "[benchmark][%s]\t\t: %f usec", #x , b ); } while ( 0 )
 
 void 			initialize 				( core::engine * engine );
 void 			postinitialize			( );
@@ -94,5 +94,29 @@ void 			dump_call_stack_trace 	( );
 } // namespace debug
 } // namespace core
 } // namespace inex
+typedef void protected_function_type				( pvoid );
+namespace inex {
+namespace debug {
+	
+// move impl to cpp
+
+	
+} // namespace debug
+} // namespace inex
+
+// .cpp
+void	inex::debug::protected_call ( protected_function_type * function_to_call, pvoid argument )
+{
+	// set thread stack guarantee
+#	if INEX_PLATFORM_WINDOWS
+	__try {
+		( *function_to_call	)	( argument );
+	}
+			   // it's implemented in game_pc
+	__except ( unhandled_exception_filter ( GetExceptionCode( ), GetExceptionInformation( ) ) ) {
+		(void)0;
+	}
+#	endif // #if INEX_PLATFORM_WINDOWS
+}
 
 #endif // #ifndef INEX_DEBUG_H_INCLUDED
