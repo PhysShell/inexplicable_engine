@@ -76,6 +76,9 @@
 		* copy-on-write/shared str
 		* PDB
 		* leak detector or something
+		* sound: add something like sound_fx_reverb (emulates the space acoustic effect, sound_fx_eq (equalizer, can have array of bands class which has properties like frequency, range, amplitude, maybe provide simple automation;
+		* log: add log initiator template (in progress) and use it instead of manually writing [render_base], [gl4]. think of method like set_custom_log_initiator for overriding it;
+		* thread callstack guarantee
 
 		bugs/features:
 		* preferred separator for path_string
