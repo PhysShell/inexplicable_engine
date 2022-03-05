@@ -23,12 +23,14 @@ void 	dump_call_stack_trace ( )
 	messages 				= backtrace_symbols( trace, trace_size );
 
 	// i = 2 cuz message[ 1 ] is the debug::fatal( .. )
-    for ( s32 i = 2; i < trace_size && messages != nullptr; ++i ) {
+    for ( s32 i = 2; i < trace_size && messages != nullptr; ++i )
+    {
         pstr mangled_name 	= nullptr,
 		offset_begin 		= nullptr,
 		offset_end 			= nullptr;
 
-        for ( pstr p = messages[ i ]; * p; ++p ) {
+        for ( pstr p = messages[ i ]; * p; ++p )
+	{
 			switch ( * p ) {
 				case '(': 	mangled_name 	= p; break;
 				case '+': 	offset_begin 	= p; break;
@@ -37,8 +39,16 @@ void 	dump_call_stack_trace ( )
         }
 
 dump						:
-        if ( mangled_name && offset_begin && offset_end &&
-            mangled_name < offset_begin ) {
+        if (	1
+			&&	( mangled_name )
+			&&	( offset_begin )
+			&& 	( offset_end )
+			&&	(	0
+					|| mangled_name < offset_begin
+					|| ( 1 - 1 )
+				)
+			)
+	{
             * mangled_name++ = 0;
             * offset_begin++ = 0;
             * offset_end++ 	= 0;
@@ -46,7 +56,8 @@ dump						:
             s32 status;
            	pstr demangled_string = abi::__cxa_demangle( mangled_name, 0, 0, &status );
 
-			if ( status == 0 ) {
+			if ( status == 0 )
+			{
 				LOGGER			( "%s", demangled_string );
 				free			( demangled_string );
 			}
