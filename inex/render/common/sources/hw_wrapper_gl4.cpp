@@ -3,194 +3,31 @@
 #include <inex/render/base/engine_wrapper.h>
 #include <inex/core/sources/ie_memory.h>
 #include <inex/render/gl4/gl4_extensions.h>
+#include <inex/render/common/sources/hw_wrapper_base_gl4_win_winapi.h>
 
 #if INEX_PLATFORM_WINDOWS
-#	pragma comment( lib, "glfw3.lib" )
+//#	pragma comment( lib, "glfw3.lib" )
 #	pragma comment( lib, "opengl32.lib" )
 #endif // #if INEX_PLATFORM_WINDOWS
 
 /* Global extension */
 // Texture
-#if !INEX_PLATFORM_LINUX
-PFNGLACTIVETEXTUREPROC glActiveTexture  ;
-#endif // #if !INEX_PLATFORM_LINUX
-// VAO
-PFNGLGENVERTEXARRAYSPROC    glGenVertexArrays    ;
-PFNGLDELETEVERTEXARRAYSPROC glDeleteVertexArrays ;
-PFNGLBINDVERTEXARRAYPROC    glBindVertexArray    ;
-// VBO
-PFNGLGENBUFFERSPROC    glGenBuffers    ;
-PFNGLDELETEBUFFERSPROC glDeleteBuffers ;
-PFNGLBINDBUFFERPROC    glBindBuffer    ;
-PFNGLBUFFERDATAPROC    glBufferData    ;
-PFNGLBUFFERSUBDATAPROC glBufferSubData ;
-PFNGLMAPBUFFERPROC     glMapBuffer     ;
-PFNGLUNMAPBUFFERPROC   glUnmapBuffer   ;
-// Shaders
-PFNGLCREATEPROGRAMPROC     glCreateProgram     ;
-PFNGLDELETEPROGRAMPROC     glDeleteProgram     ;
-PFNGLLINKPROGRAMPROC       glLinkProgram       ;
-PFNGLVALIDATEPROGRAMPROC   glValidateProgram   ;
-PFNGLUSEPROGRAMPROC        glUseProgram        ;
-PFNGLGETPROGRAMIVPROC      glGetProgramiv      ;
-PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog ;
-PFNGLCREATESHADERPROC      glCreateShader      ;
-PFNGLDELETESHADERPROC      glDeleteShader      ;
-PFNGLSHADERSOURCEPROC      glShaderSource      ;
-PFNGLCOMPILESHADERPROC     glCompileShader     ;
-PFNGLATTACHSHADERPROC      glAttachShader      ;
-PFNGLDETACHSHADERPROC      glDetachShader      ;
-PFNGLGETSHADERIVPROC       glGetShaderiv       ;
-PFNGLGETSHADERINFOLOGPROC  glGetShaderInfoLog  ;
-// Attributes
-PFNGLGETATTRIBLOCATIONPROC        glGetAttribLocation        ;
-PFNGLVERTEXATTRIBPOINTERPROC      glVertexAttribPointer      ;
-PFNGLENABLEVERTEXATTRIBARRAYPROC  glEnableVertexAttribArray  ;
-PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray ;
-// Uniforms
-PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation  ;
-PFNGLUNIFORMMATRIX3FVPROC   glUniformMatrix3fv    ;
-PFNGLUNIFORMMATRIX4FVPROC   glUniformMatrix4fv    ;
-PFNGLUNIFORM1FPROC          glUniform1f           ;
-PFNGLUNIFORM1IPROC          glUniform1i           ;
-PFNGLUNIFORM1FVPROC         glUniform1fv          ;
-PFNGLUNIFORM2FPROC			    glUniform2f           ;
-PFNGLUNIFORM3FVPROC         glUniform3fv          ;
-PFNGLUNIFORM3FPROC          glUniform3f           ;
-PFNGLUNIFORM4FVPROC         glUniform4fv          ;
-#if INEX_PLATFORM_LINUX
-gl_context			*           g_gl4_context;
-#elif INEX_PLATFORM_WINDOWS // #if INEX_PLATFORM_LINUX
-#	define gl_context GLFWwindow
-GLFWwindow			*			g_gl4_context;
-#endif // #if INEX_PLATFORM_LINUX
 
-void 	make_context_current ( gl_context * context )
-{
-#if INEX_PLATFORM_LINUX
-#   define GLFWwindow gl_context
-	glXMakeCurrent	( GLX.display, GLX.window, GLX.context );
-#endif // #if INEX_PLATFORM_LINUX
-}
 
-void 	set_window_title ( gl_context * context, pcstr const window_name )
-{
-#if INEX_PLATFORM_LINUX
-	XStoreName		( GLX.display, GLX.window, window_name );
-#endif // #if INEX_PLATFORM_LINUX
-}
-
-bool	initialize_extensions ( )
-{
-	inex::render::initialize	( );
-
-	GLenum const params[ ] 	=
-	{
-		GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
-		GL_MAX_CUBE_MAP_TEXTURE_SIZE,
-		GL_MAX_DRAW_BUFFERS,
-		GL_MAX_FRAGMENT_UNIFORM_COMPONENTS,
-		GL_MAX_TEXTURE_IMAGE_UNITS,
-		GL_MAX_TEXTURE_SIZE,
-		GL_MAX_VARYING_FLOATS,
-		GL_MAX_VERTEX_ATTRIBS,
-		GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS,
-		GL_MAX_VERTEX_UNIFORM_COMPONENTS,
-		GL_MAX_VIEWPORT_DIMS,
-		GL_STEREO
-	};
-
-	pcstr const names[ ] 	=
-	{
-		"GL_MAX_COMBINED_TE XTURE_IMAGE_UNITS",
-		"GL_MAX_CUBE_MAP_TEXTURE_SIZE",
-		"GL_MAX_DRAW_BUFFERS",
-		"GL_MAX_FRAGMENT_UNIFO RM_COMPONENTS",
-		"GL_MAX_TEXTURE_IMAGE_UNITS",
-		"GL_MAX_TEXTURE_SIZE",
-		"GL_MAX_VARYING_FLOATS ",
-		"GL_MAX_VERTEX_ATTRIBS",
-		"GL_MAX_VERTEX_TEXTURE_I MAGE_UNITS",
-		"GL_MAX_VERTEX_UNIFORM_COMPONENTS",
-		"GL_MAX_VIEWPORT_DIMS",
-		"GL_STEREO"
-	};
-
-	LOGGER				("* [render][info]\t: OpenGL context parameters:\n[\n");
-	string256 msg;
-	// integers - only works if the order is 0-10 integer return types
-	for ( s32 i = 0; i < 10; ++i ) {
-		s32 v 			= 0;
-		glGetIntegerv 	( params[ i ], &v );
-		LOGGER 			("\t%s %i", names[ i ], v );
-	}
-
-	inex::logging::put_string("]\n" );
-
-	return				true;
-}
+//inex::render::hw_wrapper_context			*           g_gl4_context;
 
 
 
-gl_context * 	gl_create_window ( u32 const x, u32 const y, pcstr window_name )
-{
-#if INEX_PLATFORM_LINUX
-	LOGGER 				( "- [hw-wrapper][info]\t: requesting '%d' bytes to store context... " );
-	g_gl4_context		= inex::memory::ie_new< gl_context >( );
-	LOGGER 				( "\t\t\t\t... successfully allocated at '%p'", g_gl4_context );
-	GLX.display 		= XOpenDisplay( NULL );
-	ASSERT_D			( GLX.display, "Xlib error: Cannot connect to X server" );
-
-	GLX.root			= DefaultRootWindow( GLX.display );
-	GLX.visual_info		= glXChooseVisual( GLX.display, 0, GLX.attributes );
-	ASSERT_D			( GLX.visual_info, "Xlib error: No appropriate visual found" );
-	LOGGER				( "- [hw-wrapper][info]\t: glx visual '%p' selected", ( pvoid ) GLX.visual_info->visualid );
-
-	GLX.color_map		=
-		XCreateColormap (
-			GLX.display,
-			GLX.root,
-			GLX.visual_info->visual,
-			AllocNone
-		);
-
-	GLX.window_attributes.colormap	= GLX.color_map;
-	GLX.window_attributes.event_mask = ExposureMask | KeyPressMask;
-
- 	GLX.window 			=
-		XCreateWindow (
-			GLX.display,
-			GLX.root,
-			0,
-			0,
-			600,
-			600,
-			0,
-			GLX.visual_info->depth,
-			InputOutput,
-			GLX.visual_info->visual,
-			CWColormap | CWEventMask,
-			&GLX.window_attributes
-		 );
-
-	XSelectInput	( GLX.display, GLX.window, KeyPressMask | KeyReleaseMask );
-
-	XMapWindow		( GLX.display, GLX.window );
-	XStoreName		( GLX.display, GLX.window, window_name );
-
- 	GLX.context		= glXCreateContext( GLX.display, GLX.visual_info, NULL, GL_TRUE );
-    make_context_current    ( g_gl4_context );
-
-#endif // #if INEX_PLATFORM_LINUX
-	VERIFY			( initialize_extensions( ) );
-	return 			g_gl4_context;
-
-}
+//gl_context * 	gl_create_window ( u32 const x, u32 const y, pcstr window_name )
+//{
+//	VERIFY			( initialize_extensions( ) );
+//	return 			g_gl4_context;
+//}
 
 void 	gl_terminate ( )
 {
 #if INEX_PLATFORM_WINDOWS
-	glfwTerminate		();
+	
 #elif INEX_PLATFORM_LINUX // #if INEX_PLATFORM_WINDOWS
 	glXMakeCurrent		( GLX.display, None, NULL );
 	glXDestroyContext	( GLX.display, GLX.context );
@@ -200,10 +37,10 @@ void 	gl_terminate ( )
 #endif // #if INEX_PLATFORM_WINDOWS
 }
 
-void	error_callback ( int error, const char * description )
-{
-   LOGGER	( " [hw_wrapper:gl4][error]: %s\n", description );
-}
+//void	error_callback ( int error, const char * description )
+//{
+//   LOGGER	( " [hw_wrapper:gl4][error]: %s\n", description );
+//}
 
 namespace inex {
 namespace render {
@@ -243,82 +80,82 @@ void hw_wrapper::create_device( )
 
 	create_device(m_hwnd, false);
 }
-#if INEX_PLATFORM_WINDOWS
-void windowSizeCallback(GLFWwindow *, int width, int height) {
-  glViewport(0, 0, width, height);
-    /* update any perspective matrices used here */
-}
+//#if INEX_PLATFORM_WINDOWS
+//void windowSizeCallback(GLFWwindow *, int width, int height) {
+//  glViewport(0, 0, width, height);
+//    /* update any perspective matrices used here */
+//}
+//
+//void controls(GLFWwindow* window, int key, int scancode, int action, int mods)
+//{
+//    if(action == GLFW_PRESS)
+//        if(key == GLFW_KEY_ESCAPE)
+//            glfwSetWindowShouldClose(window, GL_TRUE);
+//}
+//
+//void	error_callback ( int error, const char * description )
+//{
+//   LOGGER	( " [hw_wrapper:gl4][error]: %s\n", description );
+//}
+//#endif // #if INEX_PLATFORM_WINDOWS
 
-void controls(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    if(action == GLFW_PRESS)
-        if(key == GLFW_KEY_ESCAPE)
-            glfwSetWindowShouldClose(window, GL_TRUE);
-}
-
-void	error_callback ( int error, const char * description )
-{
-   LOGGER	( " [hw_wrapper:gl4][error]: %s\n", description );
-}
-#endif // #if INEX_PLATFORM_WINDOWS
-
-gl_context * 	initialize_context ( u32 const x, u32 const y )
-{
-
-#if INEX_PLATFORM_MAC
-	glfwWindowHint	(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint	(GLFW_CONTEXT_VERSION_MINOR, 2);
-	glfwWindowHint	(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint	(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-# elif INEX_PLATFORM_LINUX
-    // glfwWindowHint(GLFW_SAMPLES, 4);
-    // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-	g_gl4_context 		= gl_create_window ( x, y, "In-EX engine" );
-#else
-		glfwSetErrorCallback( error_callback );
-	if( !glfwInit( ) )
-         ASSERT_D( 0, "Failed to initialize GLFW\n");
-		glfwWindowHint		( GLFW_SAMPLES, 4 );
-
-	//GLFWmonitor* mon = glfwGetPrimaryMonitor ();
-	//const GLFWvidmode* vmode = glfwGetVideoMode (mon);
-	g_gl4_context = ( GLFWwindow * )glfwCreateWindow ( x, y, "Extended GLInit", 0, NULL);
-
-    if(g_gl4_context == NULL)
-        ASSERT_S( !"Failed to open GLFW window.\n");
-
-    glfwMakeContextCurrent		( g_gl4_context );
-    glfwSetKeyCallback			( g_gl4_context, ( GLFWkeyfun ) controls);
-	glfwSetWindowSizeCallback	( g_gl4_context, ( GLFWwindowsizefun  ) windowSizeCallback);
-
-	gl_create_window			( x, y, "In-EX engine" );
-
-#endif // #if INEX_PLATFORM_MAC
-
-
-
-    ASSERT_D			( g_gl4_context != nullptr, "Failed to open GLX window.\n");
-    s32 gl_major		= -1;
-    s32 gl_minor		= -1;
-    glGetIntegerv		( GL_MAJOR_VERSION, &gl_major );
-    glGetIntegerv		( GL_MINOR_VERSION, &gl_minor );
-    ASSERT_D			( ( gl_major != -1 ) || ( gl_minor != -1 ), "Failed to execute low-level OpenGL functionality. Problem with -lGL-like libs." );
-	
-    LOGGER	(
-		"* [render][info]\t: %s\n* [render][info]\t: OpenGL version supported %s\n",
-		glGetString( GL_RENDERER ),
-		glGetString( GL_VERSION )
-	);
-
-	//glEnable			( GL_DEPTH_TEST ); // enable depth-testing
-	//glDepthFunc			( GL_LESS );
-
-    return 				g_gl4_context;
-}
+//gl_context * 	initialize_context ( u32 const x, u32 const y )
+//{
+//
+//#if INEX_PLATFORM_MAC
+//	glfwWindowHint	(GLFW_CONTEXT_VERSION_MAJOR, 3);
+//	glfwWindowHint	(GLFW_CONTEXT_VERSION_MINOR, 2);
+//	glfwWindowHint	(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+//	glfwWindowHint	(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+//# elif INEX_PLATFORM_LINUX
+//    // glfwWindowHint(GLFW_SAMPLES, 4);
+//    // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+//    // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+//    // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+//    // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+//
+//	g_gl4_context 		= gl_create_window ( x, y, "In-EX engine" );
+//#else
+//		glfwSetErrorCallback( error_callback );
+//	if( !glfwInit( ) )
+//         ASSERT_D( 0, "Failed to initialize GLFW\n");
+//		glfwWindowHint		( GLFW_SAMPLES, 4 );
+//
+//	//GLFWmonitor* mon = glfwGetPrimaryMonitor ();
+//	//const GLFWvidmode* vmode = glfwGetVideoMode (mon);
+//	g_gl4_context = ( GLFWwindow * )glfwCreateWindow ( x, y, "Extended GLInit", 0, NULL);
+//
+//    if(g_gl4_context == NULL)
+//        ASSERT_S( !"Failed to open GLFW window.\n");
+//
+//    glfwMakeContextCurrent		( g_gl4_context );
+//    glfwSetKeyCallback			( g_gl4_context, ( GLFWkeyfun ) controls);
+//	glfwSetWindowSizeCallback	( g_gl4_context, ( GLFWwindowsizefun  ) windowSizeCallback);
+//
+//	gl_create_window			( x, y, "In-EX engine" );
+//
+//#endif // #if INEX_PLATFORM_MAC
+//
+//
+//
+//    ASSERT_D			( g_gl4_context != nullptr, "Failed to open GLX window.\n");
+//    s32 gl_major		= -1;
+//    s32 gl_minor		= -1;
+//    glGetIntegerv		( GL_MAJOR_VERSION, &gl_major );
+//    glGetIntegerv		( GL_MINOR_VERSION, &gl_minor );
+//    ASSERT_D			( ( gl_major != -1 ) || ( gl_minor != -1 ), "Failed to execute low-level OpenGL functionality. Problem with -lGL-like libs." );
+//	
+//    LOGGER	(
+//		"* [render][info]\t: %s\n* [render][info]\t: OpenGL version supported %s\n",
+//		glGetString( GL_RENDERER ),
+//		glGetString( GL_VERSION )
+//	);
+//
+//	//glEnable			( GL_DEPTH_TEST ); // enable depth-testing
+//	//glDepthFunc			( GL_LESS );
+//
+//    return 				g_gl4_context;
+//}
 
 void hw_wrapper::create_device(HWND hwnd, bool move_window)
 {
@@ -338,8 +175,8 @@ void hw_wrapper::create_device(HWND hwnd, bool move_window)
 	constexpr u32 size_x	= 1024;
 	constexpr u32 size_y	= 620;
 
-	g_gl4_context  			= ( GLFWwindow * ) initialize_context( size_x, size_y );
-	VERIFY 					( g_gl4_context );
+	hw_wrapper_base::create(size_x, size_y, "inexplicable_engine_winapi_renderer", GetModuleHandleW( NULL ), 0);
+	//VERIFY 					( g_gl4_context );
 }
 
 void hw_wrapper::destroy_device()

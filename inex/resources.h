@@ -108,6 +108,38 @@ class object
     resource_base*  something;
 }; // class object
 
+class unmanaged_resource
+{
+public:
+        
+    inline          unmanaged_resource  ( ) :
+                        m_resource  ( 0 )
+                    {
+                    }
+
+    inline          unmanaged_resource  ( pcstr fs_path )
+                    {
+                        m_resource  = fs::r_open( fs_path );
+                    }
+
+    inline          ~unmanaged_resource ( )
+                    {
+
+                    }
+
+    inline  void    load                ( pcstr fs_path )
+                    {
+                        m_resource  = fs::r_open( fs_path );
+                    }
+
+    inline  void    unload              ( )
+                {
+                    fs::r_close     ( m_resource );
+                }
+private:
+    memory::reader *        m_resource;
+}; // class unmanaged_resource
+
 } // namespace resources
 } // namespace inex
 

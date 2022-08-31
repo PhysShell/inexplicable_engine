@@ -6,7 +6,6 @@
 #include <inex/core/core.h>
 #include <inex/render/api.h>
 
-
 #undef NOUSER
 #undef NOMSG
 #undef NOWINSTYLES
@@ -22,8 +21,8 @@
 
 using inex::engine::engine_world;
 
-static pcstr s_window_id					=  "Renderer Window";
-static pcstr s_window_class_id				=  "Renderer Window Class ID";
+static pcstr s_window_id					= INEX_ENGINE_ID " OpenGL Renderer Window";
+static pcstr s_window_class_id				= INEX_ENGINE_ID " OpenGL Renderer Window Class ID";
 
 static WNDCLASSEX s_window_class;
 
@@ -38,22 +37,22 @@ static LRESULT APIENTRY message_processor	( HWND window_handle, UINT message_id,
 			return			( 0 );
 		}
 		case WM_ACTIVATE: {
-			//u16 fActive						= LOWORD(w_param);
-			//BOOL fMinimized					= (BOOL) HIWORD(w_param);
-			//bool bActive					= ((fActive!=WA_INACTIVE) && (!fMinimized)) ? true : false;
+			u16 fActive						= LOWORD(w_param);
+			BOOL fMinimized					= (BOOL) HIWORD(w_param);
+			bool bActive					= ((fActive!=WA_INACTIVE) && (!fMinimized)) ? true : false;
 
-			//if (bActive != s_world->app_is_active())
-			//{
-			//	if (bActive)
-			//	{
-			//		s_world->on_app_activate( );
-			//		while (	ShowCursor( FALSE ) >= 0 );
-			//	}else
-			//	{
-			//		s_world->on_app_deactivate( );
-			//		while (	ShowCursor( TRUE ) < 0 );
-			//	}
-			//}
+			if (bActive != s_world->app_is_active())
+			{
+				if (bActive)
+				{
+					s_world->on_app_activate( );
+					while (	ShowCursor( FALSE ) >= 0 );
+				} else
+				{
+					s_world->on_app_deactivate( );
+					while (	ShowCursor( TRUE ) < 0 );
+				}
+			}
 			//if ( (w_param == WA_ACTIVE) || (w_param == WA_CLICKACTIVE) ) {
 			//	if ( !s_world->editor_world() )
 			//		while (	ShowCursor( FALSE ) >= 0 );
@@ -74,7 +73,7 @@ static LRESULT APIENTRY message_processor	( HWND window_handle, UINT message_id,
 	return					( DefWindowProc( window_handle, message_id, w_param, l_param ) );
 }
 
-static void create_window			( HWND& result )
+static void create_window			( )
 {
 	WNDCLASSEX const temp	=
 	{
@@ -121,7 +120,7 @@ static void create_window			( HWND& result )
 	RECT		window_size = { 0, 0, window_size_x, window_size_y };
 	AdjustWindowRect		(&window_size, window_style, false);
 
-	result					= 
+	HWND result					= 
 		CreateWindow (
 			s_window_class_id,
 			s_window_id,
@@ -158,12 +157,11 @@ void engine_world::create_render	( )
 {
 	s_world					= this;
 
-	//if ( !m_editor ) {
-		//create_window		( m_window_handle );
-		//m_main_window_handle= m_window_handle;
-	//}
+	if ( !m_editor ) {
+		//m_main_window_handle= create_window() ;
+	}
 
-	m_render_world		= render::create_world( *this, m_window_handle );
+	m_render_world			= render::create_world( *this, m_window_handle );
 
 // 	if ( !s_dx10 )
 // 		m_render_world		= render_gl4::create_world( *this, m_window_handle );
@@ -216,19 +214,40 @@ void engine_world::run				( )
 	//m_timer.start			( );
 	m_destruction_started		= false;
 	// engine loop
-	for ( ;; )
+	MSG msg;
+	for ( ; ; )
 	{
-		//LOGGER( "loop reached " );
-		
-		
-		//if (  getchar( ) == 'Q' )
-		//	m_destruction_started	= true;
+		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		{
+			if ( m_destruction_started )
+				return;
 
-		if ( m_destruction_started )
-			return;
+			if (msg.message == WM_QUIT)
+				return;
 
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		
 		tick				( );
+		//m_context->render();
+		//m_context->swapBuffers();
 	}
+		
+	//m_context->destroy();
+	//for ( ;; )
+	//{
+	//	//LOGGER( "loop reached " );
+	//	
+	//	
+	//	//if (  getchar( ) == 'Q' )
+	//	//	m_destruction_started	= true;
+
+	//	if ( m_destruction_started )
+	//		return;
+
+	//	tick				( );
+	//}
 }
 
 void engine_world::initialize_editor	( )

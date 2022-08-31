@@ -8,6 +8,9 @@
 #	include <inex/3rd_patry/include/GL/wglext.h>
 //#	include <inex/3rd_patry/include/GLFW/glfw3.h>
 
+#	include <inex/render/gl4/gl4_extensions.h>
+#	include <inex/render/core/quasi_singleton.h>
+#	define R_ASSERT_WINDOWS( condition, message ) if ( ! ( condition ) ) do { showMessage( message ); ASSERT_S( ( condition ) ); } while ( 0 )
 namespace inex {
 namespace render {
 
@@ -16,12 +19,12 @@ struct hw_wrapper_context
 public:
 	hw_wrapper_context ( )
 	{
-		config.width = 1024;
-		config.height = 720;
-		config.posX = CW_USEDEFAULT;
-		config.posY = 0;
+		config.width	= 1024;
+		config.height	= 720;
+		config.posX		= CW_USEDEFAULT;
+		config.posY		= 0;
 		config.windowed = true;
-		style = WS_CAPTION | WS_SYSMENU | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+		m_style			= WS_CAPTION | WS_SYSMENU | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
 	}
 	
 	~hw_wrapper_context( ) { ; }
@@ -32,150 +35,144 @@ public:
 	}
 	
 	
-	void showMessage(LPCSTR message) { MessageBox(0, message, "Window::create", MB_ICONERROR); }
-	int create(HINSTANCE hInstance, int nCmdShow)
+	void	showMessage(LPCSTR message) const	{ LOGGER( message ); MessageBox(0, message, "inexplicable_engine", MB_ICONERROR); }
+	s32		create ( u32 const x, u32 const y, HINSTANCE hInstance, s32 nCmdShow, pcstr const window_title)
 	{
-		windowClass = MAKEINTATOM(registerClass(hInstance));
-		if (windowClass == 0) {
-			showMessage("registerClass() failed.");
-			return 1;
-		}
+		m_window_class		= MAKEINTATOM( registerClass( hInstance ) );
+		R_ASSERT_WINDOWS	( m_window_class != 0, "registerClass() failed." );
 
 		// create temporary window
 
-		HWND fakeWND = CreateWindow(
-			windowClass, "Fake Window",
-			style,
-			0, 0,						// position x, y
-			1, 1,						// width, height
-			NULL, NULL,					// parent window, menu
-			hInstance, NULL);			// instance, param
+		HWND fakeWND		= CreateWindow ( m_window_class, "", m_style, 0, 0, 1, 1, NULL, NULL, hInstance, NULL );
 
 		HDC fakeDC = GetDC(fakeWND);	// Device Context
 
 		PIXELFORMATDESCRIPTOR fakePFD;
-		ZeroMemory(&fakePFD, sizeof(fakePFD));
-		fakePFD.nSize = sizeof(fakePFD);
-		fakePFD.nVersion = 1;
-		fakePFD.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
-		fakePFD.iPixelType = PFD_TYPE_RGBA;
-		fakePFD.cColorBits = 32;
-		fakePFD.cAlphaBits = 8;
-		fakePFD.cDepthBits = 24;
+		ZeroMemory				( & fakePFD, sizeof( fakePFD ) );
+		fakePFD.nSize			= sizeof( fakePFD );
+		fakePFD.nVersion		= 1;
+		fakePFD.dwFlags			= PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+		fakePFD.iPixelType		= PFD_TYPE_RGBA;
+		fakePFD.cColorBits		= 32;
+		fakePFD.cAlphaBits		= 8;
+		fakePFD.cDepthBits		= 24;
 
-		const int fakePFDID = ChoosePixelFormat(fakeDC, &fakePFD);
-		if (fakePFDID == 0) {
-			showMessage("ChoosePixelFormat() failed.");
-			return 1;
-		}
+		s32 const fakePFDID		= ChoosePixelFormat(fakeDC, &fakePFD);
+		R_ASSERT_WINDOWS		( fakePFDID != 0, "ChoosePixelFormat() failed.");
 
-		if (SetPixelFormat(fakeDC, fakePFDID, &fakePFD) == false) {
-			showMessage("SetPixelFormat() failed.");
-			return 1;
-		}
+		R_ASSERT_WINDOWS		( SetPixelFormat( fakeDC, fakePFDID, & fakePFD ), "SetPixelFormat() failed.");
 
-		HGLRC fakeRC = wglCreateContext(fakeDC);	// Rendering Contex
+		HGLRC fakeRC			= wglCreateContext(fakeDC);	// Rendering Contex
+		R_ASSERT_WINDOWS		( fakeRC != 0, "wglCreateContext() failed.");
 
-		if (fakeRC == 0) {
-			showMessage("wglCreateContext() failed.");
-			return 1;
-		}
+		//context_manager::reference( ).make_current			( m_context );
 
-		if (wglMakeCurrent(fakeDC, fakeRC) == false) {
-			showMessage("wglMakeCurrent() failed.");
-			return 1;
-		}
+		R_ASSERT_WINDOWS		( wglMakeCurrent(fakeDC, fakeRC ), "wglMakeCurrent() failed." );
 
 		// get pointers to functions (or init opengl loader here)
 
 		PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB = nullptr;
-		wglChoosePixelFormatARB = reinterpret_cast<PFNWGLCHOOSEPIXELFORMATARBPROC>(wglGetProcAddress("wglChoosePixelFormatARB"));
-		if (wglChoosePixelFormatARB == nullptr) {
-			showMessage("wglGetProcAddress() failed.");
-			return 1;
-		}
-
+		wglChoosePixelFormatARB = reinterpret_cast< PFNWGLCHOOSEPIXELFORMATARBPROC >( wglGetProcAddress( "wglChoosePixelFormatARB" ) );
+		R_ASSERT_WINDOWS		( wglChoosePixelFormatARB != nullptr, "wglGetProcAddress() failed." );
+		
 		PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = nullptr;
 		wglCreateContextAttribsARB = reinterpret_cast<PFNWGLCREATECONTEXTATTRIBSARBPROC>(wglGetProcAddress("wglCreateContextAttribsARB"));
-		if (wglCreateContextAttribsARB == nullptr) {
-			showMessage("wglGetProcAddress() failed.");
-			return 1;
-		}
+		R_ASSERT_WINDOWS		( wglCreateContextAttribsARB != nullptr, "wglGetProcAddress() failed." );
 
-		if (config.windowed == true) {
+		if ( config.windowed )
+		{
 			adjustSize();
 			center();
 		}
 
 		// create a new window and context
-									
-		WND = CreateWindow(
-			windowClass, "OpenGL Window",	// class name, window name
-			style,							// styles
-			config.posX, config.posY,		// posx, posy. If x is set to CW_USEDEFAULT y is ignored
-			config.width, config.height,	// width, height
-			NULL, NULL,						// parent window, menu
-			hInstance, NULL);				// instance, param
 
-		DC = GetDC(WND);
+		m_hwnd					=
+			CreateWindow (
+			m_window_class,					// class name
+			window_title,					// window name
+			m_style,						// styles
+			config.posX,					// posx. If x is set to CW_USEDEFAULT y is ignored
+			config.posY,					// posy. If x is set to CW_USEDEFAULT y is ignored
+			config.width,					// width
+			config.height,					// height
+			NULL,							// parent window
+			NULL,							// menu
+			hInstance,						// instance
+			NULL							// param
+		);				
 
-		const int pixelAttribs[] = {
-			WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
-			WGL_SUPPORT_OPENGL_ARB, GL_TRUE,
-			WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
-			WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
-			WGL_ACCELERATION_ARB, WGL_FULL_ACCELERATION_ARB,
-			WGL_COLOR_BITS_ARB, 32,
-			WGL_ALPHA_BITS_ARB, 8,
-			WGL_DEPTH_BITS_ARB, 24,
-			WGL_STENCIL_BITS_ARB, 8,
-			WGL_SAMPLE_BUFFERS_ARB, GL_TRUE,
-			WGL_SAMPLES_ARB, 4,
+		m_device_context		= GetDC( m_hwnd );
+
+		const s32 pixelAttribs	[ ] =
+		{
+			WGL_DRAW_TO_WINDOW_ARB,			GL_TRUE,
+			WGL_SUPPORT_OPENGL_ARB,			GL_TRUE,
+			WGL_DOUBLE_BUFFER_ARB,			GL_TRUE,
+			WGL_PIXEL_TYPE_ARB,				WGL_TYPE_RGBA_ARB,
+			WGL_ACCELERATION_ARB,			WGL_FULL_ACCELERATION_ARB,
+			WGL_COLOR_BITS_ARB,				32,
+			WGL_ALPHA_BITS_ARB,				8,
+			WGL_DEPTH_BITS_ARB,				24,
+			WGL_STENCIL_BITS_ARB,			8,
+			WGL_SAMPLE_BUFFERS_ARB,			GL_TRUE,
+			WGL_SAMPLES_ARB,				4,
 			0
 		};
 
-		int pixelFormatID; UINT numFormats;
-		const bool status = wglChoosePixelFormatARB(DC, pixelAttribs, NULL, 1, &pixelFormatID, &numFormats);
-
-		if (status == false || numFormats == 0) {
-			showMessage("wglChoosePixelFormatARB() failed.");
-			return 1;
-		}
+		s32 pixelFormatID;
+		u32 numFormats;
+		bool const status		= wglChoosePixelFormatARB(m_device_context, pixelAttribs, NULL, 1, &pixelFormatID, &numFormats);
+		R_ASSERT_WINDOWS		( status, "wglChoosePixelFormatARB() failed." );
+		R_ASSERT_WINDOWS		( numFormats != 0, "wglChoosePixelFormatARB() failed." );
 
 		PIXELFORMATDESCRIPTOR PFD;
-		DescribePixelFormat(DC, pixelFormatID, sizeof(PFD), &PFD);
-		SetPixelFormat(DC, pixelFormatID, &PFD);
+		DescribePixelFormat		(m_device_context, pixelFormatID, sizeof(PFD), &PFD);
+		SetPixelFormat			(m_device_context, pixelFormatID, &PFD);
 
-		const int major_min = 4, minor_min = 0;
-		const int contextAttribs[] = {
-			WGL_CONTEXT_MAJOR_VERSION_ARB, major_min,
-			WGL_CONTEXT_MINOR_VERSION_ARB, minor_min,
-			WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
-	//		WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_DEBUG_BIT_ARB,
+		const u32 minimum_supported_version			= 3;
+		const u32 minimum_supported_subversion		= 1;
+		const s32 contextAttribs [ ] =
+		{
+			WGL_CONTEXT_MAJOR_VERSION_ARB,	minimum_supported_version,
+			WGL_CONTEXT_MINOR_VERSION_ARB,	minimum_supported_subversion,
+			WGL_CONTEXT_PROFILE_MASK_ARB,	WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+	//		WGL_CONTEXT_FLAGS_ARB,			WGL_CONTEXT_DEBUG_BIT_ARB,
 			0
 		};
 
-		RC = wglCreateContextAttribsARB(DC, 0, contextAttribs);
-		if (RC == NULL) {
-			showMessage("wglCreateContextAttribsARB() failed.");
-			return 1;
+		m_rendering_context		= wglCreateContextAttribsARB(m_device_context, 0, contextAttribs);
+		if ( ! m_rendering_context )
+		{
+			string128 buffer;
+			snprintf				( buffer, 128, "wglCreateContextAttribsARB() failed. check if minimal opengl version is supported by videoboard: '%d.%d'.", minimum_supported_version, minimum_supported_subversion );
+			R_ASSERT_WINDOWS		( 0, buffer );
 		}
 
 		// delete temporary context and window
 
-		wglMakeCurrent(NULL, NULL);
-		wglDeleteContext(fakeRC);
-		ReleaseDC(fakeWND, fakeDC);
-		DestroyWindow(fakeWND);
-		if (!wglMakeCurrent(DC, RC)) {
-			showMessage("wglMakeCurrent() failed.");
-			return 1;
-		}
+		wglMakeCurrent			( NULL, NULL );
+		wglDeleteContext		( fakeRC );
+		ReleaseDC				( fakeWND, fakeDC );
+		DestroyWindow			( fakeWND );
+		R_ASSERT_WINDOWS		( wglMakeCurrent( m_device_context, m_rendering_context ), "wglMakeCurrent() failed." );
 
 		// init opengl loader here (extra safe version)
 
-		SetWindowText(WND, reinterpret_cast<LPCSTR>(glGetString(GL_VERSION)));
-		ShowWindow(WND, nCmdShow);
+		render::initialize		( );
+
+		LOGGER	(
+			"* [render][info]\t: %s\n* [render][info]\t: OpenGL version supported %s\n",
+			glGetString( GL_RENDERER ),
+			glGetString( GL_VERSION )
+		);
+
+		glEnable				( GL_DEPTH_TEST ); // enable depth-testing
+		glDepthFunc				( GL_LESS );
+
+		SetWindowText			( m_hwnd, window_title );
+		ShowWindow				( m_hwnd, ! nCmdShow ? SW_SHOWDEFAULT : nCmdShow );
+
 		
 		return 0;
 	}
@@ -197,7 +194,7 @@ public:
 	void adjustSize()
 	{
 		RECT rect = { 0, 0, config.width, config.height };
-		AdjustWindowRect(&rect, style, false);
+		AdjustWindowRect(&rect, m_style, false);
 		config.width = rect.right - rect.left;
 		config.height = rect.bottom - rect.top;
 	}
@@ -216,18 +213,18 @@ public:
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 	
-	void swapBuffers() { SwapBuffers( DC ); }
+	void swapBuffers() { SwapBuffers( m_device_context ); }
 	void destroy()
 	{
 		wglMakeCurrent(NULL, NULL);
-		if (RC) {
-			wglDeleteContext(RC);
+		if (m_rendering_context) {
+			wglDeleteContext(m_rendering_context);
 		}
-		if (DC) {
-			ReleaseDC(WND, DC);
+		if (m_device_context) {
+			ReleaseDC(m_hwnd, m_device_context);
 		}
-		if (WND) {
-			DestroyWindow(WND);
+		if (m_hwnd) {
+			DestroyWindow(m_hwnd);
 		}
 	}
 	
@@ -247,13 +244,16 @@ public:
 		}
 		return 0;		// message handled
 	}
+
+	HDC		winapi_device		( ) const	{ return m_device_context; }
+	HGLRC	winapi_context		( ) const	{ return m_rendering_context; }
 	
 public:
-	LPTSTR windowClass;	// Window Class
-	HGLRC RC;			// Rendering Context
-	HDC	DC;				// Device Context
-	HWND WND;			// Window
-	DWORD style;
+	LPTSTR	m_window_class;			// Window Class
+	HGLRC	m_rendering_context;	// OpenGL Rendering Context
+	HDC		m_device_context;		// Device Context
+	HWND	m_hwnd;					// Window
+	DWORD	m_style;
 
 	struct Config {
 		int width;
@@ -271,67 +271,48 @@ public:
 	hw_wrapper_base	( );
 
 	// remove inline
-	void create	( u32 const x, u32 const y, pcstr const window_title )
-	{
-		if (window.create(hInstance, nCmdShow) != 0) {
-			PostQuitMessage(1);
-		}
-
-		MSG msg;
-		bool active = true;
-		while (active) {
-			while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-				if (msg.message == WM_QUIT) {
-					active = false;
-				}
-				TranslateMessage(&msg);
-				DispatchMessage(&msg);
-			}
-			window.render();
-			window.swapBuffers();
-		}
-		
-		window.destroy();
-		
-		m_context.create									( x, y );
-		context_manager::reference( ).make_context_current	( m_context );
-		VERIFY												( initialize_extensions( ) );
-	}
+	void create	(u32 const x, u32 const y, pcstr const window_title, HINSTANCE handle_instance, int command_line_show );
 	
 	void destroy ( )
 	{
-		VERIFY					( m_context != 0 )
-		glXMakeCurrent			( display, None, NULL );
-		glXDestroyContext		( display, context );
-		XDestroyWindow			( display, window);
-		XCloseDisplay			( display );
-		inex::memory::ie_delete	( m_context );
+		VERIFY					( m_context != 0 );
+		m_context->destroy		( );
+		//glXDestroyContext		( display, context );
+		//XDestroyWindow			( display, window);
+		//XCloseDisplay			( display );
+		memory::ie_delete		( m_context );
 	}
+
+	HGLRC		render_context		( ) const	{ return m_context->winapi_context( ); }
+	HDC			render_device		( ) const	{ return m_context->winapi_device( ); }
+	hw_wrapper_context *	context	( ) const	{ return m_context; }
 
 protected:
 	hw_wrapper_context *	m_context;	//	pDevice	//	render device
-	pvoid 					m_device;
 	
 private:
-	inline void set_window_title ( pcstr const value ) { VERIFY( value ); XStoreName( display, window, value );
+	inline void set_window_title ( pcstr const value ) { VERIFY( value ); }
 }; // class hw_wrapper_base_gl4
 
 inline hw_wrapper_base::hw_wrapper_base ( )
 {
 	/*memory::zero(&m_dev_pparams, sizeof(m_dev_pparams));*/
+	m_context			= memory::ie_new<hw_wrapper_context>();
+	//m_device			= 0;
 }
 
 class context_manager : public quasi_singleton< context_manager >
 {
 public:
-	inline void make_current 	( hw_wrapper_context * context ) 						{ VERIFY( context ); glXMakeCurrent	( display, window, context ); }
-	inline void create			( u32 const x, u32 const y );
+	inline void make_current 	( hw_wrapper_context * context ) 						{ VERIFY( context ); wglMakeCurrent( context->m_device_context, context->m_rendering_context ); }
+	inline void create			( u32 const x, u32 const y )							{ VERIFY( x > 0 ); VERIFY ( y > 0 ); }
+	inline void destroy			( hw_wrapper_context * context )						{ VERIFY( context ); context->destroy(); }
 	
 }; // class context_manager
 
 } // namespace render 
 } // namespace inex 
 
-void inex::render::make_context_current
-
-#endif // #ifndef HW_WRAPPER_BASE_OGL3_H_INCLUDED
+//void inex::render::make_context_current
+#	undef R_ASSERT_WINDOWS
+#endif // #ifndef HW_WRAPPER_BASE_GL4_WIN_WINAPI_H_INCLUDED

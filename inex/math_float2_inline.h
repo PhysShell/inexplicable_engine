@@ -3,15 +3,8 @@
 //	Author		: Feudor Shelipov
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef MATH_FLOAT2_H_INCLUDED
-#   define MATH_FLOAT2_H_INCLUDED
-
 namespace inex {
 namespace math {
-
-// 3
-//  0       0       0
-//      4       4
 
 //-----------------------------------------------------------------------------------
 // initializations
@@ -21,18 +14,21 @@ float2::float2 ( )
 {
 }
 
-float2::float2 ( type const x_value, type const y_value )
+inline
+float2::float2 ( type const x_value, type const y_value ) :
     x           { x_value },
     y           { y_value }
 {
 }
 
+inline
 float2::float2 ( float2 const& source ) :
     x           { source.x },
     y           { source.y }
 {
 }
 
+inline
 float2::float2 ( float2 && borrowed )
 {
     ASSERT_S    ( 0 );
@@ -42,77 +38,78 @@ float2::float2 ( float2 && borrowed )
 // accessors
 //-----------------------------------------------------------------------------------
 inline
-type const&     float2::operator [ ] ( u8 index ) const
+float2::type const&     float2::operator [ ] ( u8 index ) const
 {
     // also handles signed (conversion form s to u)
-    ASSERT_S            ( ( index < 2 ) );
-    return              *( & x + index );
+    ASSERT_S    ( ( index < 2 ) );
+    return      *( & x + index );
 }
 
 inline
-type&           float2::operator [ ] ( u8 index )
+float2::type&           float2::operator [ ] ( u8 index )
 {
-    ASSERT_S            ( ( index < 2 ) );
-    return              *( & x + index );
+    ASSERT_S    ( ( index < 2 ) );
+    return       *( & x + index );
 }
 
 //-----------------------------------------------------------------------------------
 // operations
 //-----------------------------------------------------------------------------------
+inline
 float2          float2::operator - ( )
 {
-    x                   = -x;
-    y                   = -y;
-    return              *this;
+    x            = -x;
+    y            = -y;
+    return       *this;
 }
 
 inline
 float2          float2::operator += ( float2 const& other )
 {
-    x                   += other.x;
-    y                   += other.y;
-    return              * this;
+    x           += other.x;
+    y           += other.y;
+    return       * this;
 }
 
 inline
 float2          float2::operator += ( float2::type const value )
 {
-    x                   += value;
-    y                   += value;
-    return              * this;
+    x           += value;
+    y           += value;
+    return      * this;
 }
 
 inline
 float2          float2::operator -= ( float2 const& other )
 {
-    x                   -= other.x;
-    y                   -= other.y;
-    return              * this;
+    x           -= other.x;
+    y           -= other.y;
+    return      * this;
 }
 
 inline
 float2          float2::operator -= ( float2::type const value )
 {
-    x                   -= value;
-    y                   -= value;
-    return              * this;
+    x           -= value;
+    y           -= value;
+    return      * this;
 }
 
 inline
 float2          float2::operator *= ( float2::type const value )
 {
-    x                   *= value;
-    y                   *= value;
-    return              * this;
+    x           *= value;
+    y           *= value;
+    return      * this;
 }
 
-inline
-float2          float2::operator *= ( float2 const& other )
-{
-    x                   *= other.x;
-    y                   *= other.y;
-    return              * this;
-}
+//inline
+//float2          float2::operator *= ( float2 const& other )
+//{
+//    x                   *= other.x;
+//    y                   *= other.y;
+//    return              * this;
+//}
 
 inline
 float2          float2::operator /= ( float2::type const value )
@@ -130,7 +127,7 @@ float2          float2::operator ^= ( float2 const& other )
 }
 
 inline
-float2          float2::set ( float2::value const x_value, float2::value const y_value )
+float2          float2::set ( float2::type const x_value, float2::type const y_value )
 {
     x                   = x_value;
     y                   = y_value;
@@ -144,13 +141,13 @@ float2::type    float2::dot_product ( float2 const& other ) const
 }
 
 inline
-float2::type    float2::square_magintude ( ) const
+float2::type    float2::square_magnitude ( ) const
 {
     return              ( sqr( x ) + sqr( y ) );
 }
 
 inline
-float2::type    float2::magintude ( ) const
+float2::type    float2::magnitude ( ) const
 {
     return              sqrtf( square_magnitude( ) );
 }
@@ -182,30 +179,31 @@ float2::type            float2::distance_to (float2 const& other ) const
 //-----------------------------------------------------------------------------------
 // outer operations
 //-----------------------------------------------------------------------------------
-float2          operator + ( float2 const& right, float2 const& right )
+inline
+float2          operator + ( float2 const& left, float2 const& right )
 {
-    return              float2( right.x + left.x, right.y + left.y );
+    return              float2( left.x + right.x, left.y + right.y );
 }
 
-float2          operator + ( float2 const& right, float2::type const& left )
+inline
+float2          operator + ( float2 const& left, float2::type const& right )
 {
-    return              float2( right.x + left, right.x + left );
+    return              float2( left.x + right, left.x + right );
 }
 
-float2          operator - ( float2 const& right, float2 const& left )
+inline
+float2          operator - ( float2 const& left, float2 const& right )
 {
-    return              float2( right.x - left.x, right.y - left.y );
+    return              float2( left.x - right.x, left.y - right.y );
 }
 
-float2          operator - ( float2 const& right, float2::type const& left )
+inline
+float2          operator - ( float2 const& left, float2::type const& right )
 {
-bool ddf = not true;
-    return              float2( right.x - left, right.y - left );
+    return              float2( left.x - right, left.y - right );
 }
 
 
 
 } // namespace math
 } // namespace inex
-
-#endif // #ifndef MATH_FLOAT2_H_INCLUDED

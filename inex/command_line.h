@@ -4,7 +4,7 @@
 namespace inex {
 namespace command_line {
 	
-class XRAY_CORE_API key
+class INEX_CORE_API key
 {
 public:
 								key						(pcstr full_name, pcstr short_name, pcstr category, pcstr description, pcstr argument_description = "");
@@ -12,7 +12,7 @@ public:
 								operator bool			() { return is_set(); }
 
 	bool						is_set					();
-	bool						is_set_as_string		(buffer_string * out_value);
+	bool						is_set_as_string		(pcstr * out_value);
 	bool						is_set_as_number		(float * out_value);
 
 	template <class int_type>
@@ -40,7 +40,7 @@ private:
 	friend void					protected_key_construct (pvoid);
 
 private:
-	fixed_string512				m_string_value;
+	string512					m_string_value;
 	float						m_number_value;
 	pcstr						m_full_name;
 	pcstr						m_short_name;

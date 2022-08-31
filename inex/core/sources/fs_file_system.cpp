@@ -5,7 +5,19 @@
 #include "fs_ini_file.h"
 
 #ifdef INEX_STD_FILESYSTEM_SUPPORTED
-#   include <experimental/filesystem>
+#	ifdef INEX_PLATFORM_WINDOWS
+#		if _MSVC_LANG < 201703L
+#			include <experimental/filesystem>
+#		else
+#			include <filesystem>
+#		endif // #if _MSVC_LANG < 201703L
+#	elif INEX_PLATFORM_LINUX
+#		if __cplusplus < 201703L
+#			include <experimental/filesystem>
+#		else
+#			include <filesystem>
+#		endif // #if _MSVC_LANG < 201703L
+#	endif // #ifdef INEX_PLATFORM_WINDOWS
 #endif  // #ifdef INEX_STD_FILESYSTEM_SUPPORTED
 
 #include <set>
@@ -71,8 +83,9 @@ void	initialize	( pcstr dir )
         if ( is_directory( ( * it ).path( ).c_str( ) ) || is_system_catalog( ( *it ).path( ).c_str( ) ) )
             continue;
 
-        files.insert    ( memory_mapped_file( ( * it ).path( ).c_str( ) ) );
-        Msg( "- [fs][info]\t: loading \"%s\"", ( * it ).path( ).c_str( ) );
+        //files.insert    ( memory_mapped_file( ( * it ).path( ).c_str( ) ) );
+		files.emplace					( ( * it ).path( ).c_str( ) );
+        Msg								( "- [fs][info]\t: loading \"%s\"", ( * it ).path( ).c_str( ) );
         
     }
 

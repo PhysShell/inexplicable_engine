@@ -10,7 +10,7 @@
 
 namespace inex {
 namespace render {
-	bool	initialize	( );
+	void	initialize	( );
 }// namespace render
 }// namespace inex
 

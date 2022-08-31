@@ -22,33 +22,33 @@
     <ProjectGuid>{A8301C69-0545-436E-BC7D-C8891B39918E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>render_ogl3</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>render_gl4</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -154,23 +154,44 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\base\base_classes.h" />
+    <ClInclude Include="..\..\common\renderer.h" />
+    <ClInclude Include="..\..\common\render_model.h" />
+    <ClInclude Include="..\..\common\scene.h" />
+    <ClInclude Include="..\..\common\scene_view.h" />
+    <ClInclude Include="..\..\common\sources\camera.h" />
     <ClInclude Include="..\..\common\sources\hw_wrapper.h" />
     <ClInclude Include="..\..\common\sources\hw_wrapper_base_gl4.h" />
+    <ClInclude Include="..\..\common\sources\hw_wrapper_base_gl4_win_winapi.h" />
     <ClInclude Include="..\..\common\sources\hw_wrapper_inline.h" />
     <ClInclude Include="..\..\common\sources\res_shader.h" />
+    <ClInclude Include="..\..\common\sources\system_render.h" />
+    <ClInclude Include="..\..\common\stage.h" />
+    <ClInclude Include="..\..\common\stage_gbuffer.h" />
+    <ClInclude Include="..\..\core\model.h" />
+    <ClInclude Include="..\..\core\quasi_singleton.h" />
+    <ClInclude Include="..\..\core\vertex_colored.h" />
+    <ClInclude Include="..\..\facade\render_stage_type.h" />
     <ClInclude Include="..\gl4_extensions.h" />
     <ClInclude Include="..\gl4_external.h" />
     <ClInclude Include="..\renderer.h" />
     <ClInclude Include="model_manager.h" />
+    <ClInclude Include="renderer_context.h" />
     <ClInclude Include="scene_context.h" />
-    <ClInclude Include="scene_render.h" />
     <ClInclude Include="stage.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="visual.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\common\sources\hw_wrapper_base_gl4_win_winapi.cpp" />
     <ClCompile Include="..\..\common\sources\hw_wrapper_gl4.cpp" />
+    <ClCompile Include="..\..\common\sources\renderer.cpp" />
+    <ClCompile Include="..\..\common\sources\render_model.cpp" />
+    <ClCompile Include="..\..\common\sources\scene.cpp" />
+    <ClCompile Include="..\..\common\sources\scene_view.cpp" />
+    <ClCompile Include="..\..\common\sources\stage_gbuffer.cpp" />
+    <ClCompile Include="..\..\facade\sources\render_stage_type.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -188,8 +209,8 @@
     <ClCompile Include="gl4_entry_point.cpp" />
     <ClCompile Include="gl4_external.cpp" />
     <ClCompile Include="model_manager.cpp" />
+    <ClCompile Include="renderer_context.cpp" />
     <ClCompile Include="render_ogl3.cpp" />
-    <ClCompile Include="scene_context.cpp" />
     <ClCompile Include="stage.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -197,7 +218,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="system_render.cpp" />
     <ClCompile Include="visual.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -51,6 +51,15 @@ template < typename type_allocated >
 inline
 void	ie_delete ( type_allocated* const& obj );
 
+inline
+INEX_CORE_API
+void	copy ( pvoid const destination, size_t const destination_size, pcvoid const source, size_t const size )
+{
+	INEX_UNREFERENCED_PARAMETERS( destination_size );
+	ASSERT_S					( destination_size >= size );
+	memcpy						( destination, source, size );
+}
+
 } // namespace memory
 } // namespace inex
 

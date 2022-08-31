@@ -9,12 +9,7 @@
 
 namespace inex {
 	namespace resources {
-		struct managed_resource_ptr
-		{
-			math::float4x4	m_vertices;
-			pcstr			vs;
-			pcstr			fs;
-		}; // class manager_resource_ptr
+		struct managed_resource_ptr;
 	} // namespace resources
 
 namespace memory		{ using chunk_reader	= reader ; }

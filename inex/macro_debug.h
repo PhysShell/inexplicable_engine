@@ -1,7 +1,7 @@
 #ifndef MACRO_DEBUG_H_INCLUDED
 #	define MACRO_DEBUG_H_INCLUDED
 
-#	include <inex/debug/macros.h>
+//#	include <inex/debug/macros.h>
 
 #	if defined( _MSC_VER )
 #   	define FUNCNAME __FUNCSIG__
@@ -35,6 +35,8 @@
 #		define ASSERT_D( a, ... ) 	if ( !( a ) )do { FATAL( #a, __VA_ARGS__ ); } while ( 0 )
 #		define ASSERT_S( a )		if ( !( a ) )do { FATAL( #a, nullptr ); } while ( 0 )
 #		define VERIFY( x )       	ASSERT_S( x )
+		// todo: error to string mapping here
+#		define OPENGL_VERIFY( x )	x; do { u32 result = glGetError(); ASSERT_D( ( result == GL_NO_ERROR ), "opengl assertion completed with error code: %d" ); } while ( 0 )
 #	else
 #		define FATAL( expr, ... )
 #		define ASSERT_D( a, ... )
@@ -51,7 +53,7 @@
 #	endif // #ifdef __cplusplus
 
 #	if  defined ( UNREACHABLE_CODE_ENABLED )
-#		error please do not define  UNREACHABLE_CODE_ENABLED
+//#		error please do not define  UNREACHABLE_CODE_ENABLED
 #	endif // #if defined  (UNREACHABLE_CODE_ENABLED)
 
 #	ifdef UNREACHABLE_CODE_ENABLED

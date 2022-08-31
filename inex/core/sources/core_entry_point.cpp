@@ -93,7 +93,7 @@ void inex::core::initialize			(
 
 	logging::initialize		( );
 
-	debug::initialize		( s_engine );
+	debug::initialize		( nullptr /*s_engine*/ );
 	debug::postinitialize	( );
 
 	build::initialize		( s_engine );

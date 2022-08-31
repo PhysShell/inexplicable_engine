@@ -19,13 +19,17 @@
 //
 #	include <inex/render/gl4/sources/model_manager.h>
 
+#	include <inex/render/common/scene_view.h>
+
 namespace inex {
 namespace render {
 
+struct viewport_type;
 struct render_mesh;
 
 namespace gl4 {
 
+// to be renamed to world. (world_win.h)
 class platform :
 //	public inex::render::base_world,
 	public inex::render::platform,
@@ -37,49 +41,51 @@ public:
 
 	typedef inex::render::ui::vertex const *	ui_vertices_type;
 
+	inex::render::renderer *					m_renderer;
+
 public:
 							platform					( inex::render::engine::wrapper& wrapper, HWND window_handle );
 	virtual					~platform					( );
 	virtual	void			clear_resources			( )	{ }
 	// platform methods
 public:
-	virtual	void			set_view_matrix			( float4x4 const& view_matrix ) {	LOGGER( "FIX ME %s", __FUNCTION__ );	}
-	virtual	void			set_projection_matrix	( float4x4 const& projection )	{	LOGGER( "FIX ME %s", __FUNCTION__ );	}
-	virtual	float4x4 const&	get_view_matrix			( ) const						{	LOGGER( "FIX ME %s", __FUNCTION__ );return float4x4( ); 	}
-	virtual	float4x4 const&	get_projection_matrix	( ) const						{	LOGGER( "FIX ME %s", __FUNCTION__ );return float4x4( ); 	}
+	virtual	void			set_view_matrix			( float4x4 const& view_matrix ) {	NOT_IMPLEMENTED( );	}
+	virtual	void			set_projection_matrix	( float4x4 const& projection )	{	NOT_IMPLEMENTED( );	}
+	virtual	float4x4 const&	get_view_matrix			( ) const						{	NOT_IMPLEMENTED( );return float4x4( ); 	}
+	virtual	float4x4 const&	get_projection_matrix	( ) const						{	NOT_IMPLEMENTED( );return float4x4( ); 	}
 	//virtual	math::rectangle<math::int2_pod> get_viewport( ) const;
-	virtual	void			set_world_matrix		( float4x4 const& w )			{	LOGGER( "FIX ME %s", __FUNCTION__ );	}
+	virtual	void			set_world_matrix		( float4x4 const& w )			{	NOT_IMPLEMENTED( );	}
 	float4x4 const&	get_world_matrix		( ) const;
 	//virtual	void			draw_debug_lines		( colored_vertices_type const& vertices, colored_indices_type const& indices );
 	//virtual	void			draw_debug_triangles	( colored_vertices_type const& vertices, colored_indices_type const& indices );
-	virtual	void			clear_zbuffer			( float z_value )				{	 LOGGER( "FIX ME %s", __FUNCTION__ );	}
+	virtual	void			clear_zbuffer			( float z_value )				{	 NOT_IMPLEMENTED( );	}
 	virtual	void			draw_frame				( );
 	virtual	u32				frame_id				( );
-	virtual	void 			test_cooperative_level	( )								{	 LOGGER( "FIX ME %s", __FUNCTION__ );	}
+	virtual	void 			test_cooperative_level	( )								{	 NOT_IMPLEMENTED( );	}
 	//virtual	void			add_static				( resources::managed_resource_ptr const& collision, resources::managed_resource_ptr const& geometry, resources::managed_resource_ptr const& visuals );
 	
-	virtual	void			add_visual					( u32 id, inex::render::visual_ptr v, float4x4 const& transform, bool selected /*= false*/, bool system_object /*= false*/, bool beditor )	{  LOGGER( "FIX ME %s", __FUNCTION__ );	}
-	virtual	void			update_visual				( u32 id, float4x4 const& transform, bool selected )	{ LOGGER( "FIX ME %s", __FUNCTION__ );}
-	virtual	void			remove_visual				( u32 id )	{  LOGGER( "FIX ME %s", __FUNCTION__ ); }
+	virtual	void			add_visual					( u32 id, inex::render::visual_ptr v, float4x4 const& transform, bool selected /*= false*/, bool system_object /*= false*/, bool beditor )	{  NOT_IMPLEMENTED( );	}
+	virtual	void			update_visual				( u32 id, float4x4 const& transform, bool selected )	{ NOT_IMPLEMENTED( );}
+	virtual	void			remove_visual				( u32 id )	{  NOT_IMPLEMENTED( ); }
 	//virtual	void			update_visual_vertex_buffer	( inex::render::visual_ptr v, inex::vectora<inex::render::buffer_fragment> const& fragments );
 	//virtual	void			update_visual_index_buffer	( inex::render::visual_ptr v, inex::vectora<inex::render::buffer_fragment> const& fragments );
 	//virtual	void			change_visual_shader		( inex::render::visual_ptr v, char const* shader, char const* texture );
 	//virtual	void			add_light					( u32 id, light_props const& props, bool beditor );
 	//virtual	void			update_light				( u32 id, light_props const& props, bool beditor );
-	virtual	void			remove_light				( u32 id, bool beditor )	 {  LOGGER( "FIX ME %s", __FUNCTION__ ); }
+	virtual	void			remove_light				( u32 id, bool beditor )	 {  NOT_IMPLEMENTED( ); }
 	virtual	void			render_visuals				( );
 
-	virtual	void			terrain_add_cell			( visual_ptr v, bool beditor )	{  LOGGER( "FIX ME %s", __FUNCTION__ ); }
-	virtual	void			terrain_remove_cell			( visual_ptr v, bool beditor )	{  LOGGER( "FIX ME %s", __FUNCTION__ ); }
+	virtual	void			terrain_add_cell			( visual_ptr v, bool beditor )	{  NOT_IMPLEMENTED( ); }
+	virtual	void			terrain_remove_cell			( visual_ptr v, bool beditor )	{  NOT_IMPLEMENTED( ); }
 
 	//virtual	void 			terrain_update_cell_buffer	( visual_ptr v, inex::vectora<buffer_fragment_NEW> const& fragments, float4x4 const& transform);
 	//virtual	void 			terrain_add_cell_texture	( visual_ptr v, texture_string const & texture, u32 user_tex_id);
-	virtual	void 			terrain_remove_cell_texture	( visual_ptr v, u32 user_tex_id)	 {  LOGGER( "FIX ME %s", __FUNCTION__ ); }
+	virtual	void 			terrain_remove_cell_texture	( visual_ptr v, u32 user_tex_id)	 {  NOT_IMPLEMENTED( ); }
 	//virtual	void			terrain_exchange_texture	( texture_string const & old_texture, texture_string const & new_texture);
 
 
 	virtual	void			draw_static				( ) { }
-	virtual	void			draw_ui_vertices		( ui_vertices_type vertices, u32 const & count, int prim_type, int point_type )	 {  LOGGER( "FIX ME %s", __FUNCTION__ ); }
+	virtual	void			draw_ui_vertices		( ui_vertices_type vertices, u32 const & count, int prim_type, int point_type )	 {  NOT_IMPLEMENTED( ); }
 
 	// Editor specific functions
 	//virtual	void			draw_editor_lines		( colored_vertices_type const& vertices, colored_indices_type const& indices );
@@ -87,12 +93,19 @@ public:
 	//virtual	void			draw_screen_lines		( math::float2 const* points, u32 count, color clr, float width, u32 pattern );
 	//virtual	void			draw_3D_screen_lines	( math::float3 const* points, u32 count, color clr, float width, u32 pattern, bool use_depth );
 
-	virtual	void			setup_grid_render_mode	( u32 grid_density )	 {  LOGGER( "FIX ME %s", __FUNCTION__ ); }
-	virtual	void			remove_grid_render_mode	( )	{  LOGGER( "FIX ME %s", __FUNCTION__ ); }
-	virtual	void			setup_rotation_control_modes ( int mode, int ref_value )	{  LOGGER( "FIX ME %s", __FUNCTION__ ); }
+	virtual	void			setup_grid_render_mode	( u32 grid_density )	 {  NOT_IMPLEMENTED( ); }
+	virtual	void			remove_grid_render_mode	( )	{  NOT_IMPLEMENTED( ); }
+	virtual	void			setup_rotation_control_modes ( int mode, int ref_value )	{  NOT_IMPLEMENTED( ); }
 
-	virtual	void			set_editor_render_mode ( bool draw_editor, bool draw_game )	 {  LOGGER( "FIX ME %s", __FUNCTION__ ); }
+	virtual	void			set_editor_render_mode ( bool draw_editor, bool draw_game )	 {  NOT_IMPLEMENTED( ); }
 
+	void					draw_scene						(
+																scene_ptr const& scene,
+																scene_view_ptr const& view,
+																render_output_window_ptr const& output_window,
+																viewport_type const& viewport,
+																std::function< void ( bool ) > const& on_draw_scene
+															);
 	// renderer methods
 public:
 	virtual	pcstr			type					( );

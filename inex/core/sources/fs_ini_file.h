@@ -2,7 +2,6 @@
 #	define FS_INI_FILE_H_INCLUDED
 
 #   include <vector>
-#   include <inex/math_float3.h>
 
 // I should be using shared memory, buf for now, I don't
 namespace inex {
@@ -34,16 +33,16 @@ class INEX_CORE_API ini_file
 
 public:
         // we should also pass reader* to Load....
-	void		load		( pcstr name );
-    section*	r_section   ( pcstr sect ) const;
-	s32			r_s32		( pcstr sect, pcstr key ) const;
-    u32         r_u32       ( pcstr sect, pcstr key ) const;
-	float		r_float		( pcstr sect, pcstr key ) const;
-    math::float3 r_float3   ( pcstr sect, pcstr key ) const;
-	math::float4 r_float4   ( pcstr sect, pcstr key ) const;
-	math::float4x4 r_float4x4( pcstr sect, pcstr key) const;
-	pcstr		r_string   	( pcstr sect, pcstr key ) const;
-				~ini_file	( );
+	void			load		( pcstr name );
+    section*		r_section   ( pcstr sect ) const;
+	s32				r_s32		( pcstr sect, pcstr key ) const;
+    u32				r_u32       ( pcstr sect, pcstr key ) const;
+	float			r_float		( pcstr sect, pcstr key ) const;
+    math::float3	r_float3	( pcstr sect, pcstr key ) const;
+	math::float4	r_float4	( pcstr sect, pcstr key ) const;
+	math::float4x4	r_float4x4	( pcstr sect, pcstr key ) const;
+	pcstr			r_string   	( pcstr sect, pcstr key ) const;
+					~ini_file	( );
 }; // class ini_file
 
 } // names ini

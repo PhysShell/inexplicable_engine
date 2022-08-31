@@ -54,9 +54,6 @@
     <ClCompile Include="core_entry_point.cpp" />
     <ClCompile Include="build_extensions.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="ie_debug_linux.cpp">
-      <Filter>debug</Filter>
-    </ClCompile>
     <ClCompile Include="memory_chunk_reader_win.cpp">
       <Filter>memory\win</Filter>
     </ClCompile>
@@ -68,6 +65,13 @@
     </ClCompile>
     <ClCompile Include="ie_debug_win.cpp">
       <Filter>debug</Filter>
+    </ClCompile>
+    <ClCompile Include="log_callback.cpp" />
+    <ClCompile Include="ie_debug_linux.cpp">
+      <Filter>debug</Filter>
+    </ClCompile>
+    <ClCompile Include="math_float4x4.cpp">
+      <Filter>math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -251,6 +255,24 @@
     <ClInclude Include="memory_chunk_reader.h">
       <Filter>filesystem</Filter>
     </ClInclude>
+    <ClInclude Include="log_callback.h" />
+    <ClInclude Include="..\..\construction.h" />
+    <ClInclude Include="..\..\c_array_functions.h">
+      <Filter>macros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\math_color.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\math_constants.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\static_cast_checked.h" />
+    <ClInclude Include="..\..\threading_policies.h">
+      <Filter>threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\render\core\resource_intrusive_base.h">
+      <Filter>resources\resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="core.cbp">
@@ -315,6 +337,9 @@
     </Filter>
     <Filter Include="memory\linux">
       <UniqueIdentifier>{5d28bd88-c56d-47af-9e71-3600f9391ebf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources\resource">
+      <UniqueIdentifier>{2f73d3f6-83a1-4afd-8040-aa8489ecd745}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

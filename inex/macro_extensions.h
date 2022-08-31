@@ -9,4 +9,8 @@
 #   include "macro_log.h"
 #   include "macro_unreferenced_parameter.h"
 
+#	define INEX_ENGINE_VERSION		0
+#	define INEX_ENGINE_SUBVERSION	1
+#	define INEX_ENGINE_ID			"Inexplicable Engie v" QUOTE( INEX_ENGINE_VERSION ) "." QUOTE( INEX_ENGINE_SUBVERSION )
+
 #endif // #ifndef MACRO_EXTENSIONS_H_INCLUDED

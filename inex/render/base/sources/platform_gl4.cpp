@@ -6,6 +6,10 @@
 
 #include <inex/core/sources/fs_ini_file.h>
 
+#include <inex/render/common/sources/system_render.h>
+
+#include <inex/render/common/scene.h>
+
 #include <inex/macro_log.h>
 
 #include <time.h>
@@ -139,9 +143,9 @@ platform::platform					( inex::render::engine::wrapper& wrapper, HWND const wind
 
 	m_scene						= new scene_render( true );
 
-	glEnable					( GL_CULL_FACE ); 	// cull face
-	glCullFace					( GL_BACK );		// cull back fa ce
-	glFrontFace					( GL_CW );			// GL_CCW for coun ter clock-wise
+	//glEnable					( GL_CULL_FACE ); 	// cull face
+	//glCullFace					( GL_BACK );		// cull back fa ce
+	//glFrontFace					( GL_CW );			// GL_CCW for coun ter clock-wise
 
 	// LOGGER( "initialize debugging..." );
     // core::debug::initialize		( nullptr );
@@ -212,6 +216,30 @@ platform::~platform					( )
 	//	m_line->Release();
 }
 
+
+void platform::draw_scene						(
+		scene_ptr const& scene,
+		scene_view_ptr const& view,
+		render_output_window_ptr const& output_window,
+		viewport_type const& viewport,
+		std::function< void ( bool ) > const& on_draw_scene
+	)
+{
+	float4x4 identity;
+	identity.identity			( );
+	system_renderer::reference().set_w( identity );
+	
+	if (m_renderer)
+	{
+		//m_renderer->render	( scene, view, output_window, viewport, on_draw_scene, false );
+	}
+	else
+	{
+		static_cast< inex::render::scene * >( scene )->flush( on_draw_scene );
+		//static_cast_checked<inex::render::scene*>(scene->flush	( on_draw_scene );
+	}
+}
+
 //extern D3DXMATRIXA16				view_d3d;
 //extern D3DXMATRIXA16				projection_d3d;
 
@@ -221,50 +249,51 @@ platform::~platform					( )
 //
 //}
 
-void	update_fps_counter ( gl_context * window )
-{
-#if INEX_PLATFORM_LINUX
-	struct 	timeval tp;
-	gettimeofday						( &tp, NULL );
-
-			long int ms 				= tp.tv_sec * 1000 + tp.tv_usec / 1000;
-	static	float	previous_seconds	= ms;
-	static	s32		frame_count;
-
-	gettimeofday						( &tp, NULL );
-					ms 					= tp.tv_sec * 1000 + tp.tv_usec / 1000;
-			float	current_seconds		= ms;
-			float	elapsed_seconds		= current_seconds - previous_seconds;
-#elif INEX_PLATFORM_WINDOWS // #if INEX_PLATFORM_LINUX
-	static	float	previous_seconds	= glfwGetTime ();
-	static	s32		frame_count;
-			float	current_seconds		= glfwGetTime ();
-			float	elapsed_seconds		= current_seconds - previous_seconds;
-
-#endif // #if INEX_PLATFORM_LINUX
-	if ( elapsed_seconds > 0.25f )
-	{
-		previous_seconds				= current_seconds;
-		float		fps					= ( float )frame_count / elapsed_seconds;
-		string128	tmp;
-		sprintf							(tmp, "opengl @ fps: %.2f", fps);
-#if INEX_PLATFORM_WINDOWS
-		glfwSetWindowTitle				( window, tmp );
-
-#elif INEX_PLATFORM_LINUX // #if INEX_PLATFORM_WINDOWS
-		set_window_title				( window, tmp );
-		frame_count						= 0;
-#endif // #if INEX_PLATFORM_WINDOWS
-	}
-
-	++									frame_count;
-}
+//void	update_fps_counter ( gl_context * window )
+//{
+//#if INEX_PLATFORM_LINUX
+//	struct 	timeval tp;
+//	gettimeofday						( &tp, NULL );
+//
+//			long int ms 				= tp.tv_sec * 1000 + tp.tv_usec / 1000;
+//	static	float	previous_seconds	= ms;
+//	static	s32		frame_count;
+//
+//	gettimeofday						( &tp, NULL );
+//					ms 					= tp.tv_sec * 1000 + tp.tv_usec / 1000;
+//			float	current_seconds		= ms;
+//			float	elapsed_seconds		= current_seconds - previous_seconds;
+//#elif INEX_PLATFORM_WINDOWS // #if INEX_PLATFORM_LINUX
+//	//static	float	previous_seconds	= glfwGetTime ();
+//	//static	s32		frame_count;
+//	//		float	current_seconds		= glfwGetTime ();
+//	//		float	elapsed_seconds		= current_seconds - previous_seconds;
+//
+//#endif // #if INEX_PLATFORM_LINUX
+//	//if ( elapsed_seconds > 0.25f )
+//	//{
+//	//	previous_seconds				= current_seconds;
+//	//	float		fps					= ( float )frame_count / elapsed_seconds;
+//	//	string128	tmp;
+//	//	sprintf							(tmp, "opengl @ fps: %.2f", fps);
+//#if INEX_PLATFORM_WINDOWS
+//		//glfwSetWindowTitle				( window, tmp );
+//
+//#elif INEX_PLATFORM_LINUX // #if INEX_PLATFORM_WINDOWS
+//		set_window_title				( window, tmp );
+//		frame_count						= 0;
+//#endif // #if INEX_PLATFORM_WINDOWS
+//	//}
+//
+//	//++									frame_count;
+//}
 
 
 void platform::draw_frame			( )
 {
 	bool cam_moved 	= 0;
-
+	//m_hw.context( )->render		( );
+	//m_hw.context( )->swapBuffers( );
 #if INEX_PLATFORM_LINUX
 	XNextEvent					( GLX.display, &GLX.x_event );
 
@@ -402,81 +431,81 @@ void platform::draw_frame			( )
 	render_visuals	( );
 
 	//glDrawArrays ( GL_TRIANGLES, 0, 3);
-	glfwPollEvents              ( );
-    glfwSwapBuffers             ( g_gl4_context );
+	//glfwPollEvents              ( );
+ //   glfwSwapBuffers             ( g_gl4_context );
 
-	if ( glfwWindowShouldClose ( g_gl4_context ) )
-		exit					( 0 );
+	//if ( glfwWindowShouldClose ( g_gl4_context ) )
+	//	exit					( 0 );
 
-	if (GLFW_PRESS == glfwGetKey ( g_gl4_context, GLFW_KEY_ESCAPE)) {
-		glfwSetWindowShouldClose (g_gl4_context, 1);
-	}
+	//if (GLFW_PRESS == glfwGetKey ( g_gl4_context, GLFW_KEY_ESCAPE)) {
+	//	glfwSetWindowShouldClose (g_gl4_context, 1);
+	//}
 
 	//float elapsed_seconds		= glfwGetTime( );
 		// control keys
 
-	if (glfwGetKey (g_gl4_context, GLFW_KEY_A)) {
-		cam_pos[0] -= cam_speed ;
-		cam_moved = true;
-		//LOGGER( "go left : %f\n", cam_pos[ 0 ] );
-	}
+	//if (glfwGetKey (g_gl4_context, GLFW_KEY_A)) {
+	//	cam_pos[0] -= cam_speed ;
+	//	cam_moved = true;
+	//	//LOGGER( "go left : %f\n", cam_pos[ 0 ] );
+	//}
 
-	if (glfwGetKey (g_gl4_context, GLFW_KEY_D)) {
-		cam_pos[0] += cam_speed ;
-		cam_moved = true;
-		//LOGGER( "go rigth : %f\n", cam_pos[ 0 ] );
-	}
+	//if (glfwGetKey (g_gl4_context, GLFW_KEY_D)) {
+	//	cam_pos[0] += cam_speed ;
+	//	cam_moved = true;
+	//	//LOGGER( "go rigth : %f\n", cam_pos[ 0 ] );
+	//}
 
-	if (glfwGetKey (g_gl4_context, GLFW_KEY_PAGE_UP)) {
+	//if (glfwGetKey (g_gl4_context, GLFW_KEY_PAGE_UP)) {
 
-		cam_pos[1] += cam_speed ;
-		cam_moved = true; 		//LOGGER( "go up: %f\n", cam_pos[ 1 ] );
-	}
+	//	cam_pos[1] += cam_speed ;
+	//	cam_moved = true; 		//LOGGER( "go up: %f\n", cam_pos[ 1 ] );
+	//}
 
-	if (glfwGetKey (g_gl4_context, GLFW_KEY_PAGE_DOWN)) {
+	//if (glfwGetKey (g_gl4_context, GLFW_KEY_PAGE_DOWN)) {
 
-		cam_pos[1] -= cam_speed ;
-		cam_moved = true; 		//LOGGER( "go down: %f\n", cam_pos[ 1 ] );
-	}
+	//	cam_pos[1] -= cam_speed ;
+	//	cam_moved = true; 		//LOGGER( "go down: %f\n", cam_pos[ 1 ] );
+	//}
 
-	if (glfwGetKey (g_gl4_context, GLFW_KEY_W)) {
+	//if (glfwGetKey (g_gl4_context, GLFW_KEY_W)) {
 
-		cam_pos[2] -= cam_speed ;
-		cam_moved = true; 		//LOGGER( "go forward: %f\n", cam_pos[ 2 ] );
-	}
+	//	cam_pos[2] -= cam_speed ;
+	//	cam_moved = true; 		//LOGGER( "go forward: %f\n", cam_pos[ 2 ] );
+	//}
 
-	if (glfwGetKey (g_gl4_context, GLFW_KEY_S)) {
+	//if (glfwGetKey (g_gl4_context, GLFW_KEY_S)) {
 
-		cam_pos[2] += cam_speed ;
-		cam_moved = true; 		//LOGGER( "go back: %f\n", cam_pos[ 2 ] );
-	}
+	//	cam_pos[2] += cam_speed ;
+	//	cam_moved = true; 		//LOGGER( "go back: %f\n", cam_pos[ 2 ] );
+	//}
 
-	if (glfwGetKey (g_gl4_context, GLFW_KEY_LEFT)) {
+	//if (glfwGetKey (g_gl4_context, GLFW_KEY_LEFT)) {
 
-		cam_yaw += cam_yaw_speed ;
-		cam_moved = true; 		//LOGGER( "rotated right: %f\n", cam_yaw );
-	}
+	//	cam_yaw += cam_yaw_speed ;
+	//	cam_moved = true; 		//LOGGER( "rotated right: %f\n", cam_yaw );
+	//}
 
-	if (glfwGetKey (g_gl4_context, GLFW_KEY_RIGHT)) {
+	//if (glfwGetKey (g_gl4_context, GLFW_KEY_RIGHT)) {
 
-		cam_yaw -= cam_yaw_speed ;
-		cam_moved = true; 		//LOGGER( "rotated right: %f\n", cam_yaw );
-	}
+	//	cam_yaw -= cam_yaw_speed ;
+	//	cam_moved = true; 		//LOGGER( "rotated right: %f\n", cam_yaw );
+	//}
 
 	// update view matrix
-	if (cam_moved)
-	{
-		logging::set_output_destination( logging::logging_to_enum::terminal );
-		LOGGER( "recalculating..." );
-		math::float4x4 T		= math::translate4x4( math::identity4x4 ( ), float3 (-cam_pos[0], -cam_pos[1], -cam_pos[2])); // cam translation
-		math::float4x4 R		= math::rotate_yaw	( math::identity4x4 ( ), -cam_yaw ); //
-		math::float4x4 view_mat = R * T;
+	//if (cam_moved)
+	//{
+	//	logging::set_output_destination( logging::logging_to_enum::terminal );
+	//	LOGGER( "recalculating..." );
+	//	math::float4x4 T		= math::translate4x4( math::identity4x4 ( ), float3 (-cam_pos[0], -cam_pos[1], -cam_pos[2])); // cam translation
+	//	math::float4x4 R		= math::rotate_yaw	( math::identity4x4 ( ), -cam_yaw ); //
+	//	math::float4x4 view_mat = R * T;
 
-		//T.print( ); R.print( ); view_mat.print( );
-		glUniformMatrix4fv (view_mat_location, 1, GL_FALSE, view_mat.elements);
-		//cam_moved				= false;
-		logging::set_output_destination( logging::logging_to_enum::file );
-	}
+	//	//T.print( ); R.print( ); view_mat.print( );
+	//	glUniformMatrix4fv (view_mat_location, 1, GL_FALSE, view_mat.elements);
+	//	//cam_moved				= false;
+	//	logging::set_output_destination( logging::logging_to_enum::file );
+	//}
 
 	m_model_manager.get_visuals( ).at( 0 )->m_program.unbind( );
 

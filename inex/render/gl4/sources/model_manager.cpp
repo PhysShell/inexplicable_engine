@@ -25,14 +25,16 @@ void	model_manager::load_vertex_buffers ( resources::managed_resource_ptr const&
 	
 	render_mesh* mesh		= memory::ie_new< render_mesh >( );
 
+	VERIFY(!"Need to replace geometry with new render_model (commened lines)");
+
 	glGenBuffers			( 1 , &mesh->vertex_buffer_id );
 	glBindBuffer			( GL_ARRAY_BUFFER, mesh->vertex_buffer_id );
-	glBufferData			( GL_ARRAY_BUFFER, sizeof ( geometry.m_vertices.elements ), geometry.m_vertices.elements, GL_STATIC_DRAW );
+	//glBufferData			( GL_ARRAY_BUFFER, sizeof ( geometry.m_vertices.elements ), geometry.m_vertices.elements, GL_STATIC_DRAW );
 	glBindBuffer			( GL_ARRAY_BUFFER, 0 );
 
-	LOGGER					( "* [Loading VB] %d verts, %d KiB", 
-							sizeof( geometry.m_vertices.elements ) / sizeof ( float ), 
-							sizeof ( geometry.m_vertices.elements ) / 1024 );
+	//LOGGER					( "* [Loading VB] %d verts, %d KiB", 
+	//						sizeof( geometry.m_vertices.elements ) / sizeof ( float ), 
+	//						sizeof ( geometry.m_vertices.elements ) / 1024 );
 
 	glGenVertexArrays		( 1, &mesh->index_buffer_id );
 	glBindVertexArray		( mesh->index_buffer_id );
@@ -50,8 +52,10 @@ void	model_manager::load_shaders ( resources::managed_resource_ptr const& geomet
 	LOGGER						( "\tloading shaders.. " );
 	render_visual* temp			=	memory::ie_new< simple_visual >( );
 	
-	temp->m_vshader.create			( render_ogl::enum_shader_type_vertex, geometry.vs );
-	temp->m_fshader.create			( render_ogl::enum_shader_type_fragment, geometry.fs );
+	VERIFY(!"Need to replace geometry with new render_model (commened lines)");
+
+	//temp->m_vshader.create			( render_ogl::enum_shader_type_vertex, geometry.vs );
+	//temp->m_fshader.create			( render_ogl::enum_shader_type_fragment, geometry.fs );
 
 	temp->m_program.create			( );
 	temp->m_program.attach			( temp->m_vshader, temp->m_fshader );
