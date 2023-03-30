@@ -9,7 +9,7 @@
 namespace inex {
 namespace math {
 
-class float2
+class INEX_CORE_API float2
 {
 public:
     typedef float   type;
@@ -38,7 +38,7 @@ public:
     float2          operator -      ( );
 
     float2&         operator =      ( float2 const& other )         {   x = other.x; y = other.y; return * this;    }
-    float2&         operator +      ( );
+    float2&         operator +      ( )                             {   NOT_IMPLEMENTED( ); }
 
     float2          operator +=     ( float2 const& other );
     float2          operator +=     ( type const value );

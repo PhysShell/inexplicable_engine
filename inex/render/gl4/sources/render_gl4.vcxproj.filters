@@ -11,9 +11,6 @@
     <ClCompile Include="stage.cpp">
       <Filter>scene_render\stages</Filter>
     </ClCompile>
-    <ClCompile Include="scene_context.cpp">
-      <Filter>scene_render</Filter>
-    </ClCompile>
     <ClCompile Include="gl4_external.cpp">
       <Filter>misc</Filter>
     </ClCompile>
@@ -28,6 +25,31 @@
     </ClCompile>
     <ClCompile Include="model_manager.cpp">
       <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\sources\renderer.cpp">
+      <Filter>world\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\facade\sources\render_stage_type.cpp">
+      <Filter>include\facade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\sources\scene.cpp">
+      <Filter>resources\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\sources\render_model.cpp">
+      <Filter>resources\model\render_models\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\sources\stage_gbuffer.cpp">
+      <Filter>world\renderer\stages\g_stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\sources\hw_wrapper_base_gl4_win_winapi.cpp">
+      <Filter>render_common\win</Filter>
+    </ClCompile>
+    <ClCompile Include="system_render.cpp" />
+    <ClCompile Include="..\..\common\sources\scene_view.cpp">
+      <Filter>resources\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer_context.cpp">
+      <Filter>world\renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,9 +72,6 @@
     <ClInclude Include="scene_context.h">
       <Filter>scene_render\stages</Filter>
     </ClInclude>
-    <ClInclude Include="scene_render.h">
-      <Filter>scene_render</Filter>
-    </ClInclude>
     <ClInclude Include="..\renderer.h">
       <Filter>include\gl4</Filter>
     </ClInclude>
@@ -70,6 +89,47 @@
     </ClInclude>
     <ClInclude Include="model_manager.h">
       <Filter>objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\core\quasi_singleton.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\renderer.h">
+      <Filter>world\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\facade\render_stage_type.h">
+      <Filter>include\facade</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\base\base_classes.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\stage.h">
+      <Filter>world\renderer\stages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\scene.h">
+      <Filter>resources\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\core\vertex_colored.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\render_model.h">
+      <Filter>resources\model\render_models\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\stage_gbuffer.h">
+      <Filter>world\renderer\stages\g_stage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\core\model.h">
+      <Filter>include\facade</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\sources\hw_wrapper_base_gl4_win_winapi.h">
+      <Filter>render_common\win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\sources\system_render.h" />
+    <ClInclude Include="..\..\common\scene_view.h">
+      <Filter>resources\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\sources\camera.h" />
+    <ClInclude Include="renderer_context.h">
+      <Filter>world\renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -109,5 +169,44 @@
     <Filter Include="resources">
       <UniqueIdentifier>{78ce5553-b480-4dc0-b450-33788fb07c70}</UniqueIdentifier>
     </Filter>
+    <Filter Include="world">
+      <UniqueIdentifier>{d964ad95-90d2-4f54-b42e-0c14f95dacaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="world\renderer">
+      <UniqueIdentifier>{b560c033-a126-45cd-b7f7-b540deec1aa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="world\renderer\stages">
+      <UniqueIdentifier>{53dd90aa-994f-4e76-9ff7-57841ad8cbb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\facade">
+      <UniqueIdentifier>{6b543620-eb8b-462e-82aa-65db6de67593}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="world\renderer\stages\g_stage">
+      <UniqueIdentifier>{1cecd3a9-18ff-426e-b0fc-301f14a57eb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources\scene">
+      <UniqueIdentifier>{d03c7db2-58a5-49e0-9ae6-dcb53e79e103}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources\model">
+      <UniqueIdentifier>{6dcf5ede-d8a6-4232-a89b-42d67dd3d169}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources\model\render_models">
+      <UniqueIdentifier>{49d4e3f5-915a-4a07-b4fd-f94f438f0fd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources\model\render_models\base">
+      <UniqueIdentifier>{1f5d6a24-ce15-4fd3-a6f5-7bea572ef655}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources\model\render_models\base\cook">
+      <UniqueIdentifier>{c489c079-963b-4ed0-a864-b73de9a5e04d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\resources">
+      <UniqueIdentifier>{41c7c9ce-6003-488f-a51e-3800e8032190}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render_common\win">
+      <UniqueIdentifier>{59813bf9-8112-4606-8781-06f4f38f6d7f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

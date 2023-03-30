@@ -9,7 +9,6 @@ TEMPLATE_SPECIALIZATION
  
 T&	_ie_vector::operator[ ] ( int i )
 {
-    std::cout			<< "& ";
 	return 				std::vector< T >::at( i );
 }
 
@@ -17,7 +16,6 @@ TEMPLATE_SPECIALIZATION
 inline
 T const&	_ie_vector::operator[ ] ( int i ) const
 {
-    std::cout			<< "const&";
 	return 				std::vector< T >::at( i );
 }
 

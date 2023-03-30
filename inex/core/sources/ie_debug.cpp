@@ -2,7 +2,8 @@
 #include "ie_debug.h"
 #include "ie_memory.h"
 #include <inex/core/engine.h>
-#incldue <inex/threading_functions.h>
+#include <inex/threading_functions.h>
+#include <inex/core/sources/log_callback.h>
 #include <stdlib.h>
 
 #if INEX_PLATFORM_LINUX
@@ -21,21 +22,9 @@
 
 // static Window * s_window;
 // static Display * s_display                       =       NULL;
-static inex::core::engine * s_core_engine	 =	 NULL;
-// debug log callback.h
-namespace inex {
-namespace debug {
-typedef		std::function< void (	pcstr	initiator, 
-									bool	is_error_verbosity, 
-									bool	log_only_user_string, 
-									pcstr	message )	>		log_callback;
-									
-INEX_CORE_API	log_callback	get_log_callback		( );
-INEX_CORE_API	log_callback	set_log_callback		( log_callback const & callback );
-INEX_CORE_API	void			disable_log_callback	( );
-INEX_CORE_API	void			enable_log_callback		( );		
-} // namespace debug
-} // namespace inex
+static inex::core::debug::engine *      s_core_engine	            =	 NULL;
+static inex::debug::log_callback		s_log_callback              = NULL;
+static inex::threading::atomic32_value_type s_log_disable_counter   = 0;
 
 inex::debug::log_callback	inex::debug::get_log_callback	( )
 {
@@ -51,12 +40,12 @@ inex::debug::log_callback	inex::debug::set_log_callback	( log_callback const & c
 
 void	inex::debug::disable_log_callback	( )
 {
-	interlocked_increment					(s_log_disable_counter);
+	inex::threading::interlocked_increment					( &s_log_disable_counter );
 }
 
 void	inex::debug::enable_log_callback	( )
 {
-	interlocked_decrement					(s_log_disable_counter);
+    inex::threading::interlocked_decrement					( &s_log_disable_counter );
 }
 
 namespace inex {
@@ -94,7 +83,7 @@ namespace debug {
 	// }
 //}
 
-void    initialize ( core::engine * engine  )
+void    initialize ( inex::core::debug::engine * engine  )
 {
     // this actually needs to be in window_wrapper, not here
 //     pstr display_name   = NULL;

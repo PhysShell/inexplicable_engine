@@ -29,11 +29,55 @@
 #	endif // #if INEX_PLATFORM_WINDOWS
 
 
-
-
-bool	inex::render::initialize	( )
+void	initialize_context_parameters ( )
 {
-    LOGGER( "init extensions\n" );
+
+	GLenum const params[ ] 	=
+	{
+		GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
+		GL_MAX_CUBE_MAP_TEXTURE_SIZE,
+		GL_MAX_DRAW_BUFFERS,
+		GL_MAX_FRAGMENT_UNIFORM_COMPONENTS,
+		GL_MAX_TEXTURE_IMAGE_UNITS,
+		GL_MAX_TEXTURE_SIZE,
+		GL_MAX_VARYING_FLOATS,
+		GL_MAX_VERTEX_ATTRIBS,
+		GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS,
+		GL_MAX_VERTEX_UNIFORM_COMPONENTS,
+		GL_MAX_VIEWPORT_DIMS,
+		GL_STEREO
+	};
+
+	pcstr const names[ ] 	=
+	{
+		"GL_MAX_COMBINED_TE XTURE_IMAGE_UNITS",
+		"GL_MAX_CUBE_MAP_TEXTURE_SIZE",
+		"GL_MAX_DRAW_BUFFERS",
+		"GL_MAX_FRAGMENT_UNIFO RM_COMPONENTS",
+		"GL_MAX_TEXTURE_IMAGE_UNITS",
+		"GL_MAX_TEXTURE_SIZE",
+		"GL_MAX_VARYING_FLOATS ",
+		"GL_MAX_VERTEX_ATTRIBS",
+		"GL_MAX_VERTEX_TEXTURE_I MAGE_UNITS",
+		"GL_MAX_VERTEX_UNIFORM_COMPONENTS",
+		"GL_MAX_VIEWPORT_DIMS",
+		"GL_STEREO"
+	};
+
+	LOGGER				("* [render][info]\t: OpenGL context parameters:\n[\n");
+	string256 msg;
+	// integers - only works if the order is 0-10 integer return types
+	for ( s32 i = 0; i < 10; ++i ) {
+		s32 v 			= 0;
+		glGetIntegerv 	( params[ i ], &v );
+		LOGGER 			("\t%s %i", names[ i ], v );
+	}
+
+	inex::logging::put_string("]\n" );
+}
+
+void	inex::render::initialize	( )
+{
     // Texture
 
 #if !INEX_PLATFORM_LINUX
@@ -90,7 +134,8 @@ bool	inex::render::initialize	( )
     OPENGL_GET_PROC( PFNGLUNIFORM4FVPROC,           glUniform4fv );
 	//OPENGL_CHECK_FOR_ERRORS();
     #undef											CAST
-	return											true;
+
+    initialize_context_parameters                   ( );
 }
 
 #ifndef _WIN32

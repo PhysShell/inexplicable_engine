@@ -17,7 +17,7 @@
 #		include <inex/3rd_patry/include/GL/gl.h>
 #		include <inex/3rd_patry/include/GL/glext.h>
 #	   	include <inex/3rd_patry/include/GL/wglext.h>
-#		include <inex/3rd_patry/include/GLFW/glfw3.h>
+//#		include <inex/3rd_patry/include/GLFW/glfw3.h>
 #	endif // #if INEX_PLATFORM_WINDOWS
 
 #	if INEX_PLATFORM_LINUX
@@ -39,10 +39,10 @@ struct gl_context
 
 extern gl_context		*		g_gl4_context;
 #	elif INEX_PLATFORM_WINDOWS // #	if INEX_PLATFORM_LINUX
-struct GLFWwindow;
-struct gl_context;
+//struct GLFWwindow;
+//struct gl_context;
 //typedef  gl_context GLFWwindow;
-extern GLFWwindow		*		g_gl4_context;
+//extern GLFWwindow		*		g_gl4_context;
 #	endif  // #	if INEX_PLATFORM_LINUX
 #	define GLX 					( * g_gl4_context )
 

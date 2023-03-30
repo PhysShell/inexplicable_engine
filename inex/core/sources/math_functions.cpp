@@ -21,8 +21,11 @@ void    multiple_sse ( float * const left, float * const right )
     );
 	# elif defined ( _MSC_VER ) && ! defined INEX_PLATFORM_WINDOWS_64 // #if defined ( __GNUC__ )
 	// memory must be aligned by 128
-	INEX_FORCE_ALIGNMENT( 16 ) float l				= * left;
-	INEX_FORCE_ALIGNMENT( 16 ) float r				= * right;
+	INEX_FORCE_ALIGNMENT( 16 )
+	float l[ 4 ];
+	* l =  * left;
+	INEX_FORCE_ALIGNMENT( 16 )
+	float r				= * right;
 
 __asm  {
 		
@@ -31,7 +34,7 @@ __asm  {
 		mulps			xmm0 , xmm1
 		movups			DWORD PTR [ l ] , xmm0
 }
-		* left			= l;
+		* left			= l[ 0 ];
 	# else // #if defined ( __GNUC__ )
 	#		pragma todo( "sse intrinsics for x64 msvc" )
 	# endif // #if defined ( __GNUC__ )

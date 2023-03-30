@@ -4,16 +4,16 @@
 #	include <functional>
 #	include <utility>
 #	include <type_traits>
+#	include <excpt.h>
 #   if INEX_PLATFORM_LINUX
 #       include <sys/time.h>
 #   endif // #if INEX_PLATFORM_LINUX
 
 namespace inex {
-
 namespace core {
-	struct engine;
-
 namespace debug {
+
+struct engine;
 
 namespace detail {
 template <
@@ -71,7 +71,7 @@ float   benchmark ( function function_to_benchmark, parameters_pack && ... param
 // todo: dd debug/release #ifdef's
 #	define BENCHMARK( x, ... ) do { float b = inex::debug::benchmark( x, __VA_ARGS__ ); LOGGER ( "[benchmark][%s]\t\t: %f usec", #x , b ); } while ( 0 )
 
-void 			initialize 				( core::engine * engine );
+void 			initialize 				( debug::engine * engine );
 void 			postinitialize			( );
 void 			finalize 				( );
 
@@ -94,29 +94,15 @@ void 			dump_call_stack_trace 	( );
 } // namespace debug
 } // namespace core
 } // namespace inex
-typedef void protected_function_type				( pvoid );
+
 namespace inex {
 namespace debug {
-	
-// move impl to cpp
 
-	
+typedef void protected_function_type		( pvoid );
+INEX_CORE_API
+void		protected_call					( protected_function_type* function_to_call, pvoid argument );
+
 } // namespace debug
 } // namespace inex
-
-// .cpp
-void	inex::debug::protected_call ( protected_function_type * function_to_call, pvoid argument )
-{
-	// set thread stack guarantee
-#	if INEX_PLATFORM_WINDOWS
-	__try {
-		( *function_to_call	)	( argument );
-	}
-			   // it's implemented in game_pc
-	__except ( unhandled_exception_filter ( GetExceptionCode( ), GetExceptionInformation( ) ) ) {
-		(void)0;
-	}
-#	endif // #if INEX_PLATFORM_WINDOWS
-}
 
 #endif // #ifndef INEX_DEBUG_H_INCLUDED

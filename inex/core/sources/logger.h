@@ -1,11 +1,23 @@
 #ifndef LOG_H_INCLUDED
 #	define LOG_H_INCLUDED
-
+#	include <inex/macro_debug.h>
+#	include <inex/core/sources/log_callback.h>
 
 namespace inex {
 namespace logging {
 namespace detail {
-enum verbosity_enum {
+
+}
+
+enum class logging_to_enum
+{
+	file			= 0,
+	terminal		= 1,
+	std_error_out	= 2,
+	suspend_logging
+};
+
+enum class verbosity {
 	invalid		=	 0,	//	do not use it !!
 	silent		=	 1,	//	1 << 0,
 	error		=	 2,	//	1 << 1,
@@ -15,14 +27,6 @@ enum verbosity_enum {
 	trace		=	 6,	//	1 << 5,
 	unset		=	 1 << 31,
 }; // enum verbosity
-
-enum class logging_to_enum
-{
-	file			= 0,
-	terminal		= 1,
-	std_error_out	= 2,
-	suspend_logging
-};
 
 	void	preinitialize	( );
 	void	initialize 		( bool no_log = false );

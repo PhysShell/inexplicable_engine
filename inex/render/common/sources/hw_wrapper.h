@@ -16,8 +16,8 @@
 //	hw_wrapper defines uniform interface that has
 //	platform-specific implementation.
 
-struct gl_context;
-void 	set_window_title ( gl_context * context, pcstr window_name );
+//struct gl_context;
+//void 	set_window_title ( gl_context * context, pcstr window_name );
 
 namespace inex {
 namespace render {
@@ -38,9 +38,10 @@ struct	render_options
 	bool		fp16_blend;
 };
 
+// represents device. only creates, but not renders
 class hw_wrapper :
-	public hw_wrapper_base//,
-	//public quasi_singleton<hw_wrapper>
+	public hw_wrapper_base,
+	public quasi_singleton<hw_wrapper>
 {
 public:
 	hw_wrapper( inex::render::engine::wrapper& wrapper, HWND hwnd);
@@ -53,7 +54,8 @@ public:
 	void	destroy_device();	//	DestroyDevice
 	void	reset();
 
-	pvoid	device() const	{ return m_device; }
+	pvoid	device() const	{ return hw_wrapper_base::render_device( ); }
+	hw_wrapper_context *	context() const	{ return hw_wrapper_base::context( ); }
 
 	//	Return current back-buffer width and height.
 	//	Desired with and height in global options can be different!
@@ -70,6 +72,12 @@ public:
 
 public:
 	render_options	o;
+	enum class device_state
+	{
+		ds_ok = 0,
+		ds_lost,
+		ds_need_reset
+	};
 
 private:
 	void		select_resolution(u32 &width, u32 &height, bool windowed) const;	//	selectResolution

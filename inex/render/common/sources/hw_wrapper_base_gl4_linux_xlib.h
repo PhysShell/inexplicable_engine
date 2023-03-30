@@ -109,7 +109,7 @@ protected:
 	//HINSTANCE 			m_hd3d;		//	hD3D
 	//IDirect3D9* 			m_d3d;		//	pD3D	//	D3D
 	hw_wrapper_context *	m_context;	//	pDevice	//	render device
-	pvoid 					m_device;
+	//pvoid 					m_device;
 
 	//ID3DRenderTargetView*	m_base_rt;	//	pBaseRT
 	//ID3DDepthStencilView*	m_base_zb;	//	pBaseZB

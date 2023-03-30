@@ -78,12 +78,13 @@ template < typename T > std::once_flag			singleton < T >::m_once;
 
 } // namespace inex
 
-template < typename Type, int max_count >
+template < typename Type, u32 max_count >
 class fixed_array
 {
 public:
 					fixed_array		( )
 	{
+						//m_data[ max_count ] = -1; 
 	}
 
 	Type&			operator [ ]	( int i )
@@ -106,13 +107,17 @@ public:
 		return &m_data[ 0 ];
 	}
 
+	u32				size			( ) const { return max_count; }
+
 private:
-	Type	m_data	[ max_count ];
+	Type	m_data	[ max_count + 1 ];
 }; // class fixed_array
 
 template < typename Type, int max_count >
 class fixed_vector : public fixed_array< Type, max_count >
 {
+public:
+	typedef Type * iterator;
 public:
 			fixed_vector	( ) :
 				m_count		( 0u ),
@@ -127,8 +132,29 @@ public:
 		increment_counters		( );
 	}
 
+	Type &	begin			( )
+	{
+		return					fixed_array::operator[ ]( 0 );
+	}
+
+	Type const &begin			( ) const
+	{
+		return					fixed_array::operator[ ]( 0 );
+	}
+
+	Type const &end			( ) const
+	{
+		return					fixed_array::operator[ ]( max_count );
+	}
+
+	Type &	end				( )
+	{
+		return					fixed_array::operator[ ]( max_count );
+	}
+
 
 private:
+	// todo: use intrusive pointer instead
 	void 	increment_counters	( )
 	{
 		++m_count;
@@ -142,10 +168,17 @@ private:
 	}
 	
 private:
-	unsigned 		m_count;
-	unsigned 		m_available;
-	unsigned 		m_max_count;
+	u32 		m_count;
+	u32			m_available;
+	u32			m_max_count;
 }; // class fixed_vector
+
+template < typename T >
+constexpr
+std::underlying_type_t< T >	to_underlying ( T value ) noexcept
+{
+    return				static_cast< std::underlying_type_t< T > >( value );
+}
 
 #include "utils_inline.h"
 

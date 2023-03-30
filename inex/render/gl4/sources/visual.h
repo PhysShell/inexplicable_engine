@@ -5,7 +5,7 @@
 #	include <inex/render/base/world.h>
 #	include <inex/render/base/visual.h>
 //#	include <inex/render/core/shaders.h>
-#	include <inex/3rd_patry/include/GLFW/glfw3.h>
+//#	include <inex/3rd_patry/include/GLFW/glfw3.h>
 //#	include <inex/render/common/sources/res_shader.h>
 //#	include <inex/render/base/common_types.h>
 //#	include <inex/ogf.h>
@@ -108,11 +108,7 @@ namespace collision {
 
 namespace render {
 
-struct vertex_colored
-{
-	math::float3	position;
-	u32				color;
-};
+struct vertex_colored;
 
 enum enum_flag_visual
 {
