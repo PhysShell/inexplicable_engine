@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<analyzerinfo checksum="3702881899">
-        <error id="preprocessorErrorDirective" severity="error" msg="#error do not use this file in non-Windows platforms" verbose="#error do not use this file in non-Windows platforms">
-            <location file="Z:\inex_engine\projects\engine\inex\game\pc\sources\game_pc_application_win.cpp" line="75"/>
-        </error>
-</analyzerinfo>
