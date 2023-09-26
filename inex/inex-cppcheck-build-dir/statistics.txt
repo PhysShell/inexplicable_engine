@@ -1,7 +1,0 @@
-[08.11.2020]
-1604822460379
-cppcheck-error:2
-cppcheck-warning:4
-cppcheck-style:70
-cppcheck-performance:0
-cppcheck-portability:0

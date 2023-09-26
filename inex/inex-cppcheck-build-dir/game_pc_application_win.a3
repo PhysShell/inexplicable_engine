@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<analyzerinfo checksum="2167534309">
-        <error id="preprocessorErrorDirective" severity="error" msg="#error please specify your architecture macros" verbose="#error please specify your architecture macros">
-            <location file="Z:\inex_engine\projects\engine\inex\macro_platform.h" line="79"/>
-        </error>
-</analyzerinfo>
