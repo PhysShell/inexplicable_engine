@@ -49,6 +49,8 @@ PFNGLUNIFORM3FVPROC         glUniform3fv          ;
 PFNGLUNIFORM3FPROC          glUniform3f           ;
 PFNGLUNIFORM4FVPROC         glUniform4fv          ;
 
+PFNGLDRAWARRAYSEXTPROC		glDrawArraysExt		;
+
 void	inex::render::hw_wrapper_base::create (  u32 const x, u32 const y, pcstr const window_title, HINSTANCE handle_instance, int command_line_show )
 {
 	if (m_context->create(x, y, handle_instance, command_line_show, window_title) != 0) {

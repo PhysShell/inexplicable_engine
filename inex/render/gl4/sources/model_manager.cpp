@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "model_manager.h"
+#include <inex/render/common/render_model.h>
 
 namespace inex		{
 namespace render	{
@@ -25,7 +26,7 @@ void	model_manager::load_vertex_buffers ( resources::managed_resource_ptr const&
 	
 	render_mesh* mesh		= memory::ie_new< render_mesh >( );
 
-	VERIFY(!"Need to replace geometry with new render_model (commened lines)");
+	//VERIFY(!"Need to replace geometry with new render_model (commened lines)");
 
 	glGenBuffers			( 1 , &mesh->vertex_buffer_id );
 	glBindBuffer			( GL_ARRAY_BUFFER, mesh->vertex_buffer_id );
@@ -49,20 +50,22 @@ void	model_manager::load_vertex_buffers ( resources::managed_resource_ptr const&
 
 void	model_manager::load_shaders ( resources::managed_resource_ptr const& geometry )
 {
-	LOGGER						( "\tloading shaders.. " );
-	render_visual* temp			=	memory::ie_new< simple_visual >( );
+	LOGGER						( " - [shader] loading shaders for geometry.. " );
+	render_visual* temp			=	memory::ie_new< triangle_primitive_visual >( );
 	
-	VERIFY(!"Need to replace geometry with new render_model (commened lines)");
+	//VERIFY(!"Need to replace geometry with new render_model (commened lines)");
 
 	//temp->m_vshader.create			( render_ogl::enum_shader_type_vertex, geometry.vs );
 	//temp->m_fshader.create			( render_ogl::enum_shader_type_fragment, geometry.fs );
 
-	temp->m_program.create			( );
-	temp->m_program.attach			( temp->m_vshader, temp->m_fshader );
-	temp->m_program.link			( );
+	//temp->m_program.create			( );
+	//temp->m_program.attach			( temp->m_vshader, temp->m_fshader );
+	//temp->m_program.link			( );
 
-	temp->m_vshader.destroy			( );
-	temp->m_fshader.destroy			( );
+	//temp->m_vshader.destroy			( );
+	//temp->m_fshader.destroy			( );
+
+	temp->set_shader				(geometry.vs, geometry.fs);
 
 	auto it							= m_vertex_buffers.rbegin( );
 	temp->mesh( )->vertex_buffer_id	= ( *it )->vertex_buffer_id;

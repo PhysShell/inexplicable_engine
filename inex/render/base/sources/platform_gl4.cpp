@@ -44,11 +44,6 @@ using math::float3;
 using inex::render_ogl::shader;
 using inex::render_ogl::shader_program;
 
-
-// just testing
-math::float4x4 vertices; // = points;
-math::float4x4 vertices_2;
-
 render::triangle_primitive_visual triangle;
 
 void    initialize_shaders ( )
@@ -95,24 +90,32 @@ int	  view_mat_location;
 
 void	initialize_model_manager ( model_manager& manager )
 {
-	LOGGER( "initializing model manager...\n" );
+	//LOGGER( "initializing model manager...\n" );
 
-	resources::managed_resource_ptr resource;
-	resource.m_vertices	= vertices;
-	resource.fs			= "gamedata/shaders/ogl4.fs";
-	resource.vs			= "gamedata/shaders/ogl4.vs";
+	//resources::managed_resource_ptr resource;
+	//resource.m_vertices	= vertices;
+	//resource.fs			= "gamedata/shaders/ogl4.fs";
+	//resource.vs			= "gamedata/shaders/ogl4.vs";
 
-	resources::managed_resource_ptr resource2;
-	resource2.m_vertices	= vertices_2;
-	//resource2.m_vertices.print  ( );
-	resource2.fs			= "gamedata/shaders/ogl4.fs";
-	resource2.vs			= "gamedata/shaders/ogl4.vs";
+	//resources::managed_resource_ptr resource2;
+	//resource2.m_vertices	= vertices_2;
+	////resource2.m_vertices.print  ( );
+	//resource2.fs			= "gamedata/shaders/ogl4.fs";
+	//resource2.vs			= "gamedata/shaders/ogl4.vs";
 
-	manager.add_static	( resource, resource, resource  );
-	manager.add_static	( resource2, resource2, resource2  );
+	//manager.add_static	( resource, resource, resource  );
+//	manager.add_static	( resource2, resource2, resource2  );
 
 
 }
+
+	// just testing
+math::float4x4 vertices; // = points;
+math::float4x4 vertices_2;
+triangle_primitive_visual* temp			= nullptr;
+
+    unsigned int VBO, VAO;
+	int shaderProgram;
 
 platform::platform					( inex::render::engine::wrapper& wrapper, HWND const window_handle ) :
 // #pragma warning ( push )
@@ -159,13 +162,25 @@ platform::platform					( inex::render::engine::wrapper& wrapper, HWND const wind
 	cam_speed					= system_config.r_float( "Camera", "speed" );
 	cam_yaw_speed				= system_config.r_float( "Camera", "yaw_speed" );
 
-	vertices 					= system_config.r_float4x4( "Visuals", "visual_1_pos" );
-	vertices_2					= system_config.r_float4x4( "Visuals", "visual_2_pos" );
+	GLfloat points1[ ] = {
+-0.5f, -0.5f, 0.0f, 1.f,
+     0.5f, -0.5f, 0.0f, 1.f,
+     0.0f,  0.5f, 0.0f, 1.f,
+	};
+
+	GLfloat points[ ] = {
+		1.0f, 0.5f, 0.0f, 1.f,
+		0.5f, -0.5f, 0.0f, 1.f,
+		-0.5f, -0.5f, 0.0f, 1.f
+	};
+
+	//vertices 					= points1; //system_config.r_float4x4( "Visuals", "visual_1_pos" );
+	//vertices_2					= points1; //system_config.r_float4x4( "Visuals", "visual_2_pos" );
 
 	LOG_FLOAT4X3				( vertices );
 	LOG_FLOAT4X3				( vertices_2 );
 
-	initialize_model_manager	( m_model_manager );
+	//initialize_model_manager	( m_model_manager );
 
 	math::float4x4 T			= math::translate4x4( math::identity4x4( ), math::float3( -cam_pos[ 0 ], -cam_pos[ 1 ], -cam_pos[ 2 ] ) );
 	math::float4x4 R			= math::rotate_yaw( math::identity4x4( ), -cam_yaw );
@@ -193,15 +208,20 @@ platform::platform					( inex::render::engine::wrapper& wrapper, HWND const wind
 
 	math::float4x4 prj_mtx	= proj_mat;
 
-    m_model_manager.get_visuals( ).at( 0 )->m_program.use( );
+ //   m_model_manager.get_visuals( ).at( 0 )->m_program.use( );
 
-	view_mat_location		= m_model_manager.get_visuals( ).at( 0 )->m_program.find_unifrom( "view" );
-	glUniformMatrix4fv		( view_mat_location, 1, GL_FALSE, view_matrix.elements );
-	int proj_mat_location	= m_model_manager.get_visuals( ).at( 0 )->m_program.find_unifrom( "proj" );
-	glUniformMatrix4fv		( proj_mat_location, 1, GL_FALSE, prj_mtx.elements );
+	//view_mat_location		= m_model_manager.get_visuals( ).at( 0 )->m_program.find_unifrom( "view" );
+	//glUniformMatrix4fv		( view_mat_location, 1, GL_FALSE, view_matrix.elements );
+	//int proj_mat_location	= m_model_manager.get_visuals( ).at( 0 )->m_program.find_unifrom( "proj" );
+	//glUniformMatrix4fv		( proj_mat_location, 1, GL_FALSE, prj_mtx.elements );
 
-    m_model_manager.get_visuals( ).at( 0 )->m_program.unbind( );
+ //   m_model_manager.get_visuals( ).at( 0 )->m_program.unbind( );
+	 
+	//vertices				= points1; //system_config.r_float4x4( "Visuals", "visual_1_pos" );
+	//temp					=	memory::ie_new< triangle_primitive_visual >( );
+	//temp->load				( vertices );
 }
+
 
 platform::~platform					( )
 {
@@ -291,9 +311,7 @@ void platform::draw_scene						(
 
 void platform::draw_frame			( )
 {
-	bool cam_moved 	= 0;
-	//m_hw.context( )->render		( );
-	//m_hw.context( )->swapBuffers( );
+	//bool cam_moved 	= 0;
 #if INEX_PLATFORM_LINUX
 	XNextEvent					( GLX.display, &GLX.x_event );
 
@@ -415,99 +433,24 @@ void platform::draw_frame			( )
 	}
 
 #elif INEX_PLATFORM_WINDOWS // #if INEX_PLATFORM_LINUX
+
 	//update_fps_counter			( g_gl4_context );
 
-    glClearColor                ( 0.6f, 0.6f, 0.8f, 1.f );
-    glClear                     ( GL_COLOR_BUFFER_BIT );
+ //   glClearColor                ( 0.6f, 0.6f, 0.8f, 1.f );
+ //   glClear                     ( GL_COLOR_BUFFER_BIT );
 
-	glClear						( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glClear						( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//triangle.prologue			( );
 	//program.use( );
 	//triangle.draw_static		( );
 	//program.validate	( );
 
 	//glBindVertexArray (vao);
-	m_model_manager.get_visuals( ).at( 0 )->m_program.use( );
-	render_visuals	( );
+	//m_model_manager.get_visuals( ).at( 0 )->m_program.use( );
+	//render_visuals	( );
 
-	//glDrawArrays ( GL_TRIANGLES, 0, 3);
-	//glfwPollEvents              ( );
- //   glfwSwapBuffers             ( g_gl4_context );
 
-	//if ( glfwWindowShouldClose ( g_gl4_context ) )
-	//	exit					( 0 );
 
-	//if (GLFW_PRESS == glfwGetKey ( g_gl4_context, GLFW_KEY_ESCAPE)) {
-	//	glfwSetWindowShouldClose (g_gl4_context, 1);
-	//}
-
-	//float elapsed_seconds		= glfwGetTime( );
-		// control keys
-
-	//if (glfwGetKey (g_gl4_context, GLFW_KEY_A)) {
-	//	cam_pos[0] -= cam_speed ;
-	//	cam_moved = true;
-	//	//LOGGER( "go left : %f\n", cam_pos[ 0 ] );
-	//}
-
-	//if (glfwGetKey (g_gl4_context, GLFW_KEY_D)) {
-	//	cam_pos[0] += cam_speed ;
-	//	cam_moved = true;
-	//	//LOGGER( "go rigth : %f\n", cam_pos[ 0 ] );
-	//}
-
-	//if (glfwGetKey (g_gl4_context, GLFW_KEY_PAGE_UP)) {
-
-	//	cam_pos[1] += cam_speed ;
-	//	cam_moved = true; 		//LOGGER( "go up: %f\n", cam_pos[ 1 ] );
-	//}
-
-	//if (glfwGetKey (g_gl4_context, GLFW_KEY_PAGE_DOWN)) {
-
-	//	cam_pos[1] -= cam_speed ;
-	//	cam_moved = true; 		//LOGGER( "go down: %f\n", cam_pos[ 1 ] );
-	//}
-
-	//if (glfwGetKey (g_gl4_context, GLFW_KEY_W)) {
-
-	//	cam_pos[2] -= cam_speed ;
-	//	cam_moved = true; 		//LOGGER( "go forward: %f\n", cam_pos[ 2 ] );
-	//}
-
-	//if (glfwGetKey (g_gl4_context, GLFW_KEY_S)) {
-
-	//	cam_pos[2] += cam_speed ;
-	//	cam_moved = true; 		//LOGGER( "go back: %f\n", cam_pos[ 2 ] );
-	//}
-
-	//if (glfwGetKey (g_gl4_context, GLFW_KEY_LEFT)) {
-
-	//	cam_yaw += cam_yaw_speed ;
-	//	cam_moved = true; 		//LOGGER( "rotated right: %f\n", cam_yaw );
-	//}
-
-	//if (glfwGetKey (g_gl4_context, GLFW_KEY_RIGHT)) {
-
-	//	cam_yaw -= cam_yaw_speed ;
-	//	cam_moved = true; 		//LOGGER( "rotated right: %f\n", cam_yaw );
-	//}
-
-	// update view matrix
-	//if (cam_moved)
-	//{
-	//	logging::set_output_destination( logging::logging_to_enum::terminal );
-	//	LOGGER( "recalculating..." );
-	//	math::float4x4 T		= math::translate4x4( math::identity4x4 ( ), float3 (-cam_pos[0], -cam_pos[1], -cam_pos[2])); // cam translation
-	//	math::float4x4 R		= math::rotate_yaw	( math::identity4x4 ( ), -cam_yaw ); //
-	//	math::float4x4 view_mat = R * T;
-
-	//	//T.print( ); R.print( ); view_mat.print( );
-	//	glUniformMatrix4fv (view_mat_location, 1, GL_FALSE, view_mat.elements);
-	//	//cam_moved				= false;
-	//	logging::set_output_destination( logging::logging_to_enum::file );
-	//}
-
-	m_model_manager.get_visuals( ).at( 0 )->m_program.unbind( );
 
 #endif  // #if INEX_PLATFORM_LINUX
 

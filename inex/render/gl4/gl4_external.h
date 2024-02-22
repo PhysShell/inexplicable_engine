@@ -96,6 +96,7 @@ extern PFNGLUNIFORM2FPROC			glUniform2f;
 extern PFNGLUNIFORM3FVPROC         	glUniform3fv;
 extern PFNGLUNIFORM3FPROC          	glUniform3f;
 extern PFNGLUNIFORM4FVPROC         	glUniform4fv;
+extern PFNGLDRAWARRAYSEXTPROC		glDrawArraysExt;
 
 #	if INEX_PLATFORM_WINDOWS // linux already defines this
 // Texture

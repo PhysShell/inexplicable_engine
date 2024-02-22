@@ -34,6 +34,8 @@ public:
 
 	}
 	
+	u32 VAO, VBO;
+	s32 shaderProgram;
 	
 	void	showMessage(LPCSTR message) const	{ LOGGER( message ); MessageBox(0, message, "inexplicable_engine", MB_ICONERROR); }
 	s32		create ( u32 const x, u32 const y, HINSTANCE hInstance, s32 nCmdShow, pcstr const window_title)
@@ -130,8 +132,8 @@ public:
 		DescribePixelFormat		(m_device_context, pixelFormatID, sizeof(PFD), &PFD);
 		SetPixelFormat			(m_device_context, pixelFormatID, &PFD);
 
-		const u32 minimum_supported_version			= 3;
-		const u32 minimum_supported_subversion		= 1;
+		const u32 minimum_supported_version			= 4;
+		const u32 minimum_supported_subversion		= 6;
 		const s32 contextAttribs [ ] =
 		{
 			WGL_CONTEXT_MAJOR_VERSION_ARB,	minimum_supported_version,
@@ -167,13 +169,93 @@ public:
 			glGetString( GL_VERSION )
 		);
 
-		glEnable				( GL_DEPTH_TEST ); // enable depth-testing
-		glDepthFunc				( GL_LESS );
+		//glEnable				( GL_DEPTH_TEST ); // enable depth-testing
+		//glDepthFunc				( GL_LESS );
 
 		SetWindowText			( m_hwnd, window_title );
 		ShowWindow				( m_hwnd, ! nCmdShow ? SW_SHOWDEFAULT : nCmdShow );
 
-		
+			const char* vertexShaderSource = "#version 400\n"
+"layout (location = 0) in vec3 aPos;\n"
+"void main()\n"
+"{\n"
+"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+"}\0";
+const char* fragmentShaderSource = "#version 400\n"
+"out vec4 FragColor;\n"
+"void main()\n"
+"{\n"
+"   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+"}\n\0";
+int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+ 
+    // Проверка на наличие ошибок компилирования вершинного шейдера
+    int success;
+    char infoLog[512];
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+    if (!success)
+    {
+        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
+ 
+    // Фрагментный шейдер
+    int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+ 
+    // Проверка на наличие ошибок компилирования фрагментного шейдера
+    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+    if (!success)
+    {
+        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
+ 
+    // Связывание шейдеров
+    shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+ 
+    // Проверка на наличие ошибок компилирования связывания шейдеров
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+    }
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+ 
+    // Указывание вершин (и буферов) и настройка вершинных атрибутов
+    float vertices3[] = {
+        -0.5f, -0.5f, 0.0f, // левая вершина
+         0.5f, -0.5f, 0.0f, // правая вершина
+         0.0f,  0.5f, 0.0f  // верхняя вершина   
+    };
+ 
+
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+ 
+    // Сначала связываем объект вершинного массива, затем связываем и устанавливаем вершинный буфер(ы), и затем конфигурируем вершинный атрибут(ы)
+    glBindVertexArray(VAO);
+ 
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices3), vertices3, GL_STATIC_DRAW);
+ 
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+ 
+    // Обратите внимание, что данное действие разрешено, вызов glVertexAttribPointer() зарегистрировал VBO как привязанный вершинный буферный объект для вершинного атрибута, так что после этого мы можем спокойно выполнить отвязку
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+ 
+    // Вы можете отменить привязку VAO после этого, чтобы другие вызовы VAO случайно не изменили этот VAO (но подобное довольно редко случается).
+    // Модификация других VAO требует вызова glBindVertexArray(), поэтому мы обычно не снимаем привязку VAO (или VBO), когда это не требуется напрямую
+    glBindVertexArray(0);
+		while(1) render();
 		return 0;
 	}
 	
@@ -209,11 +291,18 @@ public:
 	
 	void render()
 	{
-		glClearColor(0.129f, 0.586f, 0.949f, 1.0f);	// rgb(33,150,243)
+		glClearColor(0.529f, 0.586f, 0.949f, 1.0f);	// rgb(33,150,243)
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		glUseProgram(shaderProgram);
+        glBindVertexArray(VAO); // поскольку у нас есть только один VAO, то нет необходимости связывать его каждый раз (но мы сделаем это, чтобы всё было немного организованнее)
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+		swap_buffers();
+
 	}
 	
-	void swapBuffers() { SwapBuffers( m_device_context ); }
+	void swap_buffers() { SwapBuffers( m_device_context ); }
 	void destroy()
 	{
 		wglMakeCurrent(NULL, NULL);

@@ -104,9 +104,6 @@
     <ClInclude Include="fs_directory_iterators_inline.h">
       <Filter>fs_manager</Filter>
     </ClInclude>
-    <ClInclude Include="fs_manager.h">
-      <Filter>fs_manager</Filter>
-    </ClInclude>
     <ClInclude Include="fs_path_string.h">
       <Filter>fs_manager</Filter>
     </ClInclude>

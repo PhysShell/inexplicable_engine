@@ -132,7 +132,8 @@ void	inex::render::initialize	( )
     OPENGL_GET_PROC( PFNGLUNIFORM3FVPROC,           glUniform3fv );
     OPENGL_GET_PROC( PFNGLUNIFORM3FPROC,            glUniform3f );
     OPENGL_GET_PROC( PFNGLUNIFORM4FVPROC,           glUniform4fv );
-	//OPENGL_CHECK_FOR_ERRORS();
+	
+    //OPENGL_GET_PROC( PFNGLDRAWARRAYSEXTPROC,        glDrawArraysExt );
     #undef											CAST
 
     initialize_context_parameters                   ( );

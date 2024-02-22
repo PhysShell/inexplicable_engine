@@ -43,8 +43,8 @@ inline	void			create			( enum_shader_type type, pcstr path, bool auto_compilatio
 		void			compile			( )	;
         void            check_errors    ( ) ;
 
-inline  u32             self            ( ) {   return m_object;    }
-inline	void			set_uniform1f	( float const value )	{	/*check if shader active active*/ glUniform1f( m_object, value );	}
+inline  u32             self            ( ) const {   return m_object;    }
+inline	void			set_uniform1f	( float const value ) const	{	/*check if shader active active*/ glUniform1f( m_object, value );	}
 
 
 private:
@@ -68,11 +68,11 @@ public:
         void            check_errors    ( );
 
 		void			validate		( );
-inline  void            create          ( )                 {   m_shader_program    = glCreateProgram( );                   }
-inline  void            use             ( )                 {   glUseProgram        ( m_shader_program );                   }
-inline  void            unbind          ( )                 {   glUseProgram        ( 0u );                                 }
-inline  s32             find_attribute  ( pcstr attribute ) {   return  glGetAttribLocation( m_shader_program, attribute ); }
-inline  s32             find_unifrom    ( pcstr uniform )   {   s32 result = glGetUniformLocation( m_shader_program, uniform ); VERIFY( result != -1 ); return result;	}
+inline  void            create          ( )							{   m_shader_program    = glCreateProgram( );                   }
+inline  void            use             ( ) const					{   glUseProgram        ( m_shader_program );                   }
+inline  void            unbind          ( ) const					{   glUseProgram        ( 0u );                                 }
+inline  s32             find_attribute  ( pcstr attribute ) const	{   return  glGetAttribLocation( m_shader_program, attribute ); }
+inline  s32             find_unifrom    ( pcstr uniform ) const		{   s32 result = glGetUniformLocation( m_shader_program, uniform ); VERIFY( result != -1 ); return result;	}
 // To do: behave different when it's shader or u32 metaprogrammingly
         template < typename T, typename... Args >
 inline  void            attach          ( T t, Args ... args )
@@ -178,7 +178,11 @@ public:
 	{
 		//m_program.use		( );
 #	if defined _DEBUG
-		//m_program.validate	( );
+		if (!m_is_verified)
+		{
+			m_program.validate	( );
+			m_is_verified		= true;
+		}
 #	endif // #if defined _DEBUG
 		glBindVertexArray	( index_buffer_id );
 		glDrawArrays		( GL_TRIANGLES, 0, 3 );
@@ -188,7 +192,8 @@ public:
 	// virtual render_mesh* mesh()	{ return dynamic_cast< render_mesh * > ( this ); }
 
 	//virtual	void	recalculate_memory_usage_impl ( ) { m_memory_usage_self.unmanaged = get_size(); }
-
+private:
+	bool			m_is_verified;
 }; //class simple_visual
 
 class triangle_primitive_visual :	public render_mesh,
@@ -199,11 +204,35 @@ public:
 	virtual				~triangle_primitive_visual		( ) { }
 	virtual		void	load							( math::float4x4 const& vertices )
 				{
-					m_vertices				= vertices;
+		   float vertices_raw[] = {
+        -0.5f, -0.5f, 0.0f, // левая вершина
+         0.5f, -0.5f, 0.0f, // правая вершина
+         0.0f,  0.5f, 0.0f  // верхняя вершина   
+    };
+			//resources::managed_resource_ptr resource;
+			//resource.m_vertices	= vertices;
+			//resource.fs			= "gamedata/shaders/ogl4.fs";
+			//resource.vs			= "gamedata/shaders/ogl4.vs";
 
-					glGenBuffers			( 1 , &vertex_buffer_id );
+					set_shader				("gamedata/shaders/ogl4.vs", "gamedata/shaders/ogl4.fs");
+
+					//auto it							= m_vertex_buffers.rbegin( );
+					//temp->mesh( )->vertex_buffer_id	= ( *it )->vertex_buffer_id;
+					//temp->mesh( )->index_buffer_id	= ( *it )->index_buffer_id;
+
+					//m_vertices				= vertices;
+
+					glGenVertexArrays		( 1, &index_buffer_id ); // vao
+					glGenBuffers			( 1 , &vertex_buffer_id ); // vbo
+
+					glBindVertexArray		( index_buffer_id );
+
 					glBindBuffer			( GL_ARRAY_BUFFER, vertex_buffer_id );
-					glBufferData			( GL_ARRAY_BUFFER, sizeof ( vertices.elements ), vertices.elements, GL_STATIC_DRAW );
+					glBufferData			( GL_ARRAY_BUFFER, sizeof(vertices_raw), vertices_raw, GL_STATIC_DRAW );
+
+					glVertexAttribPointer	( 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr );
+					glEnableVertexAttribArray ( 0 );
+
 					glBindBuffer			( GL_ARRAY_BUFFER, 0 );
 
 					LOGGER					(
@@ -211,26 +240,24 @@ public:
 						sizeof( vertices.elements ) / sizeof ( float ),
 						sizeof ( vertices.elements ) / 1024
 					);
-
-					glGenVertexArrays		( 1, &index_buffer_id );
-					glBindVertexArray		( index_buffer_id );
-					glEnableVertexAttribArray ( 0 );
-					glBindBuffer			( GL_ARRAY_BUFFER, index_buffer_id );
-					glVertexAttribPointer	( 0, 4, GL_FLOAT, GL_FALSE, 0, nullptr );
 				}
 
-			void						prologue	( )	{ m_program.use( ); glBindVertexArray( index_buffer_id ); }
-			void						epilogue	( ) { m_program.unbind( ); }
-			void						draw_static	( ) { glDrawArrays ( GL_TRIANGLES, 0, 3); }
+			void						prologue	( )	{ m_program.use( ); glBindVertexArray( index_buffer_id ); m_is_in_use = true; }
+			void						epilogue	( ) { m_program.unbind( ); m_is_in_use = false; }
+			void						draw_static	( ) const { ASSERT_D( m_is_in_use, "Visual must be initialized first before calling draw_static()" ); glDrawArrays ( GL_TRIANGLES, 0, 3); }
 
 
 	render_ogl::shader_program& get_shader_program ( )	{ return m_program; };
 
-	virtual		void	render							( ) { }
+	virtual		void	render							( )
+						{
+							
+						}
 	virtual render_mesh* mesh							( )	{ return this; }
 
 private:
 	math::float4x4	m_vertices;
+	bool			m_is_in_use;
 
 }; // class triangle_primitive_visual
 
