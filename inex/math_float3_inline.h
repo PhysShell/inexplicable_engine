@@ -182,14 +182,16 @@ float3::type    float3::magnitude ( ) const
 inline
 float3                  float3::normalize ( )
 {
-    #pragma todo        ( "impl" )
+    //#pragma todo        ( "impl" )
+    NOT_IMPLEMENTED     ( )
     return              * this  /= magnitude ( );
 }
 
 inline
 float3                  float3::orthogonal ( ) const
 {
-    #pragma todo        ( "impl" )
+    //#pragma todo        ( "impl" )
+    NOT_IMPLEMENTED     ( )
     return              float3( );//float3( -y, x );
 }
 
@@ -229,7 +231,6 @@ float3          operator - ( float3 const& left, float3 const& right )
 inline
 float3          operator - ( float3 const& left, float3::type const& right )
 {
-    // bool ddf = not true;
     return              float3( left.x + right, left.y + right, left.z + right );
 }
 

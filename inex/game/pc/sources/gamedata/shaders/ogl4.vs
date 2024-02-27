@@ -1,10 +1,8 @@
 // Shell on 17.11.2020
-#version 400
-
-in vec4 position;
-uniform mat4 view, proj;
-
+#version 330 core
+layout (location = 0) in vec3 aPos;
+ 
 void main()
 {
-	gl_Position = proj * view * vec4 (position);
+    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
 }

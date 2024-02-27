@@ -204,6 +204,7 @@ public:
 	virtual				~triangle_primitive_visual		( ) { }
 	virtual		void	load							( math::float4x4 const& vertices )
 				{
+					NOT_IMPLEMENTED();
 		   float vertices_raw[] = {
         -0.5f, -0.5f, 0.0f, // левая вершина
          0.5f, -0.5f, 0.0f, // правая вершина
@@ -251,7 +252,9 @@ public:
 
 	virtual		void	render							( )
 						{
-							
+							m_program.use();
+							glBindVertexArray		(index_buffer_id); // поскольку у нас есть только один VAO, то нет необходимости связывать его каждый раз (но мы сделаем это, чтобы всё было немного организованнее)
+							glDrawArrays			(GL_TRIANGLES, 0, 3);
 						}
 	virtual render_mesh* mesh							( )	{ return this; }
 

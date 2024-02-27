@@ -88,14 +88,18 @@ float cam_yaw 				= .0f;					// y-rotation in degrees
 
 int	  view_mat_location;
 
+// just testing
+math::float4x4 vertices; // = points;
+math::float4x4 vertices_2;
+
 void	initialize_model_manager ( model_manager& manager )
 {
-	//LOGGER( "initializing model manager...\n" );
+	LOGGER( "initializing model manager...\n" );
 
-	//resources::managed_resource_ptr resource;
-	//resource.m_vertices	= vertices;
-	//resource.fs			= "gamedata/shaders/ogl4.fs";
-	//resource.vs			= "gamedata/shaders/ogl4.vs";
+	resources::managed_resource_ptr resource;
+	resource.m_vertices	= vertices;
+	resource.fs			= "gamedata/shaders/ogl4.fs";
+	resource.vs			= "gamedata/shaders/ogl4.vs";
 
 	//resources::managed_resource_ptr resource2;
 	//resource2.m_vertices	= vertices_2;
@@ -103,19 +107,11 @@ void	initialize_model_manager ( model_manager& manager )
 	//resource2.fs			= "gamedata/shaders/ogl4.fs";
 	//resource2.vs			= "gamedata/shaders/ogl4.vs";
 
-	//manager.add_static	( resource, resource, resource  );
-//	manager.add_static	( resource2, resource2, resource2  );
+	manager.add_static	( resource, resource, resource  );
+	//manager.add_static	( resource2, resource2, resource2  );
 
 
 }
-
-	// just testing
-math::float4x4 vertices; // = points;
-math::float4x4 vertices_2;
-triangle_primitive_visual* temp			= nullptr;
-
-    unsigned int VBO, VAO;
-	int shaderProgram;
 
 platform::platform					( inex::render::engine::wrapper& wrapper, HWND const window_handle ) :
 // #pragma warning ( push )
@@ -162,11 +158,11 @@ platform::platform					( inex::render::engine::wrapper& wrapper, HWND const wind
 	cam_speed					= system_config.r_float( "Camera", "speed" );
 	cam_yaw_speed				= system_config.r_float( "Camera", "yaw_speed" );
 
-	GLfloat points1[ ] = {
--0.5f, -0.5f, 0.0f, 1.f,
-     0.5f, -0.5f, 0.0f, 1.f,
-     0.0f,  0.5f, 0.0f, 1.f,
-	};
+    GLfloat vertices3[] = {
+        -0.5f, -0.5f, 0.0f, // левая вершина
+         0.5f, -0.5f, 0.0f, // правая вершина
+         0.0f,  0.5f, 0.0f  // верхняя вершина   
+    };
 
 	GLfloat points[ ] = {
 		1.0f, 0.5f, 0.0f, 1.f,
@@ -174,13 +170,13 @@ platform::platform					( inex::render::engine::wrapper& wrapper, HWND const wind
 		-0.5f, -0.5f, 0.0f, 1.f
 	};
 
-	//vertices 					= points1; //system_config.r_float4x4( "Visuals", "visual_1_pos" );
+	vertices 					= vertices3; //system_config.r_float4x4( "Visuals", "visual_1_pos" );
 	//vertices_2					= points1; //system_config.r_float4x4( "Visuals", "visual_2_pos" );
 
-	LOG_FLOAT4X3				( vertices );
-	LOG_FLOAT4X3				( vertices_2 );
+	//LOG_FLOAT4X3				( vertices );
+	//LOG_FLOAT4X3				( vertices_2 );
 
-	//initialize_model_manager	( m_model_manager );
+	initialize_model_manager	( m_model_manager );
 
 	math::float4x4 T			= math::translate4x4( math::identity4x4( ), math::float3( -cam_pos[ 0 ], -cam_pos[ 1 ], -cam_pos[ 2 ] ) );
 	math::float4x4 R			= math::rotate_yaw( math::identity4x4( ), -cam_yaw );
@@ -215,13 +211,12 @@ platform::platform					( inex::render::engine::wrapper& wrapper, HWND const wind
 	//int proj_mat_location	= m_model_manager.get_visuals( ).at( 0 )->m_program.find_unifrom( "proj" );
 	//glUniformMatrix4fv		( proj_mat_location, 1, GL_FALSE, prj_mtx.elements );
 
- //   m_model_manager.get_visuals( ).at( 0 )->m_program.unbind( );
+    //m_model_manager.get_visuals( ).at( 0 )->m_program.unbind( );
 	 
 	//vertices				= points1; //system_config.r_float4x4( "Visuals", "visual_1_pos" );
 	//temp					=	memory::ie_new< triangle_primitive_visual >( );
 	//temp->load				( vertices );
 }
-
 
 platform::~platform					( )
 {
@@ -434,6 +429,14 @@ void platform::draw_frame			( )
 
 #elif INEX_PLATFORM_WINDOWS // #if INEX_PLATFORM_LINUX
 
+	
+
+
+	m_model_manager.get_visuals( ).at( 0 )->m_program.use( );
+	render_visuals	( );
+	m_model_manager.get_visuals( ).at( 0 )->m_program.unbind( );
+	//m_hw.context( )->render			( );
+	m_hw.context( )->swap_buffers	( );
 	//update_fps_counter			( g_gl4_context );
 
  //   glClearColor                ( 0.6f, 0.6f, 0.8f, 1.f );
