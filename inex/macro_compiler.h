@@ -22,8 +22,9 @@
 #		    define INEX_DLL_EXPORT	__attribute__ ( ( dllexport ) )
 #       endif // #ifdef _MSC_VER
 #   elif defined __linux__ // #if defined _WIN32
-#		define INEX_DLL_IMPORT
-#		define INEX_DLL_EXPORT      __attribute__( ( visibility("default" ) ) )
+#       define INEX_DLL_EXPORT  __attribute__ ( ( visibility("default" ) ) )
+#       define INEX_DLL_IMPORT  __attribute__ ( ( visibility("default" ) ) )
+#       define INEX_DLL_HIDDEN  __attribute__ ( ( visibility( "hidden" ) ) )
 #   else // #if defined _WIN32
 #       error specify dll export/import attributes for your target
 #	endif // #if defined _WIN32
@@ -44,6 +45,7 @@
 #       define COMPILER_NODEFAULT                   __assume( 0 )
 #       define COMPILER_DEBUG_BREAK                 __debugbreak( )
 #       define SLEEP                                Sleep
+#       define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 #   else // #ifdef _MSC_VER
 #		define NOVTABLE
 #		define INEX_PUSH_WARNING
