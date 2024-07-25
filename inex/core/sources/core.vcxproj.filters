@@ -272,18 +272,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="core.cbp">
-      <Filter>miscellanous</Filter>
-    </None>
-    <None Include="core.depend">
-      <Filter>miscellanous</Filter>
-    </None>
-    <None Include="core.layout">
-      <Filter>miscellanous</Filter>
-    </None>
-    <None Include="post_build.bat">
-      <Filter>miscellanous</Filter>
-    </None>
     <None Include="stdafx.h.gch" />
   </ItemGroup>
   <ItemGroup>
