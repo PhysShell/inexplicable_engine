@@ -57,7 +57,7 @@ if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
         OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/../binaries/msvc_${CMAKE_VS_PLATFORM_NAME}/"
         OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/../binaries/msvc_${CMAKE_VS_PLATFORM_NAME}/"
     )
-elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
     set_target_properties(${PROJECT_NAME} PROPERTIES
         OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/../binaries/msvc_${CMAKE_VS_PLATFORM_NAME}/"
         OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/../binaries/msvc_${CMAKE_VS_PLATFORM_NAME}/"
@@ -67,7 +67,7 @@ if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
     set_target_properties(${PROJECT_NAME} PROPERTIES
         ARCHIVE_OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/../binaries/libraries/msvc_${CMAKE_VS_PLATFORM_NAME}"
     )
-elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
     set_target_properties(${PROJECT_NAME} PROPERTIES
         ARCHIVE_OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/../binaries/libraries/msvc_${CMAKE_VS_PLATFORM_NAME}"
     )
@@ -76,7 +76,7 @@ if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
     set_target_properties(${PROJECT_NAME} PROPERTIES
         ARCHIVE_OUTPUT_NAME_DEBUG   "${PROJECT_NAME}"
     )
-elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
     set_target_properties(${PROJECT_NAME} PROPERTIES
         ARCHIVE_OUTPUT_NAME_DEBUG   "${PROJECT_NAME}"
     )
@@ -85,7 +85,7 @@ if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
     set_target_properties(${PROJECT_NAME} PROPERTIES
         INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
     )
-elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
     set_target_properties(${PROJECT_NAME} PROPERTIES
         INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
     )
@@ -100,7 +100,7 @@ if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
             "${CMAKE_CURRENT_SOURCE_DIR}/../../.."
         ">"
     )
-elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
     target_include_directories(${PROJECT_NAME} PUBLIC
         "$<$<CONFIG:Debug>:"
             "${CMAKE_CURRENT_SOURCE_DIR}/../../3rd_patry/include;"
@@ -128,7 +128,7 @@ if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
         "_WINDOWS;"
         "_USRDLL"
     )
-elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
     target_compile_definitions(${PROJECT_NAME} PRIVATE
         "$<$<CONFIG:Debug>:"
             "_DEBUG;"
@@ -165,7 +165,7 @@ if(MSVC)
             ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
             ${DEFAULT_CXX_EXCEPTION_HANDLING}
         )
-    elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
+    elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         target_compile_options(${PROJECT_NAME} PRIVATE
             $<$<CONFIG:Debug>:
                 /Od;
@@ -194,10 +194,11 @@ if(MSVC)
             /DEBUG;
             /SUBSYSTEM:WINDOWS
         )
-    elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
+    elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         target_link_options(${PROJECT_NAME} PRIVATE
             $<$<CONFIG:Debug>:
                 /INCREMENTAL
+                /SAFESEH:NO
             >
             $<$<CONFIG:Release>:
                 /OPT:REF;
@@ -237,7 +238,7 @@ if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
             "odbccp32"
         ">"
     )
-elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
     set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "$<$<CONFIG:Debug>:"
             "core;"
@@ -258,6 +259,7 @@ elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
         ">"
     )
 endif()
+
 target_link_libraries(${PROJECT_NAME} PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
 if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
@@ -267,7 +269,7 @@ if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
             "${CMAKE_SOURCE_DIR}/../binaries/libraries/msvc_${CMAKE_VS_PLATFORM_NAME}/"
         ">"
     )
-elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
     target_link_directories(${PROJECT_NAME} PUBLIC
         "$<$<CONFIG:Debug>:"
             "${CMAKE_SOURCE_DIR}/inex/3rd_patry/libraries/x86/;"

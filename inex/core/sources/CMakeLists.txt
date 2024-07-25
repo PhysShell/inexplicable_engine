@@ -50,8 +50,8 @@ set(debug
 source_group("debug" FILES ${debug})
 
 set(debug__win
-#    "RpcExStackTraceEngine.cpp"
-#    "RpcExStackTraceEngine.h"
+    "RpcExStackTraceEngine.cpp"
+    "RpcExStackTraceEngine.h"
 )
 source_group("debug\\win" FILES ${debug__win})
 
@@ -147,13 +147,13 @@ set(memory__win
 )
 source_group("memory\\win" FILES ${memory__win})
 
-set(miscellanous
-    "core.cbp"
-    "core.depend"
-    "core.layout"
-    "post_build.bat"
-)
-source_group("miscellanous" FILES ${miscellanous})
+# set(miscellanous
+#     "core.cbp"
+#     "core.depend"
+#     "core.layout"
+#     "post_build.bat"
+# )
+# source_group("miscellanous" FILES ${miscellanous})
 
 set(os
     "../../os_extensions.h"
@@ -182,7 +182,7 @@ set(threading
     "../../threading_functions.h"
     "../../threading_functions_win_inline.h"
     "../../threading_policies.h"
-#    "cpuid_internal.cpp"
+    "cpuid_internal.cpp"
     "cpuid_internal.h"
     "ie_syncronize.cpp"
     "ie_syncronize.h"

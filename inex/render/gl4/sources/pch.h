@@ -8,9 +8,9 @@
 #	include <inex/extensions.h>
 #			ifdef INEX_RENDER_GL4_EXPORTS
 #				define INEX_RENDER_OGL4_API	INEX_DLL_EXPORT
-#			else // #ifdef IECORE_EXPORTS
+#			else // #ifdef INEX_RENDER_GL4_EXPORTS
 #				define INEX_RENDER_OGL4_API	INEX_DLL_IMPORT
-#			endif // #ifdef IECORE_EXPORTS
+#			endif // #ifdef INEX_RENDER_GL4_EXPORTS
 //#		endif // #ifndef INEX_STATIC_LIBRARIES
 
 #endif // #ifndef PCH_H_INCLUDED
