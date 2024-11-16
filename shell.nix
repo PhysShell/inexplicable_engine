@@ -6,6 +6,7 @@ pkgs.mkShell {
     pkgs.pkg-config      # Для поиска библиотек
     pkgs.cmake           # Для сборки проекта
     pkgs.gcc             # Компилятор GCC
+    pkgs.freealut        # Alut headers
   ];
 
   shellHook = ''

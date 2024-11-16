@@ -19,13 +19,33 @@ set(Header_Files
 )
 source_group("Header Files" FILES ${Header_Files})
 
-set(Source_Files
-    "dllmain.cpp"
-    "pch.cpp"
-    "sound.cpp"
-    "sound_file.cpp"
-    "sound_object.cpp"
-)
+if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    set(Source_Files
+        "pch.cpp"
+        "sound.cpp"
+        "sound_file.cpp"
+        "sound_object.cpp"
+    )
+elseif ("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
+    set(Source_Files
+        "dllmain.cpp"
+        "pch.cpp"
+        "sound.cpp"
+        "sound_file.cpp"
+        "sound_object.cpp"
+    )
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
+    set(Source_Files
+        "dllmain.cpp"
+        "pch.cpp"
+        "sound.cpp"
+        "sound_file.cpp"
+        "sound_object.cpp"
+    )
+else()
+    message(FATAL_ERROR "please define Source_Files for your platform")
+endif()
+
 source_group("Source Files" FILES ${Source_Files})
 
 set(ALL_FILES
@@ -49,6 +69,31 @@ set(ROOT_NAMESPACE sound)
 set_target_properties(${PROJECT_NAME} PROPERTIES
     VS_GLOBAL_KEYWORD "Win32Proj"
 )
+
+################################################################################
+# 3rd party packages
+################################################################################
+
+if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    find_package(OpenAL REQUIRED)
+
+    target_include_directories(${PROJECT_NAME} PRIVATE ${OPENAL_INCLUDE_DIR})
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${OPENAL_LIBRARY})
+
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules")
+
+    find_package(ALUT REQUIRED)
+
+    if(ALUT_FOUND)
+        target_include_directories(${PROJECT_NAME} PRIVATE ${ALUT_INCLUDE_DIRS})
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${ALUT_LIBRARIES} OpenAL::OpenAL)
+    else()
+        message(FATAL_ERROR "ALUT not found. Please install freealut.")
+    endif()
+else()
+    message(WARNING "ALUT not configured on your system.")
+endif()
+
 ################################################################################
 # Output directory
 ################################################################################
@@ -144,6 +189,20 @@ elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         "WIN32;"
         "_WINDOWS;"
         "_USRDLL"
+    )
+    elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    target_compile_definitions(${PROJECT_NAME} PRIVATE
+        "$<$<CONFIG:Debug>:"
+            "_DEBUG;"
+            "_MBCS"
+        ">"
+        "$<$<CONFIG:Release>:"
+            "NDEBUG;"
+            "UNICODE;"
+            "_UNICODE"
+        ">"
+        "INEX_SOUND_EXPORTS;"
+        "SOUND_EXPORTS"
     )
 endif()
 
