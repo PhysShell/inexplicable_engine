@@ -134,22 +134,22 @@ public:
 
 	Type &	begin			( )
 	{
-		return					fixed_array::operator[ ]( 0 );
+		return					fixed_array<Type, max_count>::operator[ ]( 0 );
 	}
 
 	Type const &begin			( ) const
 	{
-		return					fixed_array::operator[ ]( 0 );
+		return					fixed_array<Type, max_count>::operator[ ]( 0 );
 	}
 
 	Type const &end			( ) const
 	{
-		return					fixed_array::operator[ ]( max_count );
+		return					fixed_array<Type, max_count>::operator[ ]( max_count );
 	}
 
 	Type &	end				( )
 	{
-		return					fixed_array::operator[ ]( max_count );
+		return					fixed_array<Type, max_count>::operator[ ]( max_count );
 	}
 
 

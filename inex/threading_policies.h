@@ -30,14 +30,14 @@ public:
 	template <class IntType>
 	static	inline	IntType			increment	( IntType& value )
 	{
-		ASSERT_S	( value != boost::integer_traits<typename boost::remove_cv<IntType>::type >::const_max );
+		ASSERT_S	( value != std::numeric_limits<typename std::remove_cv<IntType>::type>::max( ) );
 		return	++value;
 	}
 
 	template <class IntType>
 	static	inline	IntType			decrement	( IntType& value )
 	{
-		ASSERT_S	( value != boost::integer_traits<typename boost::remove_cv<IntType>::type >::const_min );
+		ASSERT_S	( value != std::numeric_limits<typename std::remove_cv<IntType>::type>::min( )  );
 		return	--value;
 	}
 
@@ -91,21 +91,21 @@ public:
 	template <class IntType>
 	static	inline	IntType			increment	( IntType& value )
 	{
-		ASSERT_S	( value != boost::integer_traits< typename boost::remove_cv<IntType>::type >::const_max );
+		ASSERT_S	( value != std::numeric_limits<typename std::remove_cv<IntType>::type>::max( ) );
 		return	interlocked_increment( value );
 	}
 
 	template <class IntType>
 	static	inline	IntType			decrement	( IntType& value )
 	{
-		ASSERT_S	( value != boost::integer_traits< typename boost::remove_cv<IntType>::type >::const_min );
-		return	interlocked_decrement( value);
+		ASSERT_S	( value != std::numeric_limits<typename std::remove_cv<IntType>::type>::min( ) );
+		return	interlocked_decrement( value );
 	}
 
 	template <class IntType>
 	static	inline	IntType			compare_exchange	( IntType volatile& dest, IntType src, IntType comparand )
 	{
-		return	interlocked_compare_exchange	( value, src, comparand );
+		return	interlocked_compare_exchange	( dest, src, comparand );
 	}
 
 	static	inline	pvoid			compare_exchange_pointer	( atomic_ptr_type& dest, pvoid src, pvoid comparand )
@@ -114,10 +114,20 @@ public:
 	}
 
 	template <class IntType, class OtherIntType>
-	static	inline	IntType			operator_or	( IntType & out_left, OtherIntType const right ) { return threading::interlocked_or((threading::atomic32_type &)out_left, (threading::atomic32_value_type)right); }
+	static	inline	IntType			operator_or	( IntType & out_left, OtherIntType const right )
+	{
+		NOT_IMPLEMENTED	( );
+		return	0;
+		//return threading::interlocked_or((threading::atomic32_type &)out_left, (threading::atomic32_value_type)right);
+	}
 
 	template <class IntType, class OtherIntType>
-	static	inline	IntType			operator_and( IntType & out_left, OtherIntType const right ) { return threading::interlocked_and((threading::atomic32_type &)out_left, (threading::atomic32_value_type)right); }
+	static	inline	IntType			operator_and ( IntType & out_left, OtherIntType const right )
+	{
+		NOT_IMPLEMENTED	( );
+		return	0;
+		//return threading::interlocked_and((threading::atomic32_type &)out_left, (threading::atomic32_value_type)right);
+	}
 
 }; // class multi_threading_policy
 

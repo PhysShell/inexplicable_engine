@@ -4,9 +4,10 @@
 #	include <functional>
 #	include <utility>
 #	include <type_traits>
-#	include <excpt.h>
 #   if INEX_PLATFORM_LINUX
 #       include <sys/time.h>
+#	elif INEX_PLATFORM_WINDOWS // #if INEX_PLATFORM_LINUX
+#		include <excpt.h>
 #   endif // #if INEX_PLATFORM_LINUX
 
 namespace inex {

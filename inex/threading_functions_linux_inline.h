@@ -18,6 +18,30 @@ namespace threading {
 #       define INEX_INTERLOCKED_INCREMENT( a, b )   ( __sync_fetch_and_add( a, b ) )
 #   endif // #ifdef INEX_NON_ATOMIC
 
+INEX_CORE_API
+inline
+atomic_ptr_value_type interlocked_compare_exchange_pointer( atomic_ptr_type& target, atomic_ptr_value_type const exchange, atomic_ptr_value_type const comperand )
+{
+    NOT_IMPLEMENTED                 ( );
+	return							0;
+}
+
+INEX_CORE_API
+inline
+atomic32_value_type 	interlocked_exchange			( atomic32_type& target, atomic32_value_type value )
+{
+    NOT_IMPLEMENTED                 ( );
+	return							0;
+}
+
+INEX_CORE_API
+inline
+atomic_ptr_value_type	interlocked_exchange_pointer	( atomic_ptr_type& target, atomic_ptr_value_type const value )
+{
+    NOT_IMPLEMENTED                 ( );
+	return							0;
+}
+
 inline
 u64     cache_line_size ( )
 {
@@ -127,6 +151,13 @@ atomic32_value_type interlocked_increment ( atomic32_type* value )
     );
 
     return          temp;//INEX_INTERLOCKED_INCREMENT( value, * value ) + 1;
+}
+
+inline
+atomic32_value_type interlocked_decrement ( atomic32_type* value )
+{
+    NOT_IMPLEMENTED                 ( );
+	return							0;
 }
 
 } // namespace threading

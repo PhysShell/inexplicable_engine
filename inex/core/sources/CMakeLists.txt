@@ -36,24 +36,34 @@ set(no_group_source_files
     "logger.h"
     "pch.cpp"
     "pch.h"
-    "stdafx.h.gch"
+    #"stdafx.h.gch" UNCOMMENT FOR MSVC  ?!
     "utils.cpp"
 )
 source_group("" FILES ${no_group_source_files})
 
-set(debug
-    "ie_debug.cpp"
-    "ie_debug.h"
-#    "ie_debug_linux.cpp"
-    "ie_debug_win.cpp"
-)
+if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    set(debug
+        "ie_debug.cpp"
+        "ie_debug.h"
+        "ie_debug_linux.cpp"
+    )
+else()
+    set(debug
+        "ie_debug.cpp"
+        "ie_debug.h"
+        "ie_debug_win.cpp"
+    )
+endif()
+
 source_group("debug" FILES ${debug})
 
-set(debug__win
-    "RpcExStackTraceEngine.cpp"
-    "RpcExStackTraceEngine.h"
-)
-source_group("debug\\win" FILES ${debug__win})
+if(NOT "${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    set(debug__win
+        "RpcExStackTraceEngine.cpp"
+        "RpcExStackTraceEngine.h"
+    )
+    source_group("debug\\win" FILES ${debug__win})
+endif()
 
 set(filesystem
     "fs_file_system.cpp"
@@ -77,15 +87,17 @@ set(fs_manager
 )
 source_group("fs_manager" FILES ${fs_manager})
 
-set(fs_manager__linux
-#    "fs_catalog_operations_linux_impl.h"
-)
-source_group("fs_manager\\linux" FILES ${fs_manager__linux})
-
-set(fs_manager__win
-    "fs_catalog_operations_win_impl.h"
-)
-source_group("fs_manager\\win" FILES ${fs_manager__win})
+if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    set(fs_manager__linux
+        "fs_catalog_operations_linux_impl.h"
+    )
+    source_group("fs_manager\\linux" FILES ${fs_manager__linux})
+else()
+    set(fs_manager__win
+        "fs_catalog_operations_win_impl.h"
+    )
+    source_group("fs_manager\\win" FILES ${fs_manager__win})
+endif()
 
 set(macros
     "../../c_array_functions.h"
@@ -137,15 +149,17 @@ set(memory
 )
 source_group("memory" FILES ${memory})
 
-set(memory__linux
-#    "memory_chunk_reader_linux.cpp"
-)
-source_group("memory\\linux" FILES ${memory__linux})
-
-set(memory__win
-    "memory_chunk_reader_win.cpp"
-)
-source_group("memory\\win" FILES ${memory__win})
+if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    set(memory__linux
+        "memory_chunk_reader_linux.cpp"
+    )
+    source_group("memory\\linux" FILES ${memory__linux})
+else()
+    set(memory__win
+        "memory_chunk_reader_win.cpp"
+    )
+    source_group("memory\\win" FILES ${memory__win})
+endif()
 
 # set(miscellanous
 #     "core.cbp"
@@ -155,12 +169,20 @@ source_group("memory\\win" FILES ${memory__win})
 # )
 # source_group("miscellanous" FILES ${miscellanous})
 
-set(os
-    "../../os_extensions.h"
-    "../../os_include.h"
-    "../../os_linux.h"
-    "../../os_windows.h"
-)
+if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    set(os
+        "../../os_extensions.h"
+        "../../os_include.h"
+        "../../os_linux.h"
+    )
+else()
+    set(os
+        "../../os_extensions.h"
+        "../../os_include.h"
+        "../../os_windows.h"
+    )
+endif()
+
 source_group("os" FILES ${os})
 
 set(resources
@@ -178,17 +200,33 @@ set(tasks
 )
 source_group("tasks" FILES ${tasks})
 
-set(threading
-    "../../threading_functions.h"
-    "../../threading_functions_win_inline.h"
-    "../../threading_policies.h"
-    "cpuid_internal.cpp"
-    "cpuid_internal.h"
-    "ie_syncronize.cpp"
-    "ie_syncronize.h"
-    "processor_info.cpp"
-    "processor_info.h"
-)
+
+if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    set(threading
+        "../../threading_functions.h"
+        "../../threading_functions_linux_inline.h"
+        "../../threading_policies.h"
+        "cpuid_internal.cpp"
+        "cpuid_internal.h"
+        "ie_syncronize.cpp"
+        "ie_syncronize.h"
+        "processor_info.cpp"
+        "processor_info.h"
+    )
+else()
+    set(threading
+        "../../threading_functions.h"
+        "../../threading_functions_win_inline.h"
+        "../../threading_policies.h"
+        "cpuid_internal.cpp"
+        "cpuid_internal.h"
+        "ie_syncronize.cpp"
+        "ie_syncronize.h"
+        "processor_info.cpp"
+        "processor_info.h"
+    )
+endif()
+
 source_group("threading" FILES ${threading})
 
 set(ALL_FILES
@@ -238,7 +276,7 @@ elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
     set_target_properties(${PROJECT_NAME} PROPERTIES
         OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/../binaries/msvc_${CMAKE_VS_PLATFORM_NAME}/"
         OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/../binaries/"
-    )
+    ) 
 endif()
 if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
     set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -259,6 +297,11 @@ elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         ARCHIVE_OUTPUT_NAME_DEBUG   "${PROJECT_NAME}"
         ARCHIVE_OUTPUT_NAME_RELEASE "${PROJECT_NAME}"
     )
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        ARCHIVE_OUTPUT_NAME_DEBUG   "${PROJECT_NAME}"
+        ARCHIVE_OUTPUT_NAME_RELEASE "${PROJECT_NAME}"
+    )
 endif()
 if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
     set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -268,6 +311,45 @@ elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
     set_target_properties(${PROJECT_NAME} PROPERTIES
         INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
     )
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
+    )
+endif()
+
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/../binaries/linux_gcc_${CMAKE_VS_PLATFORM_NAME}/"
+        LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/../binaries/"
+
+        ARCHIVE_OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/../binaries/libraries/linux_gcc_${CMAKE_VS_PLATFORM_NAME}/"
+        ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/../libraries/"
+        
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/../binaries/linux_gcc_${CMAKE_VS_PLATFORM_NAME}/"
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/../binaries/"
+    )
+
+    message(STATUS "CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
+    message(STATUS "PROJECT_NAME: ${PROJECT_NAME}")
+
+    get_target_property(LIB_DEBUG_OUTPUT ${PROJECT_NAME} LIBRARY_OUTPUT_DIRECTORY_DEBUG)
+    get_target_property(LIB_RELEASE_OUTPUT ${PROJECT_NAME} LIBRARY_OUTPUT_DIRECTORY_RELEASE)
+
+    get_target_property(ARCHIVE_DEBUG_OUTPUT ${PROJECT_NAME} ARCHIVE_OUTPUT_DIRECTORY_DEBUG)
+    get_target_property(ARCHIVE_RELEASE_OUTPUT ${PROJECT_NAME} ARCHIVE_OUTPUT_DIRECTORY_RELEASE)
+
+    get_target_property(RUNTIME_DEBUG_OUTPUT ${PROJECT_NAME} RUNTIME_OUTPUT_DIRECTORY_DEBUG)
+    get_target_property(RUNTIME_RELEASE_OUTPUT ${PROJECT_NAME} RUNTIME_OUTPUT_DIRECTORY_RELEASE)
+
+    message(STATUS "LIBRARY_OUTPUT_DIRECTORY_DEBUG: ${LIB_DEBUG_OUTPUT}")
+    message(STATUS "LIBRARY_OUTPUT_DIRECTORY_RELEASE: ${LIB_RELEASE_OUTPUT}")
+
+    message(STATUS "ARCHIVE_OUTPUT_DIRECTORY_DEBUG: ${ARCHIVE_DEBUG_OUTPUT}")
+    message(STATUS "ARCHIVE_OUTPUT_DIRECTORY_RELEASE: ${ARCHIVE_RELEASE_OUTPUT}")
+
+    message(STATUS "RUNTIME_OUTPUT_DIRECTORY_DEBUG: ${RUNTIME_DEBUG_OUTPUT}")
+    message(STATUS "RUNTIME_OUTPUT_DIRECTORY_RELEASE: ${RUNTIME_RELEASE_OUTPUT}")
+    
 endif()
 ################################################################################
 # Include directories
@@ -279,6 +361,12 @@ if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
         ">"
     )
 elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
+    target_include_directories(${PROJECT_NAME} PUBLIC
+        "$<$<CONFIG:Debug>:"
+            "${CMAKE_CURRENT_SOURCE_DIR}/../../.."
+        ">"
+    )
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
     target_include_directories(${PROJECT_NAME} PUBLIC
         "$<$<CONFIG:Debug>:"
             "${CMAKE_CURRENT_SOURCE_DIR}/../../.."
@@ -326,6 +414,23 @@ elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
             "_UNICODE"
         ">"
         "_WINDOWS;"
+        "_USRDLL;"
+        "IECORE_EXPORTS"
+    )
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    target_compile_definitions(${PROJECT_NAME} PRIVATE
+        "$<$<CONFIG:Debug>:"
+            "_DEBUG;"
+            "DEBUG;"
+            "_MBCS"
+        ">"
+        "$<$<CONFIG:Release>:"
+            "LINUX;"
+            "NDEBUG;"
+            "UNICODE;"
+            "_UNICODE"
+        ">"
+        "_LINUX;"
         "_USRDLL;"
         "IECORE_EXPORTS"
     )

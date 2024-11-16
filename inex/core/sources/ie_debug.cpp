@@ -6,9 +6,9 @@
 #include <inex/core/sources/log_callback.h>
 #include <stdlib.h>
 
-#if INEX_PLATFORM_LINUX
-#       include <X11/Xlib.h>
-#endif // #if INEX_PLAFTOFM_LINUX
+//#if INEX_PLATFORM_LINUX
+//#       include <X11/Xlib.h>
+//#endif // #if INEX_PLAFTOFM_LINUX
 
 //#define s_PRIMARY   "PRIMARY"
 //#define s_CLIPBOARD "CLIPBOARD"
@@ -263,6 +263,7 @@ void	fatal ( pcstr 	file,
 	dump_call_stack_trace	    ( );
 	memory::dump_memory_contents( );
 
+/*
 #if INEX_PLATFORM_LINUX
     Display *   d;
     Window      w;
@@ -301,6 +302,7 @@ void	fatal ( pcstr 	file,
     XDestroyWindow  ( d, w );
     XCloseDisplay   ( d );
 #endif // #if INEX_PLATFORM_LINUX
+*/
 
 // 	if ( s_display )
 //     {

@@ -34,7 +34,7 @@ static inex::core::engine * s_engine	= nullptr;
 
 static u32		s_processor_features        { };
 
-void inex::core::preinitialize		( core::engine *								engine,
+void preinitialize		( core::engine *								engine,
 									  pcstr const									command_line,
 									  bool const									command_line_contains_application,
 									  pcstr	const									application,
@@ -69,7 +69,7 @@ void	bench ( u32* value_1, u32  size )
 	return ;
 }
 
-bool inex::core::initialized ( )
+bool initialized ( )
 {
 	return					s_initialized;
 }
@@ -80,11 +80,11 @@ static void   initialize_logging ( flags8 const log_file_usage )
 	// calculate verbosity from command line
 }
 
-void inex::core::initialize			(
-		pcstr const debug_thread_id,
-		log_file_usage const log_file_usage,
-		debug_initialization const debug_initialization
-	)
+void	initialize			(
+			pcstr const debug_thread_id,
+			log_file_usage const log_file_usage,
+			debug_initialization const debug_initialization
+		)
 {
 	ASSERT_D				( !s_initialized, "you cannot initialize core when it has been initialized already" );
 	// for language-dependent strings

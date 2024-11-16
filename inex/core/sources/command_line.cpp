@@ -17,8 +17,19 @@ static u32					s_command_line_keys_count			=	0;
 static char					s_command_line_keys_buffer				[sizeof( threading::atomic32_value_type ) * CHAR_BIT];
 #elif INEX_PLATFORM_WINDOWS_32 // #if INEX_PLATFORM_WINDOWS_64
 static char					s_command_line_keys_buffer				[sizeof( threading::atomic32_value_type ) * CHAR_BIT / 2];
+#elif INEX_PLATFORM_LINUX // #if INEX_PLATFORM_WINDOWS_64
+#	include <climits>
+static char 				s_command_line_keys_buffer				[sizeof( threading::atomic32_value_type ) * CHAR_BIT];
+#else
+#	error please define s_command_line_keys_buffer for your platform
 #endif // #if INEX_PLATFORM_WINDOWS_64
 static threading::atomic32_type	s_command_line_keys_creation	=	0;
+
+void   protected_key_construct (pvoid keyptr_)
+{
+	key * const keyptr	=	(key *)keyptr_;
+	keyptr->protected_construct ();
+}
 
 key::key (pcstr full_name, pcstr short_name, pcstr category, pcstr description, pcstr argument_description) : 
 																	m_full_name(full_name), 
@@ -32,12 +43,6 @@ key::key (pcstr full_name, pcstr short_name, pcstr category, pcstr description, 
 	//debug::preinitialize						( );
 	//logging::preinitialize					( );
 	debug::protected_call						( protected_key_construct, this );
-}
-
-void   protected_key_construct (pvoid keyptr_)
-{
-	key * const keyptr	=	(key *)keyptr_;
-	keyptr->protected_construct ();
 }
 
 static
@@ -70,10 +75,14 @@ void   key::protected_construct ()
 
 	if ( !s_command_line_keys )
 	{
+#if INEX_PLATFORM_LINUX
+#pragma message("not implemented")
+#else // #if INEX_PLATFORM_LINUX
 		bind_pointer_to_buffer_mt_safe	(	s_command_line_keys, 
 											s_command_line_keys_buffer, 
 											s_command_line_keys_creation,
 											bind_pointer_to_buffer_mt_safe_placement_new_predicate() );
+#endif // #if INEX_PLATFORM_LINUX
 	}
 
 	s_command_line_keys->push_back			(this);

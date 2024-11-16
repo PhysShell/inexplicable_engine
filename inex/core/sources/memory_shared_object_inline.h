@@ -158,7 +158,7 @@ typename SHARED_OBJECT_TEMPLATE::pointer const    SHARED_OBJECT_TEMPLATE::get ( 
 
 TEMPLATE_SPECIALIZATION
 inline
-const typename SHARED_OBJECT_TEMPLATE::pointer const  SHARED_OBJECT_TEMPLATE::get ( ) const
+const typename SHARED_OBJECT_TEMPLATE::const_pointer  SHARED_OBJECT_TEMPLATE::get ( ) const
 {
     return              m_data;
 }

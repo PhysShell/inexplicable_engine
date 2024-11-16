@@ -239,6 +239,15 @@ ModelManifest.xml
 # Paket dependency manager
 .paket/paket.exe
 
+# Ignore Cmake directory
+CMakeFiles/
+
+# Ignore Cmake files
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+build/
+
 # FAKE - F# Make
 .fake/
 inex/core/binaries/intermediates/mingw64_dbg/core/sources/detail_test.o

@@ -13,12 +13,13 @@ message( STATUS "Compiler      : ${CMAKE_CXX_COMPILER_ID}")
 # Set target arch type if empty. Visual studio solution generator provides it.
 ################################################################################
 if(NOT CMAKE_VS_PLATFORM_NAME)
-    set(CMAKE_VS_PLATFORM_NAME "x64")
+    set(CMAKE_VS_PLATFORM_NAME "Linux")
 endif()
 message(STATUS "${CMAKE_VS_PLATFORM_NAME} architecture in use")
 
 if(NOT ("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64"
-     OR "${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32"))
+     OR "${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32"
+     OR "${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux"))
     message(FATAL_ERROR "${CMAKE_VS_PLATFORM_NAME} is unknown; please define your architecture")
 endif()
 
@@ -103,5 +104,12 @@ add_subdirectory(inex/game/pc/sources)
 add_subdirectory(inex/render/base/sources)
 add_subdirectory(inex/render/gl4/sources)
 add_subdirectory(inex/sound/sources)
-add_subdirectory(inex/ui/sources)
+
+if(NOT ("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64"
+     OR "${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32"))
+    message(STATUS "UI is Windows only; skip building")
+elseif(
+    add_subdirectory(inex/ui/sources)
+)
+endif()
 

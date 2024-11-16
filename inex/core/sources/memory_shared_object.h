@@ -37,6 +37,7 @@ class shared_object
 public:
     typedef shared_object < T >     self_type;
     typedef T*                      pointer;
+    typedef T* const                const_pointer;
     typedef T                       element_type;
 // to make static member which look for memory leaks ( very simple )
 public:
@@ -56,7 +57,7 @@ public:
                         }
 
     pointer const       get             ( );
-    const pointer const get             ( ) const;
+    const const_pointer get             ( ) const;
     // m_data should be const TYPE to const operator * version to be called
     element_type const& operator *      ( ) const;
     element_type&       operator *      ( );

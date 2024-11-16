@@ -3,35 +3,59 @@ set(PROJECT_NAME engine)
 ################################################################################
 # Source groups
 ################################################################################
-set(no_group_source_files
-    "../api.h"
-    "../engine_user.h"
-    "../library_dependencies.h"
-    "engine_entry_point.cpp"
-    "engine_memory.h"
-    "engine_world.cpp"
-    "engine_world.h"
-    "engine_world_logic.cpp"
-    "engine_world_win.cpp"
-#    "library_loader.h"
-    "pch.cpp"
-    "pch.h"
-)
+if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    set(no_group_source_files
+        "../api.h"
+        "../engine_user.h"
+        "../library_dependencies.h"
+        "engine_entry_point.cpp"
+        "engine_memory.h"
+        "engine_world.cpp"
+        "engine_world.h"
+        "engine_world_logic.cpp"
+        "engine_world_linux.cpp"
+    #    "library_loader.h"
+        "pch.cpp"
+        "pch.h"
+    )
+else()
+    set(no_group_source_files
+        "../api.h"
+        "../engine_user.h"
+        "../library_dependencies.h"
+        "engine_entry_point.cpp"
+        "engine_memory.h"
+        "engine_world.cpp"
+        "engine_world.h"
+        "engine_world_logic.cpp"
+        "engine_world_win.cpp"
+    #    "library_loader.h"
+        "pch.cpp"
+        "pch.h"
+    )
+endif()
+
 source_group("" FILES ${no_group_source_files})
 
-set(miscellanous
-    "engine.cbp"
-    "engine.depend"
-    "engine.filters"
-    "engine.layout"
-    "stdafx.h.gch"
-)
-source_group("miscellanous" FILES ${miscellanous})
+if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    set(ALL_FILES
+        ${no_group_source_files}
+    )
+else()
+    set(miscellanous
+        "engine.cbp"
+        "engine.depend"
+        "engine.filters"
+        "engine.layout"
+        "stdafx.h.gch"
+    )
+    source_group("miscellanous" FILES ${miscellanous})
 
-set(ALL_FILES
-    ${no_group_source_files}
-    ${miscellanous}
-)
+    set(ALL_FILES
+        ${no_group_source_files}
+        ${miscellanous}
+    )
+endif()
 
 ################################################################################
 # Target
@@ -61,6 +85,11 @@ elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/../binaries/msvc_${CMAKE_VS_PLATFORM_NAME}/"
         OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/../binaries/msvc_${CMAKE_VS_PLATFORM_NAME}/"
     )
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/../binaries/linux_gcc_${CMAKE_VS_PLATFORM_NAME}/"
+        OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/../binaries/linux_gcc_${CMAKE_VS_PLATFORM_NAME}/"
+    )
 endif()
 if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
     set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -69,6 +98,11 @@ if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
 elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
     set_target_properties(${PROJECT_NAME} PROPERTIES
         ARCHIVE_OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/../binaries/libraries/msvc_${CMAKE_VS_PLATFORM_NAME}"
+        ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_SOURCE_DIR}/../../libraries"
+    )
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        ARCHIVE_OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/../binaries/libraries/linux_gcc_${CMAKE_VS_PLATFORM_NAME}"
         ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_SOURCE_DIR}/../../libraries"
     )
 endif()
@@ -81,12 +115,21 @@ elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         ARCHIVE_OUTPUT_NAME_DEBUG   "${PROJECT_NAME}"
         ARCHIVE_OUTPUT_NAME_RELEASE "${PROJECT_NAME}"
     )
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        ARCHIVE_OUTPUT_NAME_DEBUG   "${PROJECT_NAME}"
+        ARCHIVE_OUTPUT_NAME_RELEASE "${PROJECT_NAME}"
+    )
 endif()
 if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
     set_target_properties(${PROJECT_NAME} PROPERTIES
         INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
     )
 elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
+    )
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
     set_target_properties(${PROJECT_NAME} PROPERTIES
         INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
     )
@@ -101,6 +144,13 @@ if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
         ">"
     )
 elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
+    target_include_directories(${PROJECT_NAME} PUBLIC
+        "$<$<CONFIG:Debug>:"
+            "${CMAKE_CURRENT_SOURCE_DIR}/../../3rd_patry/include;"
+            "${CMAKE_CURRENT_SOURCE_DIR}/../../.."
+        ">"
+    )
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
     target_include_directories(${PROJECT_NAME} PUBLIC
         "$<$<CONFIG:Debug>:"
             "${CMAKE_CURRENT_SOURCE_DIR}/../../3rd_patry/include;"
@@ -140,8 +190,27 @@ elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
             "_UNICODE"
         ">"
     )
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    target_compile_definitions(${PROJECT_NAME} PRIVATE
+        "$<$<CONFIG:Debug>:"
+            "INEX_ENGINE_EXPORT;"
+            "_DEBUG;"
+            "_MBCS"
+        ">"
+        "$<$<CONFIG:Release>:"
+            #"WIN32;"
+            "NDEBUG;"
+            "_CONSOLE;"
+            "UNICODE;"
+            "_UNICODE"
+        ">"
+    )
 endif()
 if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
+    set_source_files_properties(engine_entry_point.cpp PROPERTIES
+        COMPILE_DEFINITIONS_DEBUG "_DEBUG"
+    )
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
     set_source_files_properties(engine_entry_point.cpp PROPERTIES
         COMPILE_DEFINITIONS_DEBUG "_DEBUG"
     )
@@ -220,11 +289,19 @@ endif()
 ################################################################################
 # Dependencies
 ################################################################################
-add_dependencies(${PROJECT_NAME}
-    render_base
-    sound
-    ui
-)
+if(NOT "${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    add_dependencies(${PROJECT_NAME}
+        render_base
+        sound
+        ui
+    )
+else()
+    add_dependencies(${PROJECT_NAME}
+        render_base
+        sound
+    )
+endif()
+
 
 # Link with other targets.
 target_link_libraries(${PROJECT_NAME} PUBLIC
@@ -286,5 +363,6 @@ elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
             "${CMAKE_SOURCE_DIR}/../binaries/libraries/msvc_${CMAKE_VS_PLATFORM_NAME}/"
         ">"
     )
+    
 endif()
 
