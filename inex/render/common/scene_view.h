@@ -5,7 +5,11 @@
 namespace inex {
 
 namespace particle {
-	enum enum_particle_render_mode;
+	enum enum_particle_render_mode
+	{
+		particle_render_mode_blend,
+		particle_render_mode_palette
+	}; // enum enum_particle_render_mode
 }
 
 namespace render {

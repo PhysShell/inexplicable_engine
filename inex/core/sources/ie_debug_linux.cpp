@@ -79,3 +79,14 @@ pcstr	error2string ( u32 code )
 } // namespace debug
 } // namespace core
 } // namespace inex
+
+void inex::debug::protected_call							( protected_function_type* function_to_call, pvoid argument )
+{
+	// core::debug::set_thread_stack_guarantee	( );
+
+	__try {
+		( * function_to_call	)	( argument );
+	}
+	__catch ( ... ) {
+	}
+}

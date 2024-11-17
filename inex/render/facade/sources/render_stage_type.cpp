@@ -1,4 +1,4 @@
-#include "pch.h"
+#include <inex/render/gl4/sources/pch.h>
 #include <inex/render/facade/render_stage_type.h>
 
 namespace inex {

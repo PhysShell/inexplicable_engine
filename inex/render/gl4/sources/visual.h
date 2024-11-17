@@ -85,7 +85,6 @@ inline  void            attach          ( T t, Args ... args )
 
 private:
     template < typename T > struct helper               {   enum { value = 0 }; };
-    template < >            struct helper  < shader >   {   enum { value = 1 }; };
     template < typename T >
 inline  void            attach   ( T t )
                         {
@@ -96,6 +95,9 @@ inline  void            attach   ( T t )
 private:
     u32                 m_shader_program                    ;
 }; // class shader_program
+
+template < >
+struct shader_program::helper  < shader >   { enum { value = 1 }; };
 
 } // namespace render_ogl
 } // namespace
@@ -206,9 +208,9 @@ public:
 				{
 					NOT_IMPLEMENTED();
 		   float vertices_raw[] = {
-        -0.5f, -0.5f, 0.0f, // левая вершина
-         0.5f, -0.5f, 0.0f, // правая вершина
-         0.0f,  0.5f, 0.0f  // верхняя вершина   
+        -0.5f, -0.5f, 0.0f, // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+         0.5f, -0.5f, 0.0f, // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+         0.0f,  0.5f, 0.0f  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ   
     };
 			//resources::managed_resource_ptr resource;
 			//resource.m_vertices	= vertices;
@@ -253,7 +255,7 @@ public:
 	virtual		void	render							( )
 						{
 							m_program.use();
-							glBindVertexArray		(index_buffer_id); // поскольку у нас есть только один VAO, то нет необходимости связывать его каждый раз (но мы сделаем это, чтобы всё было немного организованнее)
+							glBindVertexArray		(index_buffer_id); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ VAO, пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ (пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
 							glDrawArrays			(GL_TRIANGLES, 0, 3);
 						}
 	virtual render_mesh* mesh							( )	{ return this; }

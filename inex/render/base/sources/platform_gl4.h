@@ -41,7 +41,7 @@ public:
 
 	typedef inex::render::ui::vertex const *	ui_vertices_type;
 
-	inex::render::renderer *					m_renderer;
+	inex::render::gl4::renderer *					m_renderer;
 
 public:
 							platform					( inex::render::engine::wrapper& wrapper, HWND window_handle );

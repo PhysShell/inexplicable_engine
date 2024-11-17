@@ -1,13 +1,15 @@
-#include "pch.h"
+#include <inex/render/gl4/sources/pch.h>
 #include "hw_wrapper.h"
 #include <inex/render/base/engine_wrapper.h>
 #include <inex/core/sources/ie_memory.h>
 #include <inex/render/gl4/gl4_extensions.h>
-#include <inex/render/common/sources/hw_wrapper_base_gl4_win_winapi.h>
 
 #if INEX_PLATFORM_WINDOWS
+#	include <inex/render/common/sources/hw_wrapper_base_gl4_win_winapi.h>
 //#	pragma comment( lib, "glfw3.lib" )
 #	pragma comment( lib, "opengl32.lib" )
+#elif INEX_PLATFORM_LINUX
+#	include <inex/render/common/sources/hw_wrapper_base_gl4_linux_xlib.h>
 #endif // #if INEX_PLATFORM_WINDOWS
 
 /* Global extension */
@@ -175,7 +177,13 @@ void hw_wrapper::create_device(HWND hwnd, bool move_window)
 	constexpr u32 size_x	= 1024;
 	constexpr u32 size_y	= 620;
 
+#if INEX_PLATFORM_WINDOWS
 	hw_wrapper_base::create(size_x, size_y, "inexplicable_engine_winapi_renderer", GetModuleHandleW( NULL ), 0);
+#elif INEX_PLATFORM_LINUX
+	hw_wrapper_base::create(100, 100, "inexplicable_engine_x11_renderer");
+#else
+#	error please define your platform call
+#endif 
 	//VERIFY 					( g_gl4_context );
 }
 

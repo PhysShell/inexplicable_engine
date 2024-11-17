@@ -159,9 +159,9 @@ platform::platform					( inex::render::engine::wrapper& wrapper, HWND const wind
 	cam_yaw_speed				= system_config.r_float( "Camera", "yaw_speed" );
 
     GLfloat vertices3[] = {
-        -0.5f, -0.5f, 0.0f, // левая вершина
-         0.5f, -0.5f, 0.0f, // правая вершина
-         0.0f,  0.5f, 0.0f  // верхняя вершина   
+        -0.5f, -0.5f, 0.0f, // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+         0.5f, -0.5f, 0.0f, // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+         0.0f,  0.5f, 0.0f  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ   
     };
 
 	GLfloat points[ ] = {
@@ -313,7 +313,7 @@ void platform::draw_frame			( )
 
 	if( 1 ||  GLX.x_event.type == Expose )
 	{
-		update_fps_counter			( g_gl4_context );
+		//update_fps_counter			( g_gl4_context );
 
 		XGetWindowAttributes		( g_gl4_context->display, g_gl4_context->window, &g_gl4_context->x_window_attributes );
 		glClear                 	( GL_COLOR_BUFFER_BIT );
@@ -381,44 +381,44 @@ void platform::draw_frame			( )
 				GLX.x_event.xkey.keycode == KEY_UP || GLX.x_event.xkey.keycode == KEY_DOWN ||
 				GLX.x_event.xkey.keycode == KEY_LEFT || GLX.x_event.xkey.keycode == KEY_RIGHT )
 		{
-			cam_moved	= 1;
+			//cam_moved	= 1;
 		}
 	}
 
 	// update view matrix
-	if ( cam_moved )
-	{
-		// control keys
-		if ( GLX.x_event.xkey.keycode == KEY_A )
-			cam_pos[ 0 ] 		-= cam_speed ;
+	// if ( cam_moved )
+	// {
+	// 	// control keys
+	// 	if ( GLX.x_event.xkey.keycode == KEY_A )
+	// 		cam_pos[ 0 ] 		-= cam_speed ;
 
-		if ( GLX.x_event.xkey.keycode == KEY_D )
-			cam_pos[ 0 ] 		+= cam_speed ;
+	// 	if ( GLX.x_event.xkey.keycode == KEY_D )
+	// 		cam_pos[ 0 ] 		+= cam_speed ;
 
-		if ( GLX.x_event.xkey.keycode == KEY_UP )
-			cam_pos[ 1 ] 		+= cam_speed ;
+	// 	if ( GLX.x_event.xkey.keycode == KEY_UP )
+	// 		cam_pos[ 1 ] 		+= cam_speed ;
 
-		if ( GLX.x_event.xkey.keycode == KEY_DOWN )
-			cam_pos[ 1 ] 		-= cam_speed ;
+	// 	if ( GLX.x_event.xkey.keycode == KEY_DOWN )
+	// 		cam_pos[ 1 ] 		-= cam_speed ;
 
-		if ( GLX.x_event.xkey.keycode == KEY_W )
-			cam_pos[ 2 ] 		-= cam_speed ;
+	// 	if ( GLX.x_event.xkey.keycode == KEY_W )
+	// 		cam_pos[ 2 ] 		-= cam_speed ;
 
-		if ( GLX.x_event.xkey.keycode == KEY_S )
-			cam_pos[ 2 ] 		+= cam_speed ;
+	// 	if ( GLX.x_event.xkey.keycode == KEY_S )
+	// 		cam_pos[ 2 ] 		+= cam_speed ;
 
-		if ( GLX.x_event.xkey.keycode == KEY_LEFT )
-			cam_yaw 			+= cam_yaw_speed ;
+	// 	if ( GLX.x_event.xkey.keycode == KEY_LEFT )
+	// 		cam_yaw 			+= cam_yaw_speed ;
 
-		if ( GLX.x_event.xkey.keycode == KEY_RIGHT )
-			cam_yaw 			-= cam_yaw_speed ;
+	// 	if ( GLX.x_event.xkey.keycode == KEY_RIGHT )
+	// 		cam_yaw 			-= cam_yaw_speed ;
 
-		math::float4x4 T		= math::translate4x4( math::identity4x4 ( ), float3 (-cam_pos[0], -cam_pos[1], -cam_pos[2] ) ); // cam translation
-		math::float4x4 R		= math::rotate_yaw	( math::identity4x4 ( ), -cam_yaw );
-		math::float4x4 view_mat = R * T;
+	// 	math::float4x4 T		= math::translate4x4( math::identity4x4 ( ), float3 (-cam_pos[0], -cam_pos[1], -cam_pos[2] ) ); // cam translation
+	// 	math::float4x4 R		= math::rotate_yaw	( math::identity4x4 ( ), -cam_yaw );
+	// 	math::float4x4 view_mat = R * T;
 
-		glUniformMatrix4fv ( view_mat_location, 1, GL_FALSE, view_mat.elements );
-	}
+	// 	glUniformMatrix4fv ( view_mat_location, 1, GL_FALSE, view_mat.elements );
+	// }
 
 	m_model_manager.get_visuals( ).at( 0 )->m_program.unbind( );
 

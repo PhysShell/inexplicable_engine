@@ -1,7 +1,9 @@
 #pragma once
 
 #include <inex/render/base/base_classes.h>
-
+#if INEX_PLATFORM_LINUX
+#	include <inex/render/common/scene.h>
+#endif // #if INEX_PLATFORM_LINUX
 namespace inex {
 namespace render {
 class scene;
@@ -13,10 +15,10 @@ public:
 						renderer_context		( );
 	
 	void				set_scene				( scene * scene );
-	scene *				scene					()							{ return m_scene;}
+	scene *				get_scene				( )							{ return m_scene; }
 	
-	void				set_scene_view			( scene_view_ptr view_ptr);
-	scene_view const *	scene_view				()	const;
+	void				set_scene_view			( scene_view_ptr view_ptr );
+	scene_view const *	get_scene_view			( )	const;
 
 	void				create_casceded_shadow_map_buffers(u32 shadow_map_size);
 	

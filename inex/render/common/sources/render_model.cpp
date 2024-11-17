@@ -1,4 +1,4 @@
-#include "pch.h"
+#include <inex/render/gl4/sources/pch.h>
 #include <inex/render/common/render_model.h>
 
 namespace inex {

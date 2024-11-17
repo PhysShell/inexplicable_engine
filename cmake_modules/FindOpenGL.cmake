@@ -1,0 +1,30 @@
+# FindOpenGL.cmake
+
+find_path(OPENGL_INCLUDE_DIR
+    NAMES GL/gl.h
+    PATH_SUFFIXES GL
+)
+
+find_library(OPENGL_LIBRARY
+    NAMES GL
+)
+
+find_library(OPENGL_GLX_LIBRARY
+    NAMES GLX
+)
+
+if(OPENGL_INCLUDE_DIR AND OPENGL_LIBRARY AND OPENGL_GLX_LIBRARY)
+    set(OPENGL_FOUND TRUE)
+    set(OPENGL_INCLUDE_DIRS ${OPENGL_INCLUDE_DIR})
+    set(OPENGL_LIBRARIES ${OPENGL_LIBRARY} ${OPENGL_GLX_LIBRARY})
+else()
+    set(OPENGL_FOUND FALSE)
+endif()
+
+if(OPENGL_FOUND)
+    message(STATUS "Found OpenGL: ${OPENGL_LIBRARIES} (include: ${OPENGL_INCLUDE_DIRS})")
+else()
+    message(WARNING "Could NOT find OpenGL")
+endif()
+
+mark_as_advanced(OPENGL_INCLUDE_DIR OPENGL_LIBRARY OPENGL_GLX_LIBRARY)

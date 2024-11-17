@@ -21,7 +21,7 @@
 #	endif // #if INEX_PLATFORM_WINDOWS
 
 #	if INEX_PLATFORM_LINUX
-#	error please use hw_wrapper_context instead of this
+//#	error please use hw_wrapper_context instead of this
 // Context
 struct gl_context
 {

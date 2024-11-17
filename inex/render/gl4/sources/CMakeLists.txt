@@ -3,23 +3,46 @@ set(PROJECT_NAME render_gl4)
 ################################################################################
 # Source groups
 ################################################################################
-set(no_group_source_files
-    "../../common/sources/camera.h"
-    "../../common/sources/system_render.h"
-    "cpp.hint"
-    "ReadMe.txt"
-    "render_ogl3.cpp"
-    "system_render.cpp"
-    "targetver.h"
-)
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+    set(no_group_source_files
+        "../../common/sources/camera.h"
+        "../../common/sources/system_render.h"
+        "render_ogl3.cpp"
+        "system_render.cpp"
+    )
+elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Win32" OR "${CMAKE_SYSTEM_NAME}" STREQUAL "x64")
+    set(no_group_source_files
+        "../../common/sources/camera.h"
+        "../../common/sources/system_render.h"
+        "cpp.hint"
+        "ReadMe.txt"
+        "render_ogl3.cpp"
+        "system_render.cpp"
+        "targetver.h"
+    )
+else()
+    message(FATAL_ERROR, "please define 'no_group_source_files' for your platform")
+endif()
+
 source_group("" FILES ${no_group_source_files})
 
-set(core
-    "../../core/quasi_singleton.h"
-    "dllmain.cpp"
-    "pch.cpp"
-    "pch.h"
-)
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+    set(core
+        "../../core/quasi_singleton.h"
+        "pch.cpp"
+        "pch.h"
+    )
+elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Win32" OR "${CMAKE_SYSTEM_NAME}" STREQUAL "x64")
+    set(core
+        "../../core/quasi_singleton.h"
+        "dllmain.cpp"
+        "pch.cpp"
+        "pch.h"
+    )
+else()
+    message(FATAL_ERROR, "[${PROJECT_NAME}]: please define 'core' for your platform")
+endif()
+
 source_group("core" FILES ${core})
 
 set(include
@@ -68,11 +91,20 @@ set(render_common__hw_wrapper__hw_caps
 )
 source_group("render_common\\hw_wrapper\\hw_caps" FILES ${render_common__hw_wrapper__hw_caps})
 
-set(render_common__win
-    "../../common/sources/hw_wrapper_base_gl4_win_winapi.cpp"
-    "../../common/sources/hw_wrapper_base_gl4_win_winapi.h"
-)
-source_group("render_common\\win" FILES ${render_common__win})
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+    set(render_common__platform
+        "../../common/sources/hw_wrapper_base_gl4_linux_xlib.h"
+    )
+    source_group("render_common\\linux" FILES ${render_common__platform})
+elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Win32" OR "${CMAKE_SYSTEM_NAME}" STREQUAL "x64")
+    set(render_common__platform
+        "../../common/sources/hw_wrapper_base_gl4_win_winapi.cpp"
+        "../../common/sources/hw_wrapper_base_gl4_win_winapi.h"
+    )
+    source_group("render_common\\win" FILES ${render_common__platform})
+else()
+    message(FATAL_ERROR, "[${PROJECT_NAME}]: please define 'render_common__platform' for your platform")
+endif()
 
 set(resources
     "../../common/sources/res_shader.h"
@@ -129,7 +161,7 @@ set(ALL_FILES
     ${objects}
     ${render_common__hw_wrapper}
     ${render_common__hw_wrapper__hw_caps}
-    ${render_common__win}
+    ${render_common__platform}
     ${resources}
     ${resources__model__render_models__base}
     ${resources__scene}
@@ -154,6 +186,26 @@ set(ROOT_NAMESPACE render_ogl3)
 set_target_properties(${PROJECT_NAME} PROPERTIES
     VS_GLOBAL_KEYWORD "Win32Proj"
 )
+
+################################################################################
+# 3rd party packages
+################################################################################
+
+if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules")
+
+    find_package(OpenGL REQUIRED)
+    
+    if(OPENGL_FOUND)
+        target_include_directories(${PROJECT_NAME} PRIVATE ${OPENGL_INCLUDE_DIRS})
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${OPENGL_LIBRARIES})
+    else()
+        message(FATAL_ERROR "OpenGL not found.")
+    endif()
+else()
+    message(WARNING "OpenGL not configured on your platform.")
+endif()
+
 ################################################################################
 # Target name
 ################################################################################
@@ -242,6 +294,23 @@ elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         "_WINDOWS;"
         "_USRDLL"
     )
+elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+    target_compile_definitions(${PROJECT_NAME} PRIVATE
+        "$<$<CONFIG:Debug>:"
+            "_DEBUG;"
+            "_MBCS"
+        ">"
+        "$<$<CONFIG:Release>:"
+            "NDEBUG;"
+            "UNICODE;"
+            "_UNICODE"
+        ">"
+        "RENDER_OGL3_EXPORTS;"
+        "INEX_RENDER_GL4_EXPORTS;"
+        "_LINUX"
+    )
+else()
+    message(FATAL_ERROR "[${PROJECT_NAME}]: please define 'target_compile_definitions' for your platform")
 endif()
 
 ################################################################################

@@ -3,19 +3,35 @@ set(PROJECT_NAME game_pc)
 ################################################################################
 # Source groups
 ################################################################################
-set(no_group_source_files
-    "../../game_module_proxy.h"
-    "game_pc.h"
-    "game_pc_application.cpp"
-    "game_pc_application.h"
-    "game_pc_application_win.cpp"
-    "game_pc_entry_point_win.cpp"
-    "pch.cpp"
-    "pch.h"
-    "ReadMe.txt"
-    "Resource.h"
-    "targetver.h"
-)
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+    set(no_group_source_files
+        "../../game_module_proxy.h"
+        "game_pc.h"
+        "game_pc_application.cpp"
+        "game_pc_application.h"
+        "game_pc_application_linux.cpp"
+        "game_pc_entry_point_linux.cpp"
+        "pch.cpp"
+        "pch.h"
+    )
+elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Win32" OR "${CMAKE_SYSTEM_NAME}" STREQUAL "x64")
+    set(no_group_source_files
+        "../../game_module_proxy.h"
+        "game_pc.h"
+        "game_pc_application.cpp"
+        "game_pc_application.h"
+        "game_pc_application_win.cpp"
+        "game_pc_entry_point_win.cpp"
+        "pch.cpp"
+        "pch.h"
+        "ReadMe.txt"
+        "Resource.h"
+        "targetver.h"
+    )
+else()
+    message(FATAL_ERROR, "[${PROJECT_NAME}]: please define 'no_group_source_files' for your platform")
+endif()
+
 source_group("" FILES ${no_group_source_files})
 
 set(ALL_FILES
@@ -178,6 +194,7 @@ endif()
 # Dependencies
 ################################################################################
 add_dependencies(${PROJECT_NAME}
+    core
     engine
     render_base
 )
@@ -204,6 +221,7 @@ if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
             "odbccp32"
         ">"
     )
+    target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
     set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "$<$<CONFIG:Debug>:"
@@ -226,8 +244,21 @@ elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
             "odbccp32"
         ">"
     )
+    target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
+elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        core
+        engine
+        render_base
+        # ui
+        # sound
+        # render
+        # OpenGL::OpenGL
+        # X11
+    )
+else()
+    message(FATAL_ERROR, "please define 'target_link_libraries' for your platform")
 endif()
-target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
 if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
     target_link_directories(${PROJECT_NAME} PRIVATE

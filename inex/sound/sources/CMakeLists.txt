@@ -26,15 +26,7 @@ if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
         "sound_file.cpp"
         "sound_object.cpp"
     )
-elseif ("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
-    set(Source_Files
-        "dllmain.cpp"
-        "pch.cpp"
-        "sound.cpp"
-        "sound_file.cpp"
-        "sound_object.cpp"
-    )
-elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
+elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32" OR "${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
     set(Source_Files
         "dllmain.cpp"
         "pch.cpp"
@@ -76,9 +68,12 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
     find_package(OpenAL REQUIRED)
-
-    target_include_directories(${PROJECT_NAME} PRIVATE ${OPENAL_INCLUDE_DIR})
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${OPENAL_LIBRARY})
+    if(OPENAL_FOUND)
+        target_include_directories(${PROJECT_NAME} PRIVATE ${OPENAL_INCLUDE_DIR})
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${OPENAL_LIBRARY})
+    else()
+        message(FATAL_ERROR "OpenAL not found.")
+    endif()
 
     list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules")
 
@@ -91,7 +86,7 @@ if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
         message(FATAL_ERROR "ALUT not found. Please install freealut.")
     endif()
 else()
-    message(WARNING "ALUT not configured on your system.")
+    message(WARNING "ALUT not configured on your platform.")
 endif()
 
 ################################################################################

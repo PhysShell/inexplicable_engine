@@ -42,12 +42,14 @@ atomic_ptr_value_type	interlocked_exchange_pointer	( atomic_ptr_type& target, at
 	return							0;
 }
 
+INEX_CORE_API
 inline
 u64     cache_line_size ( )
 {
     return          sysconf( _SC_LEVEL1_DCACHE_LINESIZE );
 }
 
+INEX_CORE_API
 inline
 u64      processors_available ( )
 {
@@ -56,6 +58,7 @@ u64      processors_available ( )
 
 namespace detail {
     __inline__
+    INEX_CORE_API
     bool    cpuid_instruction_available ( )
     {
         __try
@@ -70,6 +73,7 @@ namespace detail {
     }
 } // namespace detail
 
+INEX_CORE_API
 inline
 u64 clock_cycle_per_second ( )
 {
@@ -87,7 +91,7 @@ u64 clock_cycle_per_second ( )
 *
 ****************************************************/
 
-
+INEX_CORE_API
 __inline__
 u64     clock_cycle_count ( )
 {
@@ -135,9 +139,9 @@ u64     clock_cycle_count ( )
 *
 ****************************************************/
 
-
+INEX_CORE_API
 inline
-atomic32_value_type interlocked_increment ( atomic32_type* value )
+atomic32_value_type interlocked_increment ( atomic32_value_type* value )
 {
     atomic32_type temp          = * value + 1;
     __asm__ __volatile__

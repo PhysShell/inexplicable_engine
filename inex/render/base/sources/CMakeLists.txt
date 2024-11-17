@@ -3,18 +3,33 @@ set(PROJECT_NAME render_base)
 ################################################################################
 # Source groups
 ################################################################################
-set(no_group_source_files
-    "../../core/shaders.h"
-    "../../core/sources/shaders.cpp"
-    "dllmain.cpp"
-    "pch.cpp"
-    "pch.h"
-    "ReadMe.txt"
-    "render_base.cpp"
-    "render_base_entry_point.cpp"
-    "render_base_world.cpp"
-    "targetver.h"
-)
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+    set(no_group_source_files
+        "../../core/shaders.h"
+        "../../core/sources/shaders.cpp"
+        "pch.cpp"
+        "pch.h"
+        "render_base.cpp"
+        "render_base_entry_point.cpp"
+        "render_base_world.cpp"
+    )
+elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Win32" OR "${CMAKE_SYSTEM_NAME}" STREQUAL "x64")
+    set(no_group_source_files
+        "../../core/shaders.h"
+        "../../core/sources/shaders.cpp"
+        "dllmain.cpp"
+        "pch.cpp"
+        "pch.h"
+        "ReadMe.txt"
+        "render_base.cpp"
+        "render_base_entry_point.cpp"
+        "render_base_world.cpp"
+        "targetver.h"
+    )
+else()
+    message(FATAL_ERROR, "[${PROJECT_NAME}]: please define 'no_group_source_files' for your platform")
+endif()
+
 source_group("" FILES ${no_group_source_files})
 
 set(commands
@@ -90,6 +105,26 @@ set(ROOT_NAMESPACE render_base)
 set_target_properties(${PROJECT_NAME} PROPERTIES
     VS_GLOBAL_KEYWORD "Win32Proj"
 )
+
+################################################################################
+# 3rd party packages
+################################################################################
+
+if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules")
+
+    find_package(OpenGL REQUIRED)
+    
+    if(OPENGL_FOUND)
+        target_include_directories(${PROJECT_NAME} PRIVATE ${OPENGL_INCLUDE_DIRS})
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${OPENGL_LIBRARIES})
+    else()
+        message(FATAL_ERROR "OpenGL not found.")
+    endif()
+else()
+    message(WARNING "OpenGL not configured on your platform.")
+endif()
+
 ################################################################################
 # Target name
 ################################################################################
@@ -283,8 +318,14 @@ if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
             "odbccp32"
         ">"
     )
+    target_link_libraries(${PROJECT_NAME} PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
+elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        render_gl4
+    )
+else()
+    message(FATAL_ERROR, "please define 'target_link_libraries' for your platform")
 endif()
-target_link_libraries(${PROJECT_NAME} PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
 if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
     target_link_directories(${PROJECT_NAME} PUBLIC
