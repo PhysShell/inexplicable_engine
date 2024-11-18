@@ -1,4 +1,5 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> { config.allowUnfree = true; } }:
+
 pkgs.mkShell {
   buildInputs = [
     pkgs.xorg.libX11     # Библиотека Xlib
@@ -10,10 +11,14 @@ pkgs.mkShell {
     pkgs.freealut        # Alut headers & libraries
     pkgs.mesa            # OpenGL headers & libraries
     pkgs.libglvnd.dev    # OpenGL headers & libraries
+    pkgs.gdb
+    pkgs.vscode
+    pkgs.vscodium
+    pkgs.llvmPackages.lldb
   ];
 
   shellHook = ''
-    export LD_LIBRARY_PATH=$(nix eval --raw nixpkgs#gcc-unwrapped)/lib:$LD_LIBRARY_PATH
+    #export LD_LIBRARY_PATH=$(nix eval --raw nixpkgs#gcc-unwrapped)/lib:$LD_LIBRARY_PATH
     echo "inexplicable development environment activated..."
   '';
 }
