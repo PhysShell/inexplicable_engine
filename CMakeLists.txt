@@ -46,7 +46,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wextra -Wpedantic -Wshadow -Wnon-virtual-dtor -Wunused -Wcast-align -Woverloaded-virtual -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -g -O0 -fsanitize=address,undefined")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -march=native -mtune=native -flto")
 else()
-    message(WARNING, "global compiler flags not defined for your compiler")
+    message(WARNING "global compiler flags not defined for your compiler")
 endif()
 
 ################################################################################
@@ -75,7 +75,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "
     set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -g -fsanitize=address,undefined")
     set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -flto")
 else()
-    message(WARNING, "global compiler flags not defined for your compiler")
+    message(WARNING "global compiler flags not defined for your compiler")
 endif()
 
 
@@ -96,7 +96,7 @@ endfunction()
 # Engine extensions in top level folder
 ################################################################################
 include_directories(${CMAKE_SOURCE_DIR})
-
+include_directories(${CMAKE_SOURCE_DIR}/include)
 ################################################################################
 # Common utils
 ################################################################################

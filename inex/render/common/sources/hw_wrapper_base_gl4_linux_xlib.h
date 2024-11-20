@@ -7,7 +7,6 @@
 #	include <GL/glext.h>
 #	include <GL/glx.h>
 
-
 #	include <inex/render/gl4/gl4_extensions.h>
 #	include <inex/render/core/quasi_singleton.h>
 
@@ -35,10 +34,6 @@ public:
 	
 	inline void create( u32 const x, u32 const y )
 	{
-		//VERIFY 				( m_context == 0 );
-		//LOGGER 				( "- [hw-wrapper][info]\t: requesting '%d' bytes to store context... " );
-		//m_context		= 	inex::memory::ie_new< gl_context >( );
-		//LOGGER 				( "\t\t\t\t... successfully allocated at '%p'", m_context );
 		display 		= 	XOpenDisplay( NULL );
 		ASSERT_D			( display, "Xlib error: Cannot connect to X server" );
 
@@ -118,7 +113,7 @@ public:
 		//glXDestroyContext		( display, context );
 		//XDestroyWindow			( display, window);
 		//XCloseDisplay			( display );
-		//inex::memory::ie_delete	( m_context );
+		inex::memory::ie_delete	( m_context );
 	}
 
 	pvoid					render_device ( ) const		{ NOT_IMPLEMENTED ( ); return 0; }
@@ -152,6 +147,8 @@ inline hw_wrapper_base::hw_wrapper_base ( ) /*:
 	m_dev_type(D3DDEVTYPE_FORCE_DWORD)*/
 {
 	/*memory::zero(&m_dev_pparams, sizeof(m_dev_pparams));*/
+	m_context			= memory::ie_new<hw_wrapper_context>();
+	//m_device			= 0;
 }
 
 inline void context_manager::make_current ( hw_wrapper_context * context )

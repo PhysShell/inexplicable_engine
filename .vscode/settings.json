@@ -47,6 +47,7 @@
         "algorithm": "cpp",
         "bitset": "cpp",
         "memory": "cpp",
-        "functional": "cpp"
+        "functional": "cpp",
+        "*.in": "cpp"
     }
 }

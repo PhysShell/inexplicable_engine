@@ -120,19 +120,20 @@ __asm {
 
     u32 is_amd  =   0,  edx_reg     = 0;
 	# if defined ( __GNUC__ )
-    __asm (
-        "movl $0x80000000, %%eax\n\t"
-        "cpuid\n\t"
-        "cmp $0x80000000, %%eax\n\t"
-        "jc notamd\n\t"
-        //      or 8000000 ???
-        "movl  $0x80000001, %%eax\n\t"
-        "cpuid\n\t"
-        "movl %%edx, %[edx]\n\t"
-        "movl  $1, %[amd]\n\t"
-        "notamd:\n\t"
-        : [ edx ] "+m"( edx_reg ), [ amd ] "+m" ( is_amd )
-    );
+    __asm__ __volatile__(
+		"movl $0x80000000, %%eax\n\t"       // Устанавливаем EAX в 0x80000000
+		"cpuid\n\t"                         // Выполняем CPUID
+		"cmp $0x80000000, %%eax\n\t"        // Сравниваем результат с 0x80000000
+		"jc notamd\n\t"                     // Если меньше, прыгаем на notamd
+		"movl $0x80000001, %%eax\n\t"       // Устанавливаем EAX в 0x80000001
+		"cpuid\n\t"                         // Выполняем CPUID снова
+		"movl %%edx, %[edx]\n\t"            // Сохраняем значение EDX в edx_reg
+		"movl $1, %[amd]\n\t"               // Устанавливаем is_amd в 1
+		"notamd:\n\t"                       // Метка для обработки не-AMD
+		: [edx] "=r"(edx_reg), [amd] "=r"(is_amd) // Выходные операнды
+		:                                    // Нет входных операндов
+		: "eax", "ebx", "ecx", "edx"         // Регистр EAX и остальные объявлены как clobber
+	);
 	# elif defined ( _MSC_VER ) && !_WIN64 // #if defined ( __GNUC__ )
 __asm {
 		xor			eax , eax

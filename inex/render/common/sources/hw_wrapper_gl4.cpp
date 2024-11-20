@@ -9,7 +9,11 @@
 //#	pragma comment( lib, "glfw3.lib" )
 #	pragma comment( lib, "opengl32.lib" )
 #elif INEX_PLATFORM_LINUX
-#	include <inex/render/common/sources/hw_wrapper_base_gl4_linux_xlib.h>
+#       if INEX_USE_XLIB_IN_HW_WRAPPER
+#		    include <inex/render/common/sources/hw_wrapper_base_gl4_linux_xlib.h>
+#       else // #if INEX_USE_XLIB_IN_HW_WRAPPER
+#           include <inex/render/common/sources/hw_wrapper_base_gl4_linux_wayland.h>
+#       endif // #if INEX_USE_XLIB_IN_HW_WRAPPER
 #endif // #if INEX_PLATFORM_WINDOWS
 
 /* Global extension */
@@ -180,7 +184,11 @@ void hw_wrapper::create_device(HWND hwnd, bool move_window)
 #if INEX_PLATFORM_WINDOWS
 	hw_wrapper_base::create(size_x, size_y, "inexplicable_engine_winapi_renderer", GetModuleHandleW( NULL ), 0);
 #elif INEX_PLATFORM_LINUX
+#       if INEX_USE_XLIB_IN_HW_WRAPPER
 	hw_wrapper_base::create(100, 100, "inexplicable_engine_x11_renderer");
+#       else // #if INEX_USE_XLIB_IN_HW_WRAPPER
+	hw_wrapper_base::create(100, 100, "inexplicable_engine_wayland_renderer");
+#       endif // #if INEX_USE_XLIB_IN_HW_WRAPPER
 #else
 #	error please define your platform call
 #endif 
