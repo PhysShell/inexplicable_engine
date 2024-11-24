@@ -1,10 +1,6 @@
 #include "pch.h"
 #include <inex/render/gl4/gl4_external.h>
 
-#if INEX_PLATFORM_LINUX
-gl_context* g_gl4_context = nullptr;
-#endif // #if INEX_PLATFORM_LINUX
-
 // // VAO
 // PFNGLGENVERTEXARRAYSPROC    glGenVertexArrays    ;
 // PFNGLDELETEVERTEXARRAYSPROC glDeleteVertexArrays ;

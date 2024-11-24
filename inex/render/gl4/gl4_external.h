@@ -7,11 +7,12 @@
 #   define GL4_EXTERNAL_H_INCLUDED
 
 # 	if INEX_PLATFORM_LINUX
-#		include <X11/X.h>
 #		include <X11/Xlib.h>
-#		include <GL/gl.h>
-#		include <GL/glext.h>
-#		include <GL/glx.h>
+#		include <X11/Xutil.h>
+#		include <EGL/egl.h>
+#		include <EGL/eglplatform.h>
+#		include <EGL/eglext.h>
+#		include <GLES3/gl3.h> 
 #	elif INEX_PLATFORM_WINDOWS
 #		define GLX_GLXEXT_LEGACY
 #		include <inex/3rd_patry/include/GL/gl.h>
@@ -23,28 +24,12 @@
 #	if INEX_PLATFORM_LINUX
 //#	error please use hw_wrapper_context instead of this
 // Context
-struct gl_context
-{
-	Display *				display;
-	Window                  root;
-	GLint                   attributes[ 5 ] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
-	XVisualInfo *			visual_info;
-	Colormap                color_map;
-	XSetWindowAttributes    window_attributes;
-	Window                  window;
-	GLXContext              context;
-	XWindowAttributes       x_window_attributes;
-	XEvent                  x_event;
-}; // struct gl_context
-
-extern gl_context		*		g_gl4_context;
 #	elif INEX_PLATFORM_WINDOWS // #	if INEX_PLATFORM_LINUX
 //struct GLFWwindow;
 //struct gl_context;
 //typedef  gl_context GLFWwindow;
 //extern GLFWwindow		*		g_gl4_context;
 #	endif  // #	if INEX_PLATFORM_LINUX
-#	define GLX 					( * g_gl4_context )
 
 		/**************************************		Global extension	**************************************/
 
@@ -52,6 +37,8 @@ extern gl_context		*		g_gl4_context;
 #	if !INEX_PLATFORM_LINUX
 extern PFNGLACTIVETEXTUREPROC	glActiveTexture;
 #	endif // #if !INEX_PLATFORM_LINUX
+
+#	if INEX_PLATFORM_WINDOWS // linux already defines this
 // VAO
 extern PFNGLGENVERTEXARRAYSPROC   	glGenVertexArrays;
 extern PFNGLDELETEVERTEXARRAYSPROC 	glDeleteVertexArrays;
@@ -97,8 +84,6 @@ extern PFNGLUNIFORM3FVPROC         	glUniform3fv;
 extern PFNGLUNIFORM3FPROC          	glUniform3f;
 extern PFNGLUNIFORM4FVPROC         	glUniform4fv;
 extern PFNGLDRAWARRAYSEXTPROC		glDrawArraysExt;
-
-#	if INEX_PLATFORM_WINDOWS // linux already defines this
 // Texture
 extern PFNGLACTIVETEXTUREPROC	glActiveTexture;
 #	endif

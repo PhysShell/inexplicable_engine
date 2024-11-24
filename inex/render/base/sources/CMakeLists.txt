@@ -88,13 +88,7 @@ set(ALL_FILES
     ${platforms__pc}
     ${world}
     ${world__engine_enderer}
-    ${CMAKE_SOURCE_DIR}/inex/xdg-shell-protocol.c
 )
-
-message(STATUS "CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
-message(STATUS "Adding xdg-shell-protocol.c: ${CMAKE_SOURCE_DIR}/inex/xdg-shell-protocol.c")
-
-message(STATUS "All source files: ${ALL_FILES}")
 
 ################################################################################
 # Target
@@ -117,27 +111,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 ################################################################################
 
 if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
-    list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules")
-
-    find_package(OpenGL REQUIRED)
-    
-    if(OPENGL_FOUND)
-        target_include_directories(${PROJECT_NAME} PRIVATE ${OPENGL_INCLUDE_DIRS})
-        target_link_libraries(${PROJECT_NAME} PRIVATE ${OPENGL_LIBRARIES})
-    else()
-        message(FATAL_ERROR "OpenGL not found.")
-    endif()
-
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(WAYLAND_CLIENT REQUIRED wayland-client)
-    pkg_check_modules(EGL REQUIRED egl)
-    
-    target_include_directories(${PROJECT_NAME} PRIVATE ${WAYLAND_CLIENT_INCLUDE_DIRS} ${EGL_INCLUDE_DIRS})
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${WAYLAND_CLIENT_LIBRARIES} ${EGL_LIBRARIES})
-
-
-    #target_sources(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/inex/xdg-shell-protocol.c)
-    target_link_libraries(${PROJECT_NAME} PRIVATE wayland-client wayland-egl)
 
 
 else() 

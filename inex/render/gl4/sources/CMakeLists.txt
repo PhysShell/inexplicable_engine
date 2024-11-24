@@ -94,8 +94,6 @@ source_group("render_common\\hw_wrapper\\hw_caps" FILES ${render_common__hw_wrap
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
     set(render_common__platform
         "../../common/sources/hw_wrapper_base_gl4_linux_xlib.h"
-        "../../common/sources/hw_wrapper_base_gl4_linux_wayland.h"
-        "../../common/sources/hw_wrapper_base_gl4_linux_wayland.cpp"
     )
     source_group("render_common\\linux" FILES ${render_common__platform})
 elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Win32" OR "${CMAKE_SYSTEM_NAME}" STREQUAL "x64")
@@ -194,28 +192,30 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 ################################################################################
 
 if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Linux")
-    list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules")
 
+    find_package(X11 REQUIRED)
     find_package(OpenGL REQUIRED)
-    
-    if(OPENGL_FOUND)
-        target_include_directories(${PROJECT_NAME} PRIVATE ${OPENGL_INCLUDE_DIRS})
-        target_link_libraries(${PROJECT_NAME} PRIVATE ${OPENGL_LIBRARIES})
-    else()
-        message(FATAL_ERROR "OpenGL not found.")
-    endif()
+    find_package(PkgConfig REQUIRED)
 
-    # find_package(PkgConfig REQUIRED)
-    # pkg_check_modules(WAYLAND_CLIENT REQUIRED wayland-client)
-    # pkg_check_modules(EGL REQUIRED egl)
-    
-    # target_include_directories(${PROJECT_NAME} PRIVATE ${WAYLAND_CLIENT_INCLUDE_DIRS} ${EGL_INCLUDE_DIRS})
-    # target_link_libraries(${PROJECT_NAME} PRIVATE ${WAYLAND_CLIENT_LIBRARIES} ${EGL_LIBRARIES})
+    # Find GLES3
+    pkg_check_modules(GLES3 REQUIRED glesv2)
 
-    # target_sources(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/inex/xdg-shell-protocol.c)
-    # target_link_libraries(${PROJECT_NAME} PRIVATE wayland-egl)
+    # Подключаем заголовочные файлы
+    target_include_directories(${PROJECT_NAME} PRIVATE 
+        ${X11_INCLUDE_DIR}
+        ${GLES3_INCLUDE_DIRS}
+        /run/opengl-driver/lib
+    )
+
+    # Libraries
+    target_link_libraries(${PROJECT_NAME} PRIVATE 
+        ${X11_LIBRARIES}
+        OpenGL::GL
+        EGL
+        GLESv2  # Используем GLESv2, он включает GLES3
+    )
 else()
-    message(WARNING "OpenGL not configured on your platform.")
+    message(WARNING "OpenGL and X11 not configured on your platform.")
 endif()
 
 ################################################################################
@@ -388,6 +388,18 @@ if(MSVC)
             /SUBSYSTEM:WINDOWS
         )
     endif()
+elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+    # Probably unneccessary but keep these for the time being
+    target_compile_definitions(${PROJECT_NAME} PRIVATE
+        GLX_GLXEXT_PROTOTYPES
+        EGL_EGLEXT_PROTOTYPES
+        GL_GLEXT_PROTOTYPES
+        __GL_EXPORTS
+    )
+
+    target_compile_options(${PROJECT_NAME} PRIVATE
+        -DUSE_GLES3
+    )
 endif()
 
 ################################################################################

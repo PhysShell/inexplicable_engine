@@ -9,11 +9,7 @@
 //#	pragma comment( lib, "glfw3.lib" )
 #	pragma comment( lib, "opengl32.lib" )
 #elif INEX_PLATFORM_LINUX
-#       if INEX_USE_XLIB_IN_HW_WRAPPER
-#		    include <inex/render/common/sources/hw_wrapper_base_gl4_linux_xlib.h>
-#       else // #if INEX_USE_XLIB_IN_HW_WRAPPER
-#           include <inex/render/common/sources/hw_wrapper_base_gl4_linux_wayland.h>
-#       endif // #if INEX_USE_XLIB_IN_HW_WRAPPER
+#	include <inex/render/common/sources/hw_wrapper_base_gl4_linux_xlib.h>
 #endif // #if INEX_PLATFORM_WINDOWS
 
 /* Global extension */
@@ -35,11 +31,11 @@ void 	gl_terminate ( )
 #if INEX_PLATFORM_WINDOWS
 	
 #elif INEX_PLATFORM_LINUX // #if INEX_PLATFORM_WINDOWS
-	glXMakeCurrent		( GLX.display, None, NULL );
-	glXDestroyContext	( GLX.display, GLX.context );
-	XDestroyWindow		( GLX.display, GLX.window);
-	XCloseDisplay		( GLX.display );
-	inex::memory::ie_delete	( &GLX );
+	//glXMakeCurrent		( GLX.display, None, NULL );
+	//glXDestroyContext	( GLX.display, GLX.context );
+	//XDestroyWindow		( GLX.display, GLX.window);
+	//XCloseDisplay		( GLX.display );
+	//inex::memory::ie_delete	( &GLX );
 #endif // #if INEX_PLATFORM_WINDOWS
 }
 
@@ -182,16 +178,12 @@ void hw_wrapper::create_device(HWND hwnd, bool move_window)
 	constexpr u32 size_y	= 620;
 
 #if INEX_PLATFORM_WINDOWS
-	hw_wrapper_base::create(size_x, size_y, "inexplicable_engine_winapi_renderer", GetModuleHandleW( NULL ), 0);
+	hw_wrapper_base::create(size_x, size_y, "inexplicable_engine_winapi_renderer", GetModuleHandleW( NULL ), 0); // #if INEX_PLATFORM_WINDOWS
 #elif INEX_PLATFORM_LINUX
-#       if INEX_USE_XLIB_IN_HW_WRAPPER
-	hw_wrapper_base::create(100, 100, "inexplicable_engine_x11_renderer");
-#       else // #if INEX_USE_XLIB_IN_HW_WRAPPER
-	hw_wrapper_base::create(100, 100, "inexplicable_engine_wayland_renderer");
-#       endif // #if INEX_USE_XLIB_IN_HW_WRAPPER
-#else
+	hw_wrapper_base::create(100, 100, "inexplicable_engine_x11_renderer"); // #if INEX_PLATFORM_WINDOWS
+#else // #if INEX_PLATFORM_WINDOWS
 #	error please define your platform call
-#endif 
+#endif // #if INEX_PLATFORM_WINDOWS
 	//VERIFY 					( g_gl4_context );
 }
 

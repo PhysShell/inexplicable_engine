@@ -308,17 +308,17 @@ void platform::draw_frame			( )
 {
 	//bool cam_moved 	= 0;
 #if INEX_PLATFORM_LINUX
-	XNextEvent					( GLX.display, &GLX.x_event );
+	//XNextEvent					( GLX.display, &GLX.x_event );
 
 
-	if( 1 ||  GLX.x_event.type == Expose )
+	// if( 1 ||  GLX.x_event.type == Expose )
 	{
 		//update_fps_counter			( g_gl4_context );
 
-		XGetWindowAttributes		( g_gl4_context->display, g_gl4_context->window, &g_gl4_context->x_window_attributes );
+		//XGetWindowAttributes		( g_gl4_context->display, g_gl4_context->window, &g_gl4_context->x_window_attributes );
 		glClear                 	( GL_COLOR_BUFFER_BIT );
 		glClear						( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glViewport					( 0, 0, g_gl4_context->x_window_attributes.width, g_gl4_context->x_window_attributes.height );
+		//glViewport					( 0, 0, g_gl4_context->x_window_attributes.width, g_gl4_context->x_window_attributes.height );
 
 		//triangle.prologue			( );
 		//program.use( );
@@ -329,7 +329,7 @@ void platform::draw_frame			( )
 		m_model_manager.get_visuals( ).at( 0 )->m_program.use( );
 		render_visuals	( );
 
-		glXSwapBuffers				( GLX.display, GLX.window );
+		//glXSwapBuffers				( GLX.display, GLX.window );
 	}
 /*
   // XSelectInput(Pixel.GetX11Display(),Pixel.GetX11Window(),KeyPressMask|KeyReleaseMask);
@@ -355,7 +355,7 @@ void platform::draw_frame			( )
 
   }
 */
-	if( GLX.x_event.type == KeyPress )
+	//if( GLX.x_event.type == KeyPress )
 	{
 		#define KEY_ESCAPE	0x09
 		// rotating
@@ -371,18 +371,18 @@ void platform::draw_frame			( )
 		#define KEY_W		25
 
 
-		if ( GLX.x_event.xkey.keycode == KEY_ESCAPE )
+		//if ( GLX.x_event.xkey.keycode == KEY_ESCAPE )
 		{
 			exit 		( EXIT_SUCCESS );
 		}
 
-		if ( 	GLX.x_event.xkey.keycode == KEY_A || GLX.x_event.xkey.keycode == KEY_D ||
-				GLX.x_event.xkey.keycode == KEY_W || GLX.x_event.xkey.keycode == KEY_S ||
-				GLX.x_event.xkey.keycode == KEY_UP || GLX.x_event.xkey.keycode == KEY_DOWN ||
-				GLX.x_event.xkey.keycode == KEY_LEFT || GLX.x_event.xkey.keycode == KEY_RIGHT )
-		{
-			//cam_moved	= 1;
-		}
+		// if ( 	GLX.x_event.xkey.keycode == KEY_A || GLX.x_event.xkey.keycode == KEY_D ||
+		// 		GLX.x_event.xkey.keycode == KEY_W || GLX.x_event.xkey.keycode == KEY_S ||
+		// 		GLX.x_event.xkey.keycode == KEY_UP || GLX.x_event.xkey.keycode == KEY_DOWN ||
+		// 		GLX.x_event.xkey.keycode == KEY_LEFT || GLX.x_event.xkey.keycode == KEY_RIGHT )
+		// {
+		// 	//cam_moved	= 1;
+		// }
 	}
 
 	// update view matrix
@@ -422,9 +422,9 @@ void platform::draw_frame			( )
 
 	m_model_manager.get_visuals( ).at( 0 )->m_program.unbind( );
 
-	if( GLX.x_event.type == Expose )
+	//if( GLX.x_event.type == Expose )
 	{
-		glXSwapBuffers				( GLX.display, GLX.window );
+		//eglSwapBuffers				( GLX.display, GLX.window );
 	}
 
 #elif INEX_PLATFORM_WINDOWS // #if INEX_PLATFORM_LINUX

@@ -96,7 +96,7 @@ endfunction()
 # Engine extensions in top level folder
 ################################################################################
 include_directories(${CMAKE_SOURCE_DIR})
-include_directories(${CMAKE_SOURCE_DIR}/include)
+
 ################################################################################
 # Common utils
 ################################################################################

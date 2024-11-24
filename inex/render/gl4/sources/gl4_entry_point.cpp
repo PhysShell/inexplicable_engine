@@ -31,7 +31,7 @@
 
 void	initialize_context_parameters ( )
 {
-
+# if INEX_PLATFORM_WINDOWS
 	GLenum const params[ ] 	=
 	{
 		GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
@@ -74,6 +74,7 @@ void	initialize_context_parameters ( )
 	}
 
 	inex::logging::put_string("]\n" );
+#endif // # if INEX_PLATFORM_WINDOWS
 }
 
 void	inex::render::initialize	( )
@@ -83,7 +84,9 @@ void	inex::render::initialize	( )
 #if !INEX_PLATFORM_LINUX
     OPENGL_GET_PROC( PFNGLACTIVETEXTUREPROC,        glActiveTexture );
 #endif // #if !INEX_PLATFORM_LINUX
-    // VAO
+    
+#if INEX_PLATFORM_WINDOWS
+// VAO
     OPENGL_GET_PROC( PFNGLGENVERTEXARRAYSPROC,      glGenVertexArrays );
     OPENGL_GET_PROC( PFNGLGENVERTEXARRAYSPROC,      glGenVertexArrays );
     OPENGL_GET_PROC( PFNGLDELETEVERTEXARRAYSPROC,   glDeleteVertexArrays );
@@ -132,6 +135,7 @@ void	inex::render::initialize	( )
     OPENGL_GET_PROC( PFNGLUNIFORM3FVPROC,           glUniform3fv );
     OPENGL_GET_PROC( PFNGLUNIFORM3FPROC,            glUniform3f );
     OPENGL_GET_PROC( PFNGLUNIFORM4FVPROC,           glUniform4fv );
+#endif // INEX_PLATFORM_WINDOWS
 	
     //OPENGL_GET_PROC( PFNGLDRAWARRAYSEXTPROC,        glDrawArraysExt );
     #undef											CAST

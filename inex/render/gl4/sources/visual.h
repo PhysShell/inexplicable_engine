@@ -19,7 +19,7 @@ namespace render_ogl   {
 enum    enum_shader_type
 {
     enum_shader_type_vertex     = GL_VERTEX_SHADER,
-    enum_shader_type_geometry   = GL_GEOMETRY_SHADER,
+    //enum_shader_type_geometry   = GL_GEOMETRY_SHADER,
     enum_shader_type_fragment   = GL_FRAGMENT_SHADER, // analog of D3D's pixel shader
 	enum_shader_type_tesselation
 }; // enum enum_shader_type
