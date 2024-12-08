@@ -178,9 +178,9 @@ void hw_wrapper::create_device(HWND hwnd, bool move_window)
 	constexpr u32 size_y	= 620;
 
 #if INEX_PLATFORM_WINDOWS
-	hw_wrapper_base::create(size_x, size_y, "inexplicable_engine_winapi_renderer", GetModuleHandleW( NULL ), 0); // #if INEX_PLATFORM_WINDOWS
+	hw_wrapper_base::create(size_x, size_y, "inexplicable_engine_winapi_wgl_renderer", GetModuleHandleW( NULL ), 0); // #if INEX_PLATFORM_WINDOWS
 #elif INEX_PLATFORM_LINUX
-	hw_wrapper_base::create(100, 100, "inexplicable_engine_x11_renderer"); // #if INEX_PLATFORM_WINDOWS
+	hw_wrapper_base::create(size_x, size_y, "inexplicable_engine_x11_egl_renderer"); // #if INEX_PLATFORM_WINDOWS
 #else // #if INEX_PLATFORM_WINDOWS
 #	error please define your platform call
 #endif // #if INEX_PLATFORM_WINDOWS

@@ -21,6 +21,10 @@ pkgs.mkShell {
     nvidia-vaapi-driver
     egl-wayland
     
+    # OpenAL and Alut
+    pkgs.openal         # OpenAL Library 
+    pkgs.freealut       # Alut headers & libraries
+
     # GLES 3.0
     mesa_glu
     mesa_drivers
