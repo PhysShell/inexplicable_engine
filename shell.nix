@@ -38,8 +38,8 @@ pkgs.mkShell {
     glxinfo
     vulkan-tools
     
-    # IDE
-    vscode
+    # IDE (fhs is the only way I got the codelldb working)
+    vscode.fhs
 
     # Others
     gdb
